@@ -27,7 +27,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       bank_account_no: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       name_of_director: {
         type: Sequelize.STRING
