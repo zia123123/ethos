@@ -12,6 +12,8 @@ const router = express.Router();
 
 
 const AuthenController = require('./controller/AuthenController');
+const ProductController = require('./controller/ProductController');
+const PriceController = require('./controller/PriceController');
 
 
 const multer = require('multer')
@@ -44,6 +46,16 @@ const multerConf = {
 router.post('/api/ethos/register', AuthenController.signUp);
 router.post('/api/ethos/login', AuthenController.signIn);
 
+//product
+router.post('/api/product/create', ProductController.create);
+router.get('/api/product/', ProductController.index);
+router.get('/api/product/:id', ProductController.find, ProductController.show);
+router.patch('/api/product/update/:id', ProductController.find,ProductController.updateStock);
+
+//price
+router.post('/api/prices/create', PriceController.create);
+router.get('/api/prices/', PriceController.index);
+router.get('/api/prices/:id', PriceController.find, PriceController.show);
 
 
 

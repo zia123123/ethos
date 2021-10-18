@@ -15,7 +15,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       price: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.INTEGER
       },
       stock: {
         type: Sequelize.INTEGER
@@ -28,6 +28,16 @@ module.exports = {
       },
       namadomain: {
         type: Sequelize.STRING
+      },
+      productId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: "products",
+          key: "id"
+        },
+        onDelete: 'cascade',
+        onUpdate: 'cascade'
       },
       url: {
         type: Sequelize.STRING

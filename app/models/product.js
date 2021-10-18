@@ -24,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   product.associate = function(models) {
+    product.hasMany(models.prices,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "product"})
   
   };
 

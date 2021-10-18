@@ -1,31 +1,53 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
-  class Price extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
+
+  const price = sequelize.define('prices', {
+    typeTransaksi: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    hpp: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    price: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    stock: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    start: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    end: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    namadomain: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+  
+    url: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    keterangan: {
+      type: DataTypes.TEXT,
+      allowNull: false,
     }
-  };
-  Price.init({
-    typeTransaksi: DataTypes.STRING,
-    hpp: DataTypes.INTEGER,
-    price: DataTypes.BOOLEAN,
-    stock: DataTypes.INTEGER,
-    start: DataTypes.DATE,
-    end: DataTypes.DATE,
-    namadomain: DataTypes.STRING,
-    url: DataTypes.STRING,
-    keterangan: DataTypes.TEXT
+  
   }, {
-    sequelize,
-    modelName: 'Price',
+    tableName: "prices"
   });
-  return Price;
+
+  price.associate = function(models) {
+    price.belongsTo(models.products,{ onDelete: 'cascade' },{ constraints: true}, { foreignKey: "productId"})
+  };
+
+  return price;
 };
