@@ -1,33 +1,12 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Prices', {
+    await queryInterface.createTable('product_stocks', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
-      },
-      typeTransaksi: {
-        type: Sequelize.STRING
-      },
-      hpp: {
-        type: Sequelize.INTEGER
-      },
-      price: {
-        type: Sequelize.INTEGER
-      },
-      stock: {
-        type: Sequelize.INTEGER
-      },
-      start: {
-        type: Sequelize.DATE
-      },
-      end: {
-        type: Sequelize.DATE
-      },
-      namadomain: {
-        type: Sequelize.STRING
       },
       productId: {
         allowNull: false,
@@ -39,11 +18,21 @@ module.exports = {
         onDelete: 'cascade',
         onUpdate: 'cascade'
       },
-      url: {
-        type: Sequelize.STRING
+      warehouseId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: "warehouses",
+          key: "id"
+        },
+        onDelete: 'cascade',
+        onUpdate: 'cascade'
       },
-      keterangan: {
-        type: Sequelize.TEXT
+      quantity: {
+        type: Sequelize.INTEGER
+      },
+      remark: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
@@ -56,6 +45,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Prices');
+    await queryInterface.dropTable('product_stocks');
   }
 };

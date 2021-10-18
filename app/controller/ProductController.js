@@ -3,15 +3,18 @@ const { Op } = require("sequelize");
 const apiResponse = require("../helpers/apiResponse");
 
 module.exports = {
-
+  
 
     //create
     async create(req, res) { 
         let result = await products.create({
-            sku: req.body.sku,
-            nama: req.body.nama,
-            stock: req.body.stock,
-            status: true,
+            name: req.body.name,
+            expiry_date: req.body.expiry_date,
+            conversion: req.body.conversion,
+            price: req.body.price,
+            is_active: true,
+            supplierId: req.body.supplierId,
+            interval_year_expiry_date: req.body.interval_year_expiry_date
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
         }).catch(function (err)  {
@@ -48,9 +51,6 @@ module.exports = {
 
     async index(req, res) {
         let result = await products.findAll({
-            where: {
-                status: true
-            },
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
@@ -64,9 +64,14 @@ module.exports = {
     },
 
     // Update
-    async updateStock(req, res) {
-        req.product.nama = req.body.nama;
-        req.product.stock = req.body.stock;
+    async updateProduct(req, res) {
+        req.product.name = req.body.name;
+        req.product.expiry_date = req.body.expiry_date;
+        req.product.conversion = req.body.conversion;
+        req.product.price = req.body.price;
+        req.product.is_active = req.body.is_active;
+        req.product.interval_year_expiry_date = req.body.interval_year_expiry_date;
+        req.product.supplierId = req.body.supplierId;
         req.product.save().then(product => {
         return apiResponse.successResponseWithData(res, "SUCCESS", product);
         })
@@ -74,7 +79,7 @@ module.exports = {
 
     // Delete
     async delete(req, res) {
-        req.product.destroy().then(vote => {
+        req.product.destroy().then(product => {
             res.json({ msg: "Berhasil di delete" });
         })
     },

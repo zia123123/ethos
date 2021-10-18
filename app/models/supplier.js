@@ -48,8 +48,7 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   supplier.associate = function(models) {
- 
-  
+    supplier.hasMany(models.products,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "supplier"})
   };
 
   return supplier;

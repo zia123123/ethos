@@ -2,7 +2,7 @@ require('dotenv').config()
 
 module.exports = {
 
-  // Configuracion de DB
+  //Configuracion de DB
   // username: process.env.DB_USERNAME || "root",
   // password: process.env.DB_PASSWORD ||  "",
   // database: process.env.DB_DATABASE || "ethos",

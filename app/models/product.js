@@ -3,20 +3,28 @@
 module.exports = (sequelize, DataTypes) => {
 
   const product = sequelize.define('products', {
-    sku: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    nama: {
+    expiry_date: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    conversion: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    status: {
+    price: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    is_active: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
     },
-    stock: {
-      type: DataTypes.INTEGER,
+    interval_year_expiry_date: {
+      type: DataTypes.DATE,
       allowNull: false,
     },
   }, {
@@ -24,8 +32,9 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   product.associate = function(models) {
-    product.hasMany(models.prices,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "product"})
-  
+    product.belongsTo(models.suppliers,{ onDelete: 'cascade' },{ constraints: true}, { foreignKey: "supplierId"})
+    product.hasMany(models.product_stocks,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "product"})
+
   };
 
   return product;
