@@ -27,6 +27,33 @@ module.exports = {
         });
     },
 
+    async getAdvertiser(req, res) {
+        let result = await auths.findAll({
+            where:{
+                role: 1
+            },
+            attributes: ['id','email', 'firstname']
+        }).then(result => {
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            }).catch(function (err){
+                return apiResponse.ErrorResponse(res, err);
+            });
+    },
+
+    async getCustomer(req, res) {
+        let result = await auths.findAll({
+            where:{
+                role: 2
+            },
+            attributes: ['id','email', 'firstname']
+        }).then(result => {
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            }).catch(function (err){
+                return apiResponse.ErrorResponse(res, err);
+            });
+    },
+
+
     signIn(req, res) {
         let { email, password } = req.body;
         auths.findOne({

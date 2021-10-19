@@ -35,6 +35,9 @@ const ProductStockController = require('./controller/ProductStockController');
 const OfficeController = require('./controller/OfficeController');
 
 
+const MappingController = require('./controller/MappingController');
+
+
 
 
 const multer = require('multer')
@@ -66,6 +69,11 @@ const multerConf = {
 
 router.post('/api/ethos/register', AuthenController.signUp);
 router.post('/api/ethos/login', AuthenController.signIn);
+router.get('/api/ethos/advertiser', AuthenController.getAdvertiser);
+router.get('/api/ethos/cs', AuthenController.getCustomer);
+router.get('/api/ethos/cs/:id', MappingController.getCustomerService);
+
+
 
 //product
 router.post('/api/product/create', ProductController.create);
@@ -135,6 +143,13 @@ router.post('/api/office/create', OfficeController.create);
 router.get('/api/office/', OfficeController.index);
 router.get('/api/office/:id', OfficeController.find, OfficeController.show);
 router.patch('/api/office/update/:id', OfficeController.find,OfficeController.update);
+
+
+//mapping
+router.post('/api/mapping/create', MappingController.create);
+router.get('/api/mapping/', MappingController.index);
+router.get('/api/mapping/:id', MappingController.find, MappingController.show);
+router.patch('/api/mapping/update/:id', MappingController.find,MappingController.update);
 
 
 

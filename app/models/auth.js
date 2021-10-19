@@ -28,6 +28,7 @@ module.exports = (sequelize, DataTypes) => {
 
   auth.associate = function(models) {
     auth.hasMany(models.domains,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "auth"})
+    auth.hasMany(models.mappingadvertisers,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "auth"})
   };
 
   return auth;
