@@ -38,6 +38,9 @@ const OfficeController = require('./controller/OfficeController');
 const MappingController = require('./controller/MappingController');
 
 
+const ForgetPassController = require('./controller/ForgetPassController');
+
+
 
 
 const multer = require('multer')
@@ -152,5 +155,8 @@ router.get('/api/mapping/:id', MappingController.find, MappingController.show);
 router.patch('/api/mapping/update/:id', MappingController.find,MappingController.update);
 
 
+//forgetpaswor
+router.post('/api/forget/create', ForgetPassController.create);
+router.patch('/api/forget/update', ForgetPassController.updatePassword);
 
 module.exports = router;

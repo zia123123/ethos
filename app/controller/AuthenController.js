@@ -4,7 +4,10 @@ const jwt = require('jsonwebtoken');
 const authConfig = require('../../config/auth');
 const apiResponse = require("../helpers/apiResponse");
 
+
 module.exports = {
+
+
     
     signUp(req, res) {
         let password = bcrypt.hashSync(req.body.password, Number.parseInt(authConfig.rounds));
@@ -68,7 +71,6 @@ module.exports = {
                     let token = jwt.sign({ auths: auths }, authConfig.secret, {
                         expiresIn: authConfig.expires
                     });
-                     
                     res.json({
                         status: 200,
                         message:"SUCCESS",
