@@ -1,16 +1,15 @@
-const { domains } = require('../models/index');
+const { mapgroupcs } = require('../models/index');
 const { Op } = require("sequelize");
 const apiResponse = require("../helpers/apiResponse");
+
 
 module.exports = {
     //create
     async create(req, res) { 
-        let result = await domains.create({
-            name: req.body.name,
-            url: req.body.url,
-            type: req.body.type,
-            authId: req.body.advertiserid,
-            description: req.body.description,
+        let result = await mapgroupcs.create({
+            keterangan: req.body.keterangan,
+            groupcsId: req.body.groupcsId,
+            authId: req.body.id_cs,
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
         }).catch(function (err)  {
@@ -19,17 +18,17 @@ module.exports = {
       },
 
     async find(req, res, next) {
-        let domain = await domains.findByPk(req.params.id);
-        if (!domain) {
+        let mapgroupcs = await mapgroupcs.findByPk(req.params.id);
+        if (!mapgroupcs) {
         return apiResponse.notFoundResponse(res, "Not Fond");
         } else {
-            req.domain = domain;
+            req.mapgroupcs = mapgroupcs;
             next();
         }
     },
 
     async index(req, res) {
-        let result = await domains.findAll({
+        let result = await mapgroupcs.findAll({
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
@@ -39,24 +38,21 @@ module.exports = {
 
     // Show
     async show(req, res) {
-        return apiResponse.successResponseWithData(res, "SUCCESS", req.domain);
+        return apiResponse.successResponseWithData(res, "SUCCESS", req.mapgroupcs);
     },
 
     // Update
     async update(req, res) {
-        req.domain.name = req.body.name;
-        req.domain.url = req.body.url;
-        req.domain.type = req.body.type;
-        req.domain.authId = req.body.authId;
-        req.domain.description = req.body.description;
-        req.domain.save().then(domain => {
-        return apiResponse.successResponseWithData(res, "SUCCESS", domain);
+        req.mapgroupcs.groupcsId = req.body.groupcsId;
+        req.mapgroupcs.csId = req.body.csId;
+        req.mapgroupcs.save().then(mapgroupcs => {
+        return apiResponse.successResponseWithData(res, "SUCCESS", mapgroupcs);
         })
     },
 
     // Delete
     async delete(req, res) {
-        req.domain.destroy().then(domain => {
+        req.mapgroupcs.destroy().then(mapgroupcs => {
             res.json({ msg: "Berhasil di delete" });
         })
     },

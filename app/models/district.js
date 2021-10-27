@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
 
   district.associate = function(models) {
     district.hasMany(models.warehouses,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "district"})
+    district.hasMany(models.customers,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "district"})
   };
 
   return district;

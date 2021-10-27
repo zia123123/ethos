@@ -41,6 +41,13 @@ const MappingController = require('./controller/MappingController');
 const ForgetPassController = require('./controller/ForgetPassController');
 
 
+const CustomerController = require('./controller/CustomerController');
+
+const GroupCsController = require('./controller/GroupCsController');
+const MapGroupCsController = require('./controller/MapGroupCsController');
+
+
+
 
 
 const multer = require('multer')
@@ -153,6 +160,25 @@ router.post('/api/mapping/create', MappingController.create);
 router.get('/api/mapping/', MappingController.index);
 router.get('/api/mapping/:id', MappingController.find, MappingController.show);
 router.patch('/api/mapping/update/:id', MappingController.find,MappingController.update);
+
+//customer
+router.post('/api/customer/create', CustomerController.create);
+router.get('/api/customer/', CustomerController.index);
+router.get('/api/customer/:id', CustomerController.find, CustomerController.show);
+router.patch('/api/customer/update/:id', CustomerController.find,CustomerController.update);
+
+
+//groupcs
+router.post('/api/groupcs/create', GroupCsController.create);
+router.get('/api/groupcs/', GroupCsController.index);
+router.get('/api/groupcs/:id', GroupCsController.find, GroupCsController.show);
+router.patch('/api/groupcs/update/:id', GroupCsController.find,GroupCsController.update);
+
+//mapGroupCs
+router.post('/api/mapgroup/create', MapGroupCsController.create);
+router.get('/api/mapgroup/', MapGroupCsController.index);
+router.get('/api/mapgroup/:id', MapGroupCsController.find, MapGroupCsController.show);
+router.patch('/api/mapgroup/update/:id', MapGroupCsController.find,MapGroupCsController.update);
 
 
 //forgetpaswor
