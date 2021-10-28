@@ -11,8 +11,8 @@ const { update } = require('./ProvincesController');
     service: 'gmail',
     host: 'smtp.gmail.com',
     auth: {
-      user: 'ziakasep05@gmail.com',
-      pass: 'zia123123'
+      user: 'noreply@ethos.co.id',
+      pass: '*d7EeZ3h'
     }
   }));
 
