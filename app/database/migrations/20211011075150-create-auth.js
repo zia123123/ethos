@@ -12,6 +12,51 @@ module.exports = {
         type: Sequelize.STRING,
         unique: true
       },
+      nik: {
+        type: Sequelize.STRING,
+        unique: true
+      }, 
+      noktp: {
+        type: Sequelize.STRING,
+        unique: true
+      },  
+      alamat: {
+        type: Sequelize.TEXT,
+      }, 
+      notelp: {
+        type: Sequelize.STRING,
+      }, 
+      tempatlahir: {
+        type: Sequelize.STRING,
+      }, 
+      jeniskelamin: {
+        type: Sequelize.CHAR,
+      },
+      statuskawin: {
+        type: Sequelize.STRING,
+      },
+      statuskaryawan: {
+        type: Sequelize.STRING,
+      },
+      tanggalmasuk: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      tanggalkeluar: {
+        type: Sequelize.DATE
+      },
+      posisi: {
+        type: Sequelize.STRING
+      },
+      level: {
+        type: Sequelize.STRING
+      },
+      namabank: {
+        type: Sequelize.STRING
+      },
+      norekening: {
+        type: Sequelize.STRING
+      },
       password: {
         type: Sequelize.STRING
       },

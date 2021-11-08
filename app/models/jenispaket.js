@@ -1,23 +1,21 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
-  class jenispaket extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-    }
-  };
-  jenispaket.init({
-    nama: DataTypes.STRING
+
+  const jenispaket = sequelize.define('jenispakets', {
+    nama: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },                     
+ 
   }, {
-    sequelize,
-    modelName: 'jenispaket',
+    tableName: "jenispakets"
   });
+
+  jenispaket.associate = function(models) {
+    //cityregency.hasMany(models.customers,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "cityregency"})   
+  };
+
   return jenispaket;
 };
+

@@ -40,14 +40,11 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   warehouse.associate = function(models) {
-    warehouse.belongsTo(models.ninjaorigins,{ onDelete: 'cascade' },{ constraints: true}, { foreignKey: "ninjaoriginId"})
+    
     warehouse.belongsTo(models.provinces,{ onDelete: 'cascade' },{ constraints: true}, { foreignKey: "provinceId"})
     warehouse.belongsTo(models.districts,{ onDelete: 'cascade' },{ constraints: true}, { foreignKey: "districtId"})
-    
-   
-
     warehouse.hasMany(models.product_stocks,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "warehouse"})
-    
+    warehouse.hasMany(models.transaksis,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "warehouse"})
   };
 
   return warehouse;

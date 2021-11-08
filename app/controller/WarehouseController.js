@@ -8,7 +8,7 @@ module.exports = {
     async create(req, res) { 
         let result = await warehouses.create({
             name: req.body.name,
-            ninjaoriginId: req.body.ninjaoriginId,
+            expedisiId: req.body.expedisiId,
             provinceId: req.body.provinceId,
             cityregencyId: req.body.cityregencyId,
             districtId: req.body.districtId,

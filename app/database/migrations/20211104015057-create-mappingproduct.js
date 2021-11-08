@@ -1,12 +1,15 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('product_stocks', {
+    await queryInterface.createTable('mappingproducts', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
+      },
+      keterangan: {
+        type: Sequelize.STRING
       },
       productId: {
         allowNull: false,
@@ -14,23 +17,19 @@ module.exports = {
         references: {
           model: "products",
           key: "id"
-        }
-      },
-      warehouseId: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-        references: {
-          model: "warehouses",
-          key: "id"
         },
         onDelete: 'cascade',
         onUpdate: 'cascade'
       },
-      quantity: {
-        type: Sequelize.INTEGER
-      },
-      remark: {
-        type: Sequelize.STRING
+      domainId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: "domains",
+          key: "id"
+        },
+        onDelete: 'cascade',
+        onUpdate: 'cascade'
       },
       createdAt: {
         allowNull: false,
@@ -43,6 +42,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('product_stocks');
+    await queryInterface.dropTable('mappingproducts');
   }
 };

@@ -44,8 +44,21 @@ const ForgetPassController = require('./controller/ForgetPassController');
 const CustomerController = require('./controller/CustomerController');
 
 const GroupCsController = require('./controller/GroupCsController');
+
 const MapGroupCsController = require('./controller/MapGroupCsController');
 
+
+const FTransaksiController = require('./controller/FTransaksiController');
+
+const TransaksiController = require('./controller/TransaksiController');
+
+const StatusController = require('./controller/StatusController');
+
+const MappingProduct = require('./controller/MappingProduct');
+
+const KeranjangController = require('./controller/KeranjangController');
+
+const ExpedisiController = require('./controller/ExpedisiController');
 
 
 
@@ -181,8 +194,62 @@ router.get('/api/mapgroup/:id', MapGroupCsController.find, MapGroupCsController.
 router.patch('/api/mapgroup/update/:id', MapGroupCsController.find,MapGroupCsController.update);
 
 
+//status transaksi
+router.post('/api/status/create', StatusController.create);
+router.get('/api/status/', StatusController.index);
+router.get('/api/status/:id', StatusController.find, StatusController.show);
+router.patch('/api/status/update/:id', StatusController.find,StatusController.update);
+
+
+//status transaksi
+router.post('/api/expedisi/create', ExpedisiController.create);
+router.get('/api/expedisi/', ExpedisiController.index);
+router.get('/api/expedisi/:id', ExpedisiController.find, ExpedisiController.show);
+router.patch('/api/expedisi/update/:id', ExpedisiController.find,ExpedisiController.update);
+
+
+
+
 //forgetpaswor
 router.post('/api/forget/create', ForgetPassController.create);
 router.patch('/api/forget/update', ForgetPassController.updatePassword);
+
+
+
+//KEBUTUHAN TRANSAKSI
+router.post('/api/metodebayar/create', FTransaksiController.createMPembayaran);
+router.get('/api/metodebayar/', FTransaksiController.indexMPembayaran);
+router.post('/api/nomorrekening/create', FTransaksiController.createnomorekenings);
+router.get('/api/nomorrekening/', FTransaksiController.indexnomorekenings);
+router.post('/api/typep/create', FTransaksiController.createtypepelanggans);
+router.get('/api/typep/', FTransaksiController.indextypepelanggans);
+router.post('/api/statusT/create', FTransaksiController.createstatustranksasis);
+router.get('/api/statusT/', FTransaksiController.indexstatustranksasis);
+router.post('/api/jenispaket/create', FTransaksiController.createjenispakets);
+router.get('/api/jenispaket/', FTransaksiController.indexsjenispakets);
+
+
+//transaksi
+router.post('/api/transaksi/create', TransaksiController.create);
+router.get('/api/transaksi/', TransaksiController.index);
+router.get('/api/transaksi/:id', TransaksiController.find, TransaksiController.show);
+router.get('/api/transaksi/user/:userid', TransaksiController.findByuser);
+router.get('/api/transaksi/filter/:clue', TransaksiController.filterTransaksi);
+
+
+
+
+//transaksi
+router.post('/api/mapproduct/create', MappingProduct.create);
+router.get('/api/mapproduct/', MappingProduct.index);
+router.get('/api/mapproduct/:id', MappingProduct.find, MappingProduct.show);
+router.get('/api/mapproduct/product/:domainId', MappingProduct.findBydomain);
+
+
+//keranjang
+router.post('/api/keranjang/create', KeranjangController.create);
+router.get('/api/keranjang/', KeranjangController.index);
+router.patch('/api/keranjang/delete', KeranjangController.find, KeranjangController.delete);
+
 
 module.exports = router;

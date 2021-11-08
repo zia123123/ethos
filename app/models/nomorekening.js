@@ -1,23 +1,25 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
-  class nomorekening extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-    }
-  };
-  nomorekening.init({
-    nomor: DataTypes.STRING
+
+  const nomorekening = sequelize.define('nomorekenings', {
+    nomor: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    nama_bank: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+ 
   }, {
-    sequelize,
-    modelName: 'nomorekening',
+    tableName: "nomorekenings"
   });
+
+  nomorekening.associate = function(models) {
+    // metodepembayaran.hasMany(models.customers,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "cityregency"})   
+  };
+
   return nomorekening;
 };
+

@@ -1,4 +1,4 @@
-const { products } = require('../models/index');
+const { products,product_stocks } = require('../models/index');
 const { Op } = require("sequelize");
 const apiResponse = require("../helpers/apiResponse");
 
@@ -51,6 +51,12 @@ module.exports = {
 
     async index(req, res) {
         let result = await products.findAll({
+            attributes: ['id', 'name','expiry_date','price'],
+            include: [ 
+                { model: product_stocks,
+                    attributes: ['quantity'],
+                }
+            ]
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){

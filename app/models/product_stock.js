@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   product_stock.associate = function(models) {
-    product_stock.belongsTo(models.products,{ onDelete: 'cascade' },{ constraints: true}, { foreignKey: "productId"})
+    product_stock.belongsTo(models.products, { foreignKey: "productId"})
     product_stock.belongsTo(models.warehouses,{ onDelete: 'cascade' },{ constraints: true}, { foreignKey: "warehouseId"})
   };
 

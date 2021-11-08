@@ -13,6 +13,7 @@ module.exports = {
             alamat: req.body.alamat,
             rt:req.body.rt,
             rw:req.body.rw,
+            jeniskelamin:req.body.jeniskelamin,
             kecamatan: req.body.kecamatan,
             kelurahan: req.body.kelurahan,
             postalcode: req.body.postalcode,

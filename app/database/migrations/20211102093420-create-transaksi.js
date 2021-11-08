@@ -1,15 +1,41 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('warehouses', {
+    await queryInterface.createTable('transaksis', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      name: {
+      nama: {
         type: Sequelize.STRING
+      },
+      notelp: {
+        type: Sequelize.STRING
+      },
+      alamat: {
+        type: Sequelize.TEXT
+      },
+      domainId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: "domains",
+          key: "id"
+        },
+        onDelete: 'cascade',
+        onUpdate: 'cascade'
+      },
+      warehouseId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: "warehouses",
+          key: "id"
+        },
+        onDelete: 'cascade',
+        onUpdate: 'cascade'
       },
       expedisiId: {
         allowNull: false,
@@ -18,51 +44,37 @@ module.exports = {
           model: "expedisis",
           key: "id"
         },
-        onDelete: 'cascade',
-        onUpdate: 'cascade'
       },
-
-      provinceId: {
+       
+      authId: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
-          model: "provinces",
+          model: "auths",
           key: "id"
         },
-        onDelete: 'cascade',
-        onUpdate: 'cascade'
       },
-      cityregencyId: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-      },
-      districtId: {
+       
+      statustransaksiId: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
-          model: "districts",
+          model: "statustranksasis",
           key: "id"
         },
-        onDelete: 'cascade',
-        onUpdate: 'cascade'
       },
-      city: {
-        type: Sequelize.STRING
+        
+      discount: {
+        type: Sequelize.INTEGER
       },
-      address: {
+      totalharga: {
+        type: Sequelize.INTEGER
+      },
+      typebayar: {
+        type: Sequelize.INTEGER
+      },
+      memo: {
         type: Sequelize.TEXT
-      },
-      expedition_data: {
-        type: Sequelize.STRING
-      },
-      postalcode: {
-        type: Sequelize.STRING
-      },
-      address_line_two: {
-        type: Sequelize.TEXT
-      },
-      village: {
-        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
@@ -75,6 +87,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('warehouses');
+    await queryInterface.dropTable('transaksis');
   }
 };

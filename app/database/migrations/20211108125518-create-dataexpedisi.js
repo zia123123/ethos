@@ -1,18 +1,32 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('expedisis', {
+    await queryInterface.createTable('dataexpedisis', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      origin: {
+      ongkoskirim: {
+        type: Sequelize.INTEGER
+      },
+      subsidi: {
+        type: Sequelize.INTEGER
+      },
+      transaksiId: {
+        allowNull: false,
+        unique: true,
+        type: Sequelize.INTEGER,
+      },
+      biayatambahan: {
+        type: Sequelize.INTEGER
+      },
+      norekening: {
         type: Sequelize.STRING
       },
-      index: {
-        type: Sequelize.STRING
+      biayacod: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -25,6 +39,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('expedisis');
+    await queryInterface.dropTable('dataexpedisis');
   }
 };

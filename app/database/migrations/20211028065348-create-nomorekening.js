@@ -8,6 +8,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      nama_bank: {
+        type: Sequelize.STRING
+      },
       nomor: {
         type: Sequelize.STRING
       },
