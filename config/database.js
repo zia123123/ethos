@@ -11,9 +11,9 @@ module.exports = {
 
 
   username: process.env.DB_USERNAME || "ethos",
-  password: process.env.DB_PASSWORD ||  "@Zia123123",
+  password: process.env.DB_PASSWORD ||  "uZP76kYps8pFR9hxwUZ*W@",
   database: process.env.DB_DATABASE || "ethos",
-  host: process.env.DB_HOST ||"10.184.0.7",
+  host: process.env.DB_HOST ||"34.101.185.219",
   dialect: process.env.DB_DIALECT || "mysql",
 
   	
