@@ -96,6 +96,7 @@ router.get('/api/ethos/advertiser', AuthenController.getAdvertiser);
 router.get('/api/ethos/cs', AuthenController.getCustomer);
 router.get('/api/ethos/cs/:id', MappingController.getCustomerService);
 
+router.get('/api/ethos/user/:id', AuthenController.find, AuthenController.show);
 
 
 //product

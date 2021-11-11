@@ -101,4 +101,20 @@ module.exports = {
         })     
     },
 
+    async find(req, res, next) {
+        let user = await auths.findByPk(req.params.id);
+        if (!user) {
+        return apiResponse.notFoundResponse(res, "Not Fond");
+        } else {
+            req.user = user;
+            next();
+        }
+    },
+
+
+    // Show
+    async show(req, res) {
+        return apiResponse.successResponseWithData(res, "SUCCESS", req.user);
+    },
+
 }
