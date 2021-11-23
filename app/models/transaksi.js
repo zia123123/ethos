@@ -37,13 +37,14 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   transaksi.associate = function(models) {
-    transaksi.belongsTo(models.domains,{ onDelete: 'cascade' },{ constraints: true}, { foreignKey: "domainId"})
     transaksi.belongsTo(models.warehouses, { foreignKey: "warehouseId"})
     transaksi.belongsTo(models.expedisis, { foreignKey: "expedisiId"})
+    transaksi.belongsTo(models.districts, { foreignKey: "districtId"})
     transaksi.belongsTo(models.auths, { foreignKey: "authId"})
     transaksi.belongsTo(models.statustranksasis, { foreignKey: "statustransaksiId"})
+    transaksi.hasMany(models.keranjangs, { foreginKey: "transaksi"})   
+    transaksi.hasMany(models.dataexpedisis,{ foreginKey: "dataexpedisis"})   
 
-    transaksi.hasMany(models.keranjangs,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "transaksi"})   
   };
 
   return transaksi;

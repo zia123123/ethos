@@ -14,14 +14,18 @@ module.exports = {
       notelp: {
         type: Sequelize.STRING
       },
+      notelp2: {
+        type: Sequelize.STRING
+      },
       alamat: {
         type: Sequelize.TEXT
       },
-      domainId: {
+     
+      districtId: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
-          model: "domains",
+          model: "districts",
           key: "id"
         },
         onDelete: 'cascade',
@@ -45,7 +49,6 @@ module.exports = {
           key: "id"
         },
       },
-       
       authId: {
         allowNull: false,
         type: Sequelize.INTEGER,

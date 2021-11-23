@@ -16,8 +16,11 @@ module.exports = {
       },
       transaksiId: {
         allowNull: false,
-        unique: true,
         type: Sequelize.INTEGER,
+        references: {
+          model: "transaksis",
+          key: "id"
+        },
       },
       biayatambahan: {
         type: Sequelize.INTEGER

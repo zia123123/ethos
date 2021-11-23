@@ -11,15 +11,16 @@ module.exports = {
         let result = await transaksis.create({
             nama: req.body.nama,
             notelp: req.body.notelp,
-            alamat: req.body.alamat,
-            domainId: req.body.domainId,
+            notelp2: req.body.notelp2,
+            districtId: req.body.districtId,
+            alamat: req.body.kecamatan+", "+req.body.kota+", "+req.body.provinsi,
             warehouseId: req.body.warehouseId,
             expedisiId: req.body.expedisiId,
             authId: req.body.idpembuat,
             discount: req.body.discount,
             totalharga: req.body.totalharga,
             typebayar: req.body.typebayar,
-            statustransaksiId: req.body.statustransaksi,
+            statustransaksiId: 1,
             memo: req.body.memo,
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);

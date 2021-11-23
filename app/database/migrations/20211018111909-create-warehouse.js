@@ -32,10 +32,18 @@ module.exports = {
         onDelete: 'cascade',
         onUpdate: 'cascade'
       },
+
       cityregencyId: {
         allowNull: false,
         type: Sequelize.INTEGER,
+        references: {
+          model: "cityregencies",
+          key: "id"
+        },
+        onDelete: 'cascade',
+        onUpdate: 'cascade'
       },
+
       districtId: {
         allowNull: false,
         type: Sequelize.INTEGER,

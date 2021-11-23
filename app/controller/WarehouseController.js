@@ -38,6 +38,7 @@ module.exports = {
 
     async index(req, res) {
         let result = await warehouses.findAll({
+            attributes: ['id', 'name'],
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){

@@ -7,12 +7,14 @@ module.exports = {
 
     //create
     async create(req, res) { 
+        var link = req.files.link == null ? null : req.files.link[0].filename
         let result = await products.create({
             name: req.body.name,
             expiry_date: req.body.expiry_date,
             conversion: req.body.conversion,
             price: req.body.price,
             is_active: true,
+            link: 'http://34.101.240.70:3000/images/'+link,
             supplierId: req.body.supplierId,
             interval_year_expiry_date: req.body.interval_year_expiry_date
         }).then(result => {

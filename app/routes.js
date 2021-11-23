@@ -61,6 +61,8 @@ const KeranjangController = require('./controller/KeranjangController');
 const ExpedisiController = require('./controller/ExpedisiController');
 
 
+const DaExpedisiController = require('./controller/DaExpedisiController');
+
 
 
 const multer = require('multer')
@@ -90,7 +92,7 @@ const multerConf = {
 };
 
 
-router.post('/api/ethos/register', AuthenController.signUp);
+router.post('/api/ethos/register', AuthenController.signUp); 
 router.post('/api/ethos/login', AuthenController.signIn);
 router.get('/api/ethos/advertiser', AuthenController.getAdvertiser);
 router.get('/api/ethos/cs', AuthenController.getCustomer);
@@ -98,14 +100,18 @@ router.get('/api/ethos/cs/:id', MappingController.getCustomerService);
 
 router.get('/api/ethos/user/:id', AuthenController.find, AuthenController.show);
 
+router.get('/api/ethos/user/', AuthenController.index);
 
 //product
-router.post('/api/product/create', ProductController.create);
+router.post('/api/product/create',multer(multerConf).fields([{
+    name: 'link', maxCount: 1
+    }
+]), ProductController.create);
 router.get('/api/product/', ProductController.index);
 router.get('/api/product/:id', ProductController.find, ProductController.show);
 router.patch('/api/product/update/:id', ProductController.find,ProductController.updateProduct);
 
-
+    
 
 //supplier
 router.post('/api/supplier/create', SupplierController.create);
@@ -251,6 +257,12 @@ router.get('/api/mapproduct/product/:domainId', MappingProduct.findBydomain);
 router.post('/api/keranjang/create', KeranjangController.create);
 router.get('/api/keranjang/', KeranjangController.index);
 router.patch('/api/keranjang/delete', KeranjangController.find, KeranjangController.delete);
+
+//keranjang
+router.post('/api/dataexpedisi/create', DaExpedisiController.create);
+router.get('/api/dataexpedisi/', DaExpedisiController.index);
+
+
 
 
 module.exports = router;

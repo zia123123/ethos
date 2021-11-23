@@ -25,7 +25,6 @@ module.exports = (sequelize, DataTypes) => {
 
   domain.associate = function(models) {
     domain.belongsTo(models.auths,{ onDelete: 'cascade' },{ constraints: true}, { foreignKey: "authId"})
-    domain.hasMany(models.transaksis,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "domain"})
   };
 
   return domain;

@@ -40,7 +40,8 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   warehouse.associate = function(models) {
-    
+    warehouse.belongsTo(models.expedisis, { foreignKey: "expedisiId"})
+    warehouse.belongsTo(models.cityregencies,{ onDelete: 'cascade' },{ constraints: true}, { foreignKey: "cityregencyId"})
     warehouse.belongsTo(models.provinces,{ onDelete: 'cascade' },{ constraints: true}, { foreignKey: "provinceId"})
     warehouse.belongsTo(models.districts,{ onDelete: 'cascade' },{ constraints: true}, { foreignKey: "districtId"})
     warehouse.hasMany(models.product_stocks,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "warehouse"})

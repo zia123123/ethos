@@ -17,14 +17,14 @@ module.exports = (sequelize, DataTypes) => {
     },
     domain: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
   }, {
     tableName: "keranjangs"
   });
 
   keranjang.associate = function(models) {
-  
+    keranjang.belongsTo(models.transaksis , { foreignKey: "transaksiId"})
+    keranjang.belongsTo(models.products , { foreignKey: "productId"})
   };
 
   return keranjang;

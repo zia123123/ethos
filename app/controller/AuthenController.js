@@ -111,7 +111,15 @@ module.exports = {
         }
     },
 
-
+    async index(req, res) {
+        let result = await auths.findAll({
+            attributes: ['id', 'firstname'],
+        }).then(result => {
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            }).catch(function (err){
+                return apiResponse.ErrorResponse(res, err);
+            });
+    },
     // Show
     async show(req, res) {
         return apiResponse.successResponseWithData(res, "SUCCESS", req.user);
