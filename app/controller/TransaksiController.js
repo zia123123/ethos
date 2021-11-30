@@ -80,7 +80,7 @@ module.exports = {
             where: {
                authId: req.params.userid
             },
-            attributes: ['id', 'name','createdAt','pembayaran','status'],
+            attributes: ['id', 'name','createdAt','pembayaran','status','products'],
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
