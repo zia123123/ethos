@@ -60,7 +60,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       products: {
-        type: Sequelize.LONGTEXT
+        type: Sequelize.STRING(1000)
       },
       gudang: {
         type: Sequelize.INTEGER

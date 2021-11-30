@@ -44,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     products: {
-      type: DataTypes.LONGTEXT,
+      type: DataTypes.STRING(1000),
       allowNull: false,
     },
   }, {
