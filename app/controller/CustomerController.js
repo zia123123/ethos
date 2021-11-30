@@ -13,14 +13,14 @@ module.exports = {
             alamat: req.body.alamat,
             rt:req.body.rt,
             rw:req.body.rw,
+            memoid: req.body.memoid,
+            province:req.body.province,
             jeniskelamin:req.body.jeniskelamin,
-            kecamatan: req.body.kecamatan,
+            pekerjaan:req.body.pekerjaan,
             kelurahan: req.body.kelurahan,
             postalcode: req.body.postalcode,
             city: req.body.city,
             districtId: req.body.districtId,
-            provinceId: req.body.provinceId,
-            cityregencyId: req.body.cityregencyId,
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
         }).catch(function (err)  {

@@ -17,6 +17,9 @@ module.exports = {
       email: {
         type: Sequelize.STRING
       },
+      pekerjaan: {
+        type: Sequelize.STRING
+      },
       alamat: {
         type: Sequelize.TEXT
       },
@@ -25,9 +28,6 @@ module.exports = {
       },
       rw: {
         type: Sequelize.INTEGER
-      },
-      kecamatan: {
-        type: Sequelize.STRING
       },
       kelurahan: {
         type: Sequelize.STRING
@@ -41,15 +41,8 @@ module.exports = {
       city: {
         type: Sequelize.STRING
       },
-      cityregencyId: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-        references: {
-          model: "cityregencies",
-          key: "id"
-        },
-        onDelete: 'cascade',
-        onUpdate: 'cascade'
+      memoid: {
+        type: Sequelize.INTEGER
       },
       districtId: {
         allowNull: false,
@@ -61,15 +54,9 @@ module.exports = {
         onDelete: 'cascade',
         onUpdate: 'cascade'
       },
-      provinceId: {
+      province: {
         allowNull: false,
-        type: Sequelize.INTEGER,
-        references: {
-          model: "provinces",
-          key: "id"
-        },
-        onDelete: 'cascade',
-        onUpdate: 'cascade'
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,

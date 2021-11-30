@@ -21,23 +21,26 @@ module.exports = (sequelize, DataTypes) => {
     },
     rt: {
       type: DataTypes.INTEGER,
-    
     },
     rw: {
       type: DataTypes.INTEGER,
-     
-    },
-    kecamatan: {
-      type: DataTypes.STRING,
-     
     },
     kelurahan: {
       type: DataTypes.STRING,
-     
+    },
+    pekerjaan: {
+      type: DataTypes.STRING,
     },
     city: {
       type: DataTypes.STRING,
-     
+    },
+    memoid: {
+      allowNull: false,
+      type: DataTypes.INTEGER,
+    },
+    province: {
+       allowNull: false,
+      type: DataTypes.STRING,
     },
     jeniskelamin: {
       type: DataTypes.CHAR,
@@ -50,12 +53,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     tableName: "customers"
   });
-
   customer.associate = function(models) {
-    customer.belongsTo(models.districts,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "districtsId"})
-    customer.belongsTo(models.provinces,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "provinceId"})
-    customer.belongsTo(models.cityregencies,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "cityregencyId"})
-    
+    customer.belongsTo(models.districts,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "districtsId"})    
   };
 
   return customer;
