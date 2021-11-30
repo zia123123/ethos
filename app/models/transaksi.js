@@ -44,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     products: {
-      type: DataTypes.TEXT,
+      type: DataTypes.LONGTEXT,
       allowNull: false,
     },
   }, {
