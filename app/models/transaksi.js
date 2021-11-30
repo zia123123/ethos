@@ -53,8 +53,7 @@ module.exports = (sequelize, DataTypes) => {
 
   transaksi.associate = function(models) {
     transaksi.belongsTo(models.expedisis, { foreginKey: "expedisisId"})   
-
-    transaksi.hasMany(models.districts,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "districtId"})   
+    transaksi.belongsTo(models.districts, { foreginKey: "districtId"})   
     transaksi.belongsTo(models.auths, { foreginKey: "authId"})   
 
   };
