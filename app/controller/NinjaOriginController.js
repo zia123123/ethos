@@ -7,8 +7,7 @@ module.exports = {
     //create
     async create(req, res) { 
         let result = await expedisis.create({
-            origin: req.body.nama_expedisi,
-            index: req.body.type,
+            name: req.body.name,
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
         }).catch(function (err)  {
@@ -42,8 +41,7 @@ module.exports = {
 
     // Update
     async update(req, res) {
-        req.expedisi.origin = req.body.origin;
-        req.expedisi.index = req.body.index;
+        req.expedisi.name = req.body.name;
         req.expedisi.save().then(expedisi => {
         return apiResponse.successResponseWithData(res, "SUCCESS", expedisi);
         })

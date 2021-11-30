@@ -3,21 +3,19 @@
 module.exports = (sequelize, DataTypes) => {
 
   const expedisi = sequelize.define('expedisis', {
-    origin: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    index: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
+ 
   }, {
     tableName: "expedisis"
   });
 
   expedisi.associate = function(models) {
-    expedisi.hasMany(models.warehouses,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "expedisi"})
-    expedisi.hasMany(models.transaksis,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "expedisi"})
+
+    expedisi.hasMany(models.transaksis,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "expedisis"})   
+
   };
 
   return expedisi;

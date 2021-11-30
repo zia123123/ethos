@@ -8,10 +8,10 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      nama: {
+      name: {
         type: Sequelize.STRING
       },
-      notelp: {
+      notelp1: {
         type: Sequelize.STRING
       },
       notelp2: {
@@ -20,7 +20,6 @@ module.exports = {
       alamat: {
         type: Sequelize.TEXT
       },
-     
       districtId: {
         allowNull: false,
         type: Sequelize.INTEGER,
@@ -31,24 +30,6 @@ module.exports = {
         onDelete: 'cascade',
         onUpdate: 'cascade'
       },
-      warehouseId: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-        references: {
-          model: "warehouses",
-          key: "id"
-        },
-        onDelete: 'cascade',
-        onUpdate: 'cascade'
-      },
-      expedisiId: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-        references: {
-          model: "expedisis",
-          key: "id"
-        },
-      },
       authId: {
         allowNull: false,
         type: Sequelize.INTEGER,
@@ -56,27 +37,38 @@ module.exports = {
           model: "auths",
           key: "id"
         },
+        onDelete: 'cascade',
+        onUpdate: 'cascade'
       },
-       
-      statustransaksiId: {
+      expedisisId: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
-          model: "statustranksasis",
+          model: "expedisis",
           key: "id"
         },
+        onDelete: 'cascade',
+        onUpdate: 'cascade'
       },
-        
+      pembayaran: {
+        type: Sequelize.INTEGER
+      },
+      status: {
+        type: Sequelize.CHAR
+      },
+      logstatus: {
+        type: Sequelize.STRING
+      },
+      products: {
+        type: Sequelize.STRING
+      },
+      gudang: {
+        type: Sequelize.INTEGER
+      },
       discount: {
         type: Sequelize.INTEGER
       },
-      totalharga: {
-        type: Sequelize.INTEGER
-      },
-      typebayar: {
-        type: Sequelize.INTEGER
-      },
-      memo: {
+      memotransaksi: {
         type: Sequelize.TEXT
       },
       createdAt: {

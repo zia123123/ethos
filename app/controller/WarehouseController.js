@@ -46,6 +46,17 @@ module.exports = {
             });
     },
 
+    
+    async indexAll(req, res) {
+        let result = await warehouses.findAll({
+        }).then(result => {
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            }).catch(function (err){
+                return apiResponse.ErrorResponse(res, err);
+            });
+    },
+
+
     // Show
     async show(req, res) {
         return apiResponse.successResponseWithData(res, "SUCCESS", req.warehouse);

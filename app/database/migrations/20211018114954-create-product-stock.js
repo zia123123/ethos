@@ -19,12 +19,6 @@ module.exports = {
       warehouseId: {
         allowNull: false,
         type: Sequelize.INTEGER,
-        references: {
-          model: "warehouses",
-          key: "id"
-        },
-        onDelete: 'cascade',
-        onUpdate: 'cascade'
       },
       quantity: {
         type: Sequelize.INTEGER

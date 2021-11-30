@@ -9,19 +9,21 @@ module.exports = {
     //create
     async create(req, res) { 
         let result = await transaksis.create({
-            nama: req.body.nama,
-            notelp: req.body.notelp,
+            name: req.body.nama,
+            notelp1: req.body.notelp,
             notelp2: req.body.notelp2,
             districtId: req.body.districtId,
             alamat: req.body.kecamatan+", "+req.body.kota+", "+req.body.provinsi,
-            warehouseId: req.body.warehouseId,
-            expedisiId: req.body.expedisiId,
+            gudang: req.body.gudang,
+            expedisisId: req.body.expedisiId,
             authId: req.body.idpembuat,
             discount: req.body.discount,
             totalharga: req.body.totalharga,
-            typebayar: req.body.typebayar,
-            statustransaksiId: 1,
-            memo: req.body.memo,
+            pembayaran: req.body.pembayaran,
+            status:  req.body.status,
+            products:  req.body.products,
+            logstatus:  req.body.logstatus,
+            memotransaksi: req.body.memotransaksi,
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
         }).catch(function (err)  {
@@ -34,12 +36,7 @@ module.exports = {
             where: {
                id: req.params.id
             },
-            attributes: ['id', 'nama','createdAt','typebayar'],
-            include: [ 
-                { model: statustranksasis,
-                    attributes: ['nama'],
-                }
-            ]
+            attributes: ['id', 'name','createdAt','pembayaran'],
         }).then(result => {
             req.transaksi = result;
             next();
@@ -50,7 +47,7 @@ module.exports = {
 
     async index(req, res) {
         let result = await transaksis.findAll({
-            attributes: ['id', 'nama','createdAt','typebayar'],
+            attributes: ['id', 'name','createdAt','pembayaran','status'],
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
@@ -58,18 +55,32 @@ module.exports = {
             });
     },
 
+    async indexAll(req, res) {
+        let result = await transaksis.findAll({
+          
+        }).then(result => {
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            }).catch(function (err){
+                return apiResponse.ErrorResponse(res, err);
+            });
+    },
+
+    async findAddLog(req, res, next) {
+        let transaksi = await transaksis.findByPk(req.params.id);
+        if (!transaksi) {
+        return apiResponse.notFoundResponse(res, "Not Fond");
+        } else {
+            req.transaksi = transaksi;
+            next();
+        }
+    },
 
     async findByuser(req, res) {
         let result = await transaksis.findAll({
             where: {
                authId: req.params.userid
             },
-            attributes: ['id', 'nama','createdAt','typebayar'],
-            include: [ 
-                { model: statustranksasis,
-                    attributes: ['nama'],
-                }
-            ]
+            attributes: ['id', 'name','createdAt','pembayaran','status'],
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
@@ -82,17 +93,12 @@ module.exports = {
         let result = await transaksis.findAll({
             where: {
                 [Op.or]: [
-                    {nama: req.params.clue},
-                    {typebayar:  req.params.clue},
-                    {statustransaksiId:  req.params.clue},
+                    {name: req.params.clue},
+                    {pembayaran:  req.params.clue},
+                    {status:  req.params.clue},
                 ]
             },
-            attributes: ['id', 'nama','createdAt','typebayar'],
-            include: [ 
-                { model: statustranksasis,
-                    attributes: ['nama'],
-                }
-            ]
+            attributes: ['id', 'name','createdAt','pembayaran','status']
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
@@ -113,6 +119,14 @@ module.exports = {
     //     return apiResponse.successResponseWithData(res, "SUCCESS", transaksi);
     //     })
     // },
+
+    // add log
+    async addlogstatus(req, res) {
+        req.transaksi.logstatus = req.transaksi.logstatus+"#"+req.body.logstatus;
+        req.transaksi.save().then(transaksi => {
+        return apiResponse.successResponseWithData(res, "SUCCESS", transaksi);
+        })
+    },
 
     // Delete
     async delete(req, res) {

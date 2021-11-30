@@ -11,16 +11,7 @@ module.exports = {
       name: {
         type: Sequelize.STRING
       },
-      expedisiId: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-        references: {
-          model: "expedisis",
-          key: "id"
-        },
-        onDelete: 'cascade',
-        onUpdate: 'cascade'
-      },
+
 
       provinceId: {
         allowNull: false,

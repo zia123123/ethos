@@ -3,11 +3,15 @@
 module.exports = (sequelize, DataTypes) => {
 
   const transaksi = sequelize.define('transaksis', {
-    nama: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    notelp: {
+    notelp1: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    notelp2: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -15,38 +19,45 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       allowNull: false,
     },
+    pembayaran: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    gudang: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
     discount: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    typebayar: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    totalharga: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    memo: {
+    memotransaksi: {
       type: DataTypes.TEXT,
       allowNull: false,
     },
-    
+    status: {
+      type: DataTypes.CHAR,
+      allowNull: false,
+    },
+    logstatus: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    products: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   }, {
     tableName: "transaksis"
   });
 
   transaksi.associate = function(models) {
-    transaksi.belongsTo(models.warehouses, { foreignKey: "warehouseId"})
-    transaksi.belongsTo(models.expedisis, { foreignKey: "expedisiId"})
-    transaksi.belongsTo(models.districts, { foreignKey: "districtId"})
-    transaksi.belongsTo(models.auths, { foreignKey: "authId"})
-    transaksi.belongsTo(models.statustranksasis, { foreignKey: "statustransaksiId"})
-    transaksi.hasMany(models.keranjangs, { foreginKey: "transaksi"})   
-    transaksi.hasMany(models.dataexpedisis,{ foreginKey: "dataexpedisis"})   
+    transaksi.belongsTo(models.expedisis, { foreginKey: "expedisisId"})   
+
+    transaksi.hasMany(models.districts,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "districtId"})   
+    transaksi.belongsTo(models.auths, { foreginKey: "authId"})   
 
   };
 
   return transaksi;
 };
-

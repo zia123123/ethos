@@ -56,7 +56,6 @@ const StatusController = require('./controller/StatusController');
 
 const MappingProduct = require('./controller/MappingProduct');
 
-const KeranjangController = require('./controller/KeranjangController');
 
 const ExpedisiController = require('./controller/ExpedisiController');
 
@@ -148,6 +147,8 @@ router.patch('/api/cityagency/update/:id', CityAgencyController.find,CityAgencyC
 //warehouse
 router.post('/api/warehouse/create', WarehouseController.create);
 router.get('/api/warehouse/', WarehouseController.index);
+router.get('/api/warehouse/aa', WarehouseController.indexAll);
+
 router.get('/api/warehouse/:id', WarehouseController.find, WarehouseController.show);
 router.patch('/api/warehouse/update/:id', WarehouseController.find,WarehouseController.update);
 
@@ -239,9 +240,12 @@ router.get('/api/jenispaket/', FTransaksiController.indexsjenispakets);
 //transaksi
 router.post('/api/transaksi/create', TransaksiController.create);
 router.get('/api/transaksi/', TransaksiController.index);
+router.get('/api/transaksi/all', TransaksiController.indexAll);
 router.get('/api/transaksi/:id', TransaksiController.find, TransaksiController.show);
 router.get('/api/transaksi/user/:userid', TransaksiController.findByuser);
 router.get('/api/transaksi/filter/:clue', TransaksiController.filterTransaksi);
+
+router.put('/api/transaksi/addlog/:id', TransaksiController.findAddLog, TransaksiController.addlogstatus);
 
 
 
@@ -253,10 +257,7 @@ router.get('/api/mapproduct/:id', MappingProduct.find, MappingProduct.show);
 router.get('/api/mapproduct/product/:domainId', MappingProduct.findBydomain);
 
 
-//keranjang
-router.post('/api/keranjang/create', KeranjangController.create);
-router.get('/api/keranjang/', KeranjangController.index);
-router.patch('/api/keranjang/delete', KeranjangController.find, KeranjangController.delete);
+
 
 //keranjang
 router.post('/api/dataexpedisi/create', DaExpedisiController.create);

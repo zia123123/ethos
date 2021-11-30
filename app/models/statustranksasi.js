@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   statustranksasi.associate = function(models) {
-    statustranksasi.hasMany(models.transaksis,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "statustransaksi"})   
+   
   };
 
   return statustranksasi;
