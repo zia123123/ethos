@@ -14,7 +14,6 @@ module.exports = (sequelize, DataTypes) => {
 
   province.associate = function(models) {
 
-  province.hasMany(models.customers,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "province"})   
 
   };
 

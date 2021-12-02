@@ -8,6 +8,7 @@ module.exports = {
   
     //create
     async create(req, res) { 
+        var  products = req.body.products.replace(/\//g, "");
         let result = await transaksis.create({
             name: req.body.nama,
             notelp1: req.body.notelp,
@@ -21,10 +22,11 @@ module.exports = {
             totalharga: req.body.totalharga,
             pembayaran: req.body.pembayaran,
             status:  req.body.status,
-            products:  req.body.products,
+            products:  products,
             logstatus:  req.body.logstatus,
             memotransaksi: req.body.memotransaksi,
         }).then(result => {
+            
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
         }).catch(function (err)  {
             return apiResponse.ErrorResponse(res, err);

@@ -13,7 +13,7 @@ module.exports = {
       },
       subsidi: {
         type: Sequelize.INTEGER
-      },
+      },   
       transaksiId: {
         allowNull: false,
         type: Sequelize.INTEGER,
