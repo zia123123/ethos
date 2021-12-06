@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
 
   expedisi.associate = function(models) {
 
-    expedisi.hasMany(models.transaksis,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "expedisis"})   
+    expedisi.hasMany(models.transaksis,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "expedisi"})
 
   };
 

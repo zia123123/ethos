@@ -1,24 +1,31 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('nomorekenings', {
+    await queryInterface.createTable('mappingnoreks', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      nama_bank: {
+      keterangan: {
         type: Sequelize.STRING
-      },
-      nomor: {
-        type: Sequelize.STRING
-      },
+      },      
       authId: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
           model: "auths",
+          key: "id"
+        },
+        onDelete: 'cascade',
+        onUpdate: 'cascade'
+      },
+      nomorekeningId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: "nomorekenings",
           key: "id"
         },
         onDelete: 'cascade',
@@ -35,6 +42,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('nomorekenings');
+    await queryInterface.dropTable('mappingnoreks');
   }
 };

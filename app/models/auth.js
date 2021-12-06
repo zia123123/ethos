@@ -73,6 +73,9 @@ module.exports = (sequelize, DataTypes) => {
     auth.hasMany(models.mappingadvertisers,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "auth"})
     auth.hasMany(models.mapgroupcs,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "auth"})
     auth.hasMany(models.transaksis,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "auth"})
+    auth.hasMany(models.nomorekenings,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "auth"})
+    auth.hasMany(models.mappingnoreks,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "auth"})
+
   };
 
   return auth;

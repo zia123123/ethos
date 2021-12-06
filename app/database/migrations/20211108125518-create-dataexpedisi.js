@@ -22,6 +22,20 @@ module.exports = {
           key: "id"
         },
       },
+      customerId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: "customers",
+          key: "id"
+        },
+      },
+      buktibayar: {
+        type: Sequelize.STRING
+      },
+      nomorinvoice: {
+        type: Sequelize.STRING
+      },
       biayatambahan: {
         type: Sequelize.INTEGER
       },

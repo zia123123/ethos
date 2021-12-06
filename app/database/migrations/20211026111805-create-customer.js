@@ -14,6 +14,9 @@ module.exports = {
       notelp: {
         type: Sequelize.STRING
       },
+      notelp2: {
+        type: Sequelize.STRING
+      },
       email: {
         type: Sequelize.STRING
       },
@@ -29,17 +32,11 @@ module.exports = {
       rw: {
         type: Sequelize.INTEGER
       },
-      kelurahan: {
-        type: Sequelize.STRING
-      },
       postalcode: {
         type: Sequelize.STRING
       },
       jeniskelamin: {
         type: Sequelize.CHAR
-      },
-      city: {
-        type: Sequelize.STRING
       },
       memoid: {
         type: Sequelize.INTEGER
@@ -54,10 +51,27 @@ module.exports = {
         onDelete: 'cascade',
         onUpdate: 'cascade'
       },
-      province: {
+      provinceId: {
         allowNull: false,
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
+        references: {
+          model: "provinces",
+          key: "id"
+        },
+        onDelete: 'cascade',
+        onUpdate: 'cascade'
       },
+      cityregencyId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: "cityregencies",
+          key: "id"
+        },
+        onDelete: 'cascade',
+        onUpdate: 'cascade'
+      },
+
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

@@ -29,7 +29,8 @@ module.exports = {
      async createnomorekenings(req, res) { 
         let result = await nomorekenings.create({
             nomor: req.body.nomor,
-            nama_bank: req.body.nama_bank
+            nama_bank: req.body.nama_bank,
+            authId:  req.body.idpembuat,
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
         }).catch(function (err)  {

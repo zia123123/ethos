@@ -8,25 +8,30 @@ module.exports = {
   
     //create
     async create(req, res) { 
-        var  products = req.body.products.replace(/\//g, "");
+       
         let result = await transaksis.create({
-            name: req.body.nama,
-            notelp1: req.body.notelp,
-            notelp2: req.body.notelp2,
+            nama: req.body.nama,
+            customerId: req.body.customerId,
             districtId: req.body.districtId,
-            alamat: req.body.kecamatan+", "+req.body.kota+", "+req.body.provinsi,
-            gudang: req.body.gudang,
-            expedisisId: req.body.expedisiId,
-            authId: req.body.idpembuat,
+            provinceId: req.body.provinceId,
+            cityregencyId: req.body.cityregencyId,
+            productId: req.body.productId,
+            warehouseId: req.body.warehouseId,
+            invoiceId: req.body.warehouseId,
+            //expedisiId: 1,
+            linkPhotoProduct: req.body.linkPhotoProduct,
+            authId: req.body.authId,
+            idtransaksi: req.body.idtransaksi,
+            namaproduct: req.body.namaproduct,
+            linkdomain: req.body.linkdomain,
+            discountProduct: req.body.discountProduct,
             discount: req.body.discount,
             totalharga: req.body.totalharga,
             pembayaran: req.body.pembayaran,
             status:  req.body.status,
-            products:  products,
             logstatus:  req.body.logstatus,
             memotransaksi: req.body.memotransaksi,
         }).then(result => {
-            
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
         }).catch(function (err)  {
             return apiResponse.ErrorResponse(res, err);
@@ -38,7 +43,7 @@ module.exports = {
             where: {
                id: req.params.id
             },
-            attributes: ['id', 'name','createdAt','pembayaran'],
+          
         }).then(result => {
             req.transaksi = result;
             next();
@@ -96,11 +101,9 @@ module.exports = {
             where: {
                 [Op.or]: [
                     {name: req.params.clue},
-                    {pembayaran:  req.params.clue},
-                    {status:  req.params.clue},
+                    {notelp:  req.params.clue},
                 ]
             },
-            attributes: ['id', 'name','createdAt','pembayaran','status']
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){

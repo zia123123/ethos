@@ -1,4 +1,4 @@
-const { customers } = require('../models/index');
+const { customers,districts } = require('../models/index');
 const { Op } = require("sequelize");
 const apiResponse = require("../helpers/apiResponse");
 
@@ -9,17 +9,17 @@ module.exports = {
         let result = await customers.create({
             nama: req.body.nama,
             notelp: req.body.notelp,
+            notelp2: req.body.notelp2,
             email: req.body.email,
             alamat: req.body.alamat,
             rt:req.body.rt,
             rw:req.body.rw,
             memoid: req.body.memoid,
-            province:req.body.province,
             jeniskelamin:req.body.jeniskelamin,
             pekerjaan:req.body.pekerjaan,
-            kelurahan: req.body.kelurahan,
             postalcode: req.body.postalcode,
-            city: req.body.city,
+            provinceId: req.body.provinceId,
+            cityregencyId: req.body.cityregencyId,
             districtId: req.body.districtId,
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
@@ -29,15 +29,36 @@ module.exports = {
       },
 
     async find(req, res, next) {
-        let customer = await customers.findByPk(req.params.id);
-        if (!customer) {
-        return apiResponse.notFoundResponse(res, "Not Fond");
-        } else {
+        let customer = await customers.findOne({
+            where: {
+                id: req.params.id,
+            },
+            include: [ { model: districts,
+                attributes: ['name']
+            }]
+        }).then(customer => {
             req.customer = customer;
             next();
-        }
+            }).catch(function (err){
+                return apiResponse.ErrorResponse(res, err);
+            });
     },
 
+    async filterCustomer(req, res) {
+        let result = await customers.findAll({
+            where: {
+                [Op.or]: [
+                    {nama: req.params.clue},
+                    {notelp: req.params.clue},
+                ]
+            },
+        
+        }).then(result => {
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            }).catch(function (err){
+                return apiResponse.ErrorResponse(res, err);
+            });
+    },
     async index(req, res) {
         let result = await customers.findAll({
         }).then(result => {

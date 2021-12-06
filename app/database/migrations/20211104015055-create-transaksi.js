@@ -8,17 +8,22 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      name: {
+      nama: {
         type: Sequelize.STRING
       },
-      notelp1: {
-        type: Sequelize.STRING
+      idtransaksi: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
       },
-      notelp2: {
-        type: Sequelize.STRING
-      },
-      alamat: {
-        type: Sequelize.TEXT
+      customerId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: "auths",
+          key: "id"
+        },
+        onDelete: 'cascade',
+        onUpdate: 'cascade'
       },
       districtId: {
         allowNull: false,
@@ -40,16 +45,87 @@ module.exports = {
         onDelete: 'cascade',
         onUpdate: 'cascade'
       },
-      expedisisId: {
+      expedisiId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        // references: {
+        //   model: "expedisis",
+        //   key: "id"
+        // },
+        // onDelete: 'cascade',
+        // onUpdate: 'cascade'
+      },
+      provinceId: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
-          model: "expedisis",
+          model: "provinces",
           key: "id"
         },
         onDelete: 'cascade',
         onUpdate: 'cascade'
       },
+      cityregencyId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: "cityregencies",
+          key: "id"
+        },
+        onDelete: 'cascade',
+        onUpdate: 'cascade'
+      },
+      warehouseId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: "warehouses",
+          key: "id"
+        },
+        onDelete: 'cascade',
+        onUpdate: 'cascade'
+      },
+
+      productId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: "products",
+          key: "id"
+        },
+        onDelete: 'cascade',
+        onUpdate: 'cascade'
+      },
+      namaproduct: {
+        type: Sequelize.STRING
+      },
+      jumlahproduct: {
+        type: Sequelize.STRING
+      },
+      linkdomain: {
+        type: Sequelize.STRING
+      },
+      linkPhotoProduct: {
+        type: Sequelize.STRING
+      },
+      discountProduct: {
+        type: Sequelize.STRING
+      },
+      invoiceId: {
+        type: Sequelize.INTEGER,
+      },
+      awb: {
+        type: Sequelize.STRING
+      },
+      so: {
+        type: Sequelize.STRING
+      },
+
+      jumlahproduct: {
+        type: Sequelize.INTEGER
+      },
+
+
       pembayaran: {
         type: Sequelize.INTEGER
       },

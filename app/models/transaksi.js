@@ -3,30 +3,16 @@
 module.exports = (sequelize, DataTypes) => {
 
   const transaksi = sequelize.define('transaksis', {
-    name: {
+    nama: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    notelp1: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    notelp2: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    alamat: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
+
     pembayaran: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    gudang: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
+
     discount: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -43,18 +29,48 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    products: {
-      type: DataTypes.STRING(1000),
+    invoiceId: {
       allowNull: false,
+      type: DataTypes.INTEGER,
+    },
+    idtransaksi: {
+      allowNull: false,
+      type: DataTypes.INTEGER,
+    },
+    awb: {
+      type: DataTypes.STRING
+    },
+    so: {
+      type: DataTypes.STRING
+    },
+    namaproduct: {
+      type: DataTypes.STRING
+    },
+    linkdomain: {
+      type: DataTypes.STRING
+    },
+    linkPhotoProduct: {
+      type: DataTypes.STRING
+    },
+    discountProduct: {
+      type: DataTypes.STRING
     },
   }, {
     tableName: "transaksis"
   });
 
   transaksi.associate = function(models) {
-    transaksi.belongsTo(models.expedisis, { foreginKey: "expedisisId"})   
+    // transaksi.belongsTo(models.expedisis, { foreginKey: "expedisiId"})   
+    transaksi.belongsTo(models.provinces, { foreginKey: "provinceId"})   
     transaksi.belongsTo(models.districts, { foreginKey: "districtId"})   
-    transaksi.belongsTo(models.auths, { foreginKey: "authId"})   
+    transaksi.belongsTo(models.cityregencies, { foreginKey: "cityregencyId"})
+    transaksi.belongsTo(models.auths, { foreginKey: "authId"})
+    transaksi.belongsTo(models.customers, { foreginKey: "customerId"})
+    transaksi.belongsTo(models.warehouses, { foreginKey: "warehouseId"})
+    transaksi.belongsTo(models.products, { foreginKey: "productId"})
+   
+
+
 
   };
 

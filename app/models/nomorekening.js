@@ -18,6 +18,9 @@ module.exports = (sequelize, DataTypes) => {
 
   nomorekening.associate = function(models) {
     // metodepembayaran.hasMany(models.customers,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "cityregency"})   
+    nomorekening.belongsTo(models.auths, { foreginKey: "authId"})   
+    nomorekening.hasMany(models.mappingnoreks,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "nomorekening"})
+
   };
 
   return nomorekening;

@@ -11,6 +11,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    notelp2: {
+      type: DataTypes.STRING
+    },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -25,22 +28,12 @@ module.exports = (sequelize, DataTypes) => {
     rw: {
       type: DataTypes.INTEGER,
     },
-    kelurahan: {
-      type: DataTypes.STRING,
-    },
     pekerjaan: {
-      type: DataTypes.STRING,
-    },
-    city: {
       type: DataTypes.STRING,
     },
     memoid: {
       allowNull: false,
       type: DataTypes.INTEGER,
-    },
-    province: {
-       allowNull: false,
-      type: DataTypes.STRING,
     },
     jeniskelamin: {
       type: DataTypes.CHAR,
@@ -54,7 +47,12 @@ module.exports = (sequelize, DataTypes) => {
     tableName: "customers"
   });
   customer.associate = function(models) {
-    customer.belongsTo(models.districts,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "districtsId"})    
+    customer.belongsTo(models.provinces, { foreginKey: "provinceId"})   
+    customer.belongsTo(models.districts, { foreginKey: "districtId"})   
+    customer.belongsTo(models.cityregencies, { foreginKey: "cityregencyId"})   
+    customer.hasMany(models.dataexpedisis,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "customer"})
+    customer.hasMany(models.transaksis,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "customer"})
+
   };
 
   return customer;

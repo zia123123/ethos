@@ -62,6 +62,9 @@ const ExpedisiController = require('./controller/ExpedisiController');
 
 const DaExpedisiController = require('./controller/DaExpedisiController');
 
+const MappingNorekController = require('./controller/MappingNorekController');
+
+
 
 
 const multer = require('multer')
@@ -186,6 +189,8 @@ router.patch('/api/mapping/update/:id', MappingController.find,MappingController
 router.post('/api/customer/create', CustomerController.create);
 router.get('/api/customer/', CustomerController.index);
 router.get('/api/customer/:id', CustomerController.find, CustomerController.show);
+router.get('/api/customer/filter/:clue', CustomerController.filterCustomer);
+
 router.patch('/api/customer/update/:id', CustomerController.find,CustomerController.update);
 
 
@@ -250,13 +255,19 @@ router.put('/api/transaksi/addlog/:id', TransaksiController.findAddLog, Transaks
 
 
 
-//transaksi
+//mapproduct
 router.post('/api/mapproduct/create', MappingProduct.create);
 router.get('/api/mapproduct/', MappingProduct.index);
 router.get('/api/mapproduct/:id', MappingProduct.find, MappingProduct.show);
 router.get('/api/mapproduct/product/:domainId', MappingProduct.findBydomain);
 
+//mappingnorek
 
+//mapGroupCs
+router.post('/api/mapnorek/create', MappingNorekController.create);
+router.get('/api/mapnorek/', MappingNorekController.index);
+router.get('/api/mapnorek/:id', MappingNorekController.find, MappingNorekController.show);
+router.patch('/api/mapnorek/update/:id', MappingNorekController.find,MappingNorekController.update);
 
 
 //keranjang
