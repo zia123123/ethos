@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
     },
     memoid: {
-      allowNull: false,
+     
       type: DataTypes.INTEGER,
     },
     jeniskelamin: {
