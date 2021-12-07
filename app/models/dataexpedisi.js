@@ -19,9 +19,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    buktibayar: {
-      type: DataTypes.STRING,
-      allowNull: false,
+   
+    financeId: {
+      type: DataTypes.INTEGER
     },
     nomorinvoice: {
       type: DataTypes.STRING,
@@ -37,7 +37,6 @@ module.exports = (sequelize, DataTypes) => {
 
   dataexpedisi.associate = function(models) {
     dataexpedisi.belongsTo(models.transaksis, { foreignKey: "transaksiId"})
-    dataexpedisi.belongsTo(models.customers, { foreignKey: "customerId"})
   };
 
   return dataexpedisi;

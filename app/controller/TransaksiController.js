@@ -54,7 +54,7 @@ module.exports = {
 
     async index(req, res) {
         let result = await transaksis.findAll({
-            attributes: ['id', 'name','createdAt','pembayaran','status'],
+            attributes: ['id', 'nama','createdAt','pembayaran','status'],
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
@@ -87,7 +87,7 @@ module.exports = {
             where: {
                authId: req.params.userid
             },
-            attributes: ['id', 'name','createdAt','pembayaran','status','products'],
+            attributes: ['id', 'nama','createdAt','pembayaran','status','products'],
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){

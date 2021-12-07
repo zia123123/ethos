@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
 
   mappingnorek.associate = function(models) {
     mappingnorek.belongsTo(models.auths, { foreginKey: "authId"})   
-    mappingnorek.belongsTo(models.nomorekenings, { foreginKey: "nomorekeningId"})   
+    //mappingnorek.belongsTo(models.nomorekenings, { foreginKey: "nomorekeningId"})   
   };
 
   return mappingnorek;

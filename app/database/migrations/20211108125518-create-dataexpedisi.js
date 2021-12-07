@@ -22,14 +22,6 @@ module.exports = {
           key: "id"
         },
       },
-      customerId: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-        references: {
-          model: "customers",
-          key: "id"
-        },
-      },
       buktibayar: {
         type: Sequelize.STRING
       },
@@ -43,6 +35,9 @@ module.exports = {
         type: Sequelize.STRING
       },
       biayacod: {
+        type: Sequelize.INTEGER
+      },
+      financeId: {
         type: Sequelize.INTEGER
       },
       createdAt: {

@@ -66,6 +66,9 @@ const MappingNorekController = require('./controller/MappingNorekController');
 
 const KeranjangController = require('./controller/KeranjangController');
 
+const NorekController = require('./controller/NorekController');
+
+
 
 
 const multer = require('multer')
@@ -271,6 +274,13 @@ router.post('/api/mapnorek/create', MappingNorekController.create);
 router.get('/api/mapnorek/', MappingNorekController.index);
 router.get('/api/mapnorek/:id', MappingNorekController.find, MappingNorekController.show);
 router.patch('/api/mapnorek/update/:id', MappingNorekController.find,MappingNorekController.update);
+
+
+router.post('/api/norek/create', NorekController.create);
+router.get('/api/norek/', NorekController.index);
+router.get('/api/norek/:id', NorekController.find, NorekController.show);
+router.patch('/api/norek/update/:id', NorekController.find,NorekController.update);
+
 
 
 //keranjang

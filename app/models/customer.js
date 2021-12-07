@@ -50,7 +50,6 @@ module.exports = (sequelize, DataTypes) => {
     customer.belongsTo(models.provinces, { foreginKey: "provinceId"})   
     customer.belongsTo(models.districts, { foreginKey: "districtId"})   
     customer.belongsTo(models.cityregencies, { foreginKey: "cityregencyId"})   
-    customer.hasMany(models.dataexpedisis,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "customer"})
     customer.hasMany(models.transaksis,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "customer"})
 
   };

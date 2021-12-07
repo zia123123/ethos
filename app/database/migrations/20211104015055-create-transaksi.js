@@ -142,6 +142,10 @@ module.exports = {
       memotransaksi: {
         type: Sequelize.TEXT
       },
+      buktibayar: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
