@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     alamat: {
       type: DataTypes.TEXT,
-      allowNull: false,
+     
     },
     rt: {
       type: DataTypes.INTEGER,
