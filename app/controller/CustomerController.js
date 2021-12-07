@@ -77,10 +77,11 @@ module.exports = {
     async update(req, res) {
         req.customer.nama = req.body.nama;
         req.customer.notelp = req.body.notelp;
+        req.customer.notelp2 = req.body.notelp2;
         req.customer.email = req.body.email;
         req.customer.alamat = req.body.alamat +", RT :" +req.body.rt +", RW :" +req.body.rw +", Kecamatan :" +req.body.kecamatan +", Kelurahan :"+ req.body.kelurahan;
         req.customer.postalcode = req.body.postalcode;
-        req.customer.city = req.body.city;
+        req.customer.pekerjaan = req.body.pekerjaan;
         req.customer.districtId = req.body.districtId;
         req.customer.provinceId = req.body.provinceId;
         req.customer.cityregencyId = req.body.cityregencyId;
