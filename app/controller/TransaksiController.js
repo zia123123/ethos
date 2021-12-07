@@ -1,4 +1,4 @@
-const { transaksis,statustranksasis } = require('../models/index');
+const { transaksis,statustranksasis,keranjangs } = require('../models/index');
 const { Op } = require("sequelize");
 const apiResponse = require("../helpers/apiResponse");
 
@@ -8,23 +8,20 @@ module.exports = {
   
     //create
     async create(req, res) { 
-       
+        let keranjangdata =  req.body.products.replace(/\\n/g, '')
+        let datakeranjang = eval(keranjangdata)
         let result = await transaksis.create({
             nama: req.body.nama,
             customerId: req.body.customerId,
             districtId: req.body.districtId,
             provinceId: req.body.provinceId,
             cityregencyId: req.body.cityregencyId,
-            productId: req.body.productId,
             warehouseId: req.body.warehouseId,
             invoiceId: req.body.warehouseId,
-            //expedisiId: 1,
-            linkPhotoProduct: req.body.linkPhotoProduct,
+            expedisiId: req.body.expedisiId,
             authId: req.body.authId,
             idtransaksi: req.body.idtransaksi,
-            namaproduct: req.body.namaproduct,
-            linkdomain: req.body.linkdomain,
-            discountProduct: req.body.discountProduct,
+            products: keranjangdata,
             discount: req.body.discount,
             totalharga: req.body.totalharga,
             pembayaran: req.body.pembayaran,
@@ -32,6 +29,9 @@ module.exports = {
             logstatus:  req.body.logstatus,
             memotransaksi: req.body.memotransaksi,
         }).then(result => {
+            let keranjang = keranjangs.bulkCreate(datakeranjang, { individualHooks: true }).then(keranjang =>{
+                return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
+            })
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
         }).catch(function (err)  {
             return apiResponse.ErrorResponse(res, err);

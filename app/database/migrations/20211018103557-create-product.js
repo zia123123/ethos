@@ -20,6 +20,9 @@ module.exports = {
       price: {
         type: Sequelize.INTEGER
       },
+      discount: {
+        type: Sequelize.INTEGER
+      },
       link: {
         type: Sequelize.STRING
       },

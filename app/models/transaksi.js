@@ -7,12 +7,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-
     pembayaran: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-
     discount: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -36,6 +34,7 @@ module.exports = (sequelize, DataTypes) => {
     idtransaksi: {
       allowNull: false,
       type: DataTypes.INTEGER,
+      uniqe:true
     },
     awb: {
       type: DataTypes.STRING
@@ -43,18 +42,22 @@ module.exports = (sequelize, DataTypes) => {
     so: {
       type: DataTypes.STRING
     },
-    namaproduct: {
+    products: {
       type: DataTypes.STRING
     },
-    linkdomain: {
-      type: DataTypes.STRING
+    expedisiId: {
+      allowNull: false,
+      type: DataTypes.INTEGER,
     },
-    linkPhotoProduct: {
-      type: DataTypes.STRING
-    },
-    discountProduct: {
-      type: DataTypes.STRING
-    },
+    // linkdomain: {
+    //   type: DataTypes.STRING
+    // },
+    // linkPhotoProduct: {
+    //   type: DataTypes.STRING
+    // },
+    // discountProduct: {
+    //   type: DataTypes.STRING
+    // },
   }, {
     tableName: "transaksis"
   });
@@ -67,11 +70,11 @@ module.exports = (sequelize, DataTypes) => {
     transaksi.belongsTo(models.auths, { foreginKey: "authId"})
     transaksi.belongsTo(models.customers, { foreginKey: "customerId"})
     transaksi.belongsTo(models.warehouses, { foreginKey: "warehouseId"})
-    transaksi.belongsTo(models.products, { foreginKey: "productId"})
+    //transaksi.hasMany(models.keranjangs,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "transaksi"})
+
+    //transaksi.belongsTo(models.products, { foreginKey: "productId"})
+    
    
-
-
-
   };
 
   return transaksi;

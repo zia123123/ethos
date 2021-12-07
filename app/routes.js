@@ -64,6 +64,7 @@ const DaExpedisiController = require('./controller/DaExpedisiController');
 
 const MappingNorekController = require('./controller/MappingNorekController');
 
+const KeranjangController = require('./controller/KeranjangController');
 
 
 
@@ -168,8 +169,10 @@ router.patch('/api/domain/update/:id', DomainController.find,DomainController.up
 //ProductStockController
 router.post('/api/stock/create', ProductStockController.create);
 router.get('/api/stock/', ProductStockController.index);
+router.get('/api/stock/warehouse/:warehouseId', ProductController.indexWarehouse);
 router.get('/api/stock/:id', ProductStockController.find, ProductStockController.show);
 router.patch('/api/stock/update/:id', ProductStockController.find,ProductStockController.update);
+
 
 
 //office
@@ -271,8 +274,11 @@ router.patch('/api/mapnorek/update/:id', MappingNorekController.find,MappingNore
 
 
 //keranjang
-router.post('/api/dataexpedisi/create', DaExpedisiController.create);
-router.get('/api/dataexpedisi/', DaExpedisiController.index);
+router.post('/api/keranjang/create', KeranjangController.create);
+router.get('/api/keranjang/', KeranjangController.index);
+router.get('/api/keranjang/byidtransaksi/:transaksiId', KeranjangController.findByIdtransaksi);
+router.get('/api/keranjang/:id', KeranjangController.find, KeranjangController.show);
+router.patch('/api/keranjang/update/:id', KeranjangController.find,KeranjangController.update);
 
 
 

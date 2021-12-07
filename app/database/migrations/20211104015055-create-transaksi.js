@@ -14,6 +14,7 @@ module.exports = {
       idtransaksi: {
         allowNull: false,
         type: Sequelize.INTEGER,
+        uniqe:true
       },
       customerId: {
         allowNull: false,
@@ -86,31 +87,31 @@ module.exports = {
         onUpdate: 'cascade'
       },
 
-      productId: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-        references: {
-          model: "products",
-          key: "id"
-        },
-        onDelete: 'cascade',
-        onUpdate: 'cascade'
-      },
-      namaproduct: {
-        type: Sequelize.STRING
-      },
-      jumlahproduct: {
-        type: Sequelize.STRING
-      },
-      linkdomain: {
-        type: Sequelize.STRING
-      },
-      linkPhotoProduct: {
-        type: Sequelize.STRING
-      },
-      discountProduct: {
-        type: Sequelize.STRING
-      },
+      // productId: {
+      //   allowNull: false,
+      //   type: Sequelize.INTEGER,
+      //   references: {
+      //     model: "products",
+      //     key: "id"
+      //   },
+      //   onDelete: 'cascade',
+      //   onUpdate: 'cascade'
+      // },
+      // namaproduct: {
+      //   type: Sequelize.STRING
+      // },
+      // jumlahproduct: {
+      //   type: Sequelize.STRING
+      // },
+      // linkdomain: {
+      //   type: Sequelize.STRING
+      // },
+      // linkPhotoProduct: {
+      //   type: Sequelize.STRING
+      // },
+      // discountProduct: {
+      //   type: Sequelize.STRING
+      // },
       invoiceId: {
         type: Sequelize.INTEGER,
       },
@@ -120,12 +121,9 @@ module.exports = {
       so: {
         type: Sequelize.STRING
       },
-
       jumlahproduct: {
         type: Sequelize.INTEGER
       },
-
-
       pembayaran: {
         type: Sequelize.INTEGER
       },
@@ -137,9 +135,6 @@ module.exports = {
       },
       products: {
         type: Sequelize.STRING(1000)
-      },
-      gudang: {
-        type: Sequelize.INTEGER
       },
       discount: {
         type: Sequelize.INTEGER

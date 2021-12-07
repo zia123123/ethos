@@ -13,6 +13,7 @@ module.exports = {
             expiry_date: req.body.expiry_date,
             conversion: req.body.conversion,
             price: req.body.price,
+            discount: req.body.discount,
             is_active: true,
             link: 'http://34.101.240.70:3000/images/'+link,
             supplierId: req.body.supplierId,
@@ -33,29 +34,30 @@ module.exports = {
             next();
         }
     },
-    // async findRt(req, res, next) {
-    //     let vote = await votes.findAll({
-    //         where: {
-    //             [Op.or]: [
-    //                 {rt: req.params.rt},
-    //                 {rw: true}
-    //             ]
-    //         },
-    //     });
-    //     if (!vote) {
-    //     return apiResponse.notFoundResponse(res, "Not Fond");
-    //     } else {
-    //         req.vote = vote;
-    //         next();
-    //     }
-    // },
-
 
     async index(req, res) {
         let result = await products.findAll({
-            attributes: ['id', 'name','expiry_date','price','link'],
+            attributes: ['id', 'name','expiry_date','price','link','discount'],
             include: [ 
                 { model: product_stocks,
+                    attributes: ['quantity'],
+                }
+            ]
+        }).then(result => {
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            }).catch(function (err){
+                return apiResponse.ErrorResponse(res, err);
+            });
+    },
+
+    async indexWarehouse(req, res) {
+        let result = await products.findAll({
+            attributes: ['id', 'name','expiry_date','price','link','discount'],
+            include: [ 
+                { model: product_stocks,
+                    where: {
+                        warehouseId:  req.params.warehouseId
+                    },
                     attributes: ['quantity'],
                 }
             ]
@@ -77,6 +79,7 @@ module.exports = {
         req.product.expiry_date = req.body.expiry_date;
         req.product.conversion = req.body.conversion;
         req.product.price = req.body.price;
+        req.product.discount = req.body.discount;
         req.product.is_active = req.body.is_active;
         req.product.interval_year_expiry_date = req.body.interval_year_expiry_date;
         req.product.supplierId = req.body.supplierId;
