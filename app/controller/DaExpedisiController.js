@@ -12,7 +12,7 @@ module.exports = {
             transaksiId: req.body.transaksiId,
             biayatambahan: req.body.biayatambahan,
             norekening: req.body.norekening,
-            financeId: req.body.norekening,
+            financeId: req.body.financeId,
             biayacod: req.body.biayacod,
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
