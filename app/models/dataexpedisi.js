@@ -17,16 +17,13 @@ module.exports = (sequelize, DataTypes) => {
     },
     norekening: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
-   
     financeId: {
       type: DataTypes.INTEGER
     },
-
     biayacod: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      
     },
   }, {
     tableName: "dataexpedisis"
