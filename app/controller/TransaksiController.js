@@ -85,7 +85,8 @@ module.exports = {
     async findByuser(req, res) {
         let result = await transaksis.findAll({
             where: {
-               authId: req.params.userid
+               authId: req.params.userid,
+            //    name: req.params.clue,
             },
             attributes: ['id', 'nama','createdAt','pembayaran','status','products'],
         }).then(result => {

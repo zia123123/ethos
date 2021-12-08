@@ -1,4 +1,4 @@
-const { nomorekenings } = require('../models/index');
+const { nomorekenings,auths } = require('../models/index');
 const { Op } = require("sequelize");
 const apiResponse = require("../helpers/apiResponse");
 
@@ -29,6 +29,37 @@ module.exports = {
     },
     async index(req, res) {
         let result = await nomorekenings.findAll({
+        }).then(result => {
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            }).catch(function (err){
+                return apiResponse.ErrorResponse(res, err);
+            });
+    },
+
+    async getNorekBycs(req, res) {
+        let result = await nomorekenings.findAll({
+            where:{
+                authId: req.params.id
+            },
+            attributes: ['id', 'nomor','nama_bank','createdBy',],
+        }).then(result => {
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            }).catch(function (err){
+                return apiResponse.ErrorResponse(res, err);
+            });
+    },
+
+    async getNorekByfinance(req, res) {
+        let result = await nomorekenings.findAll({
+            where:{
+                createdBy: req.params.id
+            },
+            attributes: ['id', 'nomor','nama_bank','createdBy','authId'],
+            include: [ 
+                { model: auths,
+                    attributes: ['id','firstname'],
+                }
+            ]
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){

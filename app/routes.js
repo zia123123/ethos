@@ -253,7 +253,7 @@ router.post('/api/transaksi/create', TransaksiController.create);
 router.get('/api/transaksi/', TransaksiController.index);
 router.get('/api/transaksi/all', TransaksiController.indexAll);
 router.get('/api/transaksi/:id', TransaksiController.find, TransaksiController.show);
-router.get('/api/transaksi/user/:userid', TransaksiController.findByuser);
+router.get('/api/transaksi/user/:userid/:clue', TransaksiController.findByuser);
 router.get('/api/transaksi/filter/:clue', TransaksiController.filterTransaksi);
 
 router.put('/api/transaksi/addlog/:id', TransaksiController.findAddLog, TransaksiController.addlogstatus);
@@ -266,7 +266,7 @@ router.post('/api/mapproduct/create', MappingProduct.create);
 router.get('/api/mapproduct/', MappingProduct.index);
 router.get('/api/mapproduct/:id', MappingProduct.find, MappingProduct.show);
 router.get('/api/mapproduct/product/:domainId', MappingProduct.findBydomain);
-
+ 
 //mappingnorek
 
 //mapGroupCs
@@ -278,6 +278,8 @@ router.patch('/api/mapnorek/update/:id', MappingNorekController.find,MappingNore
 
 router.post('/api/norek/create', NorekController.create);
 router.get('/api/norek/', NorekController.index);
+router.get('/api/norek/cs/:id', NorekController.getNorekBycs);
+router.get('/api/norek/finance/:id', NorekController.getNorekByfinance);
 router.get('/api/norek/:id', NorekController.find, NorekController.show);
 router.patch('/api/norek/update/:id', NorekController.find,NorekController.update);
 

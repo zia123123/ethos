@@ -143,7 +143,7 @@ module.exports = {
         type: Sequelize.TEXT
       },
       buktibayar: {
-        type: DataTypes.STRING,
+        type: Sequelize.STRING,
         allowNull: false,
       },
       createdAt: {
