@@ -102,7 +102,6 @@ module.exports = {
             where: {
                 [Op.or]: [
                     {nama: req.params.clue},
-                    {notelp:  req.params.clue},
                 ]
             },
         }).then(result => {
