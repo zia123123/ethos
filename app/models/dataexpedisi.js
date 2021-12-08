@@ -23,10 +23,7 @@ module.exports = (sequelize, DataTypes) => {
     financeId: {
       type: DataTypes.INTEGER
     },
-    nomorinvoice: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
+
     biayacod: {
       type: DataTypes.INTEGER,
       allowNull: false,

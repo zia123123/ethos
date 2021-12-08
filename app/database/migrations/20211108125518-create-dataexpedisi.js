@@ -25,9 +25,7 @@ module.exports = {
       buktibayar: {
         type: Sequelize.STRING
       },
-      nomorinvoice: {
-        type: Sequelize.STRING
-      },
+
       biayatambahan: {
         type: Sequelize.INTEGER
       },
