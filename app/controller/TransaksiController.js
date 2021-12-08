@@ -18,7 +18,7 @@ module.exports = {
             cityregencyId: req.body.cityregencyId,
             warehouseId: req.body.warehouseId,
             invoiceId: req.body.warehouseId,
-            expedisiId: req.body.expedisiId,
+            expedisiName: req.body.expedisiName,
             authId: req.body.authId,
             idtransaksi: req.body.idtransaksi,
             products: keranjangdata,

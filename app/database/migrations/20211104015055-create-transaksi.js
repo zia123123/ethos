@@ -46,7 +46,7 @@ module.exports = {
         onDelete: 'cascade',
         onUpdate: 'cascade'
       },
-      expedisiId: {
+      expedisiName: {
         allowNull: false,
         type: Sequelize.STRING,
         // references: {

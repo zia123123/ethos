@@ -49,7 +49,7 @@ module.exports = (sequelize, DataTypes) => {
     products: {
       type: DataTypes.STRING
     },
-    expedisiId: {
+    expedisiName: {
       allowNull: false,
       type: DataTypes.STRING,
     },
