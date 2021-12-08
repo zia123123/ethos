@@ -144,7 +144,7 @@ module.exports = {
       },
       buktibayar: {
         type: Sequelize.STRING,
-        allowNull: false,
+        
       },
       createdAt: {
         allowNull: false,
