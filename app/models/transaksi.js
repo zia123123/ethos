@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     buktibayar: {
       type: DataTypes.STRING,
-      allowNull: false,
+      //allowNull: false,
     },
     idtransaksi: {
       allowNull: false,
@@ -51,7 +51,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     expedisiId: {
       allowNull: false,
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
     },
     // linkdomain: {
     //   type: DataTypes.STRING
