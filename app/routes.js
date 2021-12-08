@@ -230,8 +230,8 @@ router.patch('/api/expedisi/update/:id', ExpedisiController.find,ExpedisiControl
 
 
 //forgetpaswor
-router.post('/api/forget/create', ForgetPassController.create);
-router.patch('/api/forget/update', ForgetPassController.updatePassword);
+router.post('/api/dataexpedisi/create', DaExpedisiController.create);
+router.patch('/api/dataexpedisi/update', DaExpedisiController.index);
 
 
 
