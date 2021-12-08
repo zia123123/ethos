@@ -1,4 +1,4 @@
-const { transaksis,statustranksasis,keranjangs } = require('../models/index');
+const { transaksis,statustranksasis,keranjangs,products } = require('../models/index');
 const { Op } = require("sequelize");
 const apiResponse = require("../helpers/apiResponse");
 
@@ -89,6 +89,19 @@ module.exports = {
             //    name: req.params.clue,
             },
             attributes: ['id', 'nama','createdAt','pembayaran','status','products'],
+            include: [ 
+                { model: keranjangs,
+                    where: {
+                        transaksiId:  transaksis.idtransaksi
+                    },
+                    attributes: ['id'],
+                    include: [ 
+                        { model: products,
+                            attributes: ['name'],
+                        }
+                    ]
+                }
+            ]
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
