@@ -89,19 +89,19 @@ module.exports = {
             //    name: req.params.clue,
             },
             attributes: ['id', 'nama','createdAt','pembayaran','status','products'],
-            include: [ 
-                { model: keranjangs,
-                    where: {
-                        transaksiId:  transaksis.idtransaksi
-                    },
-                    attributes: ['id'],
-                    include: [ 
-                        { model: products,
-                            attributes: ['name'],
-                        }
-                    ]
-                }
-            ]
+            // include: [ 
+            //     { model: keranjangs,
+            //         where: {
+            //             transaksiId:  transaksis.idtransaksi
+            //         },
+            //         attributes: ['id'],
+            //         include: [ 
+            //             { model: products,
+            //                 attributes: ['name'],
+            //             }
+            //         ]
+            //     }
+            // ]
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
