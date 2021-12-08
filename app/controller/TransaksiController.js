@@ -101,7 +101,7 @@ module.exports = {
         let result = await transaksis.findAll({
             where: {
                 [Op.or]: [
-                    {name: req.params.clue},
+                    {nama: req.params.clue},
                     {notelp:  req.params.clue},
                 ]
             },
