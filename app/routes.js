@@ -231,7 +231,7 @@ router.patch('/api/expedisi/update/:id', ExpedisiController.find,ExpedisiControl
 
 //forgetpaswor
 router.post('/api/dataexpedisi/create', DaExpedisiController.create);
-router.patch('/api/dataexpedisi/update', DaExpedisiController.index);
+router.get('/api/dataexpedisi', DaExpedisiController.index);
 
 
 
@@ -254,6 +254,9 @@ router.get('/api/transaksi/', TransaksiController.index);
 router.get('/api/transaksi/all', TransaksiController.indexAll);
 router.get('/api/transaksi/:id', TransaksiController.find, TransaksiController.show);
 router.get('/api/transaksi/user/:userid', TransaksiController.findByuser);
+
+router.get('/api/transaksi/detail/:id', TransaksiController.getDetail);
+
 router.get('/api/transaksi/filter/:clue', TransaksiController.filterTransaksi);
 
 router.put('/api/transaksi/addlog/:id', TransaksiController.findAddLog, TransaksiController.addlogstatus);

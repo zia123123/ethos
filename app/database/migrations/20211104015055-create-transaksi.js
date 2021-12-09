@@ -124,6 +124,12 @@ module.exports = {
       jumlahproduct: {
         type: Sequelize.INTEGER
       },
+      noref: {
+        type: Sequelize.STRING
+      },
+      statusbarang: {
+        type: Sequelize.STRING
+      },
       pembayaran: {
         type: Sequelize.INTEGER
       },

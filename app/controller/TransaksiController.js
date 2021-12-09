@@ -108,6 +108,20 @@ module.exports = {
                 return apiResponse.ErrorResponse(res, err);
             });
     },
+
+    async getDetail(req, res) {
+        let result = await transaksis.findOne({
+            where: {
+                    id: req.params.id,
+            },
+            attributes: ['id', 'nama','status','notelp','districtId','memotransaksi'],
+
+        }).then(result => {
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            }).catch(function (err){
+                return apiResponse.ErrorResponse(res, err);
+            });
+    },
     
 
     async filterTransaksi(req, res) {

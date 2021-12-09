@@ -1,4 +1,4 @@
-const { customers,districts } = require('../models/index');
+const { customers,districts,cityregencies,provinces } = require('../models/index');
 const { Op } = require("sequelize");
 const apiResponse = require("../helpers/apiResponse");
 
@@ -34,6 +34,12 @@ module.exports = {
                 id: req.params.id,
             },
             include: [ { model: districts,
+                attributes: ['name']
+            },
+            { model: cityregencies,
+                attributes: ['name']
+            },
+            { model: provinces,
                 attributes: ['name']
             }]
         }).then(customer => {
