@@ -1,8 +1,6 @@
-'use strict';
-
 module.exports = (sequelize, DataTypes) => {
 
-  const dataexpedisi = sequelize.define('dataexpedisis', {
+  const daexpedisi = sequelize.define('daexpedisis', {
     ongkoskirim: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -18,19 +16,16 @@ module.exports = (sequelize, DataTypes) => {
     norekening: {
       type: DataTypes.STRING,
     },
-    financeId: {
-      type: DataTypes.INTEGER
-    },
     biayacod: {
       type: DataTypes.INTEGER,
     },
   }, {
-    tableName: "dataexpedisis"
+    tableName: "daexpedisis"
   });
-
-  dataexpedisi.associate = function(models) {
-    dataexpedisi.belongsTo(models.transaksis, { foreignKey: "transaksiId"})
+  daexpedisi.associate = function(models) {
+    daexpedisi.belongsTo(models.transaksis, { foreignKey: "transaksisId"})
   };
 
-  return dataexpedisi;
+  return daexpedisi;
 };
+  

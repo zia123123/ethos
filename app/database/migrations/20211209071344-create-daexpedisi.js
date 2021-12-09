@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('dataexpedisis', {
+    await queryInterface.createTable('daexpedisis', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -14,7 +14,7 @@ module.exports = {
       subsidi: {
         type: Sequelize.INTEGER
       },   
-      transaksiId: {
+      transaksisId: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
@@ -50,6 +50,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('dataexpedisis');
+    await queryInterface.dropTable('daexpedisis');
   }
 };

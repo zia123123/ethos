@@ -70,6 +70,8 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   transaksi.associate = function(models) {
+
+    transaksi.hasMany(models.daexpedisis)
     // transaksi.belongsTo(models.expedisis, { foreginKey: "expedisiId"})   
     transaksi.belongsTo(models.provinces, { foreginKey: "provinceId"})   
     transaksi.belongsTo(models.districts, { foreginKey: "districtId"})   
@@ -77,7 +79,6 @@ module.exports = (sequelize, DataTypes) => {
     transaksi.belongsTo(models.auths, { foreginKey: "authId"})
     transaksi.belongsTo(models.customers, { foreginKey: "customerId"})
     transaksi.belongsTo(models.warehouses, { foreginKey: "warehouseId"})
-    //transaksi.hasMany(models.keranjangs,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "transaksi"})
 
     //transaksi.belongsTo(models.products, { foreginKey: "productId"})
     
