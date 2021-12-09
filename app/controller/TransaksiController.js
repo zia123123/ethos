@@ -83,6 +83,56 @@ module.exports = {
             });
     },
 
+
+    async jumlahClosing(req, res) {
+        let result = await transaksis.count()({ 
+            where: {
+                status: 'I'
+             },
+        }).then(result => {
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            }).catch(function (err){
+                return apiResponse.ErrorResponse(res, err);
+            });
+    },
+
+    async jumlahLead(req, res) {
+        let result = await transaksis.count()({ 
+            where: {
+                status: 'A'
+             },
+        }).then(result => {
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            }).catch(function (err){
+                return apiResponse.ErrorResponse(res, err);
+            });
+    },
+    async jumlahOnprogress(req, res) {
+        let result = await transaksis.count()({ 
+            where: {
+                status: 'D'
+             },
+        }).then(result => {
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            }).catch(function (err){
+                return apiResponse.ErrorResponse(res, err);
+            });
+    },
+
+    async jumlahRetur(req, res) {
+        let result = await transaksis.count()({ 
+            where: {
+                status: 'K'
+             },
+        }).then(result => {
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            }).catch(function (err){
+                return apiResponse.ErrorResponse(res, err);
+            });
+    },
+
+
+    
     async findAddLog(req, res, next) {
         let transaksi = await transaksis.findByPk(req.params.id);
         if (!transaksi) {

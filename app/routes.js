@@ -257,6 +257,12 @@ router.get('/api/transaksi/user/:userid', TransaksiController.findByuser);
 
 router.get('/api/transaksi/detail/:id', TransaksiController.getDetail);
 
+router.get('/api/transaksi/closing', TransaksiController.jumlahClosing);
+router.get('/api/transaksi/retur', TransaksiController.jumlahRetur);
+router.get('/api/transaksi/lead', TransaksiController.jumlahLead);
+router.get('/api/transaksi/progress', TransaksiController.jumlahOnprogress);
+
+
 router.get('/api/transaksi/filter/:clue', TransaksiController.filterTransaksi);
 
 router.put('/api/transaksi/addlog/:id', TransaksiController.findAddLog, TransaksiController.addlogstatus);
