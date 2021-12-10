@@ -115,6 +115,9 @@ module.exports = {
       invoiceId: {
         type: Sequelize.INTEGER,
       },
+      typebayar: {
+        type: Sequelize.STRING,
+      },
       awb: {
         type: Sequelize.STRING
       },

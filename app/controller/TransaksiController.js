@@ -24,6 +24,7 @@ module.exports = {
             products: keranjangdata,
             discount: req.body.discount,
             totalharga: req.body.totalharga,
+            typebayar: req.body.typebayar,
             pembayaran: req.body.pembayaran,
             status:  req.body.status,
             logstatus:  req.body.logstatus,
@@ -185,7 +186,7 @@ module.exports = {
             where: {
                     id: req.params.id,
             },
-            attributes: ['id', 'nama','status','districtId','memotransaksi'],
+            attributes: ['id', 'nama','status','districtId','memotransaksi','idtransaksi','expedisiName'],
             include: [ 
                 { model: daexpedisis,
                     attributes: ['biayatambahan','norekening','biayacod','createdAt'],

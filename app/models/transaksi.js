@@ -49,7 +49,9 @@ module.exports = (sequelize, DataTypes) => {
     ongkoskirim: {
       type: DataTypes.INTEGER
     },
-
+    typebayar: {
+      type: DataTypes.STRING,
+    },
     subsidi: {
       type: DataTypes.INTEGER
     },   
