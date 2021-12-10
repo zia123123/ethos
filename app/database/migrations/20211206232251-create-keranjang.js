@@ -25,6 +25,9 @@ module.exports = {
       namaproduct: {
         type: Sequelize.STRING
       },
+      price: {
+        type: Sequelize.INTEGER
+      },
       jumlahproduct: {
         type: Sequelize.INTEGER
       },
