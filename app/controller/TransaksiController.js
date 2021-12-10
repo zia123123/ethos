@@ -27,8 +27,8 @@ module.exports = {
             pembayaran: req.body.pembayaran,
             status:  req.body.status,
             logstatus:  req.body.logstatus,
-            ongkoskirim:  req.body.logstatus,
-            subsidi:  req.body.logstatus,
+            ongkoskirim:  req.body.ongkoskirim,
+            subsidi:  req.body.subsidi,
             memotransaksi: req.body.memotransaksi,
         }).then(result => {
             let keranjang = keranjangs.bulkCreate(datakeranjang, { individualHooks: true }).then(keranjang =>{
