@@ -186,13 +186,12 @@ module.exports = {
             where: {
                     id: req.params.id,
             },
-            attributes: ['id', 'nama','status','districtId','memotransaksi','idtransaksi','expedisiName'],
+            //attributes: ['id', 'nama','status','districtId','memotransaksi','idtransaksi','expedisiName'],
             include: [ 
                 { model: daexpedisis,
                     attributes: ['biayatambahan','norekening','biayacod','createdAt'],
                 },
                 { model: customers,
-                    
                 }
             ]
             
