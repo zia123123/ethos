@@ -116,7 +116,7 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       typebayar: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
       },
       awb: {
         type: Sequelize.STRING

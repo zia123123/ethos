@@ -50,7 +50,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER
     },
     typebayar: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
     },
     subsidi: {
       type: DataTypes.INTEGER
