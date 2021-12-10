@@ -41,11 +41,15 @@ module.exports = {
       },
 
     async find(req, res, next) {
-        let result = await transaksis.findAll({
+        let result = await transaksis.findOne({
             where: {
                id: req.params.id
             },
-          
+            include: [ 
+                { model: daexpedisis,
+                    attributes: ['biayatambahan','norekening','biayacod','createdAt'],
+                }
+            ]
         }).then(result => {
             req.transaksi = result;
             next();
@@ -74,7 +78,7 @@ module.exports = {
             attributes: ['id', 'nama','createdAt','pembayaran','status'],
             include: [ 
                 { model: daexpedisis,
-                    attributes: ['ongkoskirim','subsidi','biayatambahan','norekening','biayacod','createdAt'],
+                    attributes: ['biayatambahan','norekening','biayacod','createdAt'],
                 }
             ]
              
