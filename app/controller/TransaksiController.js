@@ -1,4 +1,4 @@
-const { transaksis,statustranksasis,keranjangs,products,daexpedisis    } = require('../models/index');
+const { transaksis,statustranksasis,keranjangs,products,daexpedisis,customers    } = require('../models/index');
 const { Op } = require("sequelize");
 const apiResponse = require("../helpers/apiResponse");
 
@@ -185,8 +185,16 @@ module.exports = {
             where: {
                     id: req.params.id,
             },
-            attributes: ['id', 'nama','status','notelp','districtId','memotransaksi'],
-
+            attributes: ['id', 'nama','status','districtId','memotransaksi'],
+            include: [ 
+                { model: daexpedisis,
+                    attributes: ['biayatambahan','norekening','biayacod','createdAt'],
+                },
+                { model: customers,
+                    
+                }
+            ]
+            
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){

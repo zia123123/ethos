@@ -1,14 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
 
   const daexpedisi = sequelize.define('daexpedisis', {
-    ongkoskirim: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    subsidi: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
     biayatambahan: {
       type: DataTypes.INTEGER,
       allowNull: false,
