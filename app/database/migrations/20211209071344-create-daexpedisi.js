@@ -8,12 +8,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      ongkoskirim: {
-        type: Sequelize.INTEGER
-      },
-      subsidi: {
-        type: Sequelize.INTEGER
-      },   
+
       transaksisId: {
         allowNull: false,
         type: Sequelize.INTEGER,
@@ -34,9 +29,6 @@ module.exports = {
         type: Sequelize.STRING
       },
       biayacod: {
-        type: Sequelize.INTEGER
-      },
-      financeId: {
         type: Sequelize.INTEGER
       },
       createdAt: {

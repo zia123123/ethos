@@ -145,6 +145,12 @@ module.exports = {
       discount: {
         type: Sequelize.INTEGER
       },
+      ongkoskirim: {
+        type: Sequelize.INTEGER
+      },
+      subsidi: {
+        type: Sequelize.INTEGER
+      },   
       memotransaksi: {
         type: Sequelize.TEXT
       },

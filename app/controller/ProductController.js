@@ -40,7 +40,7 @@ module.exports = {
             attributes: ['id', 'name','expiry_date','price','link','discount'],
             include: [ 
                 { model: product_stocks,
-                    attributes: ['quantity'],
+                    attributes: ['quantity','warehouseId'],
                 }
             ]
         }).then(result => {

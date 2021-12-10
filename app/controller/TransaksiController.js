@@ -27,6 +27,8 @@ module.exports = {
             pembayaran: req.body.pembayaran,
             status:  req.body.status,
             logstatus:  req.body.logstatus,
+            ongkoskirim:  req.body.logstatus,
+            subsidi:  req.body.logstatus,
             memotransaksi: req.body.memotransaksi,
         }).then(result => {
             let keranjang = keranjangs.bulkCreate(datakeranjang, { individualHooks: true }).then(keranjang =>{
@@ -87,7 +89,9 @@ module.exports = {
     async jumlahClosing(req, res) {
         let result = await transaksis.count()({ 
             where: {
-                status: 'I'
+                [Op.or]: [
+                    {status: 'I'},
+                ]
              },
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
@@ -99,7 +103,9 @@ module.exports = {
     async jumlahLead(req, res) {
         let result = await transaksis.count()({ 
             where: {
-                status: 'A'
+                [Op.LIKE]: [
+                    {status: 'A'},
+                ]
              },
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);

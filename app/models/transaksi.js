@@ -46,6 +46,12 @@ module.exports = (sequelize, DataTypes) => {
     awb: {
       type: DataTypes.STRING
     },
+    ongkoskirim: {
+      type: DataTypes.INTEGER
+    },
+    subsidi: {
+      type: DataTypes.INTEGER
+    },   
     so: {
       type: DataTypes.STRING
     },
