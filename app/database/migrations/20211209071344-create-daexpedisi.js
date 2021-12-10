@@ -25,6 +25,9 @@ module.exports = {
       biayatambahan: {
         type: Sequelize.INTEGER
       },
+      namabank: {
+        type: Sequelize.STRING
+      },
       norekening: {
         type: Sequelize.STRING
       },

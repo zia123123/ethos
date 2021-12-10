@@ -10,6 +10,7 @@ module.exports = {
             ongkoskirim: req.body.ongkoskirim,
             subsidi: req.body.subsidi,
             transaksisId: req.body.transaksiId,
+            namabank: "Mandiri",
             biayatambahan: req.body.biayatambahan,
             norekening: req.body.norekening ,
             biayacod: req.body.biayacod,
