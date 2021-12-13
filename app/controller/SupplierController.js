@@ -12,6 +12,7 @@ module.exports = {
             district: req.body.district,
             sub_district: req.body.sub_district,
             phone: req.body.phone,
+            npwp: req.body.npwp,
             bank_account_no: req.body.bank_account_no,
             name_of_director: req.body.name_of_director,
             is_active: true,
@@ -32,23 +33,6 @@ module.exports = {
             next();
         }
     },
-    // async findRt(req, res, next) {
-    //     let vote = await votes.findAll({
-    //         where: {
-    //             [Op.or]: [
-    //                 {rt: req.params.rt},
-    //                 {rw: true}
-    //             ]
-    //         },
-    //     });
-    //     if (!vote) {
-    //     return apiResponse.notFoundResponse(res, "Not Fond");
-    //     } else {
-    //         req.vote = vote;
-    //         next();
-    //     }
-    // },
-
 
     async index(req, res) {
         let result = await suppliers.findAll({
@@ -66,6 +50,7 @@ module.exports = {
 
     // Update
     async updateStock(req, res) {
+        req.supplier.npwp = req.body.npwp;
         req.supplier.nama = req.body.nama;
         req.supplier.address_line_one = req.body.address_line_one;
         req.supplier.address_line_two = req.body.address_line_two;

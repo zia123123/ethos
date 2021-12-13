@@ -1,4 +1,4 @@
-const { warehouses } = require('../models/index');
+const { warehouses,provinces,cityregencies,districts } = require('../models/index');
 const { Op } = require("sequelize");
 const apiResponse = require("../helpers/apiResponse");
 
@@ -7,12 +7,17 @@ module.exports = {
     //create
     async create(req, res) { 
         let result = await warehouses.create({
+
+
+
+ 
             name: req.body.name,
-            expedisiId: req.body.expedisiId,
+            status: req.body.status,
             provinceId: req.body.provinceId,
             cityregencyId: req.body.cityregencyId,
             districtId: req.body.districtId,
             city: req.body.city,
+            statusGudang: req.body.statusGudang,
             address: req.body.address,
             expedition_data: req.body.expedition_data,
             postalcode: req.body.postalcode,
@@ -39,6 +44,17 @@ module.exports = {
     async index(req, res) {
         let result = await warehouses.findAll({
             attributes: ['id', 'name'],
+            include: [ 
+                { model: provinces,
+                    attributes: [ 'name'],
+                },
+                { model: cityregencies,
+                    attributes: [ 'name'],
+                },
+                { model: districts,
+                    attributes: [ 'name'],
+                },
+            ]
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
@@ -49,6 +65,17 @@ module.exports = {
     
     async indexAll(req, res) {
         let result = await warehouses.findAll({
+            include: [ 
+                { model: provinces,
+                    attributes: [ 'name'],
+                },
+                { model: cityregencies,
+                    attributes: [ 'name'],
+                },
+                { model: districts,
+                    attributes: [ 'name'],
+                },
+            ]
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){

@@ -17,6 +17,9 @@ module.exports = {
       address_line_two: {
         type: Sequelize.TEXT
       },
+      npwp: {
+        type: Sequelize.STRING
+      },
       district: {
         type: Sequelize.STRING
       },

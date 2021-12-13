@@ -1,4 +1,4 @@
-const { products,product_stocks } = require('../models/index');
+const { products,product_stocks,suppliers } = require('../models/index');
 const { Op } = require("sequelize");
 const apiResponse = require("../helpers/apiResponse");
 
@@ -15,6 +15,9 @@ module.exports = {
             price: req.body.price,
             discount: req.body.discount,
             is_active: true,
+            quantity: 0,
+            sku: req.body.sku,
+            unitId: req.body.unitId,
             link: 'http://34.101.240.70:3000/images/'+link,
             supplierId: req.body.supplierId,
             interval_year_expiry_date: req.body.interval_year_expiry_date
@@ -41,6 +44,9 @@ module.exports = {
             include: [ 
                 { model: product_stocks,
                     attributes: ['quantity','warehouseId'],
+                },
+                { model: suppliers,
+                    attributes: ['name'],
                 }
             ]
         }).then(result => {

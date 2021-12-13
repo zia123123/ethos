@@ -69,6 +69,7 @@ const KeranjangController = require('./controller/KeranjangController');
 const NorekController = require('./controller/NorekController');
 
 
+const UnitController = require('./controller/UnitController');
 
 
 const multer = require('multer')
@@ -132,6 +133,13 @@ router.get('/api/province/', ProvincesController.index);
 router.get('/api/province/:id', ProvincesController.find, ProvincesController.show);
 router.patch('/api/province/update/:id', ProvincesController.find,ProvincesController.update);
 
+
+//unit
+router.post('/api/unit/create', UnitController.create);
+router.get('/api/unit/', UnitController.index);
+router.get('/api/unit/:id', UnitController.find, UnitController.show);
+router.patch('/api/unit/update/:id', UnitController.find,UnitController.update);
+
 //ninja
 router.post('/api/ninjaorigin/create', NinjaOriginController.create);
 router.get('/api/ninja/', NinjaOriginController.index);
@@ -154,7 +162,7 @@ router.patch('/api/cityagency/update/:id', CityAgencyController.find,CityAgencyC
 //warehouse
 router.post('/api/warehouse/create', WarehouseController.create);
 router.get('/api/warehouse/', WarehouseController.index);
-router.get('/api/warehouse/aa', WarehouseController.indexAll);
+router.get('/api/warehouse/all', WarehouseController.indexAll);
 
 router.get('/api/warehouse/:id', WarehouseController.find, WarehouseController.show);
 router.patch('/api/warehouse/update/:id', WarehouseController.find,WarehouseController.update);

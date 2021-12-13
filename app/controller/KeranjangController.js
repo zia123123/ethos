@@ -46,7 +46,7 @@ module.exports = {
                 [Op.like]: req.params.transaksiId,
             },
         },
-        attributes: ['id', 'namaproduct','jumlahproduct','linkdomain','linkphoto','discount'],
+        attributes: ['id', 'namaproduct','jumlahproduct','linkdomain','linkphoto','discount','price'],
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){

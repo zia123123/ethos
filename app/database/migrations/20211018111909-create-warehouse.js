@@ -34,7 +34,6 @@ module.exports = {
         onDelete: 'cascade',
         onUpdate: 'cascade'
       },
-
       districtId: {
         allowNull: false,
         type: Sequelize.INTEGER,
@@ -48,6 +47,11 @@ module.exports = {
       city: {
         type: Sequelize.STRING
       },
+      
+      statusGudang: {
+        type: Sequelize.BOOLEAN
+      },
+
       address: {
         type: Sequelize.TEXT
       },

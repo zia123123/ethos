@@ -49,12 +49,6 @@ module.exports = {
       expedisiName: {
         allowNull: false,
         type: Sequelize.STRING,
-        // references: {
-        //   model: "expedisis",
-        //   key: "id"
-        // },
-        // onDelete: 'cascade',
-        // onUpdate: 'cascade'
       },
       provinceId: {
         allowNull: false,
@@ -86,32 +80,6 @@ module.exports = {
         onDelete: 'cascade',
         onUpdate: 'cascade'
       },
-
-      // productId: {
-      //   allowNull: false,
-      //   type: Sequelize.INTEGER,
-      //   references: {
-      //     model: "products",
-      //     key: "id"
-      //   },
-      //   onDelete: 'cascade',
-      //   onUpdate: 'cascade'
-      // },
-      // namaproduct: {
-      //   type: Sequelize.STRING
-      // },
-      // jumlahproduct: {
-      //   type: Sequelize.STRING
-      // },
-      // linkdomain: {
-      //   type: Sequelize.STRING
-      // },
-      // linkPhotoProduct: {
-      //   type: Sequelize.STRING
-      // },
-      // discountProduct: {
-      //   type: Sequelize.STRING
-      // },
       invoiceId: {
         type: Sequelize.INTEGER,
       },

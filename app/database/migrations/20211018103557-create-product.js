@@ -21,6 +21,9 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       sku: {
+        type: Sequelize.STRING
+      },
+      quantity: {
         type: Sequelize.INTEGER
       },
       discount: {
@@ -37,6 +40,16 @@ module.exports = {
         type: Sequelize.INTEGER,
         references: {
           model: "suppliers",
+          key: "id"
+        },
+        onDelete: 'cascade',
+        onUpdate: 'cascade'
+      },
+      unitId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: "units",
           key: "id"
         },
         onDelete: 'cascade',

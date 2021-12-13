@@ -23,6 +23,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+
+    statusGudang: {
+      type: DataTypes.BOOLEAN
+    },
+
     postalcode: {
       type: DataTypes.STRING,
       allowNull: false,

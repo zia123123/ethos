@@ -27,6 +27,16 @@ module.exports = {
         onDelete: 'cascade',
         onUpdate: 'cascade'
       },
+      productId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: "products",
+          key: "id"
+        },
+        onDelete: 'cascade',
+        onUpdate: 'cascade'
+      },
       description: {
         type: Sequelize.TEXT
       },

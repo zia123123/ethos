@@ -31,6 +31,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    npwp: {
+      type: DataTypes.STRING
+    },
     name_of_director: {
       type: DataTypes.STRING,
       allowNull: false,

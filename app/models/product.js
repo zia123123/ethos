@@ -25,6 +25,12 @@ module.exports = (sequelize, DataTypes) => {
     discount: {
       type: DataTypes.INTEGER
     },
+    quantity: {
+      type: DataTypes.INTEGER
+    },
+    sku: {
+      type: DataTypes.STRING
+    },
     is_active: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
@@ -41,7 +47,7 @@ module.exports = (sequelize, DataTypes) => {
     product.belongsTo(models.suppliers,{ onDelete: 'cascade' },{ constraints: true}, { foreignKey: "supplierId"})
     product.hasMany(models.product_stocks,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "product"})
     product.hasMany(models.keranjangs,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "product"})
-
+    product.hasMany(models.domains,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "product"})
   };
 
   return product;

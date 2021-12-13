@@ -14,14 +14,36 @@ module.exports = {
         references: {
           model: "products",
           key: "id"
-        }
+        },
+        onDelete: 'cascade',
+        onUpdate: 'cascade'
       },
       warehouseId: {
         allowNull: false,
         type: Sequelize.INTEGER,
+        references: {
+          model: "warehouses",
+          key: "id"
+        },
+        onDelete: 'cascade',
+        onUpdate: 'cascade'
       },
       quantity: {
         type: Sequelize.INTEGER
+      },
+      inbound: {
+        type: Sequelize.BOOLEAN
+      },
+
+      nodeliverorder: {
+        type: Sequelize.STRING
+      },
+      nopurchase: {
+        type: Sequelize.STRING
+      },
+      
+      nopo: {
+        type: Sequelize.STRING
       },
       remark: {
         type: Sequelize.STRING
