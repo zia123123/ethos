@@ -58,6 +58,9 @@ module.exports = (sequelize, DataTypes) => {
     so: {
       type: DataTypes.STRING
     },
+    totalharga: {
+      type: DataTypes.INTEGER
+    }, 
     products: {
       type: DataTypes.STRING
     },

@@ -76,7 +76,7 @@ module.exports = {
 
     async indexAll(req, res) {
         let result = await transaksis.findAll({
-            attributes: ['id', 'nama','createdAt','pembayaran','status','idtransaksi'],
+            attributes: ['id', 'nama','createdAt','pembayaran','status','idtransaksi','invoiceId','totalharga','subsidi','ongkoskirim'],
             include: [ 
                 { model: daexpedisis,
                     attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank'],
@@ -233,11 +233,21 @@ module.exports = {
 
     // add log
     async addlogstatus(req, res) {
+        req.transaksi.status = req.body.logstatus;
         req.transaksi.logstatus = req.transaksi.logstatus+"#"+req.body.logstatus;
         req.transaksi.save().then(transaksi => {
         return apiResponse.successResponseWithData(res, "SUCCESS", transaksi);
         })
     },
+
+    async uploadBuktibayar(req, res) {
+        var link = req.files.buktibayar == null ? null : req.files.buktibayar[0].filename
+        req.transaksi.buktibayar =  'http://34.101.240.70:3000/images/'+link;
+        req.transaksi.save().then(transaksi => {
+        return apiResponse.successResponseWithData(res, "SUCCESS", transaksi);
+        })
+    },
+
 
     // Delete
     async delete(req, res) {

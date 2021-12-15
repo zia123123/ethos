@@ -271,6 +271,12 @@ router.get('/api/transaksi/lead', TransaksiController.jumlahLead);
 router.get('/api/transaksi/progress', TransaksiController.jumlahOnprogress);
 
 
+
+router.put('/api/transaksi/buktibayar/:id',multer(multerConf).fields([{
+    name: 'buktibayar', maxCount: 1
+    }
+]),TransaksiController.findAddLog, TransaksiController.uploadBuktibayar);
+
 router.get('/api/transaksi/filter/:clue', TransaksiController.filterTransaksi);
 
 router.put('/api/transaksi/addlog/:id', TransaksiController.findAddLog, TransaksiController.addlogstatus);
