@@ -28,14 +28,24 @@ module.exports = {
         });
       },
 
-    async find(req, res, next) {
-        let product = await products.findByPk(req.params.id);
-        if (!product) {
-        return apiResponse.notFoundResponse(res, "Not Fond");
-        } else {
-            req.product = product;
-            next();
-        }
+      async find(req, res) {
+        let result = await products.findOne({
+            where: {
+                id: req.params.id,
+             },
+            include: [ 
+                { model: product_stocks,
+                    attributes: ['quantity','warehouseId'],
+                },
+                { model: suppliers,
+                    attributes: ['name'],
+                }
+            ]
+        }).then(result => {
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            }).catch(function (err){
+                return apiResponse.ErrorResponse(res, err);
+            });
     },
 
     async index(req, res) {
