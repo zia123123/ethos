@@ -83,7 +83,7 @@ module.exports = (sequelize, DataTypes) => {
 
   transaksi.associate = function(models) {
 
-    transaksi.hasMany(models.daexpedisis)
+    transaksi.hasOne(models.daexpedisis)
     // transaksi.belongsTo(models.expedisis, { foreginKey: "expedisiId"})   
     transaksi.belongsTo(models.provinces, { foreginKey: "provinceId"})   
     transaksi.belongsTo(models.districts, { foreginKey: "districtId"})   
