@@ -189,7 +189,7 @@ module.exports = {
             //attributes: ['id', 'nama','status','districtId','memotransaksi','idtransaksi','expedisiName'],
             include: [ 
                 { model: daexpedisis,
-                    attributes: ['biayatambahan','norekening','biayacod','createdAt'],
+                    attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank'],
                 },
                 { model: customers,
                 }
