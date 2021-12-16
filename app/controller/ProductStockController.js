@@ -12,6 +12,7 @@ module.exports = {
             nopurchase: req.body.nopurchase,
             productId: req.body.productId,
             warehouseId: req.body.warehouseId,
+            nopo: req.body.nopo,
             quantity: req.body.quantity,
             remark: req.body.remark,
         }).then(result => {
