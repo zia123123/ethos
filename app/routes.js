@@ -313,6 +313,8 @@ router.patch('/api/norek/update/:id', NorekController.find,NorekController.updat
 //keranjang
 router.post('/api/keranjang/create', KeranjangController.create);
 router.get('/api/keranjang/', KeranjangController.index);
+
+router.get('/api/keranjang/sumtotal/:transaksiId', KeranjangController.sumtotal);
 router.get('/api/keranjang/byidtransaksi/:transaksiId', KeranjangController.findByIdtransaksi);
 router.get('/api/keranjang/:id', KeranjangController.find, KeranjangController.show);
 router.patch('/api/keranjang/update/:id', KeranjangController.find,KeranjangController.update);

@@ -55,6 +55,20 @@ module.exports = {
     },
 
 
+    async sumtotal(req, res) {
+        let result = await keranjangs.sum('price',{
+            where: {
+                transaksiId: {
+                [Op.like]: req.params.transaksiId,
+            },
+        },
+        }).then(result => {
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            }).catch(function (err){
+                return apiResponse.ErrorResponse(res, err);
+            });
+    },
+
     // Show
     async show(req, res) {
         return apiResponse.successResponseWithData(res, "SUCCESS", req.keranjang);
