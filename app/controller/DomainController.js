@@ -6,11 +6,10 @@ module.exports = {
     //create
     async create(req, res) { 
         let result = await domains.create({
-            name: req.body.name,
             url: req.body.url,
-            type: req.body.type,
             authId: req.body.advertiserid,
-            description: req.body.description,
+            productId: req.body.productId,
+            nameproduct: req.body.nameproduct,
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
         }).catch(function (err)  {
@@ -42,13 +41,21 @@ module.exports = {
         return apiResponse.successResponseWithData(res, "SUCCESS", req.domain);
     },
 
-    // Update
-    async update(req, res) {
-        req.domain.name = req.body.name;
+
+
+
+    async updateDataIklan(req, res) {
         req.domain.url = req.body.url;
-        req.domain.type = req.body.type;
-        req.domain.authId = req.body.authId;
-        req.domain.description = req.body.description;
+        req.domain.productId = req.body.productId;
+        req.domain.nameproduct = req.body.nameproduct;
+        req.domain.status = req.body.status;
+        req.domain.save().then(domain => {
+        return apiResponse.successResponseWithData(res, "SUCCESS", domain);
+        })
+    },
+
+    async updateBiayaIklan(req, res) {
+        req.domain.biayaiklan = req.body.biayaiklan;
         req.domain.save().then(domain => {
         return apiResponse.successResponseWithData(res, "SUCCESS", domain);
         })

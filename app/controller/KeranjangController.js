@@ -48,7 +48,16 @@ module.exports = {
         },
         attributes: ['id', 'namaproduct','jumlahproduct','linkdomain','linkphoto','discount','price'],
         }).then(result => {
-            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            let keranjang = keranjangs.sum('price',{
+                where: {
+                    transaksiId: {
+                    [Op.like]: req.params.transaksiId,
+                },
+            },
+            }).then(keranjang =>{
+                return apiResponse.successResponseWithTwoData(res, "SUCCESS", result, keranjang);
+            })
+            return apiResponse.successResponseWithTwoData(res, "SUCCESS", result, keranjang);
             }).catch(function (err){
                 return apiResponse.ErrorResponse(res, err);
             });

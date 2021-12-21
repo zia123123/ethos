@@ -35,6 +35,9 @@ module.exports = {
       postalcode: {
         type: Sequelize.STRING
       },
+      kelurahan: {
+        type: Sequelize.STRING
+      },
       jeniskelamin: {
         type: Sequelize.CHAR
       },

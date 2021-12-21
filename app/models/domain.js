@@ -5,19 +5,40 @@ module.exports = (sequelize, DataTypes) => {
   const domain = sequelize.define('domains', {
     name: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     url: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     type: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
-    description: {
+    nameproduct: {
+      type: DataTypes.STRING
+    },
+    biayaiklan: {
+      type: DataTypes.BIGINT
+    },
+
+    // buktisaldo: {
+    //   type: DataTypes.STRING
+    // },
+    // buktitagihan: {
+    //   type: DataTypes.STRING
+    // },
+    // nBuktiSaldo: {
+    //   type: DataTypes.STRING
+    // },
+    // nBuktiTagihan: {
+    //   type: DataTypes.STRING
+    // },
+
+    status: {
+      type: DataTypes.BOOLEAN
+    },
+    
+    memo: {
       type: DataTypes.TEXT,
-      allowNull: false,
+     
     },
   }, {
     tableName: "domains"

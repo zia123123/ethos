@@ -8,9 +8,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      name: {
-        type: Sequelize.STRING
-      },
+
       url: {
         type: Sequelize.STRING
       },
@@ -37,7 +35,35 @@ module.exports = {
         onDelete: 'cascade',
         onUpdate: 'cascade'
       },
-      description: {
+
+
+      nameproduct: {
+        type: Sequelize.STRING
+      },
+      biayaiklan: {
+        type: Sequelize.BIGINT
+      },
+      status: {
+        type: Sequelize.BOOLEAN
+      },
+
+      // buktisaldo: {
+      //   type: Sequelize.STRING
+      // },
+      // buktitagihan: {
+      //   type: Sequelize.STRING
+      // },
+      // nBuktiSaldo: {
+      //   type: Sequelize.STRING
+      // },
+      // nBuktiTagihan: {
+      //   type: Sequelize.STRING
+      // },
+
+
+
+
+      memo: {
         type: Sequelize.TEXT
       },
       createdAt: {

@@ -14,6 +14,7 @@ module.exports = {
             alamat: req.body.alamat,
             rt:req.body.rt,
             rw:req.body.rw,
+            kelurahan: req.body.kelurahan,
             memoid: req.body.memoid,
             jeniskelamin:req.body.jeniskelamin,
             pekerjaan:req.body.pekerjaan,
@@ -94,7 +95,10 @@ module.exports = {
         req.customer.notelp = req.body.notelp;
         req.customer.notelp2 = req.body.notelp2;
         req.customer.email = req.body.email;
-        req.customer.alamat = req.body.alamat +", RT :" +req.body.rt +", RW :" +req.body.rw +", Kecamatan :" +req.body.kecamatan +", Kelurahan :"+ req.body.kelurahan;
+        req.customer.alamat = req.body.alamat;
+        req.customer.rt =  req.body.rt,
+        req.customer.rw =  req.body.rw,
+        req.customer.kelurahan =  req.body.kelurahan,
         req.customer.postalcode = req.body.postalcode;
         req.customer.pekerjaan = req.body.pekerjaan;
         req.customer.districtId = req.body.districtId;
