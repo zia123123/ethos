@@ -28,8 +28,8 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     invoiceId: {
-      allowNull: false,
-      type: DataTypes.INTEGER,
+    
+      type: DataTypes.STRING,
     },
     // statusbarang: {
     //   type: DataTypes.STRING

@@ -81,7 +81,7 @@ module.exports = {
         onUpdate: 'cascade'
       },
       invoiceId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
       },
       typebayar: {
         type: Sequelize.INTEGER,
