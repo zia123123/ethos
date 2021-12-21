@@ -245,6 +245,7 @@ module.exports = {
     async uploadBuktibayar(req, res) {
         var link = req.files.buktibayar == null ? null : req.files.buktibayar[0].filename
         req.transaksi.buktibayar =  'http://34.101.240.70:3000/images/'+link;
+        req.transaksi.invoiceId = req.body.invoiceId;
         req.transaksi.save().then(transaksi => {
         return apiResponse.successResponseWithData(res, "SUCCESS", transaksi);
         })
