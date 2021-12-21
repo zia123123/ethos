@@ -7,7 +7,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 const { sequelize } = require('./models/index');
 
 // Settings
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 443;
 
 // Middlewares
 app.use(express.json());
