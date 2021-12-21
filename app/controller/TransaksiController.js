@@ -61,7 +61,7 @@ module.exports = {
 
     async index(req, res) {
         let result = await transaksis.findAll({
-            attributes: ['id', 'nama','createdAt','pembayaran','status'],
+            attributes: ['id', 'nama','createdAt','pembayaran','status','idtransaksi'],
                         // include: [ 
                         //     { model: daexpedisis,
                         //         attributes: ['id'],
