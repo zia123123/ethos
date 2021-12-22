@@ -130,7 +130,7 @@ module.exports = {
     },
 
     async jumlahLead(req, res) {
-        let result = await transaksis.count()({ 
+        let result = await transaksis.count({ 
             where: {
                 status: {
                   [Op.like]: '%A%'
