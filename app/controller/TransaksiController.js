@@ -123,6 +123,35 @@ module.exports = {
     },
 
 
+    async indexLunasRetur(req, res) {
+        let result = await transaksis.findAll({
+            where: {
+                [Op.or]: [
+                    {
+                        status: {
+                            [Op.like]: '%D%'
+                          }
+                     },
+                ]
+               
+              },
+            attributes: ['id', 'nama','createdAt','pembayaran','status','idtransaksi','invoiceId','totalharga','subsidi','ongkoskirim','buktibayar'],
+            include: [ 
+                { model: daexpedisis,
+                    attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank'],
+                },
+                { model: auths,
+                    attributes: ['firstname'],
+                }
+            ]
+             
+        }).then(result => {
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            }).catch(function (err){
+                return apiResponse.ErrorResponse(res, err);
+            });
+    },
+
     async jumlahClosing(req, res) {
         let result = await transaksis.count()({ 
             where: {
