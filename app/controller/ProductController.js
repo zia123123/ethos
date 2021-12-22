@@ -54,6 +54,11 @@ module.exports = {
             include: [ 
                 { model: product_stocks,
                     attributes: ['quantity','warehouseId'],
+                    include: [ 
+                        { model: warehouses,
+                            attributes: ['name'],
+                        }
+                    ]
                 },
                 { model: suppliers,
                     attributes: ['name'],
