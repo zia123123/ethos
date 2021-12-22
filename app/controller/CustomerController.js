@@ -58,9 +58,6 @@ module.exports = {
                     {
                         nama: {
                             [Op.like]: '%'+req.params.clue+'%'
-                          },
-                          notelp: {
-                            [Op.like]: '%'+req.params.clue+'%'
                           }
                      },
                 ]
