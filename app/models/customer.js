@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
     },
     jeniskelamin: {
-      type: DataTypes.CHAR,
+      type: DataTypes.STRING,
     },
     postalcode: {
       type: DataTypes.STRING,

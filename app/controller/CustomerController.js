@@ -101,6 +101,7 @@ module.exports = {
         req.customer.kelurahan =  req.body.kelurahan,
         req.customer.postalcode = req.body.postalcode;
         req.customer.pekerjaan = req.body.pekerjaan;
+        req.customer.jeniskelamin = req.body.jeniskelamin;
         req.customer.districtId = req.body.districtId;
         req.customer.provinceId = req.body.provinceId;
         req.customer.cityregencyId = req.body.cityregencyId;

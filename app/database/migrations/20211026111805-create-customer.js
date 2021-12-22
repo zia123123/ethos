@@ -39,7 +39,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       jeniskelamin: {
-        type: Sequelize.CHAR
+        type: Sequelize.STRING
       },
       memoid: {
         type: Sequelize.INTEGER
