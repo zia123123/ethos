@@ -93,9 +93,17 @@ module.exports = {
     async indexAll(req, res) {
         let result = await transaksis.findAll({
             where: {
-                status: {
-                  [Op.like]: '%D%'
-                }
+                [Op.or]: [
+                    {
+                        status: {
+                            [Op.like]: '%D%'
+                          },
+                          status: {
+                            [Op.like]: '%C%'
+                          }
+                     },
+                ]
+               
               },
             attributes: ['id', 'nama','createdAt','pembayaran','status','idtransaksi','invoiceId','totalharga','subsidi','ongkoskirim','buktibayar'],
             include: [ 
@@ -130,13 +138,7 @@ module.exports = {
     },
 
     async jumlahLead(req, res) {
-        let result = await transaksis.count({ 
-            where: {
-                status: {
-                  [Op.like]: '%A%'
-                }
-              },
-        }).then(result => {
+        let result = await transaksis.count().then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
                 return apiResponse.ErrorResponse(res, err);
@@ -238,7 +240,12 @@ module.exports = {
         let result = await transaksis.findAll({
             where: {
                 [Op.or]: [
-                    {nama: req.params.clue},
+                    {
+                        nama: {
+                            [Op.like]: '%'+req.params.clue+'%'
+                     }
+                    }
+                    
                 ]
             },
         }).then(result => {
