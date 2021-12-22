@@ -252,8 +252,8 @@ module.exports = {
                 { model: daexpedisis,
                     attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank'],
                 },
-                { model: auths,
-                    attributes: ['firstname'],
+                { model: customers,
+                  
                 }
             ]
             

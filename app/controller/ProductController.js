@@ -18,7 +18,7 @@ module.exports = {
             quantity: 0,
             sku: req.body.sku,
             unitId: req.body.unitId,
-            link: 'http://34.101.240.70:3000/images/'+link,
+            link: '/images/'+link,
             supplierId: req.body.supplierId,
             interval_year_expiry_date: req.body.interval_year_expiry_date
         }).then(result => {
