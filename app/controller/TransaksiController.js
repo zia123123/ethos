@@ -79,6 +79,8 @@ module.exports = {
                         include: [ 
                             { model: warehouses,
                                 attributes: ['name'],
+                            }, { model: customers,
+                                attributes: ['notelp'],
                             }
                         ]
         }).then(result => {
