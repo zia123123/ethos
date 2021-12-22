@@ -1,4 +1,4 @@
-const { products,product_stocks,suppliers } = require('../models/index');
+const { products,product_stocks,suppliers,warehouses } = require('../models/index');
 const { Op } = require("sequelize");
 const apiResponse = require("../helpers/apiResponse");
 
