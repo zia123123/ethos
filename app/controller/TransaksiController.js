@@ -1,4 +1,4 @@
-const { transaksis,statustranksasis,keranjangs,products,daexpedisis,customers    } = require('../models/index');
+const { transaksis,statustranksasis,keranjangs,products,daexpedisis,customers,warehouses    } = require('../models/index');
 const { Op } = require("sequelize");
 const apiResponse = require("../helpers/apiResponse");
 
@@ -76,11 +76,11 @@ module.exports = {
 
     async indexGudang(req, res) {
         let result = await transaksis.findAll({
-                        // include: [ 
-                        //     { model: daexpedisis,
-                        //         attributes: ['id'],
-                        //     }
-                        // ]
+                        include: [ 
+                            { model: warehouses,
+                                attributes: ['name'],
+                            }
+                        ]
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
