@@ -1,4 +1,4 @@
-const { transaksis,statustranksasis,keranjangs,products,daexpedisis,customers,warehouses    } = require('../models/index');
+const { transaksis,statustranksasis,keranjangs,products,daexpedisis,customers,warehouses,auths    } = require('../models/index');
 const { Op } = require("sequelize");
 const apiResponse = require("../helpers/apiResponse");
 
@@ -92,10 +92,18 @@ module.exports = {
 
     async indexAll(req, res) {
         let result = await transaksis.findAll({
-            attributes: ['id', 'nama','createdAt','pembayaran','status','idtransaksi','invoiceId','totalharga','subsidi','ongkoskirim'],
+            where: {
+                status: {
+                  [Op.like]: '%D%'
+                }
+              },
+            attributes: ['id', 'nama','createdAt','pembayaran','status','idtransaksi','invoiceId','totalharga','subsidi','ongkoskirim','buktibayar'],
             include: [ 
                 { model: daexpedisis,
                     attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank'],
+                },
+                { model: auths,
+                    attributes: ['firstname'],
                 }
             ]
              
@@ -110,10 +118,10 @@ module.exports = {
     async jumlahClosing(req, res) {
         let result = await transaksis.count()({ 
             where: {
-                [Op.or]: [
-                    {status: 'I'},
-                ]
-             },
+                status: {
+                  [Op.like]: '%I%'
+                }
+              },
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
@@ -124,10 +132,10 @@ module.exports = {
     async jumlahLead(req, res) {
         let result = await transaksis.count()({ 
             where: {
-                [Op.LIKE]: [
-                    {status: 'A'},
-                ]
-             },
+                status: {
+                  [Op.like]: '%A%'
+                }
+              },
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
@@ -137,8 +145,10 @@ module.exports = {
     async jumlahOnprogress(req, res) {
         let result = await transaksis.count()({ 
             where: {
-                status: 'D'
-             },
+                status: {
+                  [Op.like]: '%D%'
+                }
+              },
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
@@ -149,8 +159,10 @@ module.exports = {
     async jumlahRetur(req, res) {
         let result = await transaksis.count()({ 
             where: {
-                status: 'K'
-             },
+                status: {
+                  [Op.like]: '%K%'
+                }
+              },
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
@@ -207,7 +219,8 @@ module.exports = {
                 { model: daexpedisis,
                     attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank'],
                 },
-                { model: customers,
+                { model: auths,
+                    attributes: ['firstname'],
                 }
             ]
             
@@ -262,6 +275,7 @@ module.exports = {
         var link = req.files.buktibayar == null ? null : req.files.buktibayar[0].filename
         req.transaksi.buktibayar =  'http://34.101.240.70:3000/images/'+link;
         req.transaksi.invoiceId = req.body.invoiceId;
+        req.transaksi.status = 'D';
         req.transaksi.save().then(transaksi => {
         return apiResponse.successResponseWithData(res, "SUCCESS", transaksi);
         })
