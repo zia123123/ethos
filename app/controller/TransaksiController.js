@@ -93,14 +93,16 @@ module.exports = {
     async indexAll(req, res) {
         let result = await transaksis.findAll({
             where: {
-                [Op.or]: [
-                    {
                         status: {
+                            [Op.or]: [
+                                {
                             [Op.like]: '%D%'
+                          },
+                          {
+                            [Op.like]: '%C%'
                           }
+                        ]
                      },
-                ]
-               
               },
             attributes: ['id', 'nama','createdAt','pembayaran','status','idtransaksi','invoiceId','totalharga','subsidi','ongkoskirim','buktibayar'],
             include: [ 
@@ -123,13 +125,16 @@ module.exports = {
     async indexLunasRetur(req, res) {
         let result = await transaksis.findAll({
             where: {
-                [Op.or]: [
-                    {
-                        status: {
-                            [Op.like]: '%D%'
-                          }
-                     },
+                status: {
+                    [Op.or]: [
+                        {
+                    [Op.like]: '%F%'
+                  },
+                  {
+                    [Op.like]: '%K%'
+                  }
                 ]
+             },
                
               },
             attributes: ['id', 'nama','createdAt','pembayaran','status','idtransaksi','invoiceId','totalharga','subsidi','ongkoskirim','buktibayar'],
@@ -306,7 +311,7 @@ module.exports = {
 
     async uploadBuktibayar(req, res) {
         var link = req.files.buktibayar == null ? null : req.files.buktibayar[0].filename
-        req.transaksi.buktibayar =  'http://34.101.240.70:3000/images/'+link;
+        req.transaksi.buktibayar =  '/images/'+link;
         req.transaksi.invoiceId = req.body.invoiceId;
         req.transaksi.status = 'D';
         req.transaksi.save().then(transaksi => {
