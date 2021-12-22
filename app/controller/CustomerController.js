@@ -55,11 +55,17 @@ module.exports = {
         let result = await customers.findAll({
             where: {
                 [Op.or]: [
-                    {nama: req.params.clue},
-                    {notelp: req.params.clue},
+                    {
+                        nama: {
+                            [Op.like]: '%'+req.params.clue+'%'
+                          },
+                          notelp: {
+                            [Op.like]: '%'+req.params.clue+'%'
+                          }
+                     },
                 ]
-            },
-        
+               
+              },
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
