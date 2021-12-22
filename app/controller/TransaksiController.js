@@ -97,9 +97,6 @@ module.exports = {
                     {
                         status: {
                             [Op.like]: '%D%'
-                          },
-                          status: {
-                            [Op.like]: '%C%'
                           }
                      },
                 ]
