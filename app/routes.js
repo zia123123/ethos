@@ -262,6 +262,7 @@ router.get('/api/jenispaket/', FTransaksiController.indexsjenispakets);
 router.post('/api/transaksi/create', TransaksiController.create);
 router.get('/api/transaksi/', TransaksiController.index);
 router.get('/api/transaksi/all', TransaksiController.indexAll);
+router.get('/api/transaksi/gudang', TransaksiController.indexGudang);
 router.get('/api/transaksi/:id', TransaksiController.find, TransaksiController.show);
 router.get('/api/transaksi/user/:userid', TransaksiController.findByuser);
 

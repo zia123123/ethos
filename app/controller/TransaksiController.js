@@ -74,6 +74,20 @@ module.exports = {
             });
     },
 
+    async indexGudang(req, res) {
+        let result = await transaksis.findAll({
+                        // include: [ 
+                        //     { model: daexpedisis,
+                        //         attributes: ['id'],
+                        //     }
+                        // ]
+        }).then(result => {
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            }).catch(function (err){
+                return apiResponse.ErrorResponse(res, err);
+            });
+    },
+
     async indexAll(req, res) {
         let result = await transaksis.findAll({
             attributes: ['id', 'nama','createdAt','pembayaran','status','idtransaksi','invoiceId','totalharga','subsidi','ongkoskirim'],
