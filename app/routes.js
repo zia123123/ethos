@@ -265,9 +265,7 @@ router.get('/api/transaksi/all', TransaksiController.indexAll);
 router.get('/api/transaksi/gudang', TransaksiController.indexGudang);
 router.get('/api/transaksi/:id', TransaksiController.find, TransaksiController.show);
 router.get('/api/transaksi/user/:userid', TransaksiController.findByuser);
-
 router.get('/api/transaksi/detail/:id', TransaksiController.getDetail);
-
 router.get('/api/transaksi/closing', TransaksiController.jumlahClosing);
 router.get('/api/transaksi/retur', TransaksiController.jumlahRetur);
 router.get('/api/transaksi/lead', TransaksiController.jumlahLead);

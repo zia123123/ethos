@@ -42,6 +42,11 @@ module.exports = {
 
     async index(req, res) {
         let result = await product_stocks.findAll({
+            include: [ 
+                { model: products,
+                }
+            ]
+
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
