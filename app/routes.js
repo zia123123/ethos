@@ -273,7 +273,7 @@ router.get('/api/transaksi/retur', TransaksiController.jumlahRetur);
 router.get('/api/transaksi/lead', TransaksiController.jumlahLead);
 router.get('/api/transaksi/progress', TransaksiController.jumlahOnprogress);
 
-router.get('/api/transaksi/lunasretur', TransaksiController.indexLunasRetur);
+router.get('/api/lunasretur/transaksi', TransaksiController.indexLunasRetur);
 
 
 
