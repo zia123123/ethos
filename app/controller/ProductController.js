@@ -109,6 +109,8 @@ module.exports = {
         })
     },
 
+
+
     // Delete
     async delete(req, res) {
         req.product.destroy().then(product => {
