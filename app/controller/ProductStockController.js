@@ -1,4 +1,4 @@
-const { product_stocks,products } = require('../models/index');
+const { product_stocks,products,warehouses } = require('../models/index');
 const { Op } = require("sequelize");
 const apiResponse = require("../helpers/apiResponse");
 
@@ -44,6 +44,9 @@ module.exports = {
         let result = await product_stocks.findAll({
             include: [ 
                 { model: products,
+                },
+                { model: warehouses,
+                    attributes: ['name'],
                 }
             ]
 
