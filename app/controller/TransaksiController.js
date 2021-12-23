@@ -100,6 +100,8 @@ module.exports = {
                           },
                           {
                             [Op.like]: '%C%'
+                          }, {
+                            [Op.like]: '%E%'
                           }
                         ]
                      },
@@ -311,7 +313,7 @@ module.exports = {
 
     async uploadBuktibayar(req, res) {
         var link = req.files.buktibayar == null ? null : req.files.buktibayar[0].filename
-        req.transaksi.buktibayar =  '/images/'+link;
+        req.transaksi.buktibayar =  'images/'+link;
         req.transaksi.invoiceId = req.body.invoiceId;
         req.transaksi.status = 'D';
         req.transaksi.save().then(transaksi => {
