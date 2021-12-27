@@ -67,7 +67,11 @@ module.exports = {
             include: [ 
                 { model: daexpedisis,
                     attributes: ['biayatambahan','norekening','biayacod','totalharga','createdAt'],
-                }
+                },
+                { model: buktibayars,
+                    attributes: ['link'],
+                },
+                
             ]
         }).then(result => {
             req.transaksi = result;
@@ -295,7 +299,11 @@ module.exports = {
                 },
                 { model: customers,
                   
-                }
+                },
+                { model: buktibayars,
+                    attributes: ['link'],
+                },
+                
             ]
             
         }).then(result => {
