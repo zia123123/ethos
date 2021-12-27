@@ -225,6 +225,16 @@ module.exports = {
 
 
     
+    async findAddLog(req, res, next) {
+        let transaksi = await transaksis.findByPk(req.params.id);
+        if (!transaksi) {
+        return apiResponse.notFoundResponse(res, "Not Fond");
+        } else {
+            req.transaksi = transaksi;
+            next();
+        }
+    },
+
     async createBuktibayar(req, res, next) {
         var link = req.files.link == null ? null : req.files.link[0].filename
         let result = await buktibayars.create({
