@@ -11,6 +11,9 @@ module.exports = (sequelize, DataTypes) => {
     namabank: {
       type: DataTypes.STRING
     },
+    totalharga: {
+      type: DataTypes.BIGINT
+    }, 
     biayacod: {
       type: DataTypes.INTEGER,
     },

@@ -28,15 +28,16 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     invoiceId: {
-    
       type: DataTypes.STRING,
     },
     statusbarang: {
       type: DataTypes.STRING
     },
-    buktibayar: {
-      type: DataTypes.STRING,
-      //allowNull: false,
+    sudahbayar: {
+      type: DataTypes.BIGINT,
+    },
+    kurangbayar: {
+      type: DataTypes.BIGINT,
     },
     idtransaksi: {
       allowNull: false,

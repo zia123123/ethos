@@ -28,6 +28,9 @@ module.exports = {
       namabank: {
         type: Sequelize.STRING
       },
+      totalharga: {
+        type: Sequelize.BIGINT
+      }, 
       norekening: {
         type: Sequelize.STRING
       },

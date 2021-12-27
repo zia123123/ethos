@@ -35,6 +35,25 @@ module.exports = {
             let keranjang = keranjangs.bulkCreate(datakeranjang, { individualHooks: true }).then(keranjang =>{
                 return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
             })
+            let jumlah = keranjangs.sum('jumlahproduct',{
+                where: {
+                    transaksiId: {
+                    [Op.like]: req.body.idtransaksi,
+                },
+            },
+            }).then(result => {
+                let product = products.findOne({
+                    where: {
+                        id:  1
+                    },
+                }).then(product =>{
+                    product.quantity = (parseInt(product.quantity) - parseInt(jumlah));
+                    product.save()
+                })
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            }).catch(function (err){
+                return apiResponse.ErrorResponse(res, err);
+            });
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
         }).catch(function (err)  {
             return apiResponse.ErrorResponse(res, err);

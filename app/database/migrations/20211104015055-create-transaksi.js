@@ -122,14 +122,15 @@ module.exports = {
       subsidi: {
         type: Sequelize.INTEGER
       },   
-      totalharga: {
-        type: Sequelize.INTEGER
-      }, 
+
       memotransaksi: {
         type: Sequelize.TEXT
       },
-      buktibayar: {
-        type: Sequelize.STRING,
+      sudahbayar: {
+        type: Sequelize.BIGINT,
+      },
+      kurangbayar: {
+        type: Sequelize.BIGINT,
       },
       createdAt: {
         allowNull: false,
