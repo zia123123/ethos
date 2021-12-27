@@ -12,6 +12,6 @@ module.exports = (sequelize, DataTypes) => {
     buktibayar.belongsTo(models.transaksis, { foreignKey: "transaksisId"})
   };
 
-  return daexpedisi;
+  return buktibayar;
 };
   
