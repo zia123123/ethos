@@ -243,7 +243,7 @@ module.exports = {
         var link = req.files.buktibayar == null ? null : req.files.buktibayar[0].filename
         let result = await buktibayars.create({
             link: 'images/'+link,
-            transaksiId: req.params.id,
+            transaksisId: req.params.id,
         }).then(result => {
             let transaksi = transaksis.findOne({
                 where: {
