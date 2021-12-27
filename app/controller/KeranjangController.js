@@ -57,7 +57,7 @@ module.exports = {
             // }).then(keranjang =>{
             //     return apiResponse.successResponseWithTwoData(res, "SUCCESS", result, keranjang);
             // })
-            return apiResponse.successResponseWithTwoData(res, "SUCCESS", result, keranjang);
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
                 return apiResponse.ErrorResponse(res, err);
             });
