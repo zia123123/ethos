@@ -138,14 +138,17 @@ module.exports = {
                         ]
                      },
               },
-            attributes: ['id', 'nama','createdAt','pembayaran','status','idtransaksi','invoiceId','subsidi','ongkoskirim','buktibayar'],
+            attributes: ['id', 'nama','createdAt','pembayaran','status','idtransaksi','invoiceId','subsidi','ongkoskirim'],
             include: [ 
                 { model: daexpedisis,
                     attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank','totalharga'],
                 },
                 { model: auths,
                     attributes: ['firstname'],
-                }
+                },
+                { model: buktibayars,
+                    attributes: ['link'],
+                },
             ]
              
         }).then(result => {
@@ -171,7 +174,7 @@ module.exports = {
              },
                
               },
-            attributes: ['id', 'nama','createdAt','pembayaran','status','idtransaksi','invoiceId','subsidi','ongkoskirim','buktibayar'],
+            attributes: ['id', 'nama','createdAt','pembayaran','status','idtransaksi','invoiceId','subsidi','ongkoskirim'],
             include: [ 
                 { model: daexpedisis,
                     attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank','totalharga'],
