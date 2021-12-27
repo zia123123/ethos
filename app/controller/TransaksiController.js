@@ -68,9 +68,9 @@ module.exports = {
                 { model: daexpedisis,
                     attributes: ['biayatambahan','norekening','biayacod','totalharga','createdAt'],
                 },
-                // { model: buktibayars,
-                //     attributes: ['link'],
-                // },
+                { model: buktibayars,
+                    attributes: ['link'],
+                },
                 
             ]
         }).then(result => {
@@ -300,9 +300,9 @@ module.exports = {
                 { model: customers,
                   
                 },
-                // { model: buktibayars,
-                //     attributes: ['link'],
-                // },
+                { model: buktibayars,
+                    attributes: ['link'],
+                },
                 
             ]
             
