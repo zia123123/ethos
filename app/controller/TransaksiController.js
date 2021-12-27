@@ -236,7 +236,7 @@ module.exports = {
     },
 
     async createBuktibayar(req, res, next) {
-        var link = req.files.link == null ? null : req.files.link[0].filename
+        var link = req.files.buktibayar == null ? null : req.files.buktibayar[0].filename
         let result = await buktibayars.create({
             link: 'images/'+link,
             transaksiId: req.params.id,
