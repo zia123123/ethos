@@ -66,7 +66,7 @@ module.exports = {
             },
             include: [ 
                 { model: daexpedisis,
-                    attributes: ['biayatambahan','norekening','biayacod','createdAt'],
+                    attributes: ['biayatambahan','norekening','biayacod','totalharga','createdAt'],
                 }
             ]
         }).then(result => {
