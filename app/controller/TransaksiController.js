@@ -23,7 +23,6 @@ module.exports = {
             idtransaksi: req.body.idtransaksi,
             products: keranjangdata,
             discount: req.body.discount,
-            totalharga: req.body.totalharga,
             typebayar: req.body.typebayar,
             pembayaran: req.body.pembayaran,
             status:  req.body.status,
@@ -324,6 +323,8 @@ module.exports = {
     // add log
     async addlogstatus(req, res) {
         req.transaksi.status = req.body.logstatus;
+        req.transaksi.sudahbayar = req.body.sudahbayar;
+        req.transaksi.kurangbayar = req.body.kurangbayar;
         req.transaksi.logstatus = req.transaksi.logstatus+"#"+req.body.logstatus;
         req.transaksi.save().then(transaksi => {
         return apiResponse.successResponseWithData(res, "SUCCESS", transaksi);

@@ -11,6 +11,7 @@ module.exports = {
             subsidi: req.body.subsidi,
             transaksisId: req.body.transaksiId,
             namabank: req.body.namabank,
+            totalharga: req.body.totalharga,
             biayatambahan: req.body.biayatambahan,
             norekening: req.body.norekening ,
             biayacod: req.body.biayacod,
