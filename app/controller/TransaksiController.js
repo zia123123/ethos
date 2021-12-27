@@ -300,7 +300,7 @@ module.exports = {
             });
     },
 
-    async getDetail(req, res) {
+    async   getDetail(req, res) {
         let result = await transaksis.findOne({
             where: {
                     id: req.params.id,
@@ -308,7 +308,7 @@ module.exports = {
             //attributes: ['id', 'nama','status','districtId','memotransaksi','idtransaksi','expedisiName'],
             include: [ 
                 { model: daexpedisis,
-                    attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank'],
+                    attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank','totalharga'],
                 },
                 { model: customers,
                   
