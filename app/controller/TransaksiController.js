@@ -1,4 +1,4 @@
-const { transaksis,statustranksasis,keranjangs,products,daexpedisis,customers,warehouses,auths    } = require('../models/index');
+const { transaksis,statustranksasis,keranjangs,products,daexpedisis,customers,warehouses,auths,buktibayars    } = require('../models/index');
 const { Op } = require("sequelize");
 const apiResponse = require("../helpers/apiResponse");
 
@@ -225,14 +225,24 @@ module.exports = {
 
 
     
-    async findAddLog(req, res, next) {
-        let transaksi = await transaksis.findByPk(req.params.id);
-        if (!transaksi) {
-        return apiResponse.notFoundResponse(res, "Not Fond");
-        } else {
-            req.transaksi = transaksi;
-            next();
-        }
+    async createBuktibayar(req, res, next) {
+        var link = req.files.link == null ? null : req.files.link[0].filename
+        let result = await buktibayars.create({
+            link: 'images/'+link,
+            transaksiId: req.params.id,
+        }).then(result => {
+            let transaksi = transaksis.findOne({
+                where: {
+                    id:  req.params.id
+                },
+            }).then(transaksi =>{
+                transaksi.invoiceId = req.body.invoiceId;
+                transaksi.save()
+            })
+            return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
+        }).catch(function (err)  {
+            return apiResponse.ErrorResponse(res, err);
+        });
     },
 
     async findByuser(req, res) {

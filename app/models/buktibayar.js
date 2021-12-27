@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
     tableName: "buktibayars"
   });
   buktibayar.associate = function(models) {
-    buktibayar.belongsTo(models.transaksis, { foreignKey: "transaksisId"})
+    buktibayar.belongsTo(models.transaksis, { foreignKey: "transaksiId"})
   };
 
   return buktibayar;

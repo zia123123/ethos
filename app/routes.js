@@ -278,7 +278,7 @@ router.get('/api/lunasretur/transaksi', TransaksiController.indexLunasRetur);
 router.put('/api/transaksi/buktibayar/:id',multer(multerConf).fields([{
     name: 'buktibayar', maxCount: 1
     }
-]),TransaksiController.findAddLog, TransaksiController.uploadBuktibayar);
+]),TransaksiController.createBuktibayar);
 
 router.get('/api/transaksi/filter/:clue', TransaksiController.filterTransaksi);
 
