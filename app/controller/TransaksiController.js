@@ -246,6 +246,7 @@ module.exports = {
                     id:  req.params.id
                 },
             }).then(transaksi =>{
+                transaksi.status = 'D'
                 transaksi.invoiceId = req.body.invoiceId;
                 transaksi.save()
             })
