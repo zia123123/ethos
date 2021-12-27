@@ -1,4 +1,4 @@
-const { transaksis,statustranksasis,keranjangs,products,daexpedisis,customers,warehouses,auths,buktibayars    } = require('../models/index');
+const { transaksis,statustranksasis,keranjangs,products,daexpedisis,customers,warehouses,auths,buktibayars,product_stocks    } = require('../models/index');
 const { Op } = require("sequelize");
 const apiResponse = require("../helpers/apiResponse");
 
@@ -34,25 +34,35 @@ module.exports = {
             let keranjang = keranjangs.bulkCreate(datakeranjang, { individualHooks: true }).then(keranjang =>{
                 return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
             })
-            // let jumlah = keranjangs.sum('jumlahproduct',{
-            //     where: {
-            //         transaksiId: {
-            //         [Op.like]: req.body.idtransaksi,
-            //     },
-            // },
-            // }).then(result => {
-            //     let product = products.findOne({
-            //         where: {
-            //             id:  1
-            //         },
-            //     }).then(product =>{
-            //         product.quantity = (parseInt(product.quantity) - parseInt(jumlah));
-            //         product.save()
-            //     })
-            // return apiResponse.successResponseWithData(res, "SUCCESS", result);
-            // }).catch(function (err){
-            //     return apiResponse.ErrorResponse(res, err);
-            // });
+            let keranjung = keranjangs.findAll({
+                where: {
+                    transaksiId: {
+                    [Op.like]: req.body.idtransaksi,
+                },
+            },
+            }).then(keranjung =>{
+            let quantity = 0;
+            for(var i=0;i<keranjung.length;i++){
+                quantity = keranjung[i].jumlahproduct
+                let stok = product_stocks.create({ 
+                    productId: keranjung[i].productId,
+                    warehouseId: req.body.warehouseId,
+                    quantity: quantity,
+                    inbound:false,
+                    nodeliverorder: keranjung[i].id,
+                    remark: "-"
+                });
+                let product = products.findOne({
+                    where: {
+                        id:  keranjung[i].productId
+                    },
+                }).then(product =>{
+                    product.quantity = (parseInt(product.quantity) - parseInt(quantity));
+                    product.save()
+                })
+            }
+            apiResponse.successResponseWithData(res, "SUCCESS", req.keranjang);
+            })
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
         }).catch(function (err)  {
             return apiResponse.ErrorResponse(res, err);

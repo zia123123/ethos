@@ -320,6 +320,7 @@ router.get('/api/keranjang/byidtransaksi/:transaksiId', KeranjangController.find
 router.get('/api/keranjang/:id', KeranjangController.find, KeranjangController.show);
 router.patch('/api/keranjang/update/:id', KeranjangController.find,KeranjangController.update);
 
+router.get('/api/keranjang/outbond/:transaksiId', KeranjangController.array);
 
 
 

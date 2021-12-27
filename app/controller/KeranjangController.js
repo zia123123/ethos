@@ -1,4 +1,4 @@
-const { keranjangs } = require('../models/index');
+const { keranjangs,product_stocks,products } = require('../models/index');
 const { Op } = require("sequelize");
 const apiResponse = require("../helpers/apiResponse");
 
@@ -77,6 +77,11 @@ module.exports = {
                 return apiResponse.ErrorResponse(res, err);
             });
     },
+
+    async array(req, res) {
+ 
+    },
+
 
     // Show
     async show(req, res) {
