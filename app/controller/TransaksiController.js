@@ -81,6 +81,9 @@ module.exports = {
                 { model: buktibayars,
                     attributes: ['link'],
                 },
+                { model: auths,
+                    attributes: ['firstname'],
+                },
                 
             ]
         }).then(result => {
