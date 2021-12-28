@@ -111,13 +111,28 @@ module.exports = {
 
     async indexGudang(req, res) {
         let result = await transaksis.findAll({
+            where: {
+                status: {
+                    [Op.or]: [
+                        {
+                    [Op.like]: '%F%'
+                  },
+                  {
+                    [Op.like]: '%K%'
+                  }
+                ]
+             },
+              },
                         include: [ 
                             { model: warehouses,
                                 attributes: ['name'],
                             }, { model: customers,
                                 attributes: ['notelp'],
-                            }
-                        ]
+                            },
+                            { model: daexpedisis,
+                                attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank','totalharga'],
+                            },
+            ]
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){

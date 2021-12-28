@@ -11,6 +11,8 @@ const router = express.Router();
 
 
 
+const SaldoController = require('./controller/SaldoController');
+
 const AuthenController = require('./controller/AuthenController');
 const ProductController = require('./controller/ProductController');
 
@@ -29,6 +31,8 @@ const CityAgencyController = require('./controller/CityAgencyController');
 const WarehouseController = require('./controller/WarehouseController');
 
 const DomainController = require('./controller/DomainController');
+
+const BiayaIklanController = require('./controller/BiayaIklanController');
 
 
 const ProductStockController = require('./controller/ProductStockController');
@@ -209,6 +213,24 @@ router.get('/api/iklan/', IklanController.index);
 router.get('/api/iklan/:id', IklanController.find, IklanController.show);
 router.patch('/api/iklan/update/:id', IklanController.find,IklanController.update);
 router.delete('/api/iklan/delete/:id', IklanController.find,IklanController.delete);
+
+//biaya iklan
+router.post('/api/biayaiklan/create', BiayaIklanController.create);
+router.get('/api/biayaiklan/', BiayaIklanController.index);
+router.get('/api/biayaiklan/:id', BiayaIklanController.find, BiayaIklanController.show);
+router.patch('/api/biayaiklan/update/:id', BiayaIklanController.find,BiayaIklanController.update);
+router.delete('/api/biayaiklan/delete/:id', BiayaIklanController.find,BiayaIklanController.delete);
+
+
+
+router.post('/api/saldo/create',multer(multerConf).fields([{
+    name: 'buktisaldo', maxCount: 1
+    }
+]), SaldoController.create);
+router.get('/api/saldo/', SaldoController.index);
+router.get('/api/saldo/:id', SaldoController.find, SaldoController.show);
+router.patch('/api/saldo/update/:id', SaldoController.find,SaldoController.update);
+router.delete('/api/saldo/delete/:id', SaldoController.find,SaldoController.delete);
 
 //customer
 router.post('/api/customer/create', CustomerController.create);
