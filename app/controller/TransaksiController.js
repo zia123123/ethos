@@ -76,7 +76,7 @@ module.exports = {
             },
             include: [ 
                 { model: daexpedisis,
-                    attributes: ['biayatambahan','norekening','biayacod','createdAt','totalharga'],
+                    attributes: ['namabank','biayatambahan','norekening','biayacod','createdAt','totalharga'],
                 },
                 { model: buktibayars,
                     attributes: ['link'],
