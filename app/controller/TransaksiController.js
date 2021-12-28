@@ -34,35 +34,35 @@ module.exports = {
             let keranjang = keranjangs.bulkCreate(datakeranjang, { individualHooks: true }).then(keranjang =>{
                 return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
             })
-            let keranjung = keranjangs.findAll({
-                where: {
-                    transaksiId: {
-                    [Op.like]: req.body.idtransaksi,
-                },
-            },
-            }).then(keranjung =>{
+            // let keranjung = keranjangs.findAll({
+            //     where: {
+            //         transaksiId: {
+            //         [Op.like]: req.body.idtransaksi,
+            //     },
+            // },
+            // }).then(keranjung =>{
             let quantity = 0;
-            for(var i=0;i<keranjung.length;i++){
-                quantity = keranjung[i].jumlahproduct
+            for(var i=0;i<datakeranjang.length;i++){
+                quantity = datakeranjang[i].jumlahproduct
                 let stok = product_stocks.create({ 
-                    productId: keranjung[i].productId,
+                    productId: datakeranjang[i].productId,
                     warehouseId: req.body.warehouseId,
                     quantity: quantity,
                     inbound:false,
-                    nodeliverorder: keranjung[i].id,
+                    nodeliverorder: datakeranjang[i].id,
                     remark: "-"
                 });
                 let product = products.findOne({
                     where: {
-                        id:  keranjung[i].productId
+                        id:  datakeranjang[i].productId
                     },
                 }).then(product =>{
                     product.quantity = (parseInt(product.quantity) - parseInt(quantity));
                     product.save()
                 })
             }
-            apiResponse.successResponseWithData(res, "SUCCESS", req.keranjang);
-            })
+            // apiResponse.successResponseWithData(res, "SUCCESS", req.keranjang);
+            // })
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
         }).catch(function (err)  {
             return apiResponse.ErrorResponse(res, err);
