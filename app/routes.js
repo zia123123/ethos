@@ -19,6 +19,8 @@ const SupplierController = require('./controller/SupplierController');
 const ProvincesController = require('./controller/ProvincesController');
 
 const NinjaOriginController = require('./controller/NinjaOriginController');
+const IklanController = require('./controller/IklanController');
+
 
 const DistrictController = require('./controller/DistrictController');
 
@@ -194,12 +196,19 @@ router.get('/api/office/', OfficeController.index);
 router.get('/api/office/:id', OfficeController.find, OfficeController.show);
 router.patch('/api/office/update/:id', OfficeController.find,OfficeController.update);
 
+//office
+router.post('/api/office/create', OfficeController.create);
+router.get('/api/office/', OfficeController.index);
+router.get('/api/office/:id', OfficeController.find, OfficeController.show);
+router.patch('/api/office/update/:id', OfficeController.find,OfficeController.update);
 
-//mapping
-router.post('/api/mapping/create', MappingController.create);
-router.get('/api/mapping/', MappingController.index);
-router.get('/api/mapping/:id', MappingController.find, MappingController.show);
-router.patch('/api/mapping/update/:id', MappingController.find,MappingController.update);
+
+//iklan
+router.post('/api/iklan/create', IklanController.create);
+router.get('/api/iklan/', IklanController.index);
+router.get('/api/iklan/:id', IklanController.find, IklanController.show);
+router.patch('/api/iklan/update/:id', IklanController.find,IklanController.update);
+router.delete('/api/iklan/delete/:id', IklanController.find,IklanController.delete);
 
 //customer
 router.post('/api/customer/create', CustomerController.create);

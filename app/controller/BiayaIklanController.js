@@ -1,14 +1,14 @@
-const { iklan } = require('../models/index');
+const { biayaiklan } = require('../models/index');
 const { Op } = require("sequelize");
 const apiResponse = require("../helpers/apiResponse");
 
 module.exports = {
-
     //create
     async create(req, res) { 
-        let result = await iklan.create({
+        let result = await biayaiklan.create({
             url: req.body.url,
             namaproduct: req.body.namaproduct,
+            biayaiklan: req.body.biayaiklan,
             status:false,
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
@@ -18,7 +18,7 @@ module.exports = {
       },
 
     async find(req, res, next) {
-        let result = await iklan.findByPk(req.params.id);
+        let result = await biayaiklan.findByPk(req.params.id);
         if (!result) {
         return apiResponse.notFoundResponse(res, "Not Fond");
         } else {
@@ -28,7 +28,7 @@ module.exports = {
     },
 
     async index(req, res) {
-        let result = await iklan.findAll({
+        let result = await biayaiklan.findAll({
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
@@ -47,6 +47,7 @@ module.exports = {
         req.result.url = req.body.url;        
         req.result.namaproduct = req.body.namaproduct;
         req.result.status = req.body.status;
+        req.result.biayaiklan = req.body.biayaiklan;
         req.result.save().then(result => {
         return apiResponse.successResponseWithData(res, "SUCCESS", result);
         })
