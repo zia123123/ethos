@@ -43,6 +43,7 @@ module.exports = {
     async index(req, res) {
         let page = parseInt(req.query.page)
         let limit = parseInt(req.query.limit)
+        const count = await product_stocks.count()
         let result = await product_stocks.findAll({
             offset: (page - 1) * limit,
             limit: limit,
@@ -58,14 +59,18 @@ module.exports = {
             ]
 
         }).then(result => {
-            var totalPage = (result.length / limit) + 1
+            // var totaldatanya = 0
+            // let totaldata = product_stocks.count().then(totaldata =>{
+            //     totaldatanya = totaldata.length 
+            // })
+            var totalPage = (parseInt(count) / limit) + 1
             returnData = {
                 result,
                 metadata: {
                     page: page,
                     count: result.length,
                     totalPage: parseInt(totalPage),
-                    totalData:  result.length,
+                    totalData:  count,
                 }
             }
             return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
