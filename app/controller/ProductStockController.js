@@ -41,10 +41,10 @@ module.exports = {
     },
 
     async index(req, res) {
-        let limit = 10
-        let offset = 0 + (req.params.page - 1) * limit
+        let page = parseInt(req.query.page)
+        let limit = parseInt(req.query.limit)
         let result = await product_stocks.findAll({
-            offset: offset,
+            offset: (page - 1) * limit,
             limit: limit,
             order: [
                 ['id', 'DESC'],
@@ -58,7 +58,17 @@ module.exports = {
             ]
 
         }).then(result => {
-            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            var totalPage = (result.length / limit) + 1
+            returnData = {
+                result,
+                metadata: {
+                    page: page,
+                    count: result.length,
+                    totalPage: parseInt(totalPage),
+                    totalData:  result.length,
+                }
+            }
+            return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
             }).catch(function (err){
                 return apiResponse.ErrorResponse(res, err);
             });

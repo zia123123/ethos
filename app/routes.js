@@ -185,7 +185,7 @@ router.patch('/api/domain/update/:id', DomainController.find,DomainController.up
 
 //ProductStockController
 router.post('/api/stock/create', ProductStockController.create);
-router.get('/api/stock/:page', ProductStockController.index);
+router.get('/api/stock/', ProductStockController.index);
 router.get('/api/stock/warehouse/:warehouseId', ProductController.indexWarehouse);
 //router.get('/api/stock/:id', ProductStockController.find, ProductStockController.show);
 router.patch('/api/stock/update/:id', ProductStockController.find,ProductStockController.update);
