@@ -41,7 +41,11 @@ module.exports = {
     },
 
     async index(req, res) {
+        let limit = 10
+        let offset = 0 + (req.params.page - 1) * limit
         let result = await product_stocks.findAll({
+            offset: offset,
+            limit: limit,
             order: [
                 ['id', 'DESC'],
             ],
