@@ -42,6 +42,9 @@ module.exports = {
 
     async index(req, res) {
         let result = await product_stocks.findAll({
+            order: [
+                ['id', 'DESC'],
+            ],
             include: [ 
                 { model: products,
                 },
