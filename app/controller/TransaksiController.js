@@ -96,6 +96,9 @@ module.exports = {
 
     async index(req, res) {
         let result = await transaksis.findAll({
+            order: [
+                ['id', 'DESC'],
+            ],
             attributes: ['id', 'nama','createdAt','pembayaran','status','idtransaksi'],
                         // include: [ 
                         //     { model: daexpedisis,
@@ -111,6 +114,7 @@ module.exports = {
 
     async indexGudang(req, res) {
         let result = await transaksis.findAll({
+            
             where: {
                 status: {
                     [Op.or]: [
@@ -123,6 +127,9 @@ module.exports = {
                 ]
              },
               },
+              order: [
+                ['id', 'DESC'],
+            ],
                         include: [ 
                             { model: warehouses,
                                 attributes: ['name'],
@@ -156,6 +163,9 @@ module.exports = {
                         ]
                      },
               },
+              order: [
+                ['id', 'DESC'],
+            ],
             attributes: ['id', 'nama','createdAt','pembayaran','status','idtransaksi','invoiceId','subsidi','ongkoskirim'],
             include: [ 
                 { model: daexpedisis,
@@ -192,6 +202,9 @@ module.exports = {
              },
                
               },
+              order: [
+                ['id', 'DESC'],
+            ],
             attributes: ['id', 'nama','createdAt','pembayaran','status','idtransaksi','invoiceId','subsidi','ongkoskirim'],
             include: [ 
                 { model: daexpedisis,
@@ -359,6 +372,9 @@ module.exports = {
                     
                 ]
             },
+            order: [
+                ['id', 'DESC'],
+            ],
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
