@@ -95,7 +95,31 @@ module.exports = {
     },
 
     async index(req, res) {
+      
+        let metodebayar = parseInt(req.query.metodebayar)
+        let status = req.query.status
+        if( status == null ){
+            status = ""
+        }
+        if(isNaN(parseFloat(metodebayar))){
+            metodebayar = ""
+        }
+       
         let result = await transaksis.findAll({
+            where:{
+                [Op.and]: [
+                    {
+                    status: {    
+                        [Op.like]: '%'+status+'%'
+                    }
+                     },
+                     {
+                        pembayaran: {    
+                            [Op.like]: '%'+metodebayar+'%'
+                        }
+                         },
+                  ]
+             },
             order: [
                 ['id', 'DESC'],
             ],
