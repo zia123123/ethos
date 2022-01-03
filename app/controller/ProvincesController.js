@@ -1,5 +1,6 @@
-const { provinces } = require('../models/index');
+const { provinces,sequelize } = require('../models/index');
 const { Op } = require("sequelize");
+var Sequelize = require("sequelize");
 const apiResponse = require("../helpers/apiResponse");
 
 module.exports = {
@@ -17,7 +18,7 @@ module.exports = {
 
     async find(req, res, next) {
         let province = await provinces.findByPk(req.params.id);
-        if (!district) {
+        if (!province) {
         return apiResponse.notFoundResponse(res, "Not Fond");
         } else {
             req.province = province;
@@ -26,8 +27,8 @@ module.exports = {
     },
 
     async index(req, res) {
-        let result = await provinces.findAll({
-        }).then(result => {
+        let result = await sequelize.query("SELECT id,name FROM `reg_provinces`",  {type: sequelize.QueryTypes.SELECT}
+            ).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
                 return apiResponse.ErrorResponse(res, err);
@@ -36,7 +37,7 @@ module.exports = {
 
     // Show
     async show(req, res) {
-        return apiResponse.successResponseWithData(res, "SUCCESS", req.province);
+        return apiResponse.successResponseWithData(res, "SUCCESS", req.reg_provinces);
     },
 
     // Update

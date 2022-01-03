@@ -154,15 +154,15 @@ router.patch('/api/ninja/update/:id', NinjaOriginController.find,NinjaOriginCont
 
 //district
 router.post('/api/disctrict/create', DistrictController.create);
-router.get('/api/disctrict/', DistrictController.index);
-router.get('/api/disctrict/:id', DistrictController.find, DistrictController.show);
-router.patch('/api/disctrict/update/:id', DistrictController.find,DistrictController.updateProduct);
+router.get('/api/disctrict/:id', DistrictController.index);
+//router.get('/api/disctrict/:id', DistrictController.find, DistrictController.show);
+//router.patch('/api/disctrict/update/:id', DistrictController.find,DistrictController.updateProduct);
 
 //CityAgencyController
 router.post('/api/cityagency/create', CityAgencyController.create);
-router.get('/api/cityagency/', CityAgencyController.index);
-router.get('/api/cityagency/:id', CityAgencyController.find, CityAgencyController.show);
-router.patch('/api/cityagency/update/:id', CityAgencyController.find,CityAgencyController.updateProduct);
+router.get('/api/cityagency/:id', CityAgencyController.index);
+//router.get('/api/cityagency/:id', CityAgencyController.find, CityAgencyController.show);
+//router.patch('/api/cityagency/update/:id', CityAgencyController.find,CityAgencyController.updateProduct);
 
 
 //warehouse

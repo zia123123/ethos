@@ -1,4 +1,4 @@
-const { cityregencies } = require('../models/index');
+const { cityregencies,sequelize} = require('../models/index');
 const { Op } = require("sequelize");
 const apiResponse = require("../helpers/apiResponse");
 
@@ -26,8 +26,12 @@ module.exports = {
     },
 
     async index(req, res) {
-        let result = await cityregencies.findAll({
-        }).then(result => {
+        let result = await sequelize.query(
+            'SELECT id,name FROM reg_regencies WHERE province_id = :id',
+            {
+              replacements: { id: req.params.id },
+              type: sequelize.QueryTypes.SELECT}
+          ).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
                 return apiResponse.ErrorResponse(res, err);

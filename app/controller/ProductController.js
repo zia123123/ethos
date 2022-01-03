@@ -52,14 +52,14 @@ module.exports = {
         let result = await products.findAll({
             attributes: ['id', 'name','expiry_date','price','link','discount','quantity','sku'],
             include: [ 
-                { model: product_stocks,
-                    attributes: ['quantity','warehouseId'],
-                    include: [ 
-                        { model: warehouses,
-                            attributes: ['name'],
-                        }
-                    ]
-                },
+                // { model: product_stocks,
+                //     attributes: ['quantity','warehouseId'],
+                //     include: [ 
+                //         { model: warehouses,
+                //             attributes: ['name'],
+                //         }
+                //     ]
+                // },
                 { model: suppliers,
                     attributes: ['name'],
                 }
