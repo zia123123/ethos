@@ -58,6 +58,9 @@ module.exports = (sequelize, DataTypes) => {
   customer.associate = function(models) { 
     customer.hasMany(models.transaksis,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "customer"})
     customer.belongsTo(models.province , { foreginKey: "provinceId"})
+    customer.belongsTo(models.cityregencies , { foreginKey: "cityregencyId"})
+    customer.belongsTo(models.districts , { foreginKey: "districtId"})
+
 
   };
 
