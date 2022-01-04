@@ -35,12 +35,12 @@ module.exports = {
                 id: req.params.id,
             },
              include: [
-               //  { model: districts,
-            //     attributes: ['name']
-            // },
-            // { model: cityregencies,
-            //     attributes: ['name']
-            // },
+                { model: districts,
+                attributes: ['name']
+            },
+            { model: cityregencies,
+                attributes: ['name']
+            },
             { model: province,
                 attributes: ['name']
             
