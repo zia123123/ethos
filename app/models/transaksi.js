@@ -97,6 +97,10 @@ module.exports = (sequelize, DataTypes) => {
     transaksi.belongsTo(models.customers, { foreginKey: "customerId"})
     transaksi.belongsTo(models.warehouses, { foreginKey: "warehouseId"})
 
+    transaksi.belongsTo(models.province , { foreginKey: "provinceId"})
+    transaksi.belongsTo(models.cityregencies , { foreginKey: "cityregencyId"})
+    transaksi.belongsTo(models.districts , { foreginKey: "districtId"})
+
     //transaksi.belongsTo(models.products, { foreginKey: "productId"})
     
    
