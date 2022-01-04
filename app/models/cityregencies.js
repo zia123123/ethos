@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
   cityregency.associate = function(models) {
   cityregency.hasMany(models.transaksis)
   cityregency.hasMany(models.customers)
+  cityregency.hasMany(models.warehouses)
 
   };
 
