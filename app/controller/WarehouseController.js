@@ -41,17 +41,17 @@ module.exports = {
     async index(req, res) {
         let result = await warehouses.findAll({
             attributes: ['id', 'name'],
-            include: [ 
-                { model: provinces,
-                    attributes: [ 'name'],
-                },
-                { model: cityregencies,
-                    attributes: [ 'name'],
-                },
-                { model: districts,
-                    attributes: [ 'name'],
-                },
-            ]
+            // include: [ 
+            //     { model: provinces,
+            //         attributes: [ 'name'],
+            //     },
+            //     { model: cityregencies,
+            //         attributes: [ 'name'],
+            //     },
+            //     { model: districts,
+            //         attributes: [ 'name'],
+            //     },
+            // ]
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
