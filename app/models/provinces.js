@@ -16,6 +16,8 @@ module.exports = (sequelize, DataTypes) => {
 
   //province.hasMany(models.transaksis,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "province"})
   province.hasMany(models.customers)
+  province.hasMany(models.warehouses)
+  province.hasMany(models.transaksis)
 
   };
 
