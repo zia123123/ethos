@@ -59,7 +59,15 @@ module.exports = (sequelize, DataTypes) => {
     so: {
       type: DataTypes.STRING
     },
- 
+    provinceId: {
+      type: DataTypes.INTEGER,
+    },
+    cityregencyId: {
+      type: DataTypes.INTEGER,
+    },
+    districtId: {
+      type: DataTypes.INTEGER,
+    },
     products: {
       type: DataTypes.STRING
     },
@@ -85,9 +93,6 @@ module.exports = (sequelize, DataTypes) => {
     transaksi.hasOne(models.daexpedisis)
     transaksi.hasMany(models.buktibayars)
     // transaksi.belongsTo(models.expedisis, { foreginKey: "expedisiId"})   
-    //transaksi.belongsTo(models.provinces, { foreginKey: "provinceId"})   
-    transaksi.belongsTo(models.districts, { foreginKey: "districtId"})   
-    transaksi.belongsTo(models.cityregencies, { foreginKey: "cityregencyId"})
     transaksi.belongsTo(models.auths, { foreginKey: "authId"})
     transaksi.belongsTo(models.customers, { foreginKey: "customerId"})
     transaksi.belongsTo(models.warehouses, { foreginKey: "warehouseId"})

@@ -26,16 +26,7 @@ module.exports = {
         onDelete: 'cascade',
         onUpdate: 'cascade'
       },
-      districtId: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-        references: {
-          model: "districts",
-          key: "id"
-        },
-        onDelete: 'cascade',
-        onUpdate: 'cascade'
-      },
+
       authId: {
         allowNull: false,
         type: Sequelize.INTEGER,
@@ -50,25 +41,15 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
+
       provinceId: {
-        allowNull: false,
         type: Sequelize.INTEGER,
-        references: {
-          model: "provinces",
-          key: "id"
-        },
-        onDelete: 'cascade',
-        onUpdate: 'cascade'
       },
       cityregencyId: {
-        allowNull: false,
         type: Sequelize.INTEGER,
-        references: {
-          model: "cityregencies",
-          key: "id"
-        },
-        onDelete: 'cascade',
-        onUpdate: 'cascade'
+      },
+      districtId: {
+        type: Sequelize.INTEGER,
       },
       warehouseId: {
         allowNull: false,
@@ -122,6 +103,16 @@ module.exports = {
       subsidi: {
         type: Sequelize.INTEGER
       },   
+
+      provinceId: {
+        type: Sequelize.INTEGER,
+      },
+      cityregencyId: {
+        type: Sequelize.INTEGER,
+      },
+      districtId: {
+        type: Sequelize.INTEGER,
+      },
 
       memotransaksi: {
         type: Sequelize.TEXT

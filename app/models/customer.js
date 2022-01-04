@@ -34,7 +34,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
     },
     memoid: {
-     
       type: DataTypes.INTEGER,
     },
     jeniskelamin: {
@@ -42,17 +41,23 @@ module.exports = (sequelize, DataTypes) => {
     },
     postalcode: {
       type: DataTypes.STRING,
-      
     },
- 
+    provinceId: {
+      type: DataTypes.INTEGER,
+    },
+    cityregencyId: {
+      type: DataTypes.INTEGER,
+    },
+    districtId: {
+      type: DataTypes.INTEGER,
+    },
+    
   }, {
     tableName: "customers"
   });
-  customer.associate = function(models) {
-    customer.belongsTo(models.provinces, { foreginKey: "provinceId"})   
-    customer.belongsTo(models.districts, { foreginKey: "districtId"})   
-    customer.belongsTo(models.cityregencies, { foreginKey: "cityregencyId"})   
+  customer.associate = function(models) { 
     customer.hasMany(models.transaksis,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "customer"})
+    customer.belongsTo(models.province , { foreginKey: "provinceId"})
 
   };
 

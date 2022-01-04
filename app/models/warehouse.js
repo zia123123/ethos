@@ -27,7 +27,6 @@ module.exports = (sequelize, DataTypes) => {
     statusGudang: {
       type: DataTypes.BOOLEAN
     },
-
     postalcode: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -40,14 +39,22 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+
+    provinceId: {
+      type: DataTypes.INTEGER,
+    },
+    cityregencyId: {
+      type: DataTypes.INTEGER,
+    },
+    districtId: {
+      type: DataTypes.INTEGER,
+    },
   }, {
     tableName: "warehouses"
   });
 
   warehouse.associate = function(models) {
-    warehouse.belongsTo(models.cityregencies,{ onDelete: 'cascade' },{ constraints: true}, { foreignKey: "cityregencyId"})
-    //warehouse.belongsTo(models.provinces,{ onDelete: 'cascade' },{ constraints: true}, { foreignKey: "provinceId"})
-    warehouse.belongsTo(models.districts,{ onDelete: 'cascade' },{ constraints: true}, { foreignKey: "districtId"})
+ 
     warehouse.hasMany(models.product_stocks,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "warehouse"})
     warehouse.hasMany(models.transaksis,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "warehouse"})
 

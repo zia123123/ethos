@@ -11,38 +11,14 @@ module.exports = {
       name: {
         type: Sequelize.STRING
       },
-
-
       provinceId: {
-        allowNull: false,
         type: Sequelize.INTEGER,
-        references: {
-          model: "provinces",
-          key: "id"
-        },
-        onDelete: 'cascade',
-        onUpdate: 'cascade'
       },
-
       cityregencyId: {
-        allowNull: false,
         type: Sequelize.INTEGER,
-        references: {
-          model: "cityregencies",
-          key: "id"
-        },
-        onDelete: 'cascade',
-        onUpdate: 'cascade'
       },
       districtId: {
-        allowNull: false,
         type: Sequelize.INTEGER,
-        references: {
-          model: "districts",
-          key: "id"
-        },
-        onDelete: 'cascade',
-        onUpdate: 'cascade'
       },
       city: {
         type: Sequelize.STRING
@@ -66,6 +42,15 @@ module.exports = {
       },
       village: {
         type: Sequelize.STRING
+      },
+      provinceId: {
+        type: Sequelize.INTEGER,
+      },
+      cityregencyId: {
+        type: Sequelize.INTEGER,
+      },
+      districtId: {
+        type: Sequelize.INTEGER,
       },
       createdAt: {
         allowNull: false,

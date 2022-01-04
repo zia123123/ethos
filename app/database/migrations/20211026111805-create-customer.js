@@ -44,37 +44,15 @@ module.exports = {
       memoid: {
         type: Sequelize.INTEGER
       },
-      districtId: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-        references: {
-          model: "districts",
-          key: "id"
-        },
-        onDelete: 'cascade',
-        onUpdate: 'cascade'
-      },
       provinceId: {
-        allowNull: false,
         type: Sequelize.INTEGER,
-        references: {
-          model: "provinces",
-          key: "id"
-        },
-        onDelete: 'cascade',
-        onUpdate: 'cascade'
       },
       cityregencyId: {
-        allowNull: false,
         type: Sequelize.INTEGER,
-        references: {
-          model: "cityregencies",
-          key: "id"
-        },
-        onDelete: 'cascade',
-        onUpdate: 'cascade'
       },
-
+      districtId: {
+        type: Sequelize.INTEGER,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

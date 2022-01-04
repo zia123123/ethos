@@ -1,4 +1,4 @@
-const { customers,districts,cityregencies,provinces } = require('../models/index');
+const { customers,districts,cityregencies,province } = require('../models/index');
 const { Op } = require("sequelize");
 const apiResponse = require("../helpers/apiResponse");
 
@@ -34,15 +34,17 @@ module.exports = {
             where: {
                 id: req.params.id,
             },
-            include: [ { model: districts,
+             include: [
+               //  { model: districts,
+            //     attributes: ['name']
+            // },
+            // { model: cityregencies,
+            //     attributes: ['name']
+            // },
+            { model: province,
                 attributes: ['name']
-            },
-            { model: cityregencies,
-                attributes: ['name']
-            },
-            { model: provinces,
-                attributes: ['name']
-            }]
+            
+        }]
         }).then(customer => {
             req.customer = customer;
             next();
@@ -71,15 +73,15 @@ module.exports = {
     },
     async index(req, res) {
         let result = await customers.findAll({
-            include: [ { model: districts,
-                attributes: ['name']
-            },
-            { model: cityregencies,
-                attributes: ['name']
-            },
-            { model: provinces,
-                attributes: ['name']
-            }]
+            // include: [ { model: districts,
+            //     attributes: ['name']
+            // },
+            // { model: cityregencies,
+            //     attributes: ['name']
+            // },
+            // { model: provinces,
+            //     attributes: ['name']
+            // }]
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){

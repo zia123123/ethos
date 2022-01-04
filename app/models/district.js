@@ -9,13 +9,13 @@ module.exports = (sequelize, DataTypes) => {
     },
  
   }, {
-    tableName: "districts"
+    tableName: "reg_districts"
   });
 
   district.associate = function(models) {
-    district.hasMany(models.warehouses,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "district"})
-    district.hasMany(models.customers,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "district"})
-    district.hasMany(models.transaksis,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "district"})
+    district.hasMany(models.warehouses)
+    district.hasMany(models.customers)
+    district.hasMany(models.transaksis)
 
   };
 

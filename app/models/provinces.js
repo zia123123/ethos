@@ -2,20 +2,20 @@
 
 module.exports = (sequelize, DataTypes) => {
 
-  const province = sequelize.define('provinces', {
+  const province = sequelize.define('province', {
     name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
  
   }, {
-    tableName: "provinces"
+    tableName: "reg_provinces"
   });
 
   province.associate = function(models) {
 
-  province.hasMany(models.transaksis,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "province"})
-  province.hasMany(models.customers,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "province"})
+  //province.hasMany(models.transaksis,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "province"})
+  province.hasMany(models.customers)
 
   };
 
