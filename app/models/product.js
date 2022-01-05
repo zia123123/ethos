@@ -48,6 +48,8 @@ module.exports = (sequelize, DataTypes) => {
     product.hasMany(models.product_stocks,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "product"})
     product.hasMany(models.keranjangs,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "product"})
     product.hasMany(models.iklan)
+    product.hasMany(models.biayaiklan)
+
 
   };
 
