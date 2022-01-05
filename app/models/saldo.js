@@ -1,26 +1,31 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
-  class saldo extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-    }
-  };
-  saldo.init({
-    namaproduct: DataTypes.STRING,
-    sisasaldo: DataTypes.INTEGER,
-    status: DataTypes.STRING,
-    buktisaldo: DataTypes.STRING
+
+  const saldo = sequelize.define('saldo', {
+    productId: {
+      type: DataTypes.INTEGER
+    },
+    buktisaldo: {
+      type: DataTypes.STRING
+    },
+    sisasaldo: {
+      type: DataTypes.INTEGER
+    },
+    status: {
+      type: DataTypes.STRING
+    },
   }, {
-    sequelize,
-    modelName: 'saldo',
+    tableName: "saldos"
   });
+
+  saldo.associate = function(models) {
+    saldo.belongsTo(models.products, { foreginKey: "productId"})
+  };
+
   return saldo;
 };
+
+
+
+
