@@ -22,10 +22,10 @@ module.exports = (sequelize, DataTypes) => {
     tableName: "biayaiklans"
   });
 
-  iklan.associate = function(models) {
-    iklan.belongsTo(models.domains, { foreginKey: "domainId"})
-    iklan.belongsTo(models.products, { foreginKey: "productId"})
+  biayaiklan.associate = function(models) {
+    biayaiklan.belongsTo(models.domains, { foreginKey: "domainId"})
+    biayaiklan.belongsTo(models.products, { foreginKey: "productId"})
   };
 
-  return iklan;
+  return biayaiklan;
 };
