@@ -19,7 +19,19 @@ module.exports = {
       },
 
     async find(req, res, next) {
-        let result = await biayaiklan.findByPk(req.params.id);
+        let result = await biayaiklan.findOne({
+            where: {
+                    id: req.params.id,
+            },
+            include: [ { model: domains,
+                attributes: ['url']
+            },
+            { model: products,
+                attributes: ['name']
+            }]
+        });
+
+        
         if (!result) {
         return apiResponse.notFoundResponse(res, "Not Fond");
         } else {

@@ -21,7 +21,15 @@ module.exports = {
 
       ///
     async find(req, res, next) {
-        let result = await saldo.findByPk(req.params.id);
+        let result = await saldo.findOne({
+            where: {
+                    id: req.params.id,
+            },
+            include: [
+            { model: products,
+                attributes: ['name']
+            }]
+        });
         if (!result) {
         return apiResponse.notFoundResponse(res, "Not Fond");
         } else {
