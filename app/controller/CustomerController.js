@@ -73,15 +73,15 @@ module.exports = {
     },
     async index(req, res) {
         let result = await customers.findAll({
-            // include: [ { model: districts,
-            //     attributes: ['name']
-            // },
-            // { model: cityregencies,
-            //     attributes: ['name']
-            // },
-            // { model: provinces,
-            //     attributes: ['name']
-            // }]
+            include: [ { model: districts,
+                attributes: ['name']
+            },
+            { model: cityregencies,
+                attributes: ['name']
+            },
+            { model: provinces,
+                attributes: ['name']
+            }]
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
