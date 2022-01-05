@@ -1,4 +1,4 @@
-const { iklan } = require('../models/index');
+const { iklan,domains,products } = require('../models/index');
 const { Op } = require("sequelize");
 const apiResponse = require("../helpers/apiResponse");
 
@@ -30,6 +30,12 @@ module.exports = {
 
     async index(req, res) {
         let result = await iklan.findAll({
+            include: [ { model: domains,
+                attributes: ['url']
+            },
+            { model: products,
+                attributes: ['name']
+            }]
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
