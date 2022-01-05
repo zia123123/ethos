@@ -8,8 +8,6 @@ module.exports = {
         let result = await domains.create({
             url: req.body.url,
             authId: req.body.advertiserid,
-            productId: req.body.productId,
-            nameproduct: req.body.nameproduct,
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
         }).catch(function (err)  {
@@ -41,21 +39,9 @@ module.exports = {
         return apiResponse.successResponseWithData(res, "SUCCESS", req.domain);
     },
 
-
-
-
-    async updateDataIklan(req, res) {
+    async update(req, res) {
         req.domain.url = req.body.url;
-        req.domain.productId = req.body.productId;
-        req.domain.nameproduct = req.body.nameproduct;
         req.domain.status = req.body.status;
-        req.domain.save().then(domain => {
-        return apiResponse.successResponseWithData(res, "SUCCESS", domain);
-        })
-    },
-
-    async updateBiayaIklan(req, res) {
-        req.domain.biayaiklan = req.body.biayaiklan;
         req.domain.save().then(domain => {
         return apiResponse.successResponseWithData(res, "SUCCESS", domain);
         })

@@ -8,10 +8,13 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      url: {
-        type: Sequelize.STRING
+      domainId: {
+        type: Sequelize.INTEGER
       },
-      namaproduct: {
+      productId: {
+        type: Sequelize.INTEGER
+      },
+      namacs: {
         type: Sequelize.STRING
       },
       status: {

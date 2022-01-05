@@ -11,9 +11,6 @@ module.exports = {
       url: {
         type: Sequelize.STRING
       },
-      type: {
-        type: Sequelize.STRING
-      },
       authId: {
         allowNull: false,
         type: Sequelize.INTEGER,
@@ -24,46 +21,8 @@ module.exports = {
         onDelete: 'cascade',
         onUpdate: 'cascade'
       },
-      productId: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-        references: {
-          model: "products",
-          key: "id"
-        },
-        onDelete: 'cascade',
-        onUpdate: 'cascade'
-      },
-
-
-      nameproduct: {
-        type: Sequelize.STRING
-      },
-      biayaiklan: {
-        type: Sequelize.BIGINT
-      },
       status: {
         type: Sequelize.BOOLEAN
-      },
-
-      // buktisaldo: {
-      //   type: Sequelize.STRING
-      // },
-      // buktitagihan: {
-      //   type: Sequelize.STRING
-      // },
-      // nBuktiSaldo: {
-      //   type: Sequelize.STRING
-      // },
-      // nBuktiTagihan: {
-      //   type: Sequelize.STRING
-      // },
-
-
-
-
-      memo: {
-        type: Sequelize.TEXT
       },
       createdAt: {
         allowNull: false,

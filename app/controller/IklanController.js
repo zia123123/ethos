@@ -7,9 +7,10 @@ module.exports = {
     //create
     async create(req, res) { 
         let result = await iklan.create({
-            url: req.body.url,
-            namaproduct: req.body.namaproduct,
-            status:false,
+            domainId: req.body.domainId,
+            productId: req.body.productId,
+            namacs: req.body.namacs,
+            status:true,
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
         }).catch(function (err)  {
@@ -44,8 +45,8 @@ module.exports = {
     // Update
     async update(req, res) {
 
-        req.result.url = req.body.url;        
-        req.result.namaproduct = req.body.namaproduct;
+        req.result.domainId = req.body.domainId;        
+        req.result.productId = req.body.productId;
         req.result.status = req.body.status;
         req.result.save().then(result => {
         return apiResponse.successResponseWithData(res, "SUCCESS", result);

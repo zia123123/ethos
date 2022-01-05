@@ -1,25 +1,28 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
-  class iklan extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-    }
-  };
-  iklan.init({
-    url: DataTypes.STRING,
-    namaproduct: DataTypes.STRING,
-    status: DataTypes.BOOLEAN
+
+  const iklan = sequelize.define('iklan', {
+    domainId: {
+      type: DataTypes.INTEGER
+    },
+    productId: {
+      type: DataTypes.INTEGER
+    },
+    namacs: {
+      type: DataTypes.STRING
+    },
+    status: {
+      type: DataTypes.BOOLEAN
+    },
   }, {
-    sequelize,
-    modelName: 'iklan',
+    tableName: "iklans"
   });
+
+  iklan.associate = function(models) {
+    iklan.belongsTo(models.domains, { foreginKey: "domainId"})
+    iklan.belongsTo(models.products, { foreginKey: "productId"})
+  };
+
   return iklan;
 };

@@ -179,7 +179,7 @@ router.patch('/api/warehouse/update/:id', WarehouseController.find,WarehouseCont
 router.post('/api/domain/create', DomainController.create);
 router.get('/api/domain/', DomainController.index);
 router.get('/api/domain/:id', DomainController.find, DomainController.show);
-router.patch('/api/domain/update/:id', DomainController.find,DomainController.updateBiayaIklan);
+router.patch('/api/domain/update/:id', DomainController.find,DomainController.update);
 
 
 
