@@ -1,4 +1,4 @@
-const { saldo } = require('../models/index');
+const { saldo,products } = require('../models/index');
 const { Op } = require("sequelize");
 const apiResponse = require("../helpers/apiResponse");
 
@@ -9,8 +9,9 @@ module.exports = {
         var link = req.files.buktisaldo == null ? null : req.files.buktisaldo[0].filename
         let result = await saldo.create({
             buktisaldo: link,
-            namaproduct: req.body.namaproduct,
+            productId: req.body.productId,
             sisasaldo: req.body.sisasaldo,
+            status: req.body.status,
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
         }).catch(function (err)  {
@@ -30,6 +31,10 @@ module.exports = {
 
     async index(req, res) {
         let result = await saldo.findAll({
+            include: [ 
+            { model: products,
+                attributes: ['name']
+            }]
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
@@ -44,10 +49,7 @@ module.exports = {
 
     // Update
     async update(req, res) {
-        var link = req.files.buktisaldo == null ? null : req.files.buktisaldo[0].filename
-        req.result.buktisaldo = link;        
-        req.result.namaproduct = req.body.namaproduct;
-        req.result.sisasaldo = req.body.sisasaldo;
+        req.result.status = req.body.status;
         req.result.save().then(result => {
         return apiResponse.successResponseWithData(res, "SUCCESS", result);
         })
