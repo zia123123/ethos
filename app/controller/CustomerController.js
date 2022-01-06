@@ -79,7 +79,7 @@ module.exports = {
             { model: cityregencies,
                 attributes: ['name']
             },
-            { model: provinces,
+            { model: province,
                 attributes: ['name']
             }]
         }).then(result => {
