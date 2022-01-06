@@ -61,6 +61,7 @@ module.exports = {
     // Update
     async update(req, res) {
 
+        req.result.namacs = req.body.namacs;    
         req.result.domainId = req.body.domainId;        
         req.result.productId = req.body.productId;
         req.result.status = req.body.status;
