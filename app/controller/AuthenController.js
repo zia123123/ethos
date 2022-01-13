@@ -47,7 +47,7 @@ module.exports = {
     async getAdvertiser(req, res) {
         let result = await auths.findAll({
             where:{
-                role: 1
+                role: 5
             },
             attributes: ['id','email', 'firstname']
         }).then(result => {
