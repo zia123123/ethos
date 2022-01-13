@@ -21,6 +21,10 @@ module.exports = {
         onDelete: 'cascade',
         onUpdate: 'cascade'
       },
+      // productId: {
+      //   allowNull: false,
+      //   type: Sequelize.INTEGER,
+      // },
       status: {
         type: Sequelize.BOOLEAN
       },

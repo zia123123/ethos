@@ -9,7 +9,6 @@ module.exports = (sequelize, DataTypes) => {
     status: {
       type: DataTypes.BOOLEAN
     },
-
   }, {
     tableName: "domains"
   });
@@ -18,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     domain.belongsTo(models.auths,{ onDelete: 'cascade' },{ constraints: true}, { foreignKey: "authId"})
     domain.hasMany(models.iklan)
     domain.hasMany(models.biayaiklan)
+    //domain.belongsTo(models.products, { foreignKey: "productId"})
   };
 
   return domain;

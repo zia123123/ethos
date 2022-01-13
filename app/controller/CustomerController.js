@@ -80,33 +80,33 @@ module.exports = {
     },
     async index(req, res) {
         let result = await customers.findAll({
-            // include: [ { model: districts,
-            //     attributes: ['name']
-            // },
-            // { model: cityregencies,
-            //     attributes: ['name']
-            // },
-            // { model: province,
-            //     attributes: ['name']
-            // }]
+            include: [ { model: districts,
+                attributes: ['name']
+            },
+            { model: cityregencies,
+                attributes: ['name']
+            },
+            { model: province,
+                attributes: ['name']
+            }]
         }).then(result => {
-            const filename = 'result_.csv'
-            const fulldir = csvdir + '/' + filename
-            converter.json2csv(result, (err, output) => {
-                try {
-                    fs.mkdirSync(csvdir)
-                } catch (err) {
+            // const filename = 'result_.csv'
+            // const fulldir = csvdir + '/' + filename
+            // converter.json2csv(result, (err, output) => {
+            //     try {
+            //         fs.mkdirSync(csvdir)
+            //     } catch (err) {
 
-                } finally {
-                    fs.writeFileSync(fulldir,output )
-                }
-            })  
-            if (result) {
-                res.json({ data: filename, message: "SUCCESS" })
-            }
-            else {
-                res.json({ data: null, message: "Respondents not found" })
-            }
+            //     } finally {
+            //         fs.writeFileSync(fulldir,output )
+            //     }
+            // })  
+            // if (result) {
+            //     res.json({ data: filename, message: "SUCCESS" })
+            // }
+            // else {
+            //     res.json({ data: null, message: "Respondents not found" })
+            // }
             //return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
                 return apiResponse.ErrorResponse(res, err);
