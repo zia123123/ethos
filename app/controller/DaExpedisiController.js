@@ -8,9 +8,9 @@ module.exports = {
     async create(req, res) { 
      var harga = parseInt(req.body.totalharga)
       if(parseInt(req.body.transaksiId) % 2 === 0) {
-        harga = parseInt(req.body.transaksiId) % 999
+        harga = harga-parseInt(req.body.transaksiId) % 999
       }else{
-        harga -= parseInt(req.body.transaksiId) % 999
+        harga = harga+parseInt(req.body.transaksiId) % 999
       }
         let result = await daexpedisis.create({
             ongkoskirim: req.body.ongkoskirim,
