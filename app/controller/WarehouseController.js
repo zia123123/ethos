@@ -1,4 +1,4 @@
-const { warehouses,provinces,cityregencies,districts } = require('../models/index');
+const { warehouses,province,cityregencies,districts } = require('../models/index');
 const { Op } = require("sequelize");
 const apiResponse = require("../helpers/apiResponse");
 
@@ -41,17 +41,17 @@ module.exports = {
     async index(req, res) {
         let result = await warehouses.findAll({
             attributes: ['id', 'name'],
-            // include: [ 
-            //     { model: provinces,
-            //         attributes: [ 'name'],
-            //     },
-            //     { model: cityregencies,
-            //         attributes: [ 'name'],
-            //     },
-            //     { model: districts,
-            //         attributes: [ 'name'],
-            //     },
-            // ]
+            include: [
+                { model: districts,
+                attributes: ['name']
+            },
+            { model: cityregencies,
+                attributes: ['name']
+            },
+            { model: province,
+                attributes: ['name']
+            }
+            ]
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
@@ -62,17 +62,17 @@ module.exports = {
     
     async indexAll(req, res) {
         let result = await warehouses.findAll({
-            // include: [ 
-            //     { model: provinces,
-            //         attributes: [ 'name'],
-            //     },
-            //     { model: cityregencies,
-            //         attributes: [ 'name'],
-            //     },
-            //     { model: districts,
-            //         attributes: [ 'name'],
-            //     },
-            // ]
+            include: [
+                { model: districts,
+                attributes: ['name']
+            },
+            { model: cityregencies,
+                attributes: ['name']
+            },
+            { model: province,
+                attributes: ['name']
+            }
+            ]
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
