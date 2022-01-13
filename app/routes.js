@@ -22,7 +22,7 @@ const ProvincesController = require('./controller/ProvincesController');
 
 const NinjaOriginController = require('./controller/NinjaOriginController');
 const IklanController = require('./controller/IklanController');
-
+const GroupControoler = require('./controller/GroupControoler');
 
 const DistrictController = require('./controller/DistrictController');
 
@@ -39,6 +39,8 @@ const ProductStockController = require('./controller/ProductStockController');
 
 
 const OfficeController = require('./controller/OfficeController');
+
+const MapGrouController = require('./controller/MapGrouController');
 
 
 const MappingController = require('./controller/MappingController');
@@ -123,7 +125,7 @@ router.post('/api/product/create',multer(multerConf).fields([{
 router.get('/api/product/', ProductController.index);
 router.get('/api/product/:id', ProductController.find, ProductController.show);
 router.patch('/api/product/update/:id', ProductController.find,ProductController.updateProduct);
-
+router.delete('/api/product/delete/:id', ProductController.finddelete,ProductController.delete);
     
 
 //supplier
@@ -180,6 +182,7 @@ router.post('/api/domain/create', DomainController.create);
 router.get('/api/domain/', DomainController.index);
 router.get('/api/domain/:id', DomainController.find, DomainController.show);
 router.patch('/api/domain/update/:id', DomainController.find,DomainController.update);
+router.delete('/api/domain/delete/:id', DomainController.find,DomainController.delete);
 
 
 
@@ -213,6 +216,29 @@ router.get('/api/iklan/', IklanController.index);
 router.get('/api/iklan/:id', IklanController.find, IklanController.show);
 router.patch('/api/iklan/update/:id', IklanController.find,IklanController.update);
 router.delete('/api/iklan/delete/:id', IklanController.find,IklanController.delete);
+
+//iklan
+router.post('/api/group/create', GroupControoler.create);
+router.get('/api/group/', GroupControoler.index);
+router.get('/api/group/:id', GroupControoler.find, GroupControoler.show);
+router.patch('/api/group/update/:id', GroupControoler.find,GroupControoler.update);
+router.delete('/api/group/delete/:id', GroupControoler.find,GroupControoler.delete);
+
+
+//iklan
+router.post('/api/group/create', GroupControoler.create);
+router.get('/api/group/', GroupControoler.index);
+router.get('/api/group/:id', GroupControoler.find, GroupControoler.show);
+router.patch('/api/group/update/:id', GroupControoler.find,GroupControoler.update);
+router.delete('/api/group/delete/:id', GroupControoler.find,GroupControoler.delete);
+
+
+//iklan
+router.post('/api/mapgroup/create', MapGrouController.create);
+router.get('/api/mapgroup/', MapGrouController.index);
+router.get('/api/mapgroup/:id', MapGrouController.find, MapGrouController.show);
+router.patch('/api/mapgroup/update/:id', MapGrouController.find,MapGrouController.update);
+router.delete('/api/mapgroup/delete/:id', MapGrouController.find,MapGrouController.delete);
 
 //biaya iklan
 router.post('/api/biayaiklan/create', BiayaIklanController.create);
@@ -323,6 +349,7 @@ router.post('/api/mapproduct/create', MappingProduct.create);
 router.get('/api/mapproduct/', MappingProduct.index);
 router.get('/api/mapproduct/:id', MappingProduct.find, MappingProduct.show);
 router.get('/api/mapproduct/product/:domainId', MappingProduct.findBydomain);
+
  
 //mappingnorek
 

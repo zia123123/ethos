@@ -1,14 +1,14 @@
-const { groupcs } = require('../models/index');
+const { mapgroup } = require('../models/index');
 const { Op } = require("sequelize");
 const apiResponse = require("../helpers/apiResponse");
 
-
 module.exports = {
+
     //create
     async create(req, res) { 
-        let result = await groupcs.create({
-            nama: req.body.nama,
-            domainId: req.body.domainId,
+        let result = await mapgroup.create({
+            authId: req.body.authId,
+            groupId: req.body.groupId,
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
         }).catch(function (err)  {
@@ -17,7 +17,11 @@ module.exports = {
       },
 
     async find(req, res, next) {
-        let result = await groupcs.findByPk(req.params.id);
+        let result = await mapgroup.findOne({
+            where: {
+                    id: req.params.id,
+            },
+        });
         if (!result) {
         return apiResponse.notFoundResponse(res, "Not Fond");
         } else {
@@ -27,7 +31,7 @@ module.exports = {
     },
 
     async index(req, res) {
-        let result = await groupcs.findAll({
+        let result = await mapgroup.findAll({
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
@@ -42,9 +46,8 @@ module.exports = {
 
     // Update
     async update(req, res) {
-        req.result.nama = req.body.name;
-        req.result.type = req.body.type;
-        req.result.domainId = req.body.domainId;
+        req.result.authId = req.body.authId;    
+        req.result.groupId = req.body.groupId;
         req.result.save().then(result => {
         return apiResponse.successResponseWithData(res, "SUCCESS", result);
         })

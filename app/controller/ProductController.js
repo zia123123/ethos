@@ -27,6 +27,15 @@ module.exports = {
             return apiResponse.ErrorResponse(res, err);
         });
       },
+      async finddelete(req, res, next) {
+        let product = await products.findByPk(req.params.id);
+        if (!product) {
+        return apiResponse.notFoundResponse(res, "Not Fond");
+        } else {
+            req.product = product;
+            next();
+        }
+    },
 
       async find(req, res) {
         let result = await products.findOne({

@@ -1,14 +1,15 @@
-const { groupcs } = require('../models/index');
+const { group,mapgroup,auths } = require('../models/index');
 const { Op } = require("sequelize");
 const apiResponse = require("../helpers/apiResponse");
 
-
 module.exports = {
+
     //create
     async create(req, res) { 
-        let result = await groupcs.create({
-            nama: req.body.nama,
-            domainId: req.body.domainId,
+        let result = await group.create({
+            authId: req.body.authId,
+            name: req.body.name,
+            internal: req.body.internal,
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
         }).catch(function (err)  {
@@ -17,7 +18,11 @@ module.exports = {
       },
 
     async find(req, res, next) {
-        let result = await groupcs.findByPk(req.params.id);
+        let result = await group.findOne({
+            where: {
+                    id: req.params.id,
+            },
+        });
         if (!result) {
         return apiResponse.notFoundResponse(res, "Not Fond");
         } else {
@@ -27,7 +32,13 @@ module.exports = {
     },
 
     async index(req, res) {
-        let result = await groupcs.findAll({
+        let result = await group.findAll({
+            include: [ { model: mapgroup,
+                attributes: ['id'],
+                include: [ { model: auths,
+                    attributes: ['firstname']
+                }]
+            }]
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
@@ -42,9 +53,9 @@ module.exports = {
 
     // Update
     async update(req, res) {
-        req.result.nama = req.body.name;
-        req.result.type = req.body.type;
-        req.result.domainId = req.body.domainId;
+
+        req.result.name = req.body.name;    
+        req.result.internal = req.body.internal;
         req.result.save().then(result => {
         return apiResponse.successResponseWithData(res, "SUCCESS", result);
         })
