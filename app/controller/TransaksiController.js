@@ -319,7 +319,6 @@ module.exports = {
                 },
             }).then(transaksi =>{
                 transaksi.status = 'D';
-                transaksi.invoiceId = req.body.invoiceId;
                 transaksi.save()
             })
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
