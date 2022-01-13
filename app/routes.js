@@ -133,6 +133,7 @@ router.post('/api/supplier/create', SupplierController.create);
 router.get('/api/supplier/', SupplierController.index);
 router.get('/api/supplier/:id', SupplierController.find, SupplierController.show);
 router.patch('/api/supplier/update/:id', SupplierController.find,SupplierController.updateStock);
+router.delete('/api/supplier/delete/:id', SupplierController.find,SupplierController.delete);
 
 
 //province
