@@ -107,7 +107,7 @@ module.exports = {
             // else {
             //     res.json({ data: null, message: "Respondents not found" })
             // }
-            //return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
                 return apiResponse.ErrorResponse(res, err);
             });
