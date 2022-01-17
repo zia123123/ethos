@@ -46,7 +46,7 @@ module.exports = {
                 [Op.like]: req.params.transaksiId,
             },
         },
-        attributes: ['id', 'namaproduct','jumlahproduct','linkdomain','linkphoto','discount','price'],
+        attributes: ['id', 'namaproduct','jumlahproduct','linkdomain','linkphoto','discount','price','weight'],
         }).then(result => {
             // let keranjang = keranjangs.sum('price',{
             //     where: {

@@ -31,6 +31,9 @@ module.exports = {
       jumlahproduct: {
         type: Sequelize.INTEGER
       },
+      weight: {
+        type: Sequelize.INTEGER
+      },
       linkdomain: {
         type: Sequelize.STRING
       },
