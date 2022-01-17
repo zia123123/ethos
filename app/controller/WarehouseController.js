@@ -1,4 +1,4 @@
-const { warehouses,province,cityregencies,districts } = require('../models/index');
+const { warehouses,province,cityregencies,districts,destination } = require('../models/index');
 const { Op } = require("sequelize");
 const apiResponse = require("../helpers/apiResponse");
 
@@ -59,6 +59,22 @@ module.exports = {
             });
     },
 
+
+    async indexDestionaios(req, res) {
+        let result = await destination.findOne({    
+            where: {
+                subdistrict: {
+                    [Op.like]: '%'+req.query.kecamatan+'%'
+                  }
+            
+            },
+            attributes: ['destination_code'],
+        }).then(result => {
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            }).catch(function (err){
+                return apiResponse.ErrorResponse(res, err);
+            });
+    },
     
     async indexAll(req, res) {
         let result = await warehouses.findAll({

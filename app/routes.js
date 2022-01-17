@@ -177,6 +177,7 @@ router.get('/api/warehouse/:id', WarehouseController.find, WarehouseController.s
 router.patch('/api/warehouse/update/:id', WarehouseController.find,WarehouseController.update);
 router.delete('/api/warehouse/delete/:id', WarehouseController.find,WarehouseController.delete);
 
+router.get('/api/destination/', WarehouseController.indexDestionaios);
 
 
 
