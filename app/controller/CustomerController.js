@@ -18,6 +18,7 @@ module.exports = {
             notelp: req.body.notelp,
             notelp2: req.body.notelp2,
             email: req.body.email,
+            destinations: req.body.destinations,
             alamat: req.body.alamat,
             rt:req.body.rt,
             rw:req.body.rw,
@@ -127,6 +128,7 @@ module.exports = {
         req.customer.alamat = req.body.alamat;
         req.customer.rt =  req.body.rt,
         req.customer.rw =  req.body.rw,
+        req.customer.destinations =  req.body.destinations,
         req.customer.kelurahan =  req.body.kelurahan,
         req.customer.postalcode = req.body.postalcode;
         req.customer.pekerjaan = req.body.pekerjaan;

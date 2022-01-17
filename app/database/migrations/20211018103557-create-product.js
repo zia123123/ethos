@@ -26,6 +26,9 @@ module.exports = {
       quantity: {
         type: Sequelize.INTEGER
       },
+      weight: {
+        type: Sequelize.INTEGER
+      },
       discount: {
         type: Sequelize.INTEGER
       },

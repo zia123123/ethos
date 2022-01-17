@@ -47,6 +47,9 @@ module.exports = {
       provinceId: {
         type: Sequelize.INTEGER,
       },
+      destinations: {
+        type: Sequelize.STRING,
+      },
       cityregencyId: {
         type: Sequelize.INTEGER,
       },

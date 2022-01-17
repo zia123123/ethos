@@ -13,6 +13,7 @@ module.exports = {
             expiry_date: req.body.expiry_date,
             conversion: req.body.conversion,
             price: req.body.price,
+            weight: req.body.weight,
             discount: req.body.discount,
             is_active: true,
             quantity: 0,
@@ -117,6 +118,7 @@ module.exports = {
         req.product.expiry_date = req.body.expiry_date;
         req.product.conversion = req.body.conversion;
         req.product.price = req.body.price;
+        req.product.weight = req.body.weight;
         req.product.discount = req.body.discount;
         req.product.is_active = req.body.is_active;
         req.product.interval_year_expiry_date = req.body.interval_year_expiry_date;
