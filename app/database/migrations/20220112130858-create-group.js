@@ -18,10 +18,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER,
       },
-      expedisiName: {
-        allowNull: false,
-        type: Sequelize.STRING,
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

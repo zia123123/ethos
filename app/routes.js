@@ -230,12 +230,6 @@ router.patch('/api/group/update/:id', GroupControoler.find,GroupControoler.updat
 router.delete('/api/group/delete/:id', GroupControoler.find,GroupControoler.delete);
 
 
-//iklan
-router.post('/api/group/create', GroupControoler.create);
-router.get('/api/group/', GroupControoler.index);
-router.get('/api/group/:id', GroupControoler.find, GroupControoler.show);
-router.patch('/api/group/update/:id', GroupControoler.find,GroupControoler.update);
-router.delete('/api/group/delete/:id', GroupControoler.find,GroupControoler.delete);
 
 
 //iklan
