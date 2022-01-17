@@ -7,7 +7,7 @@ module.exports = {
     //create
     async create(req, res) { 
         let result = await group.create({
-            authId: req.body.authId,
+            authId: req.body.supervisorId,
             name: req.body.name,
             internal: req.body.internal,
         }).then(result => {
@@ -45,6 +45,19 @@ module.exports = {
                 return apiResponse.ErrorResponse(res, err);
             });
     },
+
+    async indexKu(req, res) {
+        let result = await group.findAll({
+            where: {
+                authId: req.query.id,
+        },
+        }).then(result => {
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            }).catch(function (err){
+                return apiResponse.ErrorResponse(res, err);
+            });
+    },
+
 
     // Show
     async show(req, res) {
