@@ -63,9 +63,17 @@ module.exports = {
     async indexDestionaios(req, res) {
         let result = await destination.findOne({    
             where: {
-                subdistrict: {
-                    [Op.like]: '%'+req.query.kecamatan+'%'
-                  }
+                [Op.and]: [
+                    {
+                        subdistrict: {
+                            [Op.like]: '%'+req.query.kecamatan+'%'
+                          },
+                          city: {
+                            [Op.like]: '%'+req.query.kota+'%'
+                          },            
+                       },
+                  ]
+               
             
             },
             attributes: ['destination_code'],
