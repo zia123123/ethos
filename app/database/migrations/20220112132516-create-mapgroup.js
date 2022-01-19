@@ -14,6 +14,9 @@ module.exports = {
       authId: {
         type: Sequelize.INTEGER,
       },
+      status: {
+        type: Sequelize.BOOLEAN,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

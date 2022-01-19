@@ -9,6 +9,7 @@ module.exports = {
         let result = await group.create({
             authId: req.body.supervisorId,
             name: req.body.name,
+            status: true,
             internal: req.body.internal,
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
@@ -66,8 +67,8 @@ module.exports = {
 
     // Update
     async update(req, res) {
-
-        req.result.name = req.body.name;    
+        req.result.name = req.body.name;  
+        req.result.status = req.body.status;    
         req.result.internal = req.body.internal;
         req.result.save().then(result => {
         return apiResponse.successResponseWithData(res, "SUCCESS", result);

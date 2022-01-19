@@ -9,6 +9,9 @@ module.exports = (sequelize, DataTypes) => {
     internal: {
       type: DataTypes.BOOLEAN,
     },
+    status: {
+      type: DataTypes.BOOLEAN,
+    },
   }, {
     tableName: "groups"
   });

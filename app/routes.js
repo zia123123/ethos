@@ -234,7 +234,7 @@ router.delete('/api/group/delete/:id', GroupControoler.find,GroupControoler.dele
 
 //iklan
 router.post('/api/mapgroup/create', MapGrouController.create);
-router.get('/api/mapgroup/', MapGrouController.index);
+router.get('/api/mapgroup/', MapGrouController.myUser);
 router.get('/api/mapgroup/:id', MapGrouController.find, MapGrouController.show);
 router.patch('/api/mapgroup/update/:id', MapGrouController.find,MapGrouController.update);
 router.delete('/api/mapgroup/delete/:id', MapGrouController.find,MapGrouController.delete);

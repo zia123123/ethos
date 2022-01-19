@@ -3,6 +3,9 @@
 module.exports = (sequelize, DataTypes) => {
 
   const mapgroup = sequelize.define('mapgroup', {
+    status: {
+      type: DataTypes.BOOLEAN,
+    },
   
   }, {
     tableName: "mapgroups"
