@@ -87,7 +87,8 @@ module.exports = {
                 
             ]
         }).then(result => {
-                return apiResponse.ErrorResponse(res, err);
+            req.transaksi = result;
+            next();
             });
     },
 
