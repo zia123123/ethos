@@ -87,9 +87,6 @@ module.exports = {
                 
             ]
         }).then(result => {
-            req.transaksi = result;
-            next();
-            }).catch(function (err){
                 return apiResponse.ErrorResponse(res, err);
             });
     },
@@ -375,7 +372,28 @@ module.exports = {
                     attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank','totalharga'],
                 },
                 { model: customers,
+                    include: [ { model: districts,
+                        attributes: ['name']
+                    },
+                    { model: cityregencies,
+                        attributes: ['name']
+                    },
+                    { model: province,
+                        attributes: ['name']
+                    }]
                   
+                },
+                { model: warehouses,
+                    include: [ { model: districts,
+                        attributes: ['name']
+                    },
+                    { model: cityregencies,
+                        attributes: ['name']
+                    },
+                    { model: province,
+                        attributes: ['name']
+                    }]
+                   
                 },
                 { model: buktibayars,
                     attributes: ['link'],

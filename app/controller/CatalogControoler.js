@@ -1,4 +1,4 @@
-const { inbond,suppliers,catalog } = require('../models/index');
+const { catalog,products } = require('../models/index');
 const { Op } = require("sequelize");
 const apiResponse = require("../helpers/apiResponse");
 
@@ -6,9 +6,10 @@ module.exports = {
 
     //create
     async create(req, res) { 
-        let result = await inbond.create({
-            supplierId: req.body.supplierId,
-            status: "Konfirmasi Finance"
+        let result = await catalog.create({
+            productId: req.body.productId,
+            inbondId: req.body.inbondId,
+            jumlahbarang: req.body.jumlahbarang,
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
         }).catch(function (err)  {
@@ -17,7 +18,7 @@ module.exports = {
       },
 
     async find(req, res, next) {
-        let result = await inbond.findOne({
+        let result = await catalog.findOne({
             where: {
                     id: req.params.id,
             },
@@ -31,10 +32,12 @@ module.exports = {
     },
 
     async index(req, res) {
-        let result = await inbond.findAll({
-            include: [ { model: suppliers,
+        let result = await catalog.findAll({
+            where: {
+                inbondId: req.query.inbondId,
+                },
+            include: [ { model: products,
                 attributes: ['name'],
-               
             }]
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
@@ -44,7 +47,7 @@ module.exports = {
     },
 
     async indexKu(req, res) {
-        let result = await inbond.findAll({
+        let result = await catalog.findAll({
             where: {
                 authId: req.query.id,
         },
@@ -63,13 +66,7 @@ module.exports = {
 
     // Update
     async update(req, res) {
-
-        req.result.totalbarangpesan = req.body.totalbarangpesan; 
-        req.result.totalbarangsampai = req.body.totalbarangsampai; 
-        req.result.status = req.body.status;  
-        req.result.nopo = req.body.nopo;  
-        req.result.totalharga = req.body.totalharga;    
-        req.result.totalterbayar = req.body.totalterbayar;
+        req.result.jumlahbarang = req.body.jumlahbarang;
         req.result.save().then(result => {
         return apiResponse.successResponseWithData(res, "SUCCESS", result);
         })

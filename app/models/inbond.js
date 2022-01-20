@@ -12,7 +12,13 @@ module.exports = (sequelize, DataTypes) => {
     totalterbayar: {
       type: DataTypes.INTEGER
     },
-    status: {
+    totalbarangpesan: {
+      type: DataTypes.INTEGER
+    },
+    totalbarangsampai: {
+      type: DataTypes.INTEGER
+    },
+    status: { 
       type: DataTypes.STRING
     },
   }, {
@@ -21,6 +27,8 @@ module.exports = (sequelize, DataTypes) => {
 
   inbond.associate = function(models) {
     inbond.belongsTo(models.suppliers, { foreginKey: "supplierId"})
+    inbond.hasMany(models.catalog, { foreginKey: "inbond"})
+
   };
   return inbond;
 };

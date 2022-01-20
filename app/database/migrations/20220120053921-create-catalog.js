@@ -14,6 +14,9 @@ module.exports = {
       jumlahbarang: {
         type: Sequelize.INTEGER
       },
+      inbondId: {
+        type: Sequelize.INTEGER,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
 
   catalog.associate = function(models) {
     catalog.belongsTo(models.products, { foreginKey: "productId"})
+    catalog.belongsTo(models.inbond, { foreginKey: "inbondId"})
   };
   return catalog;
 };

@@ -11,6 +11,8 @@ const router = express.Router();
 
 
 
+const CatalogControoler = require('./controller/CatalogControoler');
+
 const SaldoController = require('./controller/SaldoController');
 
 const AuthenController = require('./controller/AuthenController');
@@ -148,6 +150,12 @@ router.patch('/api/inbond/update/:id', InbondController.find,InbondController.up
 router.delete('/api/inbond/delete/:id', InbondController.find,InbondController.delete);
 
 
+//catalog
+router.post('/api/catalog/create', CatalogControoler.create);
+router.get('/api/catalog/', CatalogControoler.index);
+router.get('/api/catalog/:id', CatalogControoler.find, CatalogControoler.show);
+router.patch('/api/catalog/update/:id', CatalogControoler.find,CatalogControoler.update);
+router.delete('/api/catalog/delete/:id', CatalogControoler.find,CatalogControoler.delete);
 
 //province
 router.post('/api/province/create', ProvincesController.create);

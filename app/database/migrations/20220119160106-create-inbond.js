@@ -20,6 +20,14 @@ module.exports = {
       totalterbayar: {
         type: Sequelize.INTEGER
       },
+
+      totalbarangpesan: {
+        type: Sequelize.INTEGER
+      },
+      totalbarangsampai: {
+        type: Sequelize.INTEGER
+      },
+
       status: {
         type: Sequelize.STRING
       },
