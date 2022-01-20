@@ -102,6 +102,9 @@ module.exports = {
         if( status == null ){
             status = ""
         }
+        if( nama == null ){
+            nama = ""
+        }
         if(isNaN(parseFloat(metodebayar))){
             metodebayar = ""
         }
