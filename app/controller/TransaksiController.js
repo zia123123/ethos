@@ -98,6 +98,7 @@ module.exports = {
       
         let metodebayar = parseInt(req.query.metodebayar)
         let status = req.query.status
+        let nama = req.query.nama
         if( status == null ){
             status = ""
         }
@@ -117,7 +118,13 @@ module.exports = {
                         pembayaran: {    
                             [Op.like]: '%'+metodebayar+'%'
                         }
+                        
                          },
+                         {
+                            nama: {    
+                                [Op.like]: '%'+nama+'%'
+                            }
+                             },
                   ]
              },
             order: [

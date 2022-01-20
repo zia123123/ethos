@@ -80,6 +80,31 @@ module.exports = {
                 return apiResponse.ErrorResponse(res, err);
             });
     },
+    async indexBySupp(req, res) {
+        let result = await products.findAll({
+            where: {
+                supplierId: req.query.supplierId,
+             },
+            attributes: ['weight','id', 'name','expiry_date','price','link','discount','quantity','sku'],
+            include: [ 
+                // { model: product_stocks,
+                //     attributes: ['quantity','warehouseId'],
+                //     include: [ 
+                //         { model: warehouses,
+                //             attributes: ['name'],
+                //         }
+                //     ]
+                // },
+                { model: suppliers,
+                    attributes: ['name'],
+                }
+            ]
+        }).then(result => {
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            }).catch(function (err){
+                return apiResponse.ErrorResponse(res, err);
+            });
+    },
 
     async indexWarehouse(req, res) {
         let result = await products.findAll({

@@ -79,6 +79,9 @@ const NorekController = require('./controller/NorekController');
 
 const UnitController = require('./controller/UnitController');
 
+const InbondController = require('./controller/InbondController');
+
+
 
 const multer = require('multer')
 const multerConf = {
@@ -123,6 +126,7 @@ router.post('/api/product/create',multer(multerConf).fields([{
     }
 ]), ProductController.create);
 router.get('/api/product/', ProductController.index);
+router.get('/api/suppproduct/', ProductController.indexBySupp);
 router.get('/api/product/:id', ProductController.find, ProductController.show);
 router.patch('/api/product/update/:id', ProductController.find,ProductController.updateProduct);
 router.delete('/api/product/delete/:id', ProductController.finddelete,ProductController.delete);
@@ -134,6 +138,15 @@ router.get('/api/supplier/', SupplierController.index);
 router.get('/api/supplier/:id', SupplierController.find, SupplierController.show);
 router.patch('/api/supplier/update/:id', SupplierController.find,SupplierController.updateStock);
 router.delete('/api/supplier/delete/:id', SupplierController.find,SupplierController.delete);
+
+
+//inbond
+router.post('/api/inbond/create', InbondController.create);
+router.get('/api/inbond/', InbondController.index);
+router.get('/api/inbond/:id', InbondController.find, InbondController.show);
+router.patch('/api/inbond/update/:id', InbondController.find,InbondController.update);
+router.delete('/api/inbond/delete/:id', InbondController.find,InbondController.delete);
+
 
 
 //province
