@@ -337,7 +337,7 @@ router.get('/api/jenispaket/', FTransaksiController.indexsjenispakets);
 
 //transaksi
 router.post('/api/transaksi/create', TransaksiController.create);
-router.get('/api/transaksi/', TransaksiController.index);
+router.get('/api/transaksi/cs/:userid', TransaksiController.index);
 router.get('/api/transaksi/all', TransaksiController.indexAll);
 router.get('/api/transaksi/gudang', TransaksiController.indexGudang);
 router.get('/api/transaksi/:id', TransaksiController.find, TransaksiController.show);

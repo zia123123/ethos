@@ -109,6 +109,7 @@ module.exports = {
        
         let result = await transaksis.findAll({
             where:{
+                authId: req.params.userid,
                 [Op.and]: [
                     {
                     status: {    
