@@ -14,6 +14,9 @@ module.exports = {
       jumlahbarang: {
         type: Sequelize.INTEGER
       },
+      hargaproduct: {
+        type: Sequelize.INTEGER
+      },
       inbondId: {
         type: Sequelize.INTEGER,
       },

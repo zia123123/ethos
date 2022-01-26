@@ -67,6 +67,7 @@ module.exports = {
     // Update
     async update(req, res) {
         req.result.jumlahbarang = req.body.jumlahbarang;
+        req.result.hargaproduct = req.body.hargaproduct;
         req.result.save().then(result => {
         return apiResponse.successResponseWithData(res, "SUCCESS", result);
         })
