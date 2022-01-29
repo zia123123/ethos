@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "@google-cloud/storage": "^5.18.1",
     "assert": "^2.0.0",
     "bcrypt": "^5.0.0",
     "bcryptjs": "^2.4.3",

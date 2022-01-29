@@ -1,4 +1,4 @@
-const { domains } = require('../models/index');
+const { domains,auths } = require('../models/index');
 const { Op } = require("sequelize");
 const apiResponse = require("../helpers/apiResponse");
 
@@ -28,6 +28,13 @@ module.exports = {
 
     async index(req, res) {
         let result = await domains.findAll({
+            include: [ 
+                { model: auths,
+                    attributes: ['firstname'],
+                },
+                
+            ]
+
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
