@@ -26,7 +26,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      csId: {
+      authId: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
