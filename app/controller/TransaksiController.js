@@ -112,6 +112,19 @@ module.exports = {
        
         let result = await transaksis.findAll({
             where:{
+                status: {
+                    [Op.or]: [
+                        {
+                    [Op.like]: '%E%'
+                  },
+                  {
+                    [Op.like]: '%D%'
+                  },
+                  {
+                    [Op.like]: '%C%'
+                  },
+                ]
+             },
                 authId: req.params.userid,
                 [Op.and]: [
                     {
@@ -130,7 +143,10 @@ module.exports = {
                                 [Op.like]: '%'+nama+'%'
                             }
                              },
-                  ]
+                  ],
+                  order: [
+                    ['id', 'DESC'],
+                ],
              },
             order: [
                 ['id', 'DESC'],
