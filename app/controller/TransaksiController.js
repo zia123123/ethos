@@ -144,9 +144,6 @@ module.exports = {
                             }
                              },
                   ],
-                  order: [
-                    ['id', 'DESC'],
-                ],
              },
             order: [
                 ['id', 'DESC'],
