@@ -24,7 +24,6 @@ module.exports = {
                     id: req.body.transaksiId
                 },
             }).then(transaksi =>{
-                transaksi.status = 'C';
                 transaksi.invoiceId = req.body.invoiceId;
                 transaksi.save()
             })
