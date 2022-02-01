@@ -460,6 +460,7 @@ module.exports = {
     async addlogstatus(req, res) {
         req.transaksi.status = req.body.logstatus;
         req.transaksi.sudahbayar = req.body.sudahbayar;
+        req.transaksi.awb = req.body.awb;
         req.transaksi.kurangbayar = req.body.kurangbayar;
         req.transaksi.statusbarang = req.body.statusbarang;
         req.transaksi.logstatus = req.transaksi.logstatus+"#"+req.body.logstatus;
