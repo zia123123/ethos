@@ -377,16 +377,6 @@ module.exports = {
                     attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank','totalharga'],
                 },
                 { model: customers,
-                    include: [ { model: districts,
-                        attributes: ['name']
-                    },
-                    { model: cityregencies,
-                        attributes: ['name']
-                    },
-                    { model: province,
-                        attributes: ['name']
-                    }]
-                  
                 },
                 { model: warehouses,
                     include: [ { model: districts,
