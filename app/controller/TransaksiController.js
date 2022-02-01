@@ -193,6 +193,9 @@ module.exports = {
                             { model: daexpedisis,
                                 attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank','totalharga'],
                             },
+                            { model: auths,
+                                attributes: ['notelp','firstname'],
+                            }
             ]
         }).then(result => {
             // const json2csvParser = new Parser();

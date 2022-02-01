@@ -152,6 +152,7 @@ router.delete('/api/inbond/delete/:id', InbondController.find,InbondController.d
 
 //catalog
 router.post('/api/catalog/create', CatalogControoler.create);
+router.post('/api/rangesicepat/create', CatalogControoler.createrange);
 router.get('/api/catalog/', CatalogControoler.index);
 router.get('/api/catalog/:id', CatalogControoler.find, CatalogControoler.show);
 router.patch('/api/catalog/update/:id', CatalogControoler.find,CatalogControoler.update);

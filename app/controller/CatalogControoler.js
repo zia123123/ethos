@@ -1,4 +1,4 @@
-const { catalog,products } = require('../models/index');
+const { catalog,products,rangesicepat } = require('../models/index');
 const { Op } = require("sequelize");
 const apiResponse = require("../helpers/apiResponse");
 
@@ -16,6 +16,17 @@ module.exports = {
             return apiResponse.ErrorResponse(res, err);
         });
       },
+
+      async createrange(req, res) { 
+        let result = await rangesicepat.create({
+            kode: req.body.kode,
+        }).then(result => {
+            return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
+        }).catch(function (err)  {
+            return apiResponse.ErrorResponse(res, err);
+        });
+      },
+
 
     async find(req, res, next) {
         let result = await catalog.findOne({

@@ -24,6 +24,16 @@ module.exports = {
                     id: req.body.transaksiId
                 },
             }).then(transaksi =>{
+                if(transaksi.warehouseId != 1 && transaksi.expedisiName == "sicepat" ){
+                    let rangesicepat = rangesicepat.findOne({
+                        where: {
+                            id: 1
+                        },
+                    }).then(rangesicepat =>{
+                       transaksi.awb = (rangesicepat.kode+1)
+                       rangesicepat.kode = (rangesicepat.kode+1)
+                    })
+                }
                 transaksi.invoiceId = req.body.invoiceId;
                 transaksi.save()
             })
