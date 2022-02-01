@@ -1,5 +1,6 @@
 const { transaksis,statustranksasis,keranjangs,products,daexpedisis,customers,warehouses,auths,buktibayars,product_stocks,districts,cityregencies,province    } = require('../models/index');
 const { Op } = require("sequelize");
+const { Parser } = require('json2csv');
 const apiResponse = require("../helpers/apiResponse");
 
 module.exports = {
@@ -191,6 +192,9 @@ module.exports = {
                             },
             ]
         }).then(result => {
+            const json2csvParser = new Parser();
+            const csv = json2csvParser.parse(transaksis);
+            console.log(csv);
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
                 return apiResponse.ErrorResponse(res, err);
