@@ -22,6 +22,14 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+      customerId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      csId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
       namaproduct: {
         type: Sequelize.STRING
       },

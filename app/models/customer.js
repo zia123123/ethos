@@ -54,16 +54,21 @@ module.exports = (sequelize, DataTypes) => {
     districtId: {
       type: DataTypes.INTEGER,
     },
-    
+    provinsiname:{
+      type: DataTypes.STRING,
+    },
+    cityname:{
+      type: DataTypes.STRING,
+    },
+    districtname:{
+      type: DataTypes.STRING,
+    },
   }, {
     tableName: "customers"
   });
   customer.associate = function(models) { 
     customer.hasMany(models.transaksis,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "customer"})
-    customer.belongsTo(models.province , { foreginKey: "provinceId"})
-    customer.belongsTo(models.cityregencies , { foreginKey: "cityregencyId"})
-    customer.belongsTo(models.districts , { foreginKey: "districtId"})
-
+    customer.hasMany(models.keranjangs)
 
   };
 

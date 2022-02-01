@@ -113,7 +113,15 @@ module.exports = {
       districtId: {
         type: Sequelize.INTEGER,
       },
-
+      provinsiname:{
+        type: Sequelize.STRING,
+      },
+      cityname:{
+        type: Sequelize.STRING,
+      },
+      districtname:{
+        type: Sequelize.STRING,
+      },
       memotransaksi: {
         type: Sequelize.TEXT
       },

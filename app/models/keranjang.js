@@ -33,6 +33,9 @@ module.exports = (sequelize, DataTypes) => {
   });
   keranjang.associate = function(models) {
     keranjang.belongsTo(models.products, { foreginKey: "productId"})
+    keranjang.belongsTo(models.customers, { foreginKey: "customerId"})
+    keranjang.belongsTo(models.auths, { foreginKey: "csId"})
+
   };
 
   return keranjang;

@@ -14,8 +14,7 @@ module.exports = (sequelize, DataTypes) => {
 
   district.associate = function(models) {
     district.hasMany(models.warehouses)
-    district.hasMany(models.customers)
-    district.hasMany(models.transaksis)
+
 
   };
 

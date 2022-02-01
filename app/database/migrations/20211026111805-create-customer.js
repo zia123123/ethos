@@ -44,6 +44,15 @@ module.exports = {
       memoid: {
         type: Sequelize.INTEGER
       },
+      provinsiname:{
+        type: Sequelize.STRING,
+      },
+      cityname:{
+        type: Sequelize.STRING,
+      },
+      districtname:{
+        type: Sequelize.STRING,
+      },
       provinceId: {
         type: Sequelize.INTEGER,
       },

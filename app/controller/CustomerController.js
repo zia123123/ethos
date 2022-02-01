@@ -10,13 +10,16 @@ const apiResponse = require("../helpers/apiResponse");
 
 
 module.exports = {
-  
+
     //create
     async create(req, res) { 
         let result = await customers.create({
             nama: req.body.nama,
             notelp: req.body.notelp,
             notelp2: req.body.notelp2,
+            provinsiname: req.body.provinsiname,
+            cityname: req.body.cityname,
+            districtname: req.body.districtname,
             email: req.body.email,
             destinations: req.body.destinations,
             alamat: req.body.alamat,

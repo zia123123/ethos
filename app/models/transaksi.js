@@ -68,6 +68,15 @@ module.exports = (sequelize, DataTypes) => {
     districtId: {
       type: DataTypes.INTEGER,
     },
+    provinsiname:{
+      type: DataTypes.STRING,
+    },
+    cityname:{
+      type: DataTypes.STRING,
+    },
+    districtname:{
+      type: DataTypes.STRING,
+    },
     products: {
       type: DataTypes.STRING
     },
@@ -75,6 +84,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       type: DataTypes.STRING,
     },
+    
     // linkdomain: {
     //   type: DataTypes.STRING
     // },
@@ -96,10 +106,6 @@ module.exports = (sequelize, DataTypes) => {
     transaksi.belongsTo(models.auths, { foreginKey: "authId"})
     transaksi.belongsTo(models.customers, { foreginKey: "customerId"})
     transaksi.belongsTo(models.warehouses, { foreginKey: "warehouseId"})
-
-    transaksi.belongsTo(models.province , { foreginKey: "provinceId"})
-    transaksi.belongsTo(models.cityregencies , { foreginKey: "cityregencyId"})
-    transaksi.belongsTo(models.districts , { foreginKey: "districtId"})
 
     //transaksi.belongsTo(models.products, { foreginKey: "productId"})
     
