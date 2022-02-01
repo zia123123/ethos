@@ -175,7 +175,6 @@ module.exports = {
                   {
                     [Op.like]: '%K%'
                   },
-                  ,
                   {
                     [Op.like]: '%G%'
                   }
