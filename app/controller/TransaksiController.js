@@ -174,6 +174,10 @@ module.exports = {
                   },
                   {
                     [Op.like]: '%K%'
+                  },
+                  ,
+                  {
+                    [Op.like]: '%G%'
                   }
                 ]
              },
@@ -192,9 +196,9 @@ module.exports = {
                             },
             ]
         }).then(result => {
-            const json2csvParser = new Parser();
-            const csv = json2csvParser.parse(transaksis);
-            console.log(csv);
+            // const json2csvParser = new Parser();
+            // const csv = json2csvParser.parse(transaksis);
+            // console.log(csv);
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
                 return apiResponse.ErrorResponse(res, err);
