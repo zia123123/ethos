@@ -45,17 +45,6 @@ module.exports = {
             where: {
                 id: req.params.id,
             },
-             include: [
-                { model: districts,
-                attributes: ['name']
-            },
-            { model: cityregencies,
-                attributes: ['name']
-            },
-            { model: province,
-                attributes: ['name']
-            
-        }]
         }).then(customer => {
             req.customer = customer;
             next();
@@ -84,15 +73,7 @@ module.exports = {
     },
     async index(req, res) {
         let result = await customers.findAll({
-            include: [ { model: districts,
-                attributes: ['name']
-            },
-            { model: cityregencies,
-                attributes: ['name']
-            },
-            { model: province,
-                attributes: ['name']
-            }]
+           
         }).then(result => {
             // const filename = 'result_.csv'
             // const fulldir = csvdir + '/' + filename
