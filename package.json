@@ -16,6 +16,7 @@
     "express-fileupload": "^1.2.1",
     "fcm-push-notif": "^1.2.1",
     "json-2-csv": "^3.15.0",
+    "json2csv": "^5.0.6",
     "jsonwebtoken": "^8.5.1",
     "multer": "^1.4.2",
     "mysql2": "^2.2.5",

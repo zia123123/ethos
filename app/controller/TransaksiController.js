@@ -165,6 +165,7 @@ module.exports = {
         let result = await transaksis.findAll({
             
             where: {
+                warehouseId: 1,
                 status: {
                     [Op.or]: [
                         {
