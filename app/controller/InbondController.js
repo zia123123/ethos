@@ -10,6 +10,7 @@ module.exports = {
             supplierId: req.body.supplierId,
             status: "Konfirmasi Finance"
         }).then(result => {
+           
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
         }).catch(function (err)  {
             return apiResponse.ErrorResponse(res, err);

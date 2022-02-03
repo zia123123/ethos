@@ -1,4 +1,4 @@
-const { catalog,products,rangesicepat } = require('../models/index');
+const { catalog,products,rangesicepat,inbond } = require('../models/index');
 const { Op } = require("sequelize");
 const apiResponse = require("../helpers/apiResponse");
 
@@ -11,6 +11,14 @@ module.exports = {
             inbondId: req.body.inbondId,
             jumlahbarang: req.body.jumlahbarang,
         }).then(result => {
+            let rinbond = inbond.findOne({
+                where: {
+                    id: req.body.inbondId
+                },
+            }).then(rinbond =>{
+                rinbond.totalbarangpesan =  (parseInt(rinbond.totalbarangpesan) + parseInt(req.body.jumlahbarang))
+                rinbond.save()
+            })
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
         }).catch(function (err)  {
             return apiResponse.ErrorResponse(res, err);

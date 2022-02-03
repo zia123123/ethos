@@ -1,5 +1,7 @@
 const { suppliers } = require('../models/index');
 const { Op } = require("sequelize");
+const jsonexport = require('jsonexport');
+const fs = require('fs');
 const apiResponse = require("../helpers/apiResponse");
 
 module.exports = {
@@ -37,6 +39,28 @@ module.exports = {
     async index(req, res) {
         let result = await suppliers.findAll({
         }).then(result => {
+            class Supplier {
+                constructor(id,nama) {
+                  this.id = id;
+                  this.nama = nama;
+                }
+              }
+              var  SupplierArray  = [];
+            for(var i=0;i<result.length;i++){
+                    SupplierArray.push(new Supplier(result[i].id,result[i].name));
+            }
+            
+
+            // var data = json(result)
+            // console.log(data);
+            jsonexport(SupplierArray, function(err, csv) {
+              if (err) return console.error(err);
+              fs.writeFile('app/public/docs/cars.csv', csv, function(err) {
+                if (err) return console.error(err);
+                console.log('cars.csv saved');
+              });
+            });
+    
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
                 return apiResponse.ErrorResponse(res, err);
