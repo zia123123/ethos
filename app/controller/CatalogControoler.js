@@ -94,6 +94,14 @@ module.exports = {
 
     // Delete
     async delete(req, res) {
+        let rinbond = inbond.findOne({
+            where: {
+                id: result.inbondId
+            },
+        }).then(rinbond =>{
+            rinbond.totalbarangpesan =  rinbond.totalbarangpesan-result.jumlahbarang
+            rinbond.save()
+        })
         req.result.destroy().then(result => {
             res.json({ msg: "Berhasil di delete" });
         })
