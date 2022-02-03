@@ -96,10 +96,10 @@ module.exports = {
     async delete(req, res) {
         let rinbond = inbond.findOne({
             where: {
-                id: result.inbondId
+                id: req.result.inbondId
             },
         }).then(rinbond =>{
-            rinbond.totalbarangpesan =  rinbond.totalbarangpesan-result.jumlahbarang
+            rinbond.totalbarangpesan =  rinbond.totalbarangpesan-req.result.jumlahbarang
             rinbond.save()
         })
         req.result.destroy().then(result => {
