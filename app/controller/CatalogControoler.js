@@ -16,7 +16,7 @@ module.exports = {
                     id: req.body.inbondId
                 },
             }).then(rinbond =>{
-                rinbond.totalbarangpesan =  (parseInt(rinbond.totalbarangpesan) + parseInt(req.body.jumlahbarang))
+                rinbond.totalbarangpesan =  100
                 rinbond.save()
             })
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
