@@ -28,6 +28,7 @@ module.exports = (sequelize, DataTypes) => {
   inbond.associate = function(models) {
     inbond.belongsTo(models.suppliers, { foreginKey: "supplierId"})
     inbond.hasMany(models.catalog, { foreginKey: "inbond"})
+    inbond.hasMany(models.dropout)
 
   };
   return inbond;

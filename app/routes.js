@@ -78,6 +78,7 @@ const KeranjangController = require('./controller/KeranjangController');
 
 const NorekController = require('./controller/NorekController');
 
+const DroupOutController = require('./controller/DroupOutController');
 
 const UnitController = require('./controller/UnitController');
 
@@ -157,6 +158,12 @@ router.get('/api/catalog/', CatalogControoler.index);
 router.get('/api/catalog/:id', CatalogControoler.find, CatalogControoler.show);
 router.patch('/api/catalog/update/:id', CatalogControoler.find,CatalogControoler.update);
 router.delete('/api/catalog/delete/:id', CatalogControoler.find,CatalogControoler.delete);
+
+//dropput
+router.post('/api/dropout/create', DroupOutController.create);
+router.get('/api/dropout/', DroupOutController.index);
+router.get('/api/dropout/:id', DroupOutController.find, DroupOutController.show);
+router.delete('/api/dropout/delete/:id', DroupOutController.find,DroupOutController.delete);
 
 //province
 router.post('/api/province/create', ProvincesController.create);
