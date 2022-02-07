@@ -1,13 +1,17 @@
 const { products,product_stocks,suppliers,warehouses } = require('../models/index');
 const { Op } = require("sequelize");
 const apiResponse = require("../helpers/apiResponse");
+const { Storage } = require('@google-cloud/storage');
+const storage = new Storage({ keyFilename: 'ethos-firestore-key.json' });
+const bucketName = 'dev-edmms';
 
 module.exports = {
   
 
     //create
     async create(req, res) { 
-        var link = req.files.link == null ? null : req.files.link[0].filename
+
+        var link = req.files[0].filename
         let result = await products.create({
             name: req.body.name,
             expiry_date: req.body.expiry_date,
@@ -19,10 +23,11 @@ module.exports = {
             quantity: 0,
             sku: req.body.sku,
             unitId: req.body.unitId,
-            link: 'images/'+link,
+            link: link,
             supplierId: req.body.supplierId,
             interval_year_expiry_date: req.body.interval_year_expiry_date
         }).then(result => {
+           
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
         }).catch(function (err)  {
             return apiResponse.ErrorResponse(res, err);
@@ -42,8 +47,7 @@ module.exports = {
         let result = await products.findOne({
             where: {
                 id: req.params.id,
-             },
-            include: [ 
+             },            include: [ 
                 { model: product_stocks,
                     attributes: ['quantity','warehouseId'],
                 },

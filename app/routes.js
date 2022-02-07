@@ -83,10 +83,22 @@ const DroupOutController = require('./controller/DroupOutController');
 const UnitController = require('./controller/UnitController');
 
 const InbondController = require('./controller/InbondController');
-
+const Ekpedisicontroller = require('./controller/Ekpedisicontroller');
 
 
 const multer = require('multer')
+var multerGoogleStorage = require("multer-google-storage");
+var uploadHandler = multer({
+  storage: multerGoogleStorage.storageEngine({
+    autoRetry: true,
+    bucket: 'ethos-kreatif-app.appspot.com',
+    projectId: 'ethos-kreatif-app',
+    keyFilename: 'ethos-firestore-key.json',
+    filename: (req, file, cb) => {
+      cb(null, `/projectimages/${Date.now()}_${file.originalname}`);
+    }
+  })
+});
 const multerConf = {
     storage: multer.diskStorage({
         destination : function(req,file, next){
@@ -124,10 +136,7 @@ router.get('/api/ethos/user/:id', AuthenController.find, AuthenController.show);
 router.get('/api/ethos/user/', AuthenController.index);
 
 //product
-router.post('/api/product/create',multer(multerConf).fields([{
-    name: 'link', maxCount: 1
-    }
-]), ProductController.create);
+router.post('/api/product/create',uploadHandler.any(), ProductController.create);
 router.get('/api/product/', ProductController.index);
 router.get('/api/suppproduct/', ProductController.indexBySupp);
 router.get('/api/product/:id', ProductController.find, ProductController.show);
@@ -184,6 +193,14 @@ router.get('/api/ninja/', NinjaOriginController.index);
 router.get('/api/ninja/:id', NinjaOriginController.find, NinjaOriginController.show);
 router.patch('/api/ninja/update/:id', NinjaOriginController.find,NinjaOriginController.update);
 
+//ekpedisi
+router.post('/api/ekpedisi/create', Ekpedisicontroller.create);
+router.get('/api/ekpedisiinternal/', Ekpedisicontroller.indexInternal);
+router.get('/api/ekpedisiexternal/', Ekpedisicontroller.indexExternal);
+router.get('/api/ekpedisi/:id', Ekpedisicontroller.find, Ekpedisicontroller.show);
+router.patch('/api/ekpedisi/update/:id', Ekpedisicontroller.find,Ekpedisicontroller.update);
+router.delete('/api/ekpedisi/delete/:id', Ekpedisicontroller.find,Ekpedisicontroller.delete);
+
 //district
 router.post('/api/disctrict/create', DistrictController.create);
 router.get('/api/disctrict/:id', DistrictController.index);
@@ -220,6 +237,7 @@ router.delete('/api/domain/delete/:id', DomainController.find,DomainController.d
 
 
 //ProductStockController
+
 router.post('/api/stock/create', ProductStockController.create);
 router.get('/api/stock/', ProductStockController.index);
 router.get('/api/stock/warehouse/:warehouseId', ProductController.indexWarehouse);
