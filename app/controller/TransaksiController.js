@@ -101,6 +101,10 @@ module.exports = {
         let metodebayar = parseInt(req.query.metodebayar)
         let status = req.query.status
         let nama = req.query.nama
+        let startDate = req.query.startDate+"T00:00:00.000Z"
+        let endDate = req.query.endDate+"T17:00:00.000Z"
+    
+     
         if( status == null ){
             status = ""
         }
@@ -110,9 +114,15 @@ module.exports = {
         if(isNaN(parseFloat(metodebayar))){
             metodebayar = ""
         }
-       
+    
         let result = await transaksis.findAll({
             where:{
+                createdAt :  {
+                    [Op.and]: {
+                      [Op.gte]: startDate,
+                      [Op.lte]: endDate
+                    }
+                  },
                 authId: req.params.userid,
                 [Op.and]: [
                     {
