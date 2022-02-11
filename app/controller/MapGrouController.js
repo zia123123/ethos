@@ -9,6 +9,7 @@ module.exports = {
         let result = await mapgroup.create({
             authId: req.body.authId,
             groupId: req.body.groupId,
+            type:  req.body.type,
             status:true,
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
@@ -33,7 +34,7 @@ module.exports = {
 
     async index(req, res) {
         let result = await mapgroup.findAll({
-            attributes: ['id','createdAt'],
+            attributes: ['id','createdAt','type'],
             include: [ 
                 { model: auths,
                     attributes: ['firstname'],
@@ -50,7 +51,7 @@ module.exports = {
 
     async myUser(req, res) {
         let result = await mapgroup.findAll({
-            attributes: ['id','createdAt','status'],
+            attributes: ['id','createdAt','status','type'],
             where:{
                 groupId: req.query.groupId
             },

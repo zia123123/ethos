@@ -280,11 +280,9 @@ module.exports = {
     },
 
     async jumlahClosing(req, res) {
-        let result = await transaksis.count()({ 
+        let result = await transaksis.count({ 
             where: {
-                status: {
-                  [Op.like]: '%I%'
-                }
+                status: req.query.status
               },
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);

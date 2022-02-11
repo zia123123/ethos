@@ -11,6 +11,9 @@ module.exports = {
       groupId: {
         type: Sequelize.INTEGER,
       },
+      type: {
+        type: Sequelize.STRING,
+      },
       authId: {
         type: Sequelize.INTEGER,
       },

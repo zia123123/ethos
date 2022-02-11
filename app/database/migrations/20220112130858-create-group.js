@@ -14,6 +14,9 @@ module.exports = {
       internal: {
         type: Sequelize.BOOLEAN
       },
+      ppn: {
+        type: Sequelize.BOOLEAN
+      },
       authId: {
         allowNull: false,
         type: Sequelize.INTEGER,

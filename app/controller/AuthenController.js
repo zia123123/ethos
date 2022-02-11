@@ -44,10 +44,10 @@ module.exports = {
         });
     },
 
-    async getAdvertiser(req, res) {
+    async getListUser(req, res) {
         let result = await auths.findAll({
             where:{
-                role: 5
+                role: req.query.roleid
             },
             attributes: ['id','email', 'firstname']
         }).then(result => {
@@ -56,6 +56,8 @@ module.exports = {
                 return apiResponse.ErrorResponse(res, err);
             });
     },
+
+    
 
     async getCustomer(req, res) {
         let result = await auths.findAll({

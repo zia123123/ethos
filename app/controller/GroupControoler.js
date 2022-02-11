@@ -10,6 +10,7 @@ module.exports = {
             authId: req.body.supervisorId,
             name: req.body.name,
             status: true,
+            ppn: req.body.ppn,
             internal: req.body.internal,
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);

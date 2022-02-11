@@ -6,6 +6,9 @@ module.exports = (sequelize, DataTypes) => {
     status: {
       type: DataTypes.BOOLEAN,
     },
+    type: {
+      type: DataTypes.STRING,
+    },
   
   }, {
     tableName: "mapgroups"
