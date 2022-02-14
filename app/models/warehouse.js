@@ -60,6 +60,7 @@ module.exports = (sequelize, DataTypes) => {
     warehouse.belongsTo(models.province , { foreginKey: "provinceId"})
     warehouse.belongsTo(models.cityregencies , { foreginKey: "cityregencyId"})
     warehouse.belongsTo(models.districts , { foreginKey: "districtId"})
+    warehouse.hasMany(models.customers)
 
   };
 

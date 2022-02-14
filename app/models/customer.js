@@ -60,6 +60,9 @@ module.exports = (sequelize, DataTypes) => {
     cityname:{
       type: DataTypes.STRING,
     },
+    idorigin: {
+      type: DataTypes.STRING
+    },
     districtname:{
       type: DataTypes.STRING,
     },
@@ -69,7 +72,7 @@ module.exports = (sequelize, DataTypes) => {
   customer.associate = function(models) { 
     customer.hasMany(models.transaksis,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "customer"})
     customer.hasMany(models.keranjangs)
-
+    customer.belongsTo(models.warehouses, { foreginKey: "warehouseId"})
   };
 
   return customer;

@@ -14,6 +14,9 @@ module.exports = {
     //create
     async create(req, res) { 
         let result = await customers.create({
+           
+            warehouseId: req.body.warehouseId,
+            idorigin: req.body.idorigin,
             nama: req.body.nama,
             notelp: req.body.notelp,
             notelp2: req.body.notelp2,
@@ -105,6 +108,9 @@ module.exports = {
 
     // Update
     async update(req, res) {
+        
+        req.customer.warehouseId = req.body.warehouseId;
+        req.customer.idorigin = req.body.idorigin;
         req.customer.nama = req.body.nama;
         req.customer.notelp = req.body.notelp;
         req.customer.notelp2 = req.body.notelp2;

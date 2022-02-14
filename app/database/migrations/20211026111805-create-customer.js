@@ -20,6 +20,12 @@ module.exports = {
       email: {
         type: Sequelize.STRING
       },
+      warehouseId: {
+        type: Sequelize.INTEGER
+      },
+      idorigin: {
+        type: Sequelize.STRING
+      },
       pekerjaan: {
         type: Sequelize.STRING
       },
