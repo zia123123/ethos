@@ -29,7 +29,7 @@ module.exports = {
             norekening: req.body.norekening,
             password: password,
             status: true,
-            firstname: req.body.firstname,
+            firstname: req.body.firstname+"-"+req.body.type,
             role: req.body.role
         }).then(auths => {
             let token = jwt.sign({ auth: auths }, authConfig.secret, {
