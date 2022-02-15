@@ -293,6 +293,14 @@ module.exports = {
     async jumlahClosing(req, res) {
         let result = await transaksis.count({ 
             where: {
+                [Op.and]: [
+                    {
+                        status: req.query.status
+                     },
+                     {
+                        authId: req.query.authId
+                        },
+                  ],
                 status: req.query.status
               },
         }).then(result => {
