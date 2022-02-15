@@ -69,6 +69,7 @@ module.exports = {
     // Update
     async update(req, res) {
         req.result.name = req.body.name;  
+        req.result.ppn = req.body.ppn;
         req.result.status = req.body.status;    
         req.result.internal = req.body.internal;
         req.result.save().then(result => {
