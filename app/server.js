@@ -6,6 +6,21 @@ app.use(cors())
 app.use(express.static(path.join(__dirname, 'public')));
 const { sequelize } = require('./models/index');
 
+const corsOpts = {
+  origin: '*',
+
+  methods: [
+    'GET',
+    'POST',
+  ],
+
+  allowedHeaders: [
+    'Content-Type',
+  ],
+};
+
+app.use(cors(corsOpts));
+
 // Settings
 const PORT = process.env.PORT || 3000;
 
