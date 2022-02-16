@@ -277,6 +277,60 @@ module.exports = {
     },
 
 
+    async indexFinanceWeb(req, res) {
+        let page = parseInt(req.query.page)
+        let limit = parseInt(req.query.limit)
+        const count = await transaksis.count()          
+        let result = await transaksis.findAll({
+            offset: (page - 1) * limit,
+            limit: limit,
+            where: {
+                        status: {
+                            [Op.or]: [
+                                {
+                            [Op.like]: '%D%'
+                          },
+                          {
+                            [Op.like]: '%C%'
+                          }, {
+                            [Op.like]: '%E%'
+                          }
+                        ]
+                     },
+              },
+              order: [
+                ['id', 'DESC'],
+            ],
+            attributes: ['id', 'nama','createdAt','pembayaran','status','idtransaksi','invoiceId','subsidi','ongkoskirim'],
+            include: [ 
+                { model: daexpedisis,
+                    attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank','totalharga'],
+                },
+                { model: auths,
+                    attributes: ['firstname'],
+                },
+                { model: buktibayars,
+                    attributes: ['link'],
+                },
+            ]
+             
+        }).then(result => {
+            var totalPage = (parseInt(count) / limit) + 1
+            returnData = {
+                result,
+                metadata: {
+                    page: page,
+                    count: result.length,
+                    totalPage: parseInt(totalPage),
+                    totalData:  count,
+                }
+            }
+            return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
+            }).catch(function (err){
+                return apiResponse.ErrorResponse(res, err);
+            });
+    },
+
     async indexLunasRetur(req, res) {
         let result = await transaksis.findAll({
             where: {
