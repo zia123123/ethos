@@ -62,6 +62,17 @@ module.exports = {
             });
     },
 
+
+    async findUpdate(req, res, next) {
+        let product = await products.findByPk(req.params.id);
+        if (!product) {
+        return apiResponse.notFoundResponse(res, "Not Fond");
+        } else {
+            req.product = product;
+            next();
+        }
+    },
+
     async index(req, res) {
         let result = await products.findAll({
             attributes: ['weight','id', 'name','expiry_date','price','link','discount','quantity','sku'],

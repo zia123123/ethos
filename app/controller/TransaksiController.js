@@ -183,7 +183,9 @@ module.exports = {
             offset: (page - 1) * limit,
             limit: limit,
             where: {
-                warehouseId: warehouseId,
+                warehouseId: {
+                    [Op.like]: '%'+warehouseId+'%'
+             },
                 status: {
                     [Op.or]: [
                         {
