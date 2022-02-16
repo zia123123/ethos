@@ -171,10 +171,19 @@ module.exports = {
     },
 
     async indexGudang(req, res) {
+        let warehouseId = req.query.warehouseId
+        if( warehouseId == null ){
+            warehouseId = ""
+        }
+        let page = parseInt(req.query.page)
+        let limit = parseInt(req.query.limit)
+        const count = await transaksis.count({ where: {
+            warehouseId: warehouseId}})
         let result = await transaksis.findAll({
-            
+            offset: (page - 1) * limit,
+            limit: limit,
             where: {
-                warehouseId: 1,
+                warehouseId: warehouseId,
                 status: {
                     [Op.or]: [
                         {
@@ -206,10 +215,21 @@ module.exports = {
                             }
             ]
         }).then(result => {
+            var totalPage = (parseInt(count) / limit) + 1
+            returnData = {
+                result,
+                metadata: {
+                    page: page,
+                    count: result.length,
+                    totalPage: parseInt(totalPage),
+                    totalData:  count,
+                }
+            }
+            return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
             // const json2csvParser = new Parser();
             // const csv = json2csvParser.parse(transaksis);
             // console.log(csv);
-            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            //return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
                 return apiResponse.ErrorResponse(res, err);
             });

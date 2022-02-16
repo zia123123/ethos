@@ -61,6 +61,8 @@ typings/
 .rts2_cache_es/
 .rts2_cache_umd/
 
+
+
 # Optional REPL history
 .node_repl_history
 
@@ -104,3 +106,5 @@ dist
 
 # TernJS port file
 .tern-port
+
+.ethos-firestore-key.json

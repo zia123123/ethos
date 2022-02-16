@@ -23,7 +23,7 @@ module.exports = {
             quantity: 0,
             sku: req.body.sku,
             unitId: req.body.unitId,
-            link: link,
+            link: "https://storage.cloud.google.com/ethos-kreatif-app.appspot.com"+link,
             supplierId: req.body.supplierId,
             interval_year_expiry_date: req.body.interval_year_expiry_date
         }).then(result => {
@@ -111,23 +111,15 @@ module.exports = {
     },
 
     async indexWarehouse(req, res) {
-        let result = await products.findAll({
-            attributes: ['id', 'name','expiry_date','price','link','discount','quantity','sku'],
+        let result = await product_stocks.findAll({
+            where: {
+                warehouseId:  req.params.warehouseId
+            },
+            attributes: ['quantity','id'],
             include: [ 
-                { model: product_stocks,
-                    where: {
-                        warehouseId:  req.params.warehouseId
-                    },
-                    attributes: ['quantity','warehouseId'],
-                    include: [ 
-                        { model: warehouses,
-                            attributes: ['name'],
-                        }
-                    ]
+                { model: products,
+                    attributes: ['weight','id', 'name','expiry_date','price','link','discount','quantity','sku'],
                 },
-                { model: suppliers,
-                    attributes: ['name'],
-                }
             ]
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);

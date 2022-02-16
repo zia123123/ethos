@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "ethos-kreatif-app",
+  "private_key_id": "5b4ec140d8e8e4a439ae00881ab7d1af84955f25",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDbY9hiVCCRTpN9\nlF5x52VWcMQeG5L4hcyvDgjy00XvT0UAZINdb+681b1ynifASP7JjXC7gBjIghWh\nDyp94Vr9YZzHxRrnkDv7zN7kd+4/T3jHgbO+R0W/DUuTOU+FXOJRpEOzWFnk2+rF\nY1dlrz8OW7qdMSnGPTUW+0P3jTeLXv0y6KPYsiqniRFAt2x+vtmb3fKyiRfupW9R\nWYW4nlDAulGYJUyXHxmhtOjQ97NwFJ5OrOG3PCBDDok3QtKcrck9lwPSnn84MRz7\nX1+pdy12Pd8tjIotZm+AVhrq0uAo6vEWIbBUmIjVlkU/CVweurAH8c4UNdSV7TXz\nMfnDZrpzAgMBAAECggEAE++9VKYndXzp+0H12Sz5cQL7V28TCoGCKbBBUOuxEb+m\n2hPIOj/3NnLH7fgATcF0YdV4Fpnb5rCnjYTGzDyj2524tRCs0rkxMj8aTDG31UoA\nBEU9k79/T47CPOU63DgmGtwuCMixFpKDgZ927DciKEheq3UxwiGCxw1bTk4na4Mx\nm1JIyASooZtKW0NvmIAChQ1e5jSDB3A7bSjWxmrZokxcC2G5ea86ghOW6xXd6qLm\n61LgVMv6xHS2svXhhNXaVrAqH4C0spfJzbklnoNqeRfRmf2JdIt22p57v5z6FM1l\nPNzdPXDja1cgfKQmmBF3zIlteLbFwBk0e/9VmuZdHQKBgQD98pXt6YqRfHGWetSm\ngbUtSCOarAeR+mHdHQ63oFBf/llaQSHG5JFQnrj98V/3PFf1jnRM72wbEivgZ5Mo\nMP7mldmIuaGGhttISf+1huKehvFJDqkN5QT9u6Zcf4EvNP1i8htUmkXgVDMUe/Xr\nQiLR8TuqSF+EEpg8kE2QdXiG3QKBgQDdKcKpdJWMeeixBLJQNgKv6ecCAhqQH1L8\nuhg2xmln7h3k44WPOQDvXPLOBctnU79X6C9PpwXV2GENMkUbCIVrHGGQhMgXOJb1\nUX8ogWeeG7ZNArSnt07hCFpF3L+CwME2yHueRxhEue7QkguK/Mlke4uw+de2i2pF\nGLUD9MIpjwKBgQDlkSACZAYVQSc5/q4wG7+aQMWW9H8fcvZ3OeZtD2q5bKh/07Ni\nJoxLEkFvp322dgGaBX6TcjkLO+EYSumYArrb3ok5dX5Uq6Kd9e9Ivbgt0RVckvk2\ni1t4uONKaSVydHe/s9gLIi+a/OL0WJ9WXoI1wdrLNAPM1DZ1QYos1lTvrQKBgQC1\nHO654KxbZrYkyMjRoPlgX/b6kQh5v/0w06Dismc9YiV+/MeyOydF3eNEzj/9NPr8\nHTspSokfz1vi96jZ84d26L4JIIPPaFtPOFcer6JQOzd2J2IT+qyQ4ksy7Qy0Ie/Y\nUiPRwTzhgzZL/V2Qi2TNcdM6sc9yQQdc4FfUjoq2hwKBgGooj5kIkNW+xbf3CXLU\nB8zimnLnXoEB2f9xab3Q4JM/i4mKODo1Kkktl4Z+KtJIqBlBiuuEJ+M9aFYNwtU3\nWK4LRyBtsyZg3wniCz2Pwkoz2kl5mf9Q/+fJOpcAPqqTTiIKrQ7Iw8flbuioceUi\nRKgGaRpM692WVhOwFd6O6+Z8\n-----END PRIVATE KEY-----\n",
+  "client_email": "ethosstorageservice@ethos-kreatif-app.iam.gserviceaccount.com",
+  "client_id": "112004851856994494721",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/ethosstorageservice%40ethos-kreatif-app.iam.gserviceaccount.com"
+}

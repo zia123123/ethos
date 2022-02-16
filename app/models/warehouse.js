@@ -23,7 +23,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-
     statusGudang: {
       type: DataTypes.BOOLEAN
     },
@@ -45,6 +44,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     cityregencyId: {
       type: DataTypes.INTEGER,
+    },
+    internal: {
+      type: DataTypes.BOOLEAN
     },
     districtId: {
       type: DataTypes.INTEGER,

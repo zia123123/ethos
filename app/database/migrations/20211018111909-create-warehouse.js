@@ -27,7 +27,9 @@ module.exports = {
       statusGudang: {
         type: Sequelize.BOOLEAN
       },
-
+      internal: {
+        type: Sequelize.BOOLEAN
+      },
       address: {
         type: Sequelize.TEXT
       },

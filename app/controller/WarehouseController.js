@@ -20,7 +20,6 @@ module.exports = {
             postalcode: req.body.postalcode,
             address_line_two: req.body.address_line_two,
             village: req.body.village,
-
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
         }).catch(function (err)  {
