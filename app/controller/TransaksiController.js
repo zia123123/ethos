@@ -278,12 +278,12 @@ module.exports = {
 
 
     async indexFinanceWeb(req, res) {
-        let page = parseInt(req.query.page)
-        let limit = parseInt(req.query.limit)
-        const count = await transaksis.count()          
+        // let page = parseInt(req.query.page)
+        // let limit = parseInt(req.query.limit)
+        // const count = await transaksis.count()          
         let result = await transaksis.findAll({
-            offset: (page - 1) * limit,
-            limit: limit,
+            // offset: (page - 1) * limit,
+            // limit: limit,
             where: {
                         status: {
                             [Op.or]: [
@@ -315,17 +315,17 @@ module.exports = {
             ]
              
         }).then(result => {
-            var totalPage = (parseInt(count) / limit) + 1
-            returnData = {
-                result,
-                metadata: {
-                    page: page,
-                    count: result.length,
-                    totalPage: parseInt(totalPage),
-                    totalData:  count,
-                }
-            }
-            return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
+            // var totalPage = (parseInt(count) / limit) + 1
+            // returnData = {
+            //     result,
+            //     metadata: {
+            //         page: page,
+            //         count: result.length,
+            //         totalPage: parseInt(totalPage),
+            //         totalData:  count,
+            //     }
+            // }
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
                 return apiResponse.ErrorResponse(res, err);
             });
