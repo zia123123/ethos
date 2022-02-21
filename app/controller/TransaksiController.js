@@ -98,7 +98,7 @@ module.exports = {
 
     async index(req, res) {
       
-        let metodebayar = parseInt(req.query.metodebayar)
+     
         let status = req.query.status
         let nama = req.query.nama
         //let statusbarang = req.query.statusbarang
@@ -141,12 +141,6 @@ module.exports = {
                         }
                         
                          },
-                        //  {
-                        //     statusbarang: {    
-                        //         [Op.like]: '%'+statusbarang+'%'
-                        //     }
-                            
-                        //      },
                          {
                             nama: {    
                                 [Op.like]: '%'+nama+'%'
@@ -238,8 +232,21 @@ module.exports = {
     },
 
     async indexAll(req, res) {
+        let invoiceId = req.query.invoiceId
+        if( invoiceId == null ){
+            invoiceId = ""
+        }
+
+
         let result = await transaksis.findAll({
             where: {
+                [Op.and]: [
+                    {
+                    status: {    
+                        [Op.like]: '%'+invoiceId+'%'
+                    }
+                     },
+                  ],
                         status: {
                             [Op.or]: [
                                 {
@@ -332,8 +339,24 @@ module.exports = {
     },
 
     async indexLunasRetur(req, res) {
+         let status = req.query.status
+        let invoiceId = req.query.invoiceId
+         let namabank = req.query.namabank
+         let startDate = req.query.startDate+"T00:00:00.000Z"
+         let endDate = req.query.endDate+"T17:00:00.000Z"
+
+        if( invoiceId == null ){
+            invoiceId = ""
+        }
+        if( namabank == null ){
+            namabank = ""
+        }
+        if( status == null ){
+            status = ""
+        }
+        
         let result = await transaksis.findAll({
-            where: {
+            where:{
                 status: {
                     [Op.or]: [
                         {
@@ -344,7 +367,25 @@ module.exports = {
                   }
                 ]
              },
-               
+               createdAt :  {
+                    [Op.and]: {
+                      [Op.gte]: startDate,
+                      [Op.lte]: endDate
+                    }
+                  },
+             //authId: req.params.userid,
+                [Op.and]: [
+                    {
+                    status: {    
+                        [Op.like]: '%'+status+'%'
+                    }
+                     },
+                     {
+                        invoiceId: {    
+                            [Op.like]: '%'+invoiceId+'%'
+                        }
+                         },
+                  ],
               },
               order: [
                 ['id', 'DESC'],
@@ -352,6 +393,15 @@ module.exports = {
             attributes: ['id', 'nama','createdAt','pembayaran','status','idtransaksi','invoiceId','subsidi','ongkoskirim'],
             include: [ 
                 { model: daexpedisis,
+                    where: {
+                        namabank: {
+                            [Op.or]: [
+                                {
+                            [Op.like]: '%'+namabank+'%'
+                          },
+                        ]
+                     },
+                    },
                     attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank','totalharga'],
                 },
                 { model: auths,
