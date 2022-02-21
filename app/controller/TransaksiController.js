@@ -98,7 +98,7 @@ module.exports = {
 
     async index(req, res) {
       
-     
+        let metodebayar = parseInt(req.query.metodebayar)
         let status = req.query.status
         let nama = req.query.nama
         //let statusbarang = req.query.statusbarang
@@ -485,9 +485,8 @@ module.exports = {
     },
 
     async createBuktibayar(req, res, next) {
-        var link = req.files.buktibayar == null ? null : req.files.buktibayar[0].filename
         let result = await buktibayars.create({
-            link: 'images/'+link,
+            link: "https://storage.cloud.google.com/ethos-kreatif-app.appspot.com"+link,
             transaksisId: req.params.id,
         }).then(result => {
             let transaksi = transaksis.findOne({
