@@ -1,4 +1,4 @@
-const { auths } = require('../models/index');
+const { auths,mapgroup,group} = require('../models/index');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const authConfig = require('../../config/auth');
@@ -79,6 +79,15 @@ module.exports = {
             where: {
                 email: email
             },
+            include: [ 
+                { model: mapgroup,
+                    attributes: ['id'],
+                    include: [ 
+                        { model: group,  
+                        }
+                    ]
+                }
+            ]
         }).then(auths => {
             if (!auths) {
                 res.status(404).json({ message: "Maaf Akun tidak di temukan" });
