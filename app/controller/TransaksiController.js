@@ -101,7 +101,7 @@ module.exports = {
         let metodebayar = parseInt(req.query.metodebayar)
         let status = req.query.status
         let nama = req.query.nama
-        //let statusbarang = req.query.statusbarang
+        let statusbarang = req.query.statusbarang
         
         let startDate = req.query.startDate+"T00:00:00.000Z"
         let endDate = req.query.endDate+"T17:00:00.000Z"
@@ -110,9 +110,9 @@ module.exports = {
         if( status == null ){
             status = ""
         }
-        // if( statusbarang == null ){
-        //     statusbarang = ""
-        // }
+        if( statusbarang == null ){
+            statusbarang = ""
+        }
         if( nama == null ){
             nama = ""
         }
@@ -135,6 +135,11 @@ module.exports = {
                         [Op.like]: '%'+status+'%'
                     }
                      },
+                     {
+                        statusbarang: {    
+                            [Op.like]: '%'+statusbarang+'%'
+                        }
+                         },
                      {
                         pembayaran: {    
                             [Op.like]: '%'+metodebayar+'%'
