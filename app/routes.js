@@ -91,7 +91,7 @@ var multerGoogleStorage = require("multer-google-storage");
 var uploadHandler = multer({
   storage: multerGoogleStorage.storageEngine({
     autoRetry: true,
-    contentType:'image/png',
+    contentType: req.file.mimetype,
     bucket: 'ethos-kreatif-app.appspot.com',
     projectId: 'ethos-kreatif-app',
     keyFilename: 'ethos-firestore-key.json',
