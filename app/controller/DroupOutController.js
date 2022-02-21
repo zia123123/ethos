@@ -20,6 +20,14 @@ module.exports = {
                 rinbond.totalbarangsampai =  rinbond.totalbarangsampai+parseInt(req.body.jumlahbarang)
                 rinbond.save()
             })
+            let product = products.findOne({
+                where: {
+                    id:  req.body.productId
+                },
+            }).then(product =>{
+                product.quantity = (parseInt(product.quantity) + parseInt(req.body.quantity));
+                product.save()
+            })
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
         }).catch(function (err)  {
             return apiResponse.ErrorResponse(res, err);

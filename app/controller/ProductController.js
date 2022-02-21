@@ -23,7 +23,7 @@ module.exports = {
             quantity: 0,
             sku: req.body.sku,
             unitId: req.body.unitId,
-            link: "https://storage.cloud.google.com/ethos-kreatif-app.appspot.com"+link,
+            link: "https://storage.googleapis.com/ethos-kreatif-app.appspot.com"+link,
             supplierId: req.body.supplierId,
             interval_year_expiry_date: req.body.interval_year_expiry_date
         }).then(result => {
