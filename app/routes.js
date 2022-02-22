@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const mime = require('mime-types');
 
 
 // Middlewares
@@ -91,12 +92,15 @@ var multerGoogleStorage = require("multer-google-storage");
 var uploadHandler = multer({
   storage: multerGoogleStorage.storageEngine({
     autoRetry: true,
-    //contentType: req.file.link : string,
+    contentType: function(req, file){
+      file
+    },
     bucket: 'ethos-kreatif-app.appspot.com',
     projectId: 'ethos-kreatif-app',
     keyFilename: 'ethos-firestore-key.json',
-    filename: (req, file, cb) => {
-      cb(null, `/projectimages/${Date.now()}_${file.originalname}`);
+    filename: function(req, file, next){
+        const ext = file.mimetype.split('/')[1]
+        next(null, file.fieldname+ '-' +Date.now()+ '.' +ext)
     }
   })
 });
@@ -128,6 +132,7 @@ const multerConf = {
 
 router.post('/api/ethos/register', AuthenController.signUp); 
 router.post('/api/ethos/login', AuthenController.signIn);
+router.post('/api/ethos/loginfinance', AuthenController.signInFinance);
 router.get('/api/ethos/listuser', AuthenController.getListUser);
 router.get('/api/ethos/cs', AuthenController.getCustomer);
 router.get('/api/ethos/cs/:id', MappingController.getCustomerService);

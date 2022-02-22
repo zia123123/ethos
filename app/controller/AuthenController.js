@@ -73,7 +73,7 @@ module.exports = {
     },
 
 
-    signIn(req, res) {
+    signIn(req, res) {          
         let { email, password } = req.body;
         auths.findOne({
             where: {
@@ -88,6 +88,36 @@ module.exports = {
                     ]
                 }
             ]
+        }).then(auths => {
+            if (!auths) {
+                res.status(404).json({ message: "Maaf Akun tidak di temukan" });
+            } else {
+                if (bcrypt.compareSync(password, auths.password)) {
+                    let token = jwt.sign({ auths: auths }, authConfig.secret, {
+                        expiresIn: authConfig.expires
+                    });
+                    res.json({
+                        status: 200,
+                        message:"SUCCESS",
+                        data: auths,
+                        token: token
+                    })
+                } else {
+                    res.status(401).json({ msg: "Password Salah" })
+                }
+            }
+        }     
+        ).catch(err => {
+            return apiResponse.ErrorResponse(res, err);
+        })     
+    },
+
+    signInFinance(req, res) {          
+        let { email, password } = req.body;
+        auths.findOne({
+            where: {
+                email: email
+            },
         }).then(auths => {
             if (!auths) {
                 res.status(404).json({ message: "Maaf Akun tidak di temukan" });
