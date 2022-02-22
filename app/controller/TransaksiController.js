@@ -175,17 +175,7 @@ module.exports = {
     },
 
     async indexGudang(req, res) {
-        const options = { 
-            fieldSeparator: ',',
-            quoteStrings: '"',
-            decimalSeparator: '.',
-            showLabels: true, 
-            showTitle: true,
-            title: 'My Awesome CSV',
-            useTextFile: false,
-            useBom: true,
-            useKeysAsHeaders: true,
-          };
+      
         let warehouseId = req.query.warehouseId
         if( warehouseId == null ){
             warehouseId = ""
@@ -243,34 +233,34 @@ module.exports = {
                 }
             }
             
-            //return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
-            var result2 = [
-                {
-                  name: 'Test 1',
-                  age: 13,
-                  average: 8.2,
-                  approved: true,
-                  description: "using 'Content here, content here' "
-                },
-                {
-                  name: 'Test 2',
-                  age: 11,
-                  average: 8.2,
-                  approved: true,
-                  description: "using 'Content here, content here' "
-                },
-                {
-                  name: 'Test 4',
-                  age: 10,
-                  average: 8.2,
-                  approved: true,
-                  description: "using 'Content here, content here' "
-                },
-              ];
-            const json2csvParser = new Parser();
-            const csv = json2csvParser.parse(result2);
-            console.log(csv);
-            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
+            // var result2 = [
+            //     {
+            //       name: 'Test 1',
+            //       age: 13,
+            //       average: 8.2,
+            //       approved: true,
+            //       description: "using 'Content here, content here' "
+            //     },
+            //     {
+            //       name: 'Test 2',
+            //       age: 11,
+            //       average: 8.2,
+            //       approved: true,
+            //       description: "using 'Content here, content here' "
+            //     },
+            //     {
+            //       name: 'Test 4',
+            //       age: 10,
+            //       average: 8.2,
+            //       approved: true,
+            //       description: "using 'Content here, content here' "
+            //     },
+            //   ];
+            // const json2csvParser = new Parser();
+            // const csv = json2csvParser.parse(result2);
+            // console.log(csv);
+            //return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
                 return apiResponse.ErrorResponse(res, err);
             });
