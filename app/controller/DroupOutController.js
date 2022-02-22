@@ -25,7 +25,7 @@ module.exports = {
                     id:  req.body.productId
                 },
             }).then(product =>{
-                product.quantity = (parseInt(product.quantity) + parseInt(req.body.quantity));
+                product.quantity = (parseInt(product.quantity) + parseInt(req.body.jumlahbarang));
                 product.save()
             })
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
