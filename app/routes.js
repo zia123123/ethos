@@ -88,13 +88,11 @@ const Ekpedisicontroller = require('./controller/Ekpedisicontroller');
 
 
 const multer = require('multer')
-var multerGoogleStorage = require("multer-google-storage");
+var multerGoogleStorage = require("multer-cloud-storage");
 var uploadHandler = multer({
-  storage: multerGoogleStorage.storageEngine({
+  storage:  multerGoogleStorage.storageEngine({
     autoRetry: true,
-    contentType: function(req, file){
-      file
-    },
+    contentType: "image/png",
     bucket: 'ethos-kreatif-app.appspot.com',
     projectId: 'ethos-kreatif-app',
     keyFilename: 'ethos-firestore-key.json',
@@ -301,10 +299,7 @@ router.delete('/api/biayaiklan/delete/:id', BiayaIklanController.find,BiayaIklan
 
 
 
-router.post('/api/saldo/create',multer(multerConf).fields([{
-    name: 'buktisaldo', maxCount: 1
-    }
-]), SaldoController.create);
+router.post('/api/saldo/create',uploadHandler.any(), SaldoController.create);
 router.get('/api/saldo/', SaldoController.index);
 router.get('/api/saldo/:id', SaldoController.find, SaldoController.show);
 router.patch('/api/saldo/update/:id', SaldoController.find,SaldoController.update);
