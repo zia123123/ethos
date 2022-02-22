@@ -38,9 +38,6 @@ module.exports = {
 
     async getNorekBycs(req, res) {
         let result = await nomorekenings.findAll({
-            where:{
-                authId: req.params.id
-            },
             attributes: ['id', 'nomor','nama_bank','createdBy',],
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);

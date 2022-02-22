@@ -1,6 +1,11 @@
 const { transaksis,statustranksasis,keranjangs,products,daexpedisis,customers,warehouses,auths,buktibayars,product_stocks,districts,cityregencies,province    } = require('../models/index');
 const { Op } = require("sequelize");
+const { exportstocsv }  = require("export-to-csv"); 
 const { Parser } = require('json2csv');
+const { generate } = require("csv-generate");
+const converter = require('json-2-csv');
+const fs = require("fs")
+const csvdir = "./app/public/docs"
 const apiResponse = require("../helpers/apiResponse");
 
 module.exports = {
@@ -170,6 +175,17 @@ module.exports = {
     },
 
     async indexGudang(req, res) {
+        const options = { 
+            fieldSeparator: ',',
+            quoteStrings: '"',
+            decimalSeparator: '.',
+            showLabels: true, 
+            showTitle: true,
+            title: 'My Awesome CSV',
+            useTextFile: false,
+            useBom: true,
+            useKeysAsHeaders: true,
+          };
         let warehouseId = req.query.warehouseId
         if( warehouseId == null ){
             warehouseId = ""
@@ -226,11 +242,35 @@ module.exports = {
                     totalData:  count,
                 }
             }
-            return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
-            // const json2csvParser = new Parser();
-            // const csv = json2csvParser.parse(transaksis);
-            // console.log(csv);
-            //return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            
+            //return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
+            var result2 = [
+                {
+                  name: 'Test 1',
+                  age: 13,
+                  average: 8.2,
+                  approved: true,
+                  description: "using 'Content here, content here' "
+                },
+                {
+                  name: 'Test 2',
+                  age: 11,
+                  average: 8.2,
+                  approved: true,
+                  description: "using 'Content here, content here' "
+                },
+                {
+                  name: 'Test 4',
+                  age: 10,
+                  average: 8.2,
+                  approved: true,
+                  description: "using 'Content here, content here' "
+                },
+              ];
+            const json2csvParser = new Parser();
+            const csv = json2csvParser.parse(result2);
+            console.log(csv);
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
                 return apiResponse.ErrorResponse(res, err);
             });
@@ -490,6 +530,7 @@ module.exports = {
     },
 
     async createBuktibayar(req, res, next) {
+         var link = req.files[0].filename
         let result = await buktibayars.create({
             link: "https://storage.googleapis.com/ethos-kreatif-app.appspot.com/"+link,
             transaksisId: req.params.id,
