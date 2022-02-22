@@ -10,6 +10,12 @@ module.exports = {
 
     
     signUp(req, res) {
+        let type = req.body.type
+        if( type == null ){
+            type = ""
+        }else{
+            type = "-"+req.body.type
+        }
         let password = bcrypt.hashSync(req.body.password, Number.parseInt(authConfig.rounds));
         auths.create({
             email: req.body.email,
@@ -29,7 +35,7 @@ module.exports = {
             norekening: req.body.norekening,
             password: password,
             status: true,
-            firstname: req.body.firstname+"-"+req.body.type,
+            firstname: req.body.firstname+type,
             role: req.body.role
         }).then(auths => {
             let token = jwt.sign({ auth: auths }, authConfig.secret, {
