@@ -277,7 +277,7 @@ module.exports = {
             where: {
                 [Op.and]: [
                     {
-                    status: {    
+                        invoiceId: {    
                         [Op.like]: '%'+invoiceId+'%'
                     }
                      },
