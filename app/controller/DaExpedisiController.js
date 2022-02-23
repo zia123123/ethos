@@ -12,6 +12,8 @@ module.exports = {
                 id: req.body.transaksiId
             },
         }).then(transaksi =>{
+                transaksi.invoiceId = req.body.invoiceId;
+                transaksi.save()
                if(transaksi.pembayaran == 2){
                  harga = parseInt(req.body.totalharga)
                }else{
