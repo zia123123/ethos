@@ -35,6 +35,10 @@ module.exports = {
       rt: {
         type: Sequelize.INTEGER
       },
+      authId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
       rw: {
         type: Sequelize.INTEGER
       },

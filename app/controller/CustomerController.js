@@ -14,10 +14,10 @@ module.exports = {
     //create
     async create(req, res) { 
         let result = await customers.create({
-           
             warehouseId: req.body.warehouseId,
             idorigin: req.body.idorigin,
             nama: req.body.nama,
+            authId: req.body.authId,
             notelp: req.body.notelp,
             notelp2: req.body.notelp2,
             provinsiname: req.body.provinsiname,
@@ -100,7 +100,18 @@ module.exports = {
                 return apiResponse.ErrorResponse(res, err);
             });
     },
-
+    async jumlahLead(req, res) {
+        let result = await customers.count({ 
+            where: {
+                        authId: req.query.authId
+                     },
+              }
+        ).then(result => {
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            }).catch(function (err){
+                return apiResponse.ErrorResponse(res, err);
+            });
+    },
     // Show
     async show(req, res) {
         return apiResponse.successResponseWithData(res, "SUCCESS", req.customer);

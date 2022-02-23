@@ -6,9 +6,17 @@ module.exports = {
   
     //create
     async create(req, res) { 
-     
-     
-        var harga = (parseInt(req.body.totalharga) - (parseInt(req.body.transaksiId) % 999));
+        let transaksi = transaksis.findOne({
+            where: {
+                id: req.body.transaksiId
+            },
+        }).then(transaksi =>{
+               if(transaksi.pembayaran == 2){
+                var harga = parseInt(req.body.totalharga)
+               }else{
+                var harga = (parseInt(req.body.totalharga) - (parseInt(req.body.transaksiId) % 999));
+               }
+        })
         let result = await daexpedisis.create({
             ongkoskirim: req.body.ongkoskirim,
             subsidi: req.body.subsidi,
@@ -19,24 +27,6 @@ module.exports = {
             norekening: req.body.norekening ,
             biayacod: req.body.biayacod,
         }).then(result => {
-            let transaksi = transaksis.findOne({
-                where: {
-                    id: req.body.transaksiId
-                },
-            }).then(transaksi =>{
-                if(transaksi.warehouseId != 1 && transaksi.expedisiName == "sicepat" ){
-                    let rangesicepat = rangesicepat.findOne({
-                        where: {
-                            id: 1
-                        },
-                    }).then(rangesicepat =>{
-                       transaksi.awb = (rangesicepat.kode+1)
-                       rangesicepat.kode = (rangesicepat.kode+1)
-                    })
-                }
-                transaksi.invoiceId = req.body.invoiceId;
-                transaksi.save()
-            })
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
         }).catch(function (err)  {
             return apiResponse.ErrorResponse(res, err);

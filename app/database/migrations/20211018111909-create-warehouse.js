@@ -23,7 +23,9 @@ module.exports = {
       city: {
         type: Sequelize.STRING
       },
-      
+      idorigin: {
+        type: Sequelize.INTEGER
+      },
       statusGudang: {
         type: Sequelize.BOOLEAN
       },

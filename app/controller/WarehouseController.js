@@ -7,13 +7,13 @@ module.exports = {
     //create
     async create(req, res) { 
         let result = await warehouses.create({
-
             name: req.body.name,
             status: req.body.status,
             provinceId: req.body.provinceId,
             cityregencyId: req.body.cityregencyId,
             districtId: req.body.districtId,
             city: req.body.city,
+            idorigin: req.body.idorigin,
             statusGudang: req.body.statusGudang,
             address: req.body.address,
             expedition_data: req.body.expedition_data,
@@ -39,7 +39,7 @@ module.exports = {
 
     async index(req, res) {
         let result = await warehouses.findAll({
-            attributes: ['id', 'name'],
+            attributes: ['id','name','idorigin'],
             include: [
                 { model: districts,
                 attributes: ['name']

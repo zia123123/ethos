@@ -23,6 +23,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    idorigin: {
+      type: DataTypes.INTEGER
+    },
     statusGudang: {
       type: DataTypes.BOOLEAN
     },

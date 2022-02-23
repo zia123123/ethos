@@ -78,6 +78,8 @@ module.exports = (sequelize, DataTypes) => {
     auth.hasMany(models.group,{ foreginKey: "auth"})
     auth.hasMany(models.mapgroup,{ foreginKey: "auth"})
     auth.hasMany(models.keranjangs)
+    auth.hasMany(models.customers)
+
   };
 
   return auth;
