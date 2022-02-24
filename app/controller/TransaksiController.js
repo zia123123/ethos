@@ -668,7 +668,7 @@ module.exports = {
 
     // Delete
     async delete(req, res) {
-        req.transaksi.destroy().then(province => {
+        req.transaksi.destroy().then(transaksi => {
             res.json({ msg: "Berhasil di delete" });
         })
     },

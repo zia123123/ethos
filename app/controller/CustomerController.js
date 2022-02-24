@@ -101,13 +101,17 @@ module.exports = {
             });
     },
     async myCustomer(req, res) {
+        let clue = req.query.clue
+        if( clue == null ){
+            clue = ""
+        }
         let result = await customers.findAll({
             where: {
                 authId: req.query.authId,
                 [Op.or]: [
                     {
                         nama: {
-                            [Op.like]: '%'+req.params.clue+'%'
+                            [Op.like]: '%'+req.query.clue+'%'
                           }
                      },
                 ]
