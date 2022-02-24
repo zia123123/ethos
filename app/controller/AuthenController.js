@@ -63,6 +63,19 @@ module.exports = {
             });
     },
 
+
+    async getListAdvertiser(req, res) {
+        let result = await auths.findAll({
+            where:{
+                role: 5
+            },
+            attributes: ['id','email', 'firstname']
+        }).then(result => {
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            }).catch(function (err){
+                return apiResponse.ErrorResponse(res, err);
+            });
+    },
     
 
     async getCustomer(req, res) {

@@ -131,6 +131,7 @@ const multerConf = {
 router.post('/api/ethos/register', AuthenController.signUp); 
 router.post('/api/ethos/login', AuthenController.signIn);
 router.post('/api/ethos/loginfinance', AuthenController.signInFinance);
+router.get('/api/ethos/advertiser', AuthenController.getListAdvertiser);
 router.get('/api/ethos/listuser', AuthenController.getListUser);
 router.get('/api/ethos/cs', AuthenController.getCustomer);
 router.get('/api/ethos/cs/:id', MappingController.getCustomerService);
