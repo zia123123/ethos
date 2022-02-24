@@ -8,6 +8,7 @@ module.exports = {
         let result = await domains.create({
             url: req.body.url,
             authId: req.body.advertiserid,
+            productId: req.body.productId,
             status: true,
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);

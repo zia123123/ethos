@@ -100,6 +100,24 @@ module.exports = {
                 return apiResponse.ErrorResponse(res, err);
             });
     },
+    async myCustomer(req, res) {
+        let result = await customers.findAll({
+            where: {
+                authId: req.query.authId,
+                [Op.or]: [
+                    {
+                        nama: {
+                            [Op.like]: '%'+req.params.clue+'%'
+                          }
+                     },
+                ]
+             },   
+        }).then(result => {
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            }).catch(function (err){
+                return apiResponse.ErrorResponse(res, err);
+            });
+    },
     async jumlahLead(req, res) {
         let result = await customers.count({ 
             where: {
