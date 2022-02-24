@@ -16,6 +16,9 @@ const CatalogControoler = require('./controller/CatalogControoler');
 
 const SaldoController = require('./controller/SaldoController');
 
+const MapCsController = require('./controller/MapCsController');
+
+
 const AuthenController = require('./controller/AuthenController');
 const ProductController = require('./controller/ProductController');
 
@@ -148,6 +151,14 @@ router.get('/api/product/:id', ProductController.find, ProductController.show);
 router.patch('/api/product/update/:id', ProductController.findUpdate,ProductController.updateProduct);
 router.delete('/api/product/delete/:id', ProductController.finddelete,ProductController.delete);
     
+
+//mapcs
+router.post('/api/mapcs/create', MapCsController.create);
+router.get('/api/mapcs/', MapCsController.index);
+router.get('/api/mapcs/getdatacs', MapCsController.getDataCs);
+router.get('/api/mapcs/:id', MapCsController.find, MapCsController.show);
+router.patch('/api/mapcs/update/:id', MapCsController.find,MapCsController.update);
+router.delete('/api/mapcs/delete/:id', MapCsController.find,MapCsController.delete);
 
 //supplier
 router.post('/api/supplier/create', SupplierController.create);

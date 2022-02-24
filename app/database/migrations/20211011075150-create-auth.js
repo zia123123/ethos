@@ -39,7 +39,6 @@ module.exports = {
         type: Sequelize.STRING,
       },
       tanggalmasuk: {
-        allowNull: false,
         type: Sequelize.DATE
       },
       tanggalkeluar: {

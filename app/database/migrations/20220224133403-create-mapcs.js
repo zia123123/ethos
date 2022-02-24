@@ -1,15 +1,16 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('domains', {
+    await queryInterface.createTable('mapcs', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      url: {
-        type: Sequelize.STRING
+      domainId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
       },
       authId: {
         allowNull: false,
@@ -20,10 +21,6 @@ module.exports = {
         },
         onDelete: 'cascade',
         onUpdate: 'cascade'
-      },
-      productId: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
       },
       status: {
         type: Sequelize.BOOLEAN
@@ -39,6 +36,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('domains');
+    await queryInterface.dropTable('mapcs');
   }
 };
