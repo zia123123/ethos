@@ -55,6 +55,7 @@ module.exports = (sequelize, DataTypes) => {
     product.hasMany(models.saldo)
     product.hasMany(models.dropout)
     product.hasMany(models.domains)
+    product.hasMany(models.mapprice)
 
   };
 
