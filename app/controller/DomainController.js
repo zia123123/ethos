@@ -29,13 +29,9 @@ module.exports = {
 
     async index(req, res) {
         let result = await domains.findAll({
-            include: [ 
-                { model: auths,
-                    attributes: ['firstname'],
-                },
-                
-            ]
-
+            where: {
+                authId: req.query.authId,
+            }
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
