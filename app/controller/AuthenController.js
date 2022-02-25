@@ -7,8 +7,6 @@ const apiResponse = require("../helpers/apiResponse");
 
 module.exports = {
 
-
-    
     signUp(req, res) {
         let type = req.body.type
         if( type == "" ){

@@ -14,8 +14,8 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   mapprice.associate = function(models) {
-    mapcs.belongsTo(models.productId, { foreginKey: "productId"})
-    mapcs.belongsTo(models.groupId, { foreginKey: "groupId"})
+    mapprice.belongsTo(models.productId, { foreginKey: "productId"})
+    mapprice.belongsTo(models.groupId, { foreginKey: "groupId"})
   };
 
   return mapprice;
