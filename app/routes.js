@@ -390,6 +390,9 @@ router.get('/api/transaksi/retur', TransaksiController.jumlahRetur);
 router.get('/api/transaksi/lead', TransaksiController.jumlahLead);
 router.get('/api/transaksi/progress', TransaksiController.jumlahOnprogress);
 
+router.delete('/api/transaksi/delete/:id',TransaksiController.finddelete, TransaksiController.delete);
+
+
 router.get('/api/lunasretur/transaksi', TransaksiController.indexLunasRetur);
 
 

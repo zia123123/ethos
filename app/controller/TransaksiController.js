@@ -101,11 +101,11 @@ module.exports = {
             });
     },
     async finddelete(req, res, next) {
-        let product = await products.findByPk(req.params.id);
-        if (!product) {
+        let transaksi = await transaksis.findByPk(req.params.id);
+        if (!transaksi) {
         return apiResponse.notFoundResponse(res, "Not Fond");
         } else {
-            req.product = product;
+            req.transaksi = transaksi;
             next();
         }
     },
