@@ -34,7 +34,10 @@ module.exports = {
         }
         let result = await domains.findAll({
             where: {
-                authId: req.query.authId,
+                
+                    authId: {    
+                    [Op.like]: '%'+authId+'%'
+                }
             }
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
