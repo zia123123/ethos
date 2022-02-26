@@ -28,8 +28,8 @@ module.exports = {
     },
 
     async index(req, res) {
-        let authId = req.query.authId
-        if( authId == null ){
+        let authId = parseInt(req.query.authId)
+        if(isNaN(parseFloat(authId))){
             authId = ""
         }
         let result = await domains.findAll({
