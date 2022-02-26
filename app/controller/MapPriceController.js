@@ -28,21 +28,27 @@ module.exports = {
     },
     async index(req, res) {
         let result = await mapprice.findAll({
+            include: [ { model: products,
+                attributes: ['id', 'name'] },
+                { model: group,
+                    attributes: ['id', 'name'] },
+            ],
+            attributes: ['id','status','hpp','createdAt']
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
                 return apiResponse.ErrorResponse(res, err);
             });
     },
-    async getDataCs(req, res) {
+    async getByGroup(req, res) {
         let result = await mapcs.findAll({
             where:{
-                domainId: req.query.domainId
+                groupId: req.query.groupId
             },
-            include: [ { model: auths,
-                attributes: ['id', 'firstname'] },
+            include: [ { model: products,
+                attributes: ['id', 'name'] },
             ],
-            attributes: ['id','status', 'createdAt']
+            attributes: ['id','status','hpp','createdAt']
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){

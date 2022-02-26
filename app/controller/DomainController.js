@@ -28,6 +28,10 @@ module.exports = {
     },
 
     async index(req, res) {
+        let authId = req.query.authId
+        if( authId == null ){
+            authId = ""
+        }
         let result = await domains.findAll({
             where: {
                 authId: req.query.authId,
