@@ -349,13 +349,16 @@ module.exports = {
                   },
                 }
               },
-              attributes: ['invoiceId','awb','ongkoskirim','products'],
+              attributes: ['invoiceId','awb','ongkoskirim','products','expedisiName',],
               order: [
                 ['id', 'DESC'],
             ],
                         include: [ 
                             { model: customers,
                                 attributes: ['notelp','alamat','nama'],
+                            },
+                            { model: warehouses,
+                                attributes: ['name'],
                             },
                             { model: auths,
                                 attributes: ['notelp','firstname'],
@@ -366,7 +369,7 @@ module.exports = {
             ]
         }).then(result => {
             class Transaksi {
-                constructor(SenderPhone,Invoice,part1,qty1,part2,qty2,part3,qty3,part4,qty4,part5,qty5,RecepientName,RecepientNo,RecepientAdress,awb,expedisi,ongkos,tag) {
+                constructor(SenderPhone,Invoice,part1,qty1,part2,qty2,part3,qty3,part4,qty4,part5,qty5,RecepientName,RecepientNo,RecepientAdress,awb,expedisi,ongkos,tag,warehousename,typebayar) {
                   this.SenderPhone = SenderPhone;
                   this.Invoice = Invoice;
                   this.part1 = part1;
@@ -386,6 +389,8 @@ module.exports = {
                   this.expedisi = expedisi;
                   this.ongkos = ongkos;
                   this.tag = tag;
+                  this.warehousename = warehousename;
+                  this.typebayar = typebayar;
                 }
               }
             var  TransaksiArray = [];
@@ -406,7 +411,7 @@ module.exports = {
                         KeranjangArray.push(new Keranjang(datakeranjang[j].sku,datakeranjang[j].jumlahproduct));
                     }
                 }               
-                TransaksiArray.push(new Transaksi("",result[i].auth.notelp,result[i].invoiceId,KeranjangArray[0].sku,KeranjangArray[0].jumlahproduct.toString(),KeranjangArray[1].sku,KeranjangArray[1].jumlahproduct.toString(),KeranjangArray[2].sku,KeranjangArray[2].jumlahproduct.toString() ,KeranjangArray[3].sku,KeranjangArray[3].jumlahproduct.toString(),KeranjangArray[4].sku,KeranjangArray[4].jumlahproduct.toString(),result[i].customer.nama,result[i].customer.notelp,result[i].customer.alamat,result[i].awb,expedisiName,result[i].daexpedisis.totalharga.toString(),result[i].auth.firstname.toString()));
+                TransaksiArray.push(new Transaksi("FHG",result[i].auth.notelp,result[i].invoiceId,KeranjangArray[0].sku,KeranjangArray[0].jumlahproduct.toString(),KeranjangArray[1].sku,KeranjangArray[1].jumlahproduct.toString(),KeranjangArray[2].sku,KeranjangArray[2].jumlahproduct.toString() ,KeranjangArray[3].sku,KeranjangArray[3].jumlahproduct.toString(),KeranjangArray[4].sku,KeranjangArray[4].jumlahproduct.toString(),result[i].customer.nama,result[i].customer.notelp,result[i].customer.alamat,result[i].awb,result[i].expedisiName,result[i].daexpedisis.totalharga.toString(),result[i].auth.firstname,result[i].warehouses.name,typebayar));
             }
            
             const wb = new xl.Workbook();
@@ -432,6 +437,8 @@ module.exports = {
                 "3PL",
                 "COD",
                 "TAG",
+                "Warehouse",
+                "TypeBayar"
             ]
             let headingColumnIndex = 1;
             headingColumnNames.forEach(heading => {
