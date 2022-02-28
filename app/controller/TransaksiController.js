@@ -288,7 +288,7 @@ module.exports = {
                     [Op.like]: '%'+expedisiName+'%'
                 },
                 status: {
-                    [Op.like]: '%F%'
+                    [Op.like]: '%H%'
                   },
                 }
               },
@@ -346,10 +346,10 @@ module.exports = {
                     if(datakeranjang[j] === undefined){
                         KeranjangArray.push(new Keranjang("",""));
                     }else{
-                        KeranjangArray.push(new Keranjang(datakeranjang[j].namaproduct,datakeranjang[j].jumlahproduct));
+                        KeranjangArray.push(new Keranjang(datakeranjang[j].sku,datakeranjang[j].jumlahproduct));
                     }
                 }               
-                TransaksiArray.push(new Transaksi("",result[i].auth.notelp,result[i].invoiceId,KeranjangArray[0].namaproduct,KeranjangArray[0].jumlahproduct.toString(),KeranjangArray[1].namaproduct,KeranjangArray[1].jumlahproduct.toString(),KeranjangArray[2].namaproduct,KeranjangArray[2].jumlahproduct.toString() ,KeranjangArray[3].namaproduct,KeranjangArray[3].jumlahproduct.toString(),KeranjangArray[4].namaproduct,KeranjangArray[4].jumlahproduct.toString(),result[i].customer.nama,result[i].customer.notelp,result[i].customer.alamat,result[i].awb,expedisiName,result[i].daexpedisis.totalharga.toString(),result[i].auth.firstname.toString()));
+                TransaksiArray.push(new Transaksi("",result[i].auth.notelp,result[i].invoiceId,KeranjangArray[0].sku,KeranjangArray[0].jumlahproduct.toString(),KeranjangArray[1].sku,KeranjangArray[1].jumlahproduct.toString(),KeranjangArray[2].sku,KeranjangArray[2].jumlahproduct.toString() ,KeranjangArray[3].sku,KeranjangArray[3].jumlahproduct.toString(),KeranjangArray[4].sku,KeranjangArray[4].jumlahproduct.toString(),result[i].customer.nama,result[i].customer.notelp,result[i].customer.alamat,result[i].awb,expedisiName,result[i].daexpedisis.totalharga.toString(),result[i].auth.firstname.toString()));
             }
            
             const wb = new xl.Workbook();
