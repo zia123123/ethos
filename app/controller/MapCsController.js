@@ -1,4 +1,4 @@
-const { mapcs,auths } = require('../models/index');
+const { mapcs,auths,domains } = require('../models/index');
 const { Op } = require("sequelize");
 const apiResponse = require("../helpers/apiResponse");
 
@@ -27,6 +27,16 @@ module.exports = {
     },
     async index(req, res) {
         let result = await mapcs.findAll({
+            where:{
+                authId: req.query.authId
+            },
+            attributes: ['id', 'status'],
+            include: [ { model: domains,
+                attributes: ['id', 'url'], 
+                include: [ { model: auths,
+                    attributes: ['id', 'firstname'] },
+                ],},
+            ],
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
