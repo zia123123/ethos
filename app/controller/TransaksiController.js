@@ -244,32 +244,6 @@ module.exports = {
             }
             
             return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
-            // var result2 = [
-            //     {
-            //       name: 'Test 1',
-            //       age: 13,
-            //       average: 8.2,
-            //       approved: true,
-            //       description: "using 'Content here, content here' "
-            //     },
-            //     {
-            //       name: 'Test 2',
-            //       age: 11,
-            //       average: 8.2,
-            //       approved: true,
-            //       description: "using 'Content here, content here' "
-            //     },
-            //     {
-            //       name: 'Test 4',
-            //       age: 10,
-            //       average: 8.2,
-            //       approved: true,
-            //       description: "using 'Content here, content here' "
-            //     },
-            //   ];
-            // const json2csvParser = new Parser();
-            // const csv = json2csvParser.parse(result2);
-            // console.log(csv);
             //return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
                 return apiResponse.ErrorResponse(res, err);
@@ -314,7 +288,7 @@ module.exports = {
                     [Op.like]: '%'+expedisiName+'%'
                 },
                 status: {
-                    [Op.like]: '%G%'
+                    [Op.like]: '%F%'
                   },
                 }
               },
@@ -366,7 +340,7 @@ module.exports = {
               }
             var  KeranjangArray = [];
             for(var i=0;i<result.length;i++){
-                let keranjangdata =  result[0].products.replace(/\\n/g, '')
+                let keranjangdata =  result[i].products.replace(/\\n/g, '')
                 let datakeranjang = eval(keranjangdata)
                 for(var j=0;j<=5;j++){
                     if(datakeranjang[j] === undefined){
@@ -375,7 +349,7 @@ module.exports = {
                         KeranjangArray.push(new Keranjang(datakeranjang[j].namaproduct,datakeranjang[j].jumlahproduct));
                     }
                 }               
-                TransaksiArray.push(new Transaksi("",result[i].auth.notelp,result[i].invoiceId,KeranjangArray[0].namaproduct,KeranjangArray[0].jumlahproduct.toString(),KeranjangArray[1].namaproduct,KeranjangArray[1].jumlahproduct.toString(),KeranjangArray[2].namaproduct,KeranjangArray[2].jumlahproduct.toString() ,KeranjangArray[3].namaproduct,KeranjangArray[3].jumlahproduct.toString(),KeranjangArray[4].namaproduct,KeranjangArray[4].jumlahproduct.toString(),result[i].customer.nama,result[i].customer.notelp,result[i].customer.alamat,result[i].awb,expedisiName,result[i].daexpedisis.totalharga.toString(),result[i].auth.firstname));
+                TransaksiArray.push(new Transaksi("",result[i].auth.notelp,result[i].invoiceId,KeranjangArray[0].namaproduct,KeranjangArray[0].jumlahproduct.toString(),KeranjangArray[1].namaproduct,KeranjangArray[1].jumlahproduct.toString(),KeranjangArray[2].namaproduct,KeranjangArray[2].jumlahproduct.toString() ,KeranjangArray[3].namaproduct,KeranjangArray[3].jumlahproduct.toString(),KeranjangArray[4].namaproduct,KeranjangArray[4].jumlahproduct.toString(),result[i].customer.nama,result[i].customer.notelp,result[i].customer.alamat,result[i].awb,expedisiName,result[i].daexpedisis.totalharga.toString(),result[i].auth.firstname.toString()));
             }
            
             const wb = new xl.Workbook();
@@ -416,40 +390,15 @@ module.exports = {
                 });
                 rowIndex++;
             }); 
-            var filename = 'TransaksiData'+ '-' +Date.now()+'.xlsx'
-            wb.write(filename);
+            var filename = +Date.now()+'-transaksidata.xlsx'
             returnData = {
                 metadata: {
                     link: filename,
                 }
             }
-             return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
-            // var result2 = [
-            //     {
-            //       name: 'Test 1',
-            //       age: 13,
-            //       average: 8.2,
-            //       approved: true,
-            //       description: "using 'Content here, content here' "
-            //     },
-            //     {
-            //       name: 'Test 2',
-            //       age: 11,
-            //       average: 8.2,
-            //       approved: true,
-            //       description: "using 'Content here, content here' "
-            //     },
-            //     {
-            //       name: 'Test 4',
-            //       age: 10,
-            //       average: 8.2,
-            //       approved: true,
-            //       description: "using 'Content here, content here' "
-            //     },
-            //   ];
-            // const json2csvParser = new Parser();
-            // const csv = json2csvParser.parse(result2);
-            // console.log(csv);
+            wb.write(filename,res);
+            //var data = fs.readFileSync(path.resolve(__dirname, 'transaksidata.xlsx'))
+            //return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
            // return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
                 return apiResponse.ErrorResponse(res, err);
