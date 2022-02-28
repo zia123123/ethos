@@ -9,6 +9,7 @@ module.exports = {
         let result = await ekpedisi.create({
             name: req.body.name,
             internal: req.body.internal,
+            rajaongkir: req.body.rajaongkir,
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
         }).catch(function (err)  {

@@ -14,6 +14,9 @@ module.exports = {
       internal: {
         type: Sequelize.BOOLEAN
       },
+      rajaongkir: {
+        type: Sequelize.BOOLEAN
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

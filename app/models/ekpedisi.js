@@ -15,7 +15,8 @@ module.exports = (sequelize, DataTypes) => {
   };
   ekpedisi.init({
     name: DataTypes.STRING,
-    internal: DataTypes.BOOLEAN
+    internal: DataTypes.BOOLEAN,
+    rajaongkir: DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'ekpedisi',
