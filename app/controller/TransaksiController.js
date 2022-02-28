@@ -250,6 +250,66 @@ module.exports = {
             });
     },
 
+    async indexGudangRiwayat(req, res) {
+      
+        let warehouseId = req.query.warehouseId
+        if( warehouseId == null ){
+            warehouseId = ""
+        }
+        let page = parseInt(req.query.page)
+        let limit = parseInt(req.query.limit)
+        const count = await transaksis.count({ where: {
+            warehouseId: warehouseId}})
+        let result = await transaksis.findAll({
+            offset: (page - 1) * limit,
+            limit: limit,
+            where: {
+                warehouseId: {
+                    [Op.like]: '%'+warehouseId+'%'
+             },
+                status: {
+                    [Op.or]: [
+                  {
+                    [Op.like]: '%H%'
+                  }
+                ]
+             },
+              },
+              order: [
+                ['id', 'DESC'],
+            ],
+                        include: [ 
+                            { model: warehouses,
+                                attributes: ['name'],
+                            }, { model: customers,
+                                attributes: ['notelp'],
+                            },
+                            { model: daexpedisis,
+                                attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank','totalharga'],
+                            },
+                            { model: auths,
+                                attributes: ['notelp','firstname'],
+                            }
+            ]
+        }).then(result => {
+            var totalPage = (parseInt(count) / limit) + 1
+            returnData = {
+                result,
+                metadata: {
+                    page: page,
+                    count: result.length,
+                    totalPage: parseInt(totalPage),
+                    totalData:  count,
+                }
+            }
+            
+            return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
+            //return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            }).catch(function (err){
+                return apiResponse.ErrorResponse(res, err);
+            });
+    },
+
     async ExcelGudang(req, res) {
         let startDate = req.query.startDate+"T00:00:00.000Z"
         let endDate = req.query.endDate+"T17:00:00.000Z"
