@@ -3,7 +3,8 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const authConfig = require('../../config/auth');
 const apiResponse = require("../helpers/apiResponse");
-
+const exportUsersToExcel = require('../helpers/exportService');
+const xl = require('excel4node');
 
 module.exports = {
 
@@ -68,7 +69,9 @@ module.exports = {
                 role: 5
             },
             attributes: ['id','email', 'firstname']
+
         }).then(result => {
+          
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
                 return apiResponse.ErrorResponse(res, err);

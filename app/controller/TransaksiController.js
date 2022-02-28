@@ -7,6 +7,8 @@ const converter = require('json-2-csv');
 const fs = require("fs")
 const csvdir = "./app/public/docs"
 const apiResponse = require("../helpers/apiResponse");
+const xl = require('excel4node');
+
 
 module.exports = {
 
@@ -269,6 +271,186 @@ module.exports = {
             // const csv = json2csvParser.parse(result2);
             // console.log(csv);
             //return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            }).catch(function (err){
+                return apiResponse.ErrorResponse(res, err);
+            });
+    },
+
+    async ExcelGudang(req, res) {
+        let startDate = req.query.startDate+"T00:00:00.000Z"
+        let endDate = req.query.endDate+"T17:00:00.000Z"
+        
+
+        let typebayar = req.query.typebayar
+        if(isNaN(parseFloat(typebayar))){
+            typebayar = ""
+        }
+
+        let expedisiName = req.query.expedisiName
+        if( expedisiName == null ){
+            expedisiName = ""
+        }
+
+        let warehouseId = req.query.warehouseId
+        if( warehouseId == null ){
+            warehouseId = ""
+        }
+        let result = await transaksis.findAll({
+            where: {
+                createdAt :  {
+                    [Op.and]: {
+                      [Op.gte]: startDate,
+                      [Op.lte]: endDate
+                    }
+                  },
+                [Op.and]: {
+                warehouseId: {
+                    [Op.like]: '%'+warehouseId+'%'
+                },
+                typebayar: {
+                    [Op.like]: '%'+typebayar+'%'
+                },
+                expedisiName: {
+                    [Op.like]: '%'+expedisiName+'%'
+                },
+                status: {
+                    [Op.like]: '%G%'
+                  },
+                }
+              },
+              attributes: ['invoiceId','awb','ongkoskirim','products'],
+              order: [
+                ['id', 'DESC'],
+            ],
+                        include: [ 
+                            { model: customers,
+                                attributes: ['notelp','alamat','nama'],
+                            },
+                            { model: auths,
+                                attributes: ['notelp','firstname'],
+                            },
+                            { model: daexpedisis,
+                                attributes: ['totalharga'],
+                            },
+            ]
+        }).then(result => {
+            class Transaksi {
+                constructor(SenderPhone,Invoice,part1,qty1,part2,qty2,part3,qty3,part4,qty4,part5,qty5,RecepientName,RecepientNo,RecepientAdress,awb,expedisi,ongkos,tag) {
+                  this.SenderPhone = SenderPhone;
+                  this.Invoice = Invoice;
+                  this.part1 = part1;
+                  this.qty1 = qty1;
+                  this.part2 = part2;
+                  this.qty2 = qty2;
+                  this.part3 = part3;
+                  this.qty3 = qty3;
+                  this.part4 = part4;
+                  this.qty4 = qty4;
+                  this.part5 = part5;
+                  this.qty5 = qty5;
+                  this.RecepientName = RecepientName;
+                  this.RecepientNo = RecepientNo;
+                  this.RecepientAdress = RecepientAdress;
+                  this.awb = awb;
+                  this.expedisi = expedisi;
+                  this.ongkos = ongkos;
+                  this.tag = tag;
+                }
+              }
+            var  TransaksiArray = [];
+            class Keranjang {
+                constructor(namaproduct,jumlahproduct) {
+                  this.namaproduct = namaproduct;
+                  this.jumlahproduct = jumlahproduct;
+                }
+              }
+            var  KeranjangArray = [];
+            for(var i=0;i<result.length;i++){
+                let keranjangdata =  result[0].products.replace(/\\n/g, '')
+                let datakeranjang = eval(keranjangdata)
+                for(var j=0;j<=5;j++){
+                    if(datakeranjang[j] === undefined){
+                        KeranjangArray.push(new Keranjang("",""));
+                    }else{
+                        KeranjangArray.push(new Keranjang(datakeranjang[j].namaproduct,datakeranjang[j].jumlahproduct));
+                    }
+                }               
+                TransaksiArray.push(new Transaksi("",result[i].auth.notelp,result[i].invoiceId,KeranjangArray[0].namaproduct,KeranjangArray[0].jumlahproduct.toString(),KeranjangArray[1].namaproduct,KeranjangArray[1].jumlahproduct.toString(),KeranjangArray[2].namaproduct,KeranjangArray[2].jumlahproduct.toString() ,KeranjangArray[3].namaproduct,KeranjangArray[3].jumlahproduct.toString(),KeranjangArray[4].namaproduct,KeranjangArray[4].jumlahproduct.toString(),result[i].customer.nama,result[i].customer.notelp,result[i].customer.alamat,result[i].awb,expedisiName,result[i].daexpedisis.totalharga.toString(),result[i].auth.firstname));
+            }
+           
+            const wb = new xl.Workbook();
+            const ws = wb.addWorksheet('Data Transaksi');
+            const headingColumnNames = [
+                "Sender",
+                "Sender Phone No.",
+                "Invoice",
+                "Parts 1",
+                "Qty 1",
+                "Parts 2",
+                "Qty 2",
+                "Parts 3",
+                "Qty 3",
+                "Parts 4",
+                "Qty 4",
+                "Parts 5",
+                "Qty 5",
+                "Recepient Name",
+                "Recipient Phone No",
+                "Recipient Address",
+                "AWB",
+                "3PL",
+                "COD",
+                "TAG",
+            ]
+            let headingColumnIndex = 1;
+            headingColumnNames.forEach(heading => {
+                ws.cell(1, headingColumnIndex++)
+                    .string(heading)
+            });
+            let rowIndex = 2;
+            TransaksiArray.forEach( record => {
+                let columnIndex = 1;
+                Object.keys(record ).forEach(columnName =>{
+                    ws.cell(rowIndex,columnIndex++)
+                        .string(record [columnName])
+                });
+                rowIndex++;
+            }); 
+            var filename = 'TransaksiData'+ '-' +Date.now()+'.xlsx'
+            wb.write(filename);
+            returnData = {
+                metadata: {
+                    link: filename,
+                }
+            }
+             return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
+            // var result2 = [
+            //     {
+            //       name: 'Test 1',
+            //       age: 13,
+            //       average: 8.2,
+            //       approved: true,
+            //       description: "using 'Content here, content here' "
+            //     },
+            //     {
+            //       name: 'Test 2',
+            //       age: 11,
+            //       average: 8.2,
+            //       approved: true,
+            //       description: "using 'Content here, content here' "
+            //     },
+            //     {
+            //       name: 'Test 4',
+            //       age: 10,
+            //       average: 8.2,
+            //       approved: true,
+            //       description: "using 'Content here, content here' "
+            //     },
+            //   ];
+            // const json2csvParser = new Parser();
+            // const csv = json2csvParser.parse(result2);
+            // console.log(csv);
+           // return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
                 return apiResponse.ErrorResponse(res, err);
             });

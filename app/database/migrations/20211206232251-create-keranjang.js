@@ -22,6 +22,9 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+      sku: {
+        type: Sequelize.STRING
+      },
       customerId: {
         type: Sequelize.INTEGER,
         allowNull: false,

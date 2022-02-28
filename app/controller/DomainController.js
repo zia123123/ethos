@@ -34,11 +34,15 @@ module.exports = {
         }
         let result = await domains.findAll({
             where: {
-                
                     authId: {    
                     [Op.like]: '%'+authId+'%'
                 }
-            }
+            },
+            include: [ 
+                { model: auths,
+                    attributes: ['firstname'],
+                }
+            ]
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){

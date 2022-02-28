@@ -389,6 +389,8 @@ router.get('/api/jumlah/closing', TransaksiController.jumlahClosing);
 router.get('/api/transaksi/retur', TransaksiController.jumlahRetur);
 router.get('/api/transaksi/lead', TransaksiController.jumlahLead);
 router.get('/api/transaksi/progress', TransaksiController.jumlahOnprogress);
+router.get('/api/getexcel/', TransaksiController.ExcelGudang);
+
 
 router.delete('/api/transaksi/delete/:id',TransaksiController.finddelete, TransaksiController.delete);
 
