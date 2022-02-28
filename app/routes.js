@@ -139,6 +139,9 @@ router.get('/api/ethos/listuser', AuthenController.getListUser);
 router.get('/api/ethos/cs', AuthenController.getCustomer);
 router.get('/api/ethos/cs/:id', MappingController.getCustomerService);
 
+router.patch('/api/auth/update/:id', AuthenController.find, AuthenController.update);
+router.delete('/api/auth/delete/:id', AuthenController.find, AuthenController.delete);
+
 router.get('/api/ethos/user/:id', AuthenController.find, AuthenController.show);
 
 router.get('/api/ethos/user/', AuthenController.index);

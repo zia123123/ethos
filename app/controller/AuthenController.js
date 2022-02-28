@@ -186,4 +186,31 @@ module.exports = {
         return apiResponse.successResponseWithData(res, "SUCCESS", req.user);
     },
 
+    async update(req, res) {
+        let type = req.body.type
+        if( type == "" ){
+           var datatype = ""
+        }else{
+           var datatype = "-"+req.body.type
+        }
+        req.user.email = req.body.email;        
+        req.user.nik = req.body.nik;
+        req.user.noktp = req.body.noktp;
+        req.user.alamat = req.body.alamat;
+        req.user.notelp = req.body.notelp;
+        req.user.tempatlahir = req.body.tempatlahir;
+        req.user.jeniskelamin = req.body.jeniskelamin;
+        req.user.statuskawin = req.body.statuskawin;
+        req.user.status = req.body.status;
+        req.user.firstname = req.body.firstname+datatype;
+        req.user.save().then(user => {
+        return apiResponse.successResponseWithData(res, "SUCCESS", user);
+        })
+    },
+
+    async delete(req, res) {
+        req.user.destroy().then(user => {
+            res.json({ msg: "Berhasil di delete" });
+        })
+    },
 }
