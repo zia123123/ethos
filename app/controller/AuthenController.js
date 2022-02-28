@@ -188,7 +188,7 @@ module.exports = {
 
     async update(req, res) {
         let type = req.body.type
-        if( type == "" ){
+        if( type == null ){
            var datatype = ""
         }else{
            var datatype = "-"+req.body.type
