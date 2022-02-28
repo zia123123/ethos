@@ -203,9 +203,6 @@ module.exports = {
              },
                 status: {
                     [Op.or]: [
-                        {
-                    [Op.like]: '%F%'
-                  },
                   {
                     [Op.like]: '%K%'
                   },
