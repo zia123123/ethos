@@ -408,7 +408,7 @@ module.exports = {
                     if(datakeranjang[j] === undefined){
                         KeranjangArray.push(new Keranjang("",""));
                     }else{
-                        KeranjangArray.push(new Keranjang(datakeranjang[j].sku,datakeranjang[j].transaksiId.toString()));
+                        KeranjangArray.push(new Keranjang(datakeranjang[j].sku,datakeranjang[j].transaksiId));
                     }
                     console.log(datakeranjang[j])
                 }               
