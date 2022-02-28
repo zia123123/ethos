@@ -349,7 +349,7 @@ module.exports = {
                   },
                 }
               },
-              attributes: ['invoiceId','awb','ongkoskirim','products','expedisiName',],
+              attributes: ['invoiceId','awb','ongkoskirim','products','expedisiName','typebayar'],
               order: [
                 ['id', 'DESC'],
             ],
@@ -408,12 +408,13 @@ module.exports = {
                     if(datakeranjang[j] === undefined){
                         KeranjangArray.push(new Keranjang("",""));
                     }else{
-                        KeranjangArray.push(new Keranjang(datakeranjang[j].sku,datakeranjang[j].jumlahproduct));
+                        KeranjangArray.push(new Keranjang(datakeranjang[j].sku.toString(),datakeranjang[j].jumlahproduct));
                     }
                 }               
-                TransaksiArray.push(new Transaksi("FHG",result[i].auth.notelp,result[i].invoiceId,KeranjangArray[0].sku,KeranjangArray[0].jumlahproduct.toString(),KeranjangArray[1].sku,KeranjangArray[1].jumlahproduct.toString(),KeranjangArray[2].sku,KeranjangArray[2].jumlahproduct.toString() ,KeranjangArray[3].sku,KeranjangArray[3].jumlahproduct.toString(),KeranjangArray[4].sku,KeranjangArray[4].jumlahproduct.toString(),result[i].customer.nama,result[i].customer.notelp,result[i].customer.alamat,result[i].awb,result[i].expedisiName,result[i].daexpedisis.totalharga.toString(),result[i].auth.firstname,result[i].warehouse.name,typebayar));
+                TransaksiArray.push(new Transaksi("FHG",result[i].auth.notelp,result[i].invoiceId,KeranjangArray[0].sku,KeranjangArray[0].jumlahproduct.toString(),KeranjangArray[1].sku,KeranjangArray[1].jumlahproduct.toString(),KeranjangArray[2].sku,KeranjangArray[2].jumlahproduct.toString() ,KeranjangArray[3].sku,KeranjangArray[3].jumlahproduct.toString(),KeranjangArray[4].sku,KeranjangArray[4].jumlahproduct.toString(),result[i].customer.nama,result[i].customer.notelp,result[i].customer.alamat,result[i].awb,result[i].expedisiName,result[i].daexpedisis.totalharga.toString(),result[i].auth.firstname,result[i].warehouse.name,result[i].typebayar));
             }
            
+            //console.log(KeranjangArray)
             const wb = new xl.Workbook();
             const ws = wb.addWorksheet('Data Transaksi');
             const headingColumnNames = [
