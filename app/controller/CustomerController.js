@@ -1,4 +1,4 @@
-const { customers,districts,cityregencies,province } = require('../models/index');
+const { customers,districts,cityregencies,province,keranjangs } = require('../models/index');
 const { Op } = require("sequelize");
 const { generate } = require("csv-generate");
 const converter = require('json-2-csv');
@@ -115,7 +115,12 @@ module.exports = {
                           }
                      },
                 ]
-             },   
+             },
+             include: [ 
+                { model: keranjangs,
+                    attributes: ['namaproduct'],
+                },   
+            ]   
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
