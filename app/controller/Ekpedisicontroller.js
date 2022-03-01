@@ -60,6 +60,7 @@ module.exports = {
     async update(req, res) {
         req.result.name = req.body.name;
         req.result.internal = req.body.internal;
+        req.result.rajaongkir = req.body.rajaongkir;
         req.result.save().then(result => {
         return apiResponse.successResponseWithData(res, "SUCCESS", result);
         })
