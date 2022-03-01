@@ -21,6 +21,7 @@ module.exports = {
             discount: req.body.discount,
             is_active: true,
             quantity: 0,
+            hpp: req.body.hpp,
             sku: req.body.sku,
             unitId: req.body.unitId,
             link: "https://storage.googleapis.com/ethos-kreatif-app.appspot.com/"+link,
@@ -150,6 +151,7 @@ module.exports = {
         req.product.expiry_date = req.body.expiry_date;
         req.product.conversion = req.body.conversion;
         req.product.price = req.body.price;
+        req.product.hpp = req.body.hpp;
         req.product.weight = req.body.weight;
         req.product.discount = req.body.discount;
         req.product.is_active = req.body.is_active;

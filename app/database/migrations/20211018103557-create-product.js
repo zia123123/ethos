@@ -29,6 +29,9 @@ module.exports = {
       weight: {
         type: Sequelize.INTEGER
       },
+      hpp: {
+        type: Sequelize.INTEGER
+      },
       discount: {
         type: Sequelize.INTEGER
       },

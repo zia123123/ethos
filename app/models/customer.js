@@ -57,7 +57,9 @@ module.exports = (sequelize, DataTypes) => {
     provinsiname:{
       type: DataTypes.STRING,
     },
-    
+    groupId: {
+      type: DataTypes.INTEGER
+    },
     cityname:{
       type: DataTypes.STRING,
     },

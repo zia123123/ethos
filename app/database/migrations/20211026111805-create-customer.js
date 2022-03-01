@@ -45,6 +45,9 @@ module.exports = {
       postalcode: {
         type: Sequelize.STRING
       },
+      groupId: {
+        type: Sequelize.INTEGER
+      },
       kelurahan: {
         type: Sequelize.STRING
       },

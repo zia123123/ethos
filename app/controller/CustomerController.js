@@ -28,6 +28,7 @@ module.exports = {
             alamat: req.body.alamat,
             rt:req.body.rt,
             rw:req.body.rw,
+            groupId:req.body.groupId,
             kelurahan: req.body.kelurahan,
             memoid: req.body.memoid,
             jeniskelamin:req.body.jeniskelamin,
