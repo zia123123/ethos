@@ -394,14 +394,15 @@ module.exports = {
                 }
               }
             var  TransaksiArray = [];
-            class Keranjang {
-                constructor(sku,jumlahproduct) {
-                  this.sku = sku;
-                  this.jumlahproduct = jumlahproduct;
-                }
-              }
-            var  KeranjangArray = [];
+          
             for(var i=0;i<result.length;i++){
+                class Keranjang {
+                    constructor(sku,jumlahproduct) {
+                      this.sku = sku;
+                      this.jumlahproduct = jumlahproduct;
+                    }
+                  }
+                var  KeranjangArray = [];
                 let keranjangdata =  result[i].products.replace(/\\n/g, '')
                 let datakeranjang = eval(keranjangdata)
                 for(var j=0;j<=5;j++){
@@ -410,58 +411,58 @@ module.exports = {
                     }else{
                         KeranjangArray.push(new Keranjang(datakeranjang[j].sku,datakeranjang[j].transaksiId));
                     }
-                    console.log(datakeranjang[j])
+                   
                 }               
                 TransaksiArray.push(new Transaksi("FHG",result[i].auth.notelp,result[i].invoiceId,KeranjangArray[0].sku,KeranjangArray[0].jumlahproduct.toString(),KeranjangArray[1].sku,KeranjangArray[1].jumlahproduct.toString(),KeranjangArray[2].sku,KeranjangArray[2].jumlahproduct.toString() ,KeranjangArray[3].sku,KeranjangArray[3].jumlahproduct.toString(),KeranjangArray[4].sku,KeranjangArray[4].jumlahproduct.toString(),result[i].customer.nama,result[i].customer.notelp,result[i].customer.alamat,result[i].awb,result[i].expedisiName,result[i].daexpedisis.totalharga.toString(),result[i].auth.firstname,result[i].warehouse.name,result[i].typebayar.toString(),));
             }
-           // console.log(KeranjangArray)
-            const wb = new xl.Workbook();
-            const ws = wb.addWorksheet('Data Transaksi');
-            const headingColumnNames = [
-                "Sender",
-                "Sender Phone No.",
-                "Invoice",
-                "Parts 1",
-                "Qty 1",
-                "Parts 2",
-                "Qty 2",
-                "Parts 3",
-                "Qty 3",
-                "Parts 4",
-                "Qty 4",
-                "Parts 5",
-                "Qty 5",
-                "Recepient Name",
-                "Recipient Phone No",
-                "Recipient Address",
-                "AWB",
-                "3PL",
-                "COD",
-                "TAG",
-                "Warehouse",
-                "TypeBayar"
-            ]
-            let headingColumnIndex = 1;
-            headingColumnNames.forEach(heading => {
-                ws.cell(1, headingColumnIndex++)
-                    .string(heading)
-            });
-            let rowIndex = 2;
-            TransaksiArray.forEach( record => {
-                let columnIndex = 1;
-                Object.keys(record ).forEach(columnName =>{
-                    ws.cell(rowIndex,columnIndex++)
-                        .string(record [columnName])
-                });
-                rowIndex++;
-            }); 
-            var filename = +Date.now()+'-transaksidata.xlsx'
-            returnData = {
-                metadata: {
-                    link: filename,
-                }
-            }
-            wb.write(filename,res);
+           //console.log(KeranjangArray)
+            // const wb = new xl.Workbook();
+            // const ws = wb.addWorksheet('Data Transaksi');
+            // const headingColumnNames = [
+            //     "Sender",
+            //     "Sender Phone No.",
+            //     "Invoice",
+            //     "Parts 1",
+            //     "Qty 1",
+            //     "Parts 2",
+            //     "Qty 2",
+            //     "Parts 3",
+            //     "Qty 3",
+            //     "Parts 4",
+            //     "Qty 4",
+            //     "Parts 5",
+            //     "Qty 5",
+            //     "Recepient Name",
+            //     "Recipient Phone No",
+            //     "Recipient Address",
+            //     "AWB",
+            //     "3PL",
+            //     "COD",
+            //     "TAG",
+            //     "Warehouse",
+            //     "TypeBayar"
+            // ]
+            // let headingColumnIndex = 1;
+            // headingColumnNames.forEach(heading => {
+            //     ws.cell(1, headingColumnIndex++)
+            //         .string(heading)
+            // });
+            // let rowIndex = 2;
+            // TransaksiArray.forEach( record => {
+            //     let columnIndex = 1;
+            //     Object.keys(record ).forEach(columnName =>{
+            //         ws.cell(rowIndex,columnIndex++)
+            //             .string(record [columnName])
+            //     });
+            //     rowIndex++;
+            // }); 
+            // var filename = +Date.now()+'-transaksidata.xlsx'
+            // returnData = {
+            //     metadata: {
+            //         link: filename,
+            //     }
+            // }
+            // wb.write(filename,res);
             //var data = fs.readFileSync(path.resolve(__dirname, 'transaksidata.xlsx'))
             //return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
            //return apiResponse.successResponseWithData(res, "SUCCESS", result);
