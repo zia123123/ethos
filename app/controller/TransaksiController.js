@@ -595,7 +595,7 @@ module.exports = {
                     totalData:  count,
                 }
             }
-            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
             }).catch(function (err){
                 return apiResponse.ErrorResponse(res, err);
             });
