@@ -669,7 +669,10 @@ module.exports = {
                 },
                 { model: auths,
                     attributes: ['firstname'],
-                }
+                },
+                { model: customers,
+                    attributes: ['notelp','nama'],
+                },
             ]
              
         }).then(result => {
