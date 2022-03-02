@@ -33,6 +33,9 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+      hpp: {
+        type: Sequelize.INTEGER
+      },
       namaproduct: {
         type: Sequelize.STRING
       },

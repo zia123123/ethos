@@ -15,6 +15,9 @@ module.exports = (sequelize, DataTypes) => {
     linkphoto: {
       type: DataTypes.STRING
     },
+    hpp: {
+      type: DataTypes.INTEGER
+    },
     sku: {
       type: DataTypes.STRING
     },

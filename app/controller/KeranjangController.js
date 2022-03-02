@@ -11,6 +11,7 @@ module.exports = {
               jumlahproduct: req.body.jumlahproduct,
               linkdomain: req.body.linkdomain,
               linkphoto: req.body.linkphoto,
+              hpp: req.body.hpp,
               discount: req.body.discount,
               transaksiId: req.body.transaksiId,
               productId: req.body.productId,
