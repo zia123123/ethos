@@ -76,7 +76,7 @@ module.exports = {
 
     async index(req, res) {
         let result = await products.findAll({
-            attributes: ['weight','id', 'name','expiry_date','price','link','discount','quantity','sku'],
+            attributes: ['weight','id', 'name','expiry_date','price','link','discount','quantity','sku','hpp'],
             include: [ 
                 // { model: product_stocks,
                 //     attributes: ['quantity','warehouseId'],
