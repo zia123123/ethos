@@ -1,4 +1,4 @@
-const { domains,auths } = require('../models/index');
+const { domains,auths,products } = require('../models/index');
 const { Op } = require("sequelize");
 const apiResponse = require("../helpers/apiResponse");
 
@@ -41,6 +41,9 @@ module.exports = {
             include: [ 
                 { model: auths,
                     attributes: ['firstname'],
+                },
+                { model: products,
+                    attributes: ['name'],
                 }
             ]
         }).then(result => {
