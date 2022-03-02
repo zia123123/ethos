@@ -323,6 +323,7 @@ router.delete('/api/saldo/delete/:id', SaldoController.find,SaldoController.dele
 //customer
 router.post('/api/customer/create', CustomerController.create);
 router.get('/api/customer/', CustomerController.index);
+router.get('/api/groupcustomer/', CustomerController.myGroup);
 router.get('/api/mycustomer/', CustomerController.myCustomer);
 router.get('/api/customerlead/', CustomerController.jumlahLead);
 router.get('/api/customer/:id', CustomerController.find, CustomerController.show);

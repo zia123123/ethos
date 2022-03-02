@@ -32,7 +32,7 @@ module.exports = {
             },
             attributes: ['id', 'status'],
             include: [ { model: domains,
-                attributes: ['id', 'url'], 
+                attributes: ['id', 'url','productId'], 
                 include: [ { model: auths,
                     attributes: ['id', 'firstname'] },
                 ],},

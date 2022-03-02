@@ -112,6 +112,33 @@ module.exports = {
                 return apiResponse.ErrorResponse(res, err);
             });
     },
+    async myGroup(req, res) {
+        let clue = req.query.clue
+        if( clue == null ){
+            clue = ""
+        }
+        let result = await customers.findAll({
+            where: {
+                groupId: req.query.groupId,
+                [Op.or]: [
+                    {
+                        nama: {
+                            [Op.like]: '%'+req.query.clue+'%'
+                          }
+                     },
+                ]
+             },
+             include: [ 
+                { model: keranjangs,
+                    attributes: ['namaproduct'],
+                },   
+            ]   
+        }).then(result => {
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            }).catch(function (err){
+                return apiResponse.ErrorResponse(res, err);
+            });
+    },
     async jumlahLead(req, res) {
         let result = await customers.count({ 
             where: {

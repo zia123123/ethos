@@ -111,18 +111,7 @@ module.exports = {
 
     // Update
     async update(req, res) {
-
-        req.warehouse.name = req.body.name;
-        req.warehouse.ninjaoriginId = req.body.ninjaoriginId;
-        req.warehouse.provinceId = req.body.provinceId;
-        req.warehouse.city_of_regencyId = req.body.city_of_regencyId;
-        req.warehouse.districtId = req.body.districtId;
-        req.warehouse.city = req.body.city;
-        req.warehouse.address = req.body.address;
-        req.warehouse.expedition_data = req.body.expedition_data;
-        req.warehouse.postalcode = req.body.postalcode;
-        req.warehouse.address_line_two = req.body.address_line_two;
-        req.warehouse.village = req.body.village;
+        req.warehouse.idorigin = req.body.idorigin;
         req.warehouse.save().then(warehouse => {
         return apiResponse.successResponseWithData(res, "SUCCESS", warehouse);
         })
