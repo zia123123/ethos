@@ -8,7 +8,19 @@ const config = require('../../config/database');
 
 const db = {};
 
-let sequelize = new Sequelize(config.database, config.username, config.password, config);
+let sequelize = new Sequelize(config.database, config.username, config.password, config,{
+  dialectOptions: {
+    useUTC: false, 
+    dateStrings: true,
+    typeCast: function (field, next) {
+      if (field.type === 'DATETIME') {
+        return field.string()
+      }
+      return next()
+    },
+  },
+  timezone: "+07:00"
+});
 
 fs
   .readdirSync(__dirname)
