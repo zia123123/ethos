@@ -1,5 +1,6 @@
 const { auths,mapgroup,group} = require('../models/index');
 const bcrypt = require('bcrypt');
+const { Op } = require("sequelize");
 const jwt = require('jsonwebtoken');
 const authConfig = require('../../config/auth');
 const apiResponse = require("../helpers/apiResponse");
@@ -55,7 +56,7 @@ module.exports = {
         if( status == null ){
             status = ""
         }
-        
+
         let result = await auths.findAll({
             where:{
                 role: req.query.roleid,
