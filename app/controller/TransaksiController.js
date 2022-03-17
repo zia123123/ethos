@@ -326,6 +326,8 @@ module.exports = {
         if( warehouseId == null ){
             warehouseId = ""
         }
+
+        
         let result = await transaksis.findAll({
             where: {
                 createdAt :  {

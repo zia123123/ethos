@@ -9,17 +9,17 @@ const config = require('../../config/database');
 const db = {};
 
 let sequelize = new Sequelize(config.database, config.username, config.password, config,{
-  dialectOptions: {
-    useUTC: false, 
-    dateStrings: true,
-    typeCast: function (field, next) {
-      if (field.type === 'DATETIME') {
-        return field.string()
-      }
-      return next()
+  define: {
+    charset: "utf8",
+    dialectOptions: {
+        collate: "utf8_general_ci"
     },
-  },
-  timezone: "+07:00"
+    freezeTableName: true
+},
+dialectOptions: {
+    "useUTC": false
+},
+timezone: "+07:00"
 });
 
 fs

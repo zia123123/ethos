@@ -50,9 +50,18 @@ module.exports = {
     },
 
     async getListUser(req, res) {
+
+        let status = req.query.status
+        if( status == null ){
+            status = ""
+        }
+        
         let result = await auths.findAll({
             where:{
-                role: req.query.roleid
+                role: req.query.roleid,
+                status: {
+                    [Op.like]: '%'+status+'%'
+                },
             },
             attributes: ['id','email', 'firstname']
         }).then(result => {
