@@ -60,9 +60,14 @@ module.exports = {
         let result = await auths.findAll({
             where:{
                 role: req.query.roleid,
-                status: {
-                    [Op.like]: '%'+status+'%'
-                },
+                [Op.and]: [
+                    {
+                        status: {
+                            [Op.like]: '%'+status+'%'
+                    },     
+                    },
+                  ]
+              
             },
             attributes: ['id','email', 'firstname']
         }).then(result => {
