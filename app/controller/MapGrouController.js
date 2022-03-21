@@ -12,6 +12,14 @@ module.exports = {
             type:  req.body.type,
             status:true,
         }).then(result => {
+            let auth = auths.findOne({
+                where: {
+                    id:  req.body.authId
+                },
+            }).then(auth =>{
+                auth.status = false;
+                auth.save()
+            })
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
         }).catch(function (err)  {
             return apiResponse.ErrorResponse(res, err);

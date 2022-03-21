@@ -53,21 +53,23 @@ module.exports = {
     async getListUser(req, res) {
 
         let status = req.query.status
-        if( status == null ){
-            status = ""
-        }
-
+        if( status === 'true'){
+            status = true
+        }else if(status === 'false'){
+            status = false
+        }else{
+        status = ""
+    }
         let result = await auths.findAll({
             where:{
                 role: req.query.roleid,
                 [Op.and]: [
                     {
                         status: {
-                            [Op.like]: '%'+status+'%'
+                            [Op.like]: status
                     },     
                     },
                   ]
-              
             },
             attributes: ['id','email', 'firstname']
         }).then(result => {
