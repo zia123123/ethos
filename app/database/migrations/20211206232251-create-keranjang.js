@@ -31,11 +31,9 @@ module.exports = {
       },
       supervisor: {
         type: Sequelize.STRING,
-        allowNull: false,
       },
       advertiser: {
         type: Sequelize.STRING,
-        allowNull: false,
       },
       authId: {
         type: Sequelize.INTEGER,
