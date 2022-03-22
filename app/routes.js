@@ -207,7 +207,7 @@ router.post('/api/unit/create', UnitController.create);
 router.get('/api/unit/', UnitController.index);
 router.get('/api/unit/:id', UnitController.find, UnitController.show);
 router.patch('/api/unit/update/:id', UnitController.find,UnitController.update);
-router.patch('/api/unit/delete/:id', UnitController.find,UnitController.delete);
+router.delete('/api/unit/delete/:id', UnitController.find,UnitController.delete);
 
 
 //ninja
