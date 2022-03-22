@@ -28,15 +28,6 @@ module.exports = (sequelize, DataTypes) => {
     evidance: {
       type: DataTypes.STRING
     },
-    // evidance2: {
-    //   type: DataTypes.STRING
-    // },
-    // evidance3: {
-    //   type: DataTypes.STRING
-    // },
-    // evidance4: {
-    //   type: DataTypes.STRING
-    // },
     keterangan: {
       type: DataTypes.TEXT
     },

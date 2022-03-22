@@ -11,12 +11,6 @@ module.exports = {
       transaksisId: {
         allowNull: false,
         type: Sequelize.INTEGER,
-        references: {
-          model: "transaksis",
-          key: "id"
-        },
-        onDelete: 'cascade',
-        onUpdate: 'cascade'
       },
       awbpengembalian: {
         type: Sequelize.STRING
