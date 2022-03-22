@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
     tableName: "dfods"
   });
   dfod.associate = function(models) {
-    dfod.belongsTo(models.transaksis, { foreignKey: "transaksisId"})
+    dfod.belongsTo(models.transaksis, { foreignKey: "transaksiId"})
   };
 
   return dfod;

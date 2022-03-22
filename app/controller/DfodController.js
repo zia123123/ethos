@@ -10,7 +10,7 @@ module.exports = {
             awbpengembalian: req.body.awbpengembalian,
             expedisipengembalian: req.body.expedisipengembalian,
             awbpengiriman: req.body.awbpengiriman,
-            transaksisId: req.body.transaksisId,
+            transaksiId: req.body.transaksiId,
             expedisipengiriman: req.body.expedisipengiriman,
             typedfod: req.body.typedfod,
             kondisibarang: req.body.kondisibarang,
