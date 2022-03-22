@@ -29,6 +29,14 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+      supervisor: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      advertiser: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
       authId: {
         type: Sequelize.INTEGER,
         allowNull: false,

@@ -18,6 +18,14 @@ module.exports = (sequelize, DataTypes) => {
     hpp: {
       type: DataTypes.INTEGER
     },
+    supervisor: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    advertiser: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     sku: {
       type: DataTypes.STRING
     },
