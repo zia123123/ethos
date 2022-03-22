@@ -11,7 +11,7 @@ module.exports = {
 
     signUp(req, res) {
         let type = req.body.type
-        if( type === null ){
+        if(type == undefined ){
            var datatype = ""
         }else{
            var datatype = "-"+req.body.type
