@@ -58,7 +58,7 @@ module.exports = {
         }else if(status === 'false'){
             status = false
         }else{
-        status = ""
+        status = "%%"
     }
         let result = await auths.findAll({
             where:{
