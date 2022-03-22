@@ -11,10 +11,10 @@ module.exports = {
 
     signUp(req, res) {
         let type = req.body.type
-        if(type == undefined ){
-           var datatype = ""
+        if(type != null ){
+            var datatype = "-"+req.body.type
         }else{
-           var datatype = "-"+req.body.type
+            var datatype = ""
         }
         let password = bcrypt.hashSync(req.body.password, Number.parseInt(authConfig.rounds));
         auths.create({
