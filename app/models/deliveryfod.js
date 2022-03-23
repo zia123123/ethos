@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING
     },
     authId: {
-      allowNull: false,
+     
       type: DataTypes.INTEGER,
     },
     keterangan: {

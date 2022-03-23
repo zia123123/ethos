@@ -9,7 +9,6 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       authId: {
-        allowNull: false,
         type: Sequelize.INTEGER,
       },
       transaksisId: {
