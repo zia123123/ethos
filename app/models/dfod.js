@@ -29,6 +29,10 @@ module.exports = (sequelize, DataTypes) => {
     evidance: {
       type: DataTypes.STRING
     },
+    transaksi_Id: {
+      allowNull: false,
+      type: DataTypes.INTEGER,
+    },
     keterangan: {
       type: DataTypes.TEXT
     },
@@ -39,7 +43,6 @@ module.exports = (sequelize, DataTypes) => {
     tableName: "dfods"
   });
   dfod.associate = function(models) {
-    dfod.belongsTo(models.transaksis,{ onDelete: 'cascade' },{ constraints: true}, { foreignKey: "transaksisId"})
   };
 
   return dfod;
