@@ -97,11 +97,12 @@ module.exports = {
                 id:   req.result.authId
             },
         }).then(auth =>{
-            auth.status = false;
+            auth.status = true;
             auth.save()
-        })
-        req.result.destroy().then(result => {
-            res.json({ msg: "Berhasil di delete" });
+            req.result.destroy().then(result => {
+                res.json({ msg: "Berhasil di delete" });
+           })
+            
         })
     },
 
