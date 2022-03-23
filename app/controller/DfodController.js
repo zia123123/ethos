@@ -1,6 +1,5 @@
 const { deliveryfods,transaksis } = require('../models/index');
 const { Op } = require("sequelize");
-const { Op } = require("sequelize");
 const { exportstocsv }  = require("export-to-csv"); 
 const { Parser } = require('json2csv');
 const { generate } = require("csv-generate");
@@ -9,7 +8,6 @@ const fs = require("fs")
 const csvdir = "./app/public/docs"
 const apiResponse = require("../helpers/apiResponse");
 const xl = require('excel4node');
-const apiResponse = require("../helpers/apiResponse");
 
 module.exports = {
 
