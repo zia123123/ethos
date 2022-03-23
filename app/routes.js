@@ -363,7 +363,7 @@ router.get('/api/expedisi/:id', ExpedisiController.find, ExpedisiController.show
 router.patch('/api/expedisi/update/:id', ExpedisiController.find,ExpedisiController.update);
 
 //DFOD
-router.post('/api/dfod/create', DfodController.create);
+router.post('/api/dfod/create',uploadHandler.any(), DfodController.create);
 router.get('/api/dfod/', DfodController.index);
 router.get('/api/dfod/:id', DfodController.find, DfodController.show);
 router.patch('/api/dfod/update/:id', DfodController.find,DfodController.update);

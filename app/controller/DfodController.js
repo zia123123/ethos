@@ -1,22 +1,24 @@
-const { dfod } = require('../models/index');
+const { deliveryfods,transaksis } = require('../models/index');
 const { Op } = require("sequelize");
+const fs = require("fs")
 const apiResponse = require("../helpers/apiResponse");
 
 module.exports = {
 
     //create
     async create(req, res) { 
-        let result = await dfod.create({
+        var evidance = req.files[0].filename
+        let result = await deliveryfods.create({
             awbpengembalian: req.body.awbpengembalian,
             expedisipengembalian: req.body.expedisipengembalian,
             awbpengiriman: req.body.awbpengiriman,
-            transaksiId: req.body.transaksiId,
+            transaksisId: req.body.transaksisId,
             expedisipengiriman: req.body.expedisipengiriman,
             typedfod: req.body.typedfod,
             kondisibarang: req.body.kondisibarang,
             biayapengembalian: req.body.biayapengembalian,
             biayapengiriman: req.body.biayapengiriman,
-            evidance: req.body.evidance,
+            evidance: "https://storage.googleapis.com/ethos-kreatif-app.appspot.com/"+evidance,
             keterangan: req.body.keterangan,
             state: req.body.state,
         }).then(result => {
@@ -27,7 +29,7 @@ module.exports = {
       },
 
       async find(req, res, next) {
-        let result = await dfod.findOne({
+        let result = await deliveryfods.findOne({
             where: {
                     id: req.params.id,
             },
@@ -41,7 +43,7 @@ module.exports = {
     },
 
     async index(req, res) {
-        let result = await dfod.findAll({
+        let result = await deliveryfods.findAll({
             
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);

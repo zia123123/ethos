@@ -1,7 +1,7 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
 
-  const dfod = sequelize.define('dfods', {
+  const deliveryfod = sequelize.define('deliveryfods', {
     awbpengembalian: {
       type: DataTypes.STRING
     },
@@ -26,6 +26,9 @@ module.exports = (sequelize, DataTypes) => {
     biayapengiriman: {
       type: DataTypes.INTEGER
     },
+    biayapengiriman: {
+      type: DataTypes.INTEGER
+    },
     evidance: {
       type: DataTypes.STRING
     },
@@ -36,12 +39,12 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER
     },
   }, {
-    tableName: "dfods"
+    tableName: "deliveryfods"
   });
-  dfod.associate = function(models) {
-    dfod.belongsTo(models.transaksis,{ onDelete: 'cascade' },{ constraints: true}, { foreignKey: "transaksisId"})
+  deliveryfod.associate = function(models) {
+    deliveryfod.belongsTo(models.transaksis, { foreignKey: "transaksisId"})
   };
 
-  return dfod;
+  return deliveryfod;
 };
   

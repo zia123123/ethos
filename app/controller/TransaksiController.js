@@ -753,7 +753,7 @@ module.exports = {
     },
 
     async createBuktibayar(req, res, next) {
-         var link = req.files[0].filename
+        var link = req.files[0].filename
         let result = await buktibayars.create({
             link: "https://storage.googleapis.com/ethos-kreatif-app.appspot.com/"+link,
             transaksisId: req.params.id,
