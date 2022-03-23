@@ -92,6 +92,14 @@ module.exports = {
 
     // Delete
     async delete(req, res) {
+        let auth = auths.findOne({
+            where: {
+                id:   req.result.authId
+            },
+        }).then(auth =>{
+            auth.status = false;
+            auth.save()
+        })
         req.result.destroy().then(result => {
             res.json({ msg: "Berhasil di delete" });
         })
