@@ -32,6 +32,10 @@ module.exports = (sequelize, DataTypes) => {
     evidance: {
       type: DataTypes.STRING
     },
+    authId: {
+      allowNull: false,
+      type: DataTypes.INTEGER,
+    },
     keterangan: {
       type: DataTypes.TEXT
     },
@@ -43,6 +47,7 @@ module.exports = (sequelize, DataTypes) => {
   });
   deliveryfod.associate = function(models) {
     deliveryfod.belongsTo(models.transaksis, { foreignKey: "transaksisId"})
+    
   };
 
   return deliveryfod;

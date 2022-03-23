@@ -846,6 +846,7 @@ module.exports = {
             expedisipengembalian: req.body.expedisipengembalian,
             awbpengiriman: req.body.awbpengiriman,
             transaksisId: req.params.id,
+            authId: req.body.authId,
             expedisipengiriman: req.body.expedisipengiriman,
             typedfod: req.body.typedfod,
             kondisibarang: req.body.kondisibarang,

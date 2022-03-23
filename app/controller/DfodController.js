@@ -48,7 +48,7 @@ module.exports = {
                           
                         },
                         { model: auths,
-                            attributes: ['firstname','role'],
+                            attributes: ['id','firstname','role'],
                         },
                         
                     ]
