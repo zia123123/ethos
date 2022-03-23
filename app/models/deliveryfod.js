@@ -20,6 +20,9 @@ module.exports = (sequelize, DataTypes) => {
     typedfod: {
       type: DataTypes.INTEGER
     },
+    transaksi_Id: {
+      type: DataTypes.INTEGER
+    },
     biayapengembalian: {
       type: DataTypes.INTEGER
     },
@@ -42,7 +45,6 @@ module.exports = (sequelize, DataTypes) => {
     tableName: "deliveryfods"
   });
   deliveryfod.associate = function(models) {
-    deliveryfod.belongsTo(models.transaksis, { foreignKey: "transaksisId"})
   };
 
   return deliveryfod;

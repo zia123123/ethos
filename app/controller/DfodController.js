@@ -7,7 +7,7 @@ module.exports = {
 
     //create
     async create(req, res) { 
-        var evidance = req.files[0].filename
+        var link = req.files[0].filename
         let result = await deliveryfods.create({
             awbpengembalian: req.body.awbpengembalian,
             expedisipengembalian: req.body.expedisipengembalian,
@@ -18,7 +18,7 @@ module.exports = {
             kondisibarang: req.body.kondisibarang,
             biayapengembalian: req.body.biayapengembalian,
             biayapengiriman: req.body.biayapengiriman,
-            evidance: "https://storage.googleapis.com/ethos-kreatif-app.appspot.com/"+evidance,
+            evidance: "https://storage.googleapis.com/ethos-kreatif-app.appspot.com/"+link,
             keterangan: req.body.keterangan,
             state: req.body.state,
         }).then(result => {
