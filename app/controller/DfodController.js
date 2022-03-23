@@ -1,4 +1,4 @@
-const { deliveryfods,transaksis } = require('../models/index');
+const { deliveryfods,transaksis,auths,customers } = require('../models/index');
 const { Op } = require("sequelize");
 const { exportstocsv }  = require("export-to-csv"); 
 const { Parser } = require('json2csv');
@@ -51,6 +51,21 @@ module.exports = {
 
     async index(req, res) {
         let result = await deliveryfods.findAll({
+            include: [ 
+                { model: transaksis,
+                    attributes: ['awb','invoiceId'],
+                    include: [ 
+                        { model: customers,
+                            attributes: ['nama'],
+                        },
+                        { model: auths,
+                            attributes: ['firstname','role'],
+                        },
+                        
+                    ]
+                },
+                
+            ]
             
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
