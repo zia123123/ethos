@@ -14,7 +14,7 @@ module.exports = {
     //create
     async create(req, res) { 
         var link = req.files[0].filename
-        var empid=parseInt(req.body.transaksi_Id)
+        var empid = parseInt(req.body.transaksi_Id)
         let result = await deliveryfods.create({
             awbpengembalian: req.body.awbpengembalian,
             expedisipengembalian: req.body.expedisipengembalian,
