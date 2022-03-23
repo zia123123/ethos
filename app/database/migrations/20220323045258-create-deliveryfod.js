@@ -8,9 +8,15 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      transaksi_Id: {
+      transaksisId: {
         allowNull: false,
         type: Sequelize.INTEGER,
+        references: {
+          model: "transaksis",
+          key: "id"
+        },
+        onDelete: 'cascade',
+        onUpdate: 'cascade'
       },
       awbpengembalian: {
         type: Sequelize.STRING
