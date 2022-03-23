@@ -40,6 +40,21 @@ module.exports = {
             where: {
                     id: req.params.id,
             },
+            include: [ 
+                { model: transaksis,
+                   
+                    include: [ 
+                        { model: customers,
+                          
+                        },
+                        { model: auths,
+                            attributes: ['firstname','role'],
+                        },
+                        
+                    ]
+                },
+                
+            ]
         });
         if (!result) {
         return apiResponse.notFoundResponse(res, "Not Fond");
