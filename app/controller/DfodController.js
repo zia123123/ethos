@@ -71,7 +71,7 @@ module.exports = {
                     attributes: ['awb','invoiceId'],
                     include: [ 
                         { model: customers,
-                            attributes: ['nama'],
+                            attributes: ['nama','notelp'],
                         },
                         { model: auths,
                             attributes: ['firstname','role'],
