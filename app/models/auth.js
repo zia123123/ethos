@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
   const auth = sequelize.define('auths', {
     email: {
       type: DataTypes.STRING,
-      allowNull: false,
+      //allowNull: false,
     },
     nik: {
       type: DataTypes.STRING,
