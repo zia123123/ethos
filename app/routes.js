@@ -67,6 +67,7 @@ const CustomerController = require('./controller/CustomerController');
 const GroupCsController = require('./controller/GroupCsController');
 
 const MapGroupCsController = require('./controller/MapGroupCsController');
+const BiayaopController = require('./controller/BiayaopController');
 
 
 const FTransaksiController = require('./controller/FTransaksiController');
@@ -373,6 +374,12 @@ router.get('/api/dfod/', DfodController.index);
 router.get('/api/dfod/riwayat', DfodController.indexriwayat);
 router.get('/api/dfod/:id', DfodController.find, DfodController.show);
 router.patch('/api/dfod/update/:id', DfodController.find,DfodController.update);
+
+//biayaop
+router.post('/api/biayaop/create/:id', BiayaopController.create);
+router.get('/api/biayaop/', BiayaopController.index);
+router.get('/api/biayaop/:id', BiayaopController.find, BiayaopController.show);
+router.patch('/api/biayaop/update/:id', BiayaopController.find,BiayaopController.update);
 
 //retur
 router.post('/api/retur/create/:id',uploadHandler.any(), TransaksiController.createretur);
