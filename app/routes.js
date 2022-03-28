@@ -380,6 +380,8 @@ router.post('/api/biayaop/create', BiayaopController.create);
 router.get('/api/biayaop/', BiayaopController.index);
 router.get('/api/biayaop/:id', BiayaopController.find, BiayaopController.show);
 router.patch('/api/biayaop/update/:id', BiayaopController.find,BiayaopController.update);
+router.patch('/api/biayaop/delete/:id', BiayaopController.find,BiayaopController.delete);
+
 
 //retur
 router.post('/api/retur/create/:id',uploadHandler.any(), TransaksiController.createretur);
