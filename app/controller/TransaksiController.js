@@ -208,7 +208,8 @@ module.exports = {
                   },
                   {
                     [Op.like]: '%G%'
-                  }
+                  },
+                  
                 ]
              },
               },
@@ -268,7 +269,10 @@ module.exports = {
                     [Op.or]: [
                   {
                     [Op.like]: '%H%'
-                  }
+                  },
+                  {
+                    [Op.like]: '%N%'
+                  },
                 ]
              },
               },
