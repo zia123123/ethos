@@ -66,6 +66,9 @@ module.exports = {
 
     async index(req, res) {
         let result = await deliveryfods.findAll({
+            where: {
+                state: 1,
+            },
             include: [ 
                 { model: transaksis,
                     attributes: ['awb','invoiceId'],
@@ -89,6 +92,43 @@ module.exports = {
             });
     },
 
+
+    async indexriwayat(req, res) {
+        let result = await deliveryfods.findAll({
+            where: {
+                state: {
+                    [Op.or]: [
+                        {
+                    [Op.like]: '%2%'
+                  },
+                  {
+                    [Op.like]: '%3%'
+                  }
+                ]
+             }
+            },
+            include: [ 
+                { model: transaksis,
+                    attributes: ['awb','invoiceId'],
+                    include: [ 
+                        { model: customers,
+                            attributes: ['nama','notelp'],
+                        },
+                        { model: auths,
+                            attributes: ['firstname','role'],
+                        },
+                        
+                    ]
+                },
+                
+            ]
+            
+        }).then(result => {
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            }).catch(function (err){
+                return apiResponse.ErrorResponse(res, err);
+            });
+    },
     // async indexKu(req, res) {
     //     let result = await group.findAll({
     //         where: {
