@@ -103,6 +103,7 @@ module.exports = (sequelize, DataTypes) => {
     transaksi.hasOne(models.daexpedisis)
     transaksi.hasMany(models.buktibayars)
     transaksi.hasOne(models.deliveryfods)
+    transaksi.hasOne(models.returs)
     // transaksi.belongsTo(models.expedisis, { foreginKey: "expedisiId"})   
     transaksi.belongsTo(models.auths, { foreginKey: "authId"})
     transaksi.belongsTo(models.customers, { foreginKey: "customerId"})

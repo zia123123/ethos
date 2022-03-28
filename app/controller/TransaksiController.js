@@ -1,4 +1,4 @@
-const {deliveryfods, transaksis,statustranksasis,keranjangs,products,daexpedisis,customers,warehouses,auths,buktibayars,product_stocks,districts,cityregencies,province    } = require('../models/index');
+const {returs,deliveryfods, transaksis,statustranksasis,keranjangs,products,daexpedisis,customers,warehouses,auths,buktibayars,product_stocks,districts,cityregencies,province    } = require('../models/index');
 const { Op } = require("sequelize");
 const { exportstocsv }  = require("export-to-csv"); 
 const { Parser } = require('json2csv');
@@ -842,6 +842,28 @@ module.exports = {
     async createdeliveryfods(req, res) { 
         var link = req.files[0].filename
         let result = await deliveryfods.create({
+            awbpengembalian: req.body.awbpengembalian,
+            expedisipengembalian: req.body.expedisipengembalian,
+            awbpengiriman: req.body.awbpengiriman,
+            transaksisId: req.params.id,
+            authId: req.body.authId,
+            expedisipengiriman: req.body.expedisipengiriman,
+            typedfod: req.body.typedfod,
+            kondisibarang: req.body.kondisibarang,
+            biayapengembalian: req.body.biayapengembalian,
+            biayapengiriman: req.body.biayapengiriman,
+            evidance: "https://storage.googleapis.com/ethos-kreatif-app.appspot.com/"+link,
+            keterangan: req.body.keterangan,
+            state: req.body.state,
+        }).then(result => {
+            return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
+        }).catch(function (err)  {
+            return apiResponse.ErrorResponse(res, err);
+        });
+      },
+      async createretur(req, res) { 
+        var link = req.files[0].filename
+        let result = await returs.create({
             awbpengembalian: req.body.awbpengembalian,
             expedisipengembalian: req.body.expedisipengembalian,
             awbpengiriman: req.body.awbpengiriman,

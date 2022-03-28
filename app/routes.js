@@ -32,6 +32,11 @@ const NinjaOriginController = require('./controller/NinjaOriginController');
 const IklanController = require('./controller/IklanController');
 const GroupControoler = require('./controller/GroupControoler');
 
+
+
+const ReturController = require('./controller/ReturController');
+
+
 const DistrictController = require('./controller/DistrictController');
 
 const CityAgencyController = require('./controller/CityAgencyController');
@@ -369,6 +374,12 @@ router.get('/api/dfod/riwayat', DfodController.indexriwayat);
 router.get('/api/dfod/:id', DfodController.find, DfodController.show);
 router.patch('/api/dfod/update/:id', DfodController.find,DfodController.update);
 
+//retur
+router.post('/api/retur/create/:id',uploadHandler.any(), TransaksiController.createretur);
+router.get('/api/retur/', ReturController.index);
+router.get('/api/retur/riwayat', ReturController.indexriwayat);
+router.get('/api/retur/:id', ReturController.find, ReturController.show);
+router.patch('/api/retur/update/:id', ReturController.find,ReturController.update);
 
 
 //forgetpaswor
