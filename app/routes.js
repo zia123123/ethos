@@ -376,7 +376,7 @@ router.get('/api/dfod/:id', DfodController.find, DfodController.show);
 router.patch('/api/dfod/update/:id', DfodController.find,DfodController.update);
 
 //biayaop
-router.post('/api/biayaop/create/:id', BiayaopController.create);
+router.post('/api/biayaop/create', BiayaopController.create);
 router.get('/api/biayaop/', BiayaopController.index);
 router.get('/api/biayaop/:id', BiayaopController.find, BiayaopController.show);
 router.patch('/api/biayaop/update/:id', BiayaopController.find,BiayaopController.update);
