@@ -273,6 +273,9 @@ module.exports = {
                   {
                     [Op.like]: '%N%'
                   },
+                  {
+                    [Op.like]: '%I%'
+                  },
                 ]
              },
               },
