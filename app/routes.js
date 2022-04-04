@@ -421,6 +421,8 @@ router.get('/api/transaksi/:id', TransaksiController.find, TransaksiController.s
 router.get('/api/transaksi/user/:userid', TransaksiController.findByuser);
 router.get('/api/transaksi/detail/:id', TransaksiController.getDetail);
 router.get('/api/jumlah/closing', TransaksiController.jumlahClosing);
+router.get('/api/jumlah/penghasilan', TransaksiController.jumlahPenghasilan);
+
 router.get('/api/transaksi/retur', TransaksiController.jumlahRetur);
 router.get('/api/transaksi/lead', TransaksiController.jumlahLead);
 router.get('/api/transaksi/progress', TransaksiController.jumlahOnprogress);

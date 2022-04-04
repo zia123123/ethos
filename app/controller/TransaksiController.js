@@ -711,6 +711,19 @@ module.exports = {
             });
     },
 
+    async jumlahPenghasilan(req, res) {
+        let result = await keranjangs.sum('price',{ 
+            where: {
+                authId: req.query.authId
+              },
+        }).then(result => {
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            }).catch(function (err){
+                return apiResponse.ErrorResponse(res, err);
+            });
+    },
+
+
    
     async jumlahLead(req, res) {
         let result = await transaksis.count().then(result => {

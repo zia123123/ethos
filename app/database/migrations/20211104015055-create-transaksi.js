@@ -26,7 +26,6 @@ module.exports = {
         onDelete: 'cascade',
         onUpdate: 'cascade'
       },
-
       authId: {
         allowNull: false,
         type: Sequelize.INTEGER,
@@ -41,7 +40,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
-
       provinceId: {
         type: Sequelize.INTEGER,
       },
