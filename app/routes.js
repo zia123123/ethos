@@ -384,7 +384,7 @@ router.patch('/api/biayaop/delete/:id', BiayaopController.find,BiayaopController
 
 
 //retur
-router.post('/api/retur/create/:id',uploadHandler.any(), TransaksiController.createretur);
+router.post('/api/retur/create/:id', TransaksiController.createretur);
 router.get('/api/retur/', ReturController.index);
 router.get('/api/retur/riwayat', ReturController.indexriwayat);
 router.get('/api/retur/:id', ReturController.find, ReturController.show);
