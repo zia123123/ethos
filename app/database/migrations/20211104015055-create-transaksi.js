@@ -13,7 +13,7 @@ module.exports = {
       },
       idtransaksi: {
         allowNull: false,
-        type: Sequelize.INTEGER,
+        type: Sequelize.BIGINT,
         uniqe:true
       },
       customerId: {

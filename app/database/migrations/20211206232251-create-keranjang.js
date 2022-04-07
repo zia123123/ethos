@@ -19,7 +19,7 @@ module.exports = {
         onUpdate: 'cascade'
       },
       transaksiId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.BIGINT,
         allowNull: false,
       },
       sku: {

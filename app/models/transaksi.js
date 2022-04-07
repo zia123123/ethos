@@ -41,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     idtransaksi: {
       allowNull: false,
-      type: DataTypes.INTEGER,
+      type: DataTypes.BIGINT,
       uniqe:true
     },
     awb: {
