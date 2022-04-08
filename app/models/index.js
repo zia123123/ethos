@@ -1,11 +1,12 @@
 'use strict';
-
+const timezone = 'Asia/Jakarta'
 const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
 const basename = path.basename(__filename);
 const config = require('../../config/database');
 
+require('moment').tz.setDefault(timezone)
 const db = {};
 
 let sequelize = new Sequelize(config.database, config.username, config.password, config,{
@@ -19,7 +20,7 @@ let sequelize = new Sequelize(config.database, config.username, config.password,
 dialectOptions: {
     "useUTC": false
 },
-timezone: "+07:00"
+timezone: timezone
 });
 
 fs

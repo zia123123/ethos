@@ -7,12 +7,15 @@ module.exports = {
     //create
     async create(req, res) { 
 
+        var tanggal = new Date().toLocaleString().replace(/T/, ' ').replace(/\..+/, '')
+    
         let result = await biayaop.create({
             type: req.body.type,
             nama: req.body.nama,
             keterangan: req.body.keterangan,
             jumlahtagihan: req.body.jumlahtagihan,
-            tanggal: req.body.tanggal,
+            tanggal: tanggal,
+            
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
         }).catch(function (err)  {

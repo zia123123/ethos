@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     nama: DataTypes.STRING,
     keterangan: DataTypes.STRING,
     jumlahtagihan: DataTypes.INTEGER,
-    tanggal: DataTypes.DATE
+    tanggal: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'biayaop',

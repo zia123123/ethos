@@ -610,9 +610,53 @@ module.exports = {
             });
     },
 
+
+    async indexFinanceExcel(req, res) {
+        let result = await transaksis.findAll({
+            where: {
+                        status: {
+                            [Op.or]: [
+                                {
+                            [Op.like]: '%D%'
+                          },
+                          {
+                            [Op.like]: '%C%'
+                          }, {
+                            [Op.like]: '%E%'
+                          }
+                        ]
+                     },
+              },
+              order: [
+                ['id', 'DESC'],
+            ],
+            attributes: ['id', 'nama','createdAt','pembayaran','status','idtransaksi','invoiceId','subsidi','ongkoskirim'],
+            include: [ 
+                { model: daexpedisis,
+                    attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank','totalharga'],
+                },
+                { model: auths,
+                    attributes: ['firstname'],
+                },
+                { model: buktibayars,
+                    attributes: ['link'],
+                },
+                { model: customers,
+                    attributes: ['notelp','nama'],
+                },
+            ]
+             
+        }).then(result => {
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            }).catch(function (err){
+                return apiResponse.ErrorResponse(res, err);
+            });
+    },
+    
+
     async indexLunasRetur(req, res) {
          let status = req.query.status
-        let invoiceId = req.query.invoiceId
+         let invoiceId = req.query.invoiceId
          let namabank = req.query.namabank
          let startDate = req.query.startDate+"T00:00:00.000Z"
          let endDate = req.query.endDate+"T17:00:00.000Z"
