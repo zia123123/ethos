@@ -15,6 +15,7 @@ module.exports = {
             keterangan: req.body.keterangan,
             jumlahtagihan: req.body.jumlahtagihan,
             tanggal: tanggal,
+            createdAt: tanggal
             
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
