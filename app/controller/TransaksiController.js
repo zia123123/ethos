@@ -16,6 +16,8 @@ module.exports = {
   
     //create
     async create(req, res) { 
+
+        var tanggal = new Date().toLocaleString().replace(/T/, ' ').replace(/\..+/, '')
         let keranjangdata =  req.body.products.replace(/\\n/g, '')
         let datakeranjang = eval(keranjangdata)
         let result = await transaksis.create({
@@ -31,6 +33,8 @@ module.exports = {
             invoiceId: req.body.warehouseId,
             expedisiName: req.body.expedisiName,
             authId: req.body.authId,
+            createdAt: tanggal,
+            updatedAt: tanggal,
             idtransaksi: req.body.idtransaksi,
             products: keranjangdata,
             discount: req.body.discount,
