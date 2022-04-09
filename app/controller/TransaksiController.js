@@ -34,7 +34,6 @@ module.exports = {
             expedisiName: req.body.expedisiName,
             authId: req.body.authId,
             createdAt: tanggal,
-            updatedAt: tanggal,
             idtransaksi: req.body.idtransaksi,
             products: keranjangdata,
             discount: req.body.discount,
