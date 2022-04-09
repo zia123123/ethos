@@ -16,8 +16,8 @@ module.exports = {
   
     //create
     async create(req, res) { 
-
-        var tanggal = new Date().toLocaleString()
+        var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+        var tanggal = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
         let keranjangdata =  req.body.products.replace(/\\n/g, '')
         let datakeranjang = eval(keranjangdata)
         let result = await transaksis.create({
