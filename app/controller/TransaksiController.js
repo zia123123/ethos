@@ -121,8 +121,8 @@ module.exports = {
         let nama = req.query.nama
         //let statusbarang = req.query.statusbarang
         
-        let startDate = req.query.startDate
-        let endDate = req.query.endDate
+        let startDate = req.query.startDate+"T00:00:00.000Z"
+        let endDate = req.query.endDate+"T23:59:59.000Z"
     
      
         if( status == null ){
