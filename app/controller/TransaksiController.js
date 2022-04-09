@@ -317,6 +317,63 @@ module.exports = {
             });
     },
 
+
+
+    async riwayatall(req, res) {
+        let page = parseInt(req.query.page)
+        let limit = parseInt(req.query.limit)
+        const count = await transaksis.count()
+        let result = await transaksis.findAll({
+            offset: (page - 1) * limit,
+            limit: limit,
+            where: {
+                status: {
+                    [Op.or]: [
+                  {
+                    [Op.like]: '%H%'
+                  },
+                  {
+                    [Op.like]: '%N%'
+                  },
+                  {
+                    [Op.like]: '%I%'
+                  },
+                ]
+             },
+              },
+              order: [
+                ['id', 'DESC'],
+            ],
+                        include: [ 
+                            { model: warehouses,
+                            },
+                             { model: customers,
+                            },
+                            { model: daexpedisis,
+                            },
+                            { model: auths,
+                               
+                            }
+            ]
+        }).then(result => {
+            var totalPage = (parseInt(count) / limit) + 1
+            returnData = {
+                result,
+                metadata: {
+                    page: page,
+                    count: result.length,
+                    totalPage: parseInt(totalPage),
+                    totalData:  count,
+                }
+            }
+            
+            return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
+            //return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            }).catch(function (err){
+                return apiResponse.ErrorResponse(res, err);
+            });
+    },
+
     async ExcelGudang(req, res) {
         let startDate = req.query.startDate+"T00:00:00.000Z"
         let endDate = req.query.endDate+"T17:00:00.000Z"
