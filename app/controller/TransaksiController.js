@@ -17,7 +17,7 @@ module.exports = {
     //create
     async create(req, res) { 
 
-        var tanggal = new Date().toLocaleString().replace(/T/, ' ').replace(/\..+/, '')
+        var tanggal = new Date().toLocaleString()
         let keranjangdata =  req.body.products.replace(/\\n/g, '')
         let datakeranjang = eval(keranjangdata)
         let result = await transaksis.create({
