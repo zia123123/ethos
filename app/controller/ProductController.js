@@ -77,7 +77,22 @@ module.exports = {
     async index(req, res) {
         let page = parseInt(req.query.page)
         let limit = parseInt(req.query.limit)
-        const count = await products.count()
+        const count = await products.count({
+            // where: {
+            //     status: {
+            //         [Op.or]: [
+            //             {
+            //         [Op.like]: '%D%'
+            //     },
+            //     {
+            //         [Op.like]: '%C%'
+            //     }, {
+            //         [Op.like]: '%E%'
+            //     }
+            //     ]
+            //     },
+            // }
+        })
         let result = await products.findAll({
             offset: (page - 1) * limit,
             limit: limit,
@@ -98,7 +113,7 @@ module.exports = {
                     totalData:  count,
                 }
             }
-            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
             }).catch(function (err){
                 return apiResponse.ErrorResponse(res, err);
             });
