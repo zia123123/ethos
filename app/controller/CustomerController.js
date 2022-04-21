@@ -168,6 +168,7 @@ module.exports = {
         req.customer.alamat = req.body.alamat;
         req.customer.rt =  req.body.rt,
         req.customer.rw =  req.body.rw,
+        req.customer.memoid =  req.body.memoid,
         req.customer.provinsiname =  req.body.provinsiname,
         req.customer.cityname =  req.body.cityname,
         req.customer.districtname =  req.body.districtname,

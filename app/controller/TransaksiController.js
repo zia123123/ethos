@@ -1,4 +1,8 @@
-const {returs,deliveryfods, transaksis,statustranksasis,keranjangs,products,daexpedisis,customers,warehouses,auths,buktibayars,product_stocks,districts,cityregencies,province    } = require('../models/index');
+const {
+    returs,deliveryfods, transaksis,statustranksasis,keranjangs,products,
+    daexpedisis,customers,warehouses,auths,buktibayars,product_stocks,
+    districts,cityregencies,province 
+   } = require('../models/index');
 const { Op } = require("sequelize");
 const { exportstocsv }  = require("export-to-csv"); 
 const { Parser } = require('json2csv');
@@ -12,8 +16,6 @@ const xl = require('excel4node');
 
 module.exports = {
 
-      
-  
     //create
     async create(req, res) { 
         var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
@@ -186,6 +188,8 @@ module.exports = {
                 return apiResponse.ErrorResponse(res, err);
             });
     },
+
+ //CONTOH PAGINATION
 
     async indexGudang(req, res) {
       
@@ -404,16 +408,25 @@ module.exports = {
                   },
                 }
               },
-              attributes: ['invoiceId','awb','ongkoskirim','products','expedisiName','typebayar'],
+              attributes: ['invoiceId','awb','ongkoskirim','subsidi','products','expedisiName','typebayar'],
               order: [
                 ['id', 'DESC'],
             ],
                         include: [ 
                             { model: customers,
-                                attributes: ['notelp','alamat','nama'],
+            
                             },
                             { model: warehouses,
-                                attributes: ['name'],
+                                include: [ {
+                                     model: districts,
+                                    attributes: ['name']
+                                },
+                                { model: cityregencies,
+                                    attributes: ['name']
+                                },
+                                { model: province,
+                                    attributes: ['name']
+                                }]
                             },
                             { model: auths,
                                 attributes: ['notelp','firstname'],
@@ -423,8 +436,9 @@ module.exports = {
                             },
             ]
         }).then(result => {
+          //  console.log(result)
             class Transaksi {
-                constructor(SenderPhone,Invoice,part1,qty1,part2,qty2,part3,qty3,part4,qty4,part5,qty5,RecepientName,RecepientNo,RecepientAdress,awb,expedisi,ongkos,tag,warehousename,typebayar,aa) {
+                constructor(SenderPhone,Invoice,part1,qty1,part2,qty2,part3,qty3,part4,qty4,part5,qty5,RecepientName,RecepientNo,RecepientAdress,RecepientProvinsi,RecepientKota,RecepientKecamatan,RecepientKodePos,memo,awb,expedisi,ongkos,tag,warehousename,typebayar,ongkir,subsidi,gudangKota,gudangAlamat,gudangPost,aa) {
                   this.SenderPhone = SenderPhone;
                   this.Invoice = Invoice;
                   this.part1 = part1;
@@ -440,12 +454,22 @@ module.exports = {
                   this.RecepientName = RecepientName;
                   this.RecepientNo = RecepientNo;
                   this.RecepientAdress = RecepientAdress;
+                  this.RecepientProvinsi = RecepientProvinsi;
+                  this.RecepientKota = RecepientKota;
+                  this.RecepientKecamatan = RecepientKecamatan;
+                  this.RecepientKodePos = RecepientKodePos;
+                  this.memo = memo;
                   this.awb = awb;
                   this.expedisi = expedisi;
                   this.ongkos = ongkos;
                   this.tag = tag;
                   this.warehousename = warehousename;
                   this.typebayar = typebayar;
+                  this.ongkir = ongkir;
+                  this.subsidi = subsidi;
+                  this.gudangKota = gudangKota;
+                  this.gudangAlamat = gudangAlamat;
+                  this.gudangPost = gudangPost;
                   this.aa = aa;
                 }
               }
@@ -453,7 +477,8 @@ module.exports = {
           
             for(var i=0;i<result.length;i++){
                 class Keranjang {
-                    constructor(sku,jumlahproduct) {
+                    constructor(namaproduct,sku,jumlahproduct) {
+                      this.namaproduct = namaproduct;
                       this.sku = sku;
                       this.jumlahproduct = jumlahproduct;
                     }
@@ -463,9 +488,9 @@ module.exports = {
                 let datakeranjang = eval(keranjangdata)
                 for(var j=0;j<=5;j++){
                     if(datakeranjang[j] === undefined){
-                        KeranjangArray.push(new Keranjang("",""));
+                        KeranjangArray.push(new Keranjang("","",""));
                     }else{
-                        KeranjangArray.push(new Keranjang(datakeranjang[j].sku,datakeranjang[j].jumlahproduct));
+                        KeranjangArray.push(new Keranjang(datakeranjang[j].namaproduct,datakeranjang[j].sku,datakeranjang[j].jumlahproduct));
                     }
                    
                 }    
@@ -474,36 +499,66 @@ module.exports = {
                 }else{
                   var type = "COD"
                 }           
-                TransaksiArray.push(new Transaksi("FHG",result[i].auth.notelp,result[i].invoiceId,KeranjangArray[0].sku,KeranjangArray[0].jumlahproduct.toString(),KeranjangArray[1].sku,KeranjangArray[1].jumlahproduct.toString(),KeranjangArray[2].sku,KeranjangArray[2].jumlahproduct.toString() ,KeranjangArray[3].sku,KeranjangArray[3].jumlahproduct.toString(),KeranjangArray[4].sku,KeranjangArray[4].jumlahproduct.toString(),result[i].customer.nama,result[i].customer.notelp,result[i].customer.alamat,result[i].awb,result[i].expedisiName,result[i].daexpedisis.totalharga.toString(),result[i].auth.firstname,result[i].warehouse.name,type,"aa"));
+                TransaksiArray.push(new Transaksi("FHG",result[i].auth.notelp,result[i].invoiceId,
+                KeranjangArray[0].namaproduct,KeranjangArray[0].sku,KeranjangArray[0].jumlahproduct.toString(),
+                KeranjangArray[1].namaproduct, KeranjangArray[1].sku,KeranjangArray[1].jumlahproduct.toString(),
+                KeranjangArray[2].namaproduct,KeranjangArray[2].sku,KeranjangArray[2].jumlahproduct.toString(),
+                KeranjangArray[3].namaproduct, KeranjangArray[3].sku,KeranjangArray[3].jumlahproduct.toString(),
+                KeranjangArray[4].namaproduct, KeranjangArray[4].sku,KeranjangArray[4].jumlahproduct.toString(),
+                result[i].customer.nama,result[i].customer.notelp,
+                result[i].customer.alamat,result[i].customer.provinsiname,
+                result[i].customer.cityname,result[i].customer.districtname,
+                result[i].customer.postalcode,result[i].awb,result[i].expedisiName,
+                result[i].daexpedisis.totalharga.toString(),result[i].auth.firstname,
+                result[i].warehouse.name,
+                type,
+                result[i].ongkoskirim.toString(),
+                result[i].subsidi.toString(),
+                result[i].warehouse.address,
+                result[i].warehouse.postalcode,
+                "aa"));
             }
-           //console.log(KeranjangArray)
+          // console.log(KeranjangArray)
             const wb = new xl.Workbook();
             const ws = wb.addWorksheet('Data Transaksi');
             const headingColumnNames = [
                 "Sender",
                 "Sender Phone No.",
                 "Invoice",
-                "Parts 1",
+                "Nama Produk 1",
+                "SKU 1",
                 "Qty 1",
-                "Parts 2",
+                "Nama Produk 2",
+                "SKU 2",
                 "Qty 2",
-                "Parts 3",
+                "Nama Produk 3",
+                "SKU 3",
                 "Qty 3",
-                "Parts 4",
+                "Nama Produk 4",
+                "SKU 4",
                 "Qty 4",
-                "Parts 5",
+                "Nama Produk 5",
+                "SKU 5",
                 "Qty 5",
                 "Recepient Name",
                 "Recipient Phone No",
                 "Recipient Address",
+                "Recipient Provinsi",
+                "Recipient Kabupaten / Kota",
+                "Recipient Kecamatan",
+                "Recipient Kode POS",   
                 "AWB",
                 "3PL",
                 "COD",
                 "TAG",
                 "Warehouse",
                 "TypeBayar",
+                "Ongkos Pengiriman",
+                "Subsidi Pengiriman",
+                "Kota Pengirim",
+                "Alamat Pengirim",
+                "Kode Pos Pengirim",
                 ""
-
             ]
             let headingColumnIndex = 1;
             headingColumnNames.forEach(heading => {
