@@ -41,12 +41,12 @@ module.exports = {
     },
 
     async index(req, res) {
-        let page = parseInt(req.query.page)
-        let limit = parseInt(req.query.limit)
-        const count = await product_stocks.count()
+        // let page = parseInt(req.query.page)
+        // let limit = parseInt(req.query.limit)
+        // const count = await product_stocks.count()
         let result = await product_stocks.findAll({
-            offset: (page - 1) * limit,
-            limit: limit,
+            // offset: (page - 1) * limit,
+            // limit: limit,
             order: [
                 ['id', 'DESC'],
             ],
@@ -63,17 +63,17 @@ module.exports = {
             // let totaldata = product_stocks.count().then(totaldata =>{
             //     totaldatanya = totaldata.length 
             // })
-            var totalPage = (parseInt(count) / limit) + 1
-            returnData = {
-                result,
-                metadata: {
-                    page: page,
-                    count: result.length,
-                    totalPage: parseInt(totalPage),
-                    totalData:  count,
-                }
-            }
-            return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
+            // var totalPage = (parseInt(count) / limit) + 1
+            // returnData = {
+            //     result,
+            //     metadata: {
+            //         page: page,
+            //         count: result.length,
+            //         totalPage: parseInt(totalPage),
+            //         totalData:  count,
+            //     }
+            // }
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
                 return apiResponse.ErrorResponse(res, err);
             });
