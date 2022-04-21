@@ -761,6 +761,25 @@ module.exports = {
          let namabank = req.query.namabank
          let startDate = req.query.startDate+"T00:00:00.000Z"
          let endDate = req.query.endDate+"T17:00:00.000Z"
+         let page = parseInt(req.query.page)
+         let limit = parseInt(req.query.limit)
+
+        const count = await transaksis.count({
+            // where: {
+            //     status: {
+            //         [Op.or]: [
+            //             {
+            //         [Op.like]: '%D%'
+            //     },
+            //     {
+            //         [Op.like]: '%C%'
+            //     }, {
+            //         [Op.like]: '%E%'
+            //     }
+            //     ]
+            //     },
+            // }
+        })
 
         if( invoiceId == null ){
             invoiceId = ""
@@ -773,6 +792,8 @@ module.exports = {
         }
         
         let result = await transaksis.findAll({
+            offset: (page - 1) * limit,
+            limit: limit,
             where:{
                 status: {
                     [Op.or]: [
@@ -830,7 +851,17 @@ module.exports = {
             ]
              
         }).then(result => {
-            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            var totalPage = (parseInt(count) / limit) + 1
+            returnData = {
+                result,
+                metadata: {
+                    page: page,
+                    count: result.length,
+                    totalPage: parseInt(totalPage),
+                    totalData:  count,
+                }
+            }
+            return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
             }).catch(function (err){
                 return apiResponse.ErrorResponse(res, err);
             });
