@@ -41,7 +41,27 @@ module.exports = {
     },
 
     async index(req, res) {
+        let page = parseInt(req.query.page)
+        let limit = parseInt(req.query.limit)
+        const count = await biayaiklan.count({
+            // where: {
+            //     status: {
+            //         [Op.or]: [
+            //             {
+            //         [Op.like]: '%D%'
+            //     },
+            //     {
+            //         [Op.like]: '%C%'
+            //     }, {
+            //         [Op.like]: '%E%'
+            //     }
+            //     ]
+            //     },
+            // }
+        })
         let result = await biayaiklan.findAll({
+            offset: (page - 1) * limit,
+            limit: limit,
             include: [ { model: domains,
                 attributes: ['url']
             },
@@ -49,7 +69,17 @@ module.exports = {
                 attributes: ['name']
             }]
         }).then(result => {
-            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            var totalPage = (parseInt(count) / limit) + 1
+            returnData = {
+                result,
+                metadata: {
+                    page: page,
+                    count: result.length,
+                    totalPage: parseInt(totalPage),
+                    totalData:  count,
+                }
+            }
+            return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
             }).catch(function (err){
                 return apiResponse.ErrorResponse(res, err);
             });

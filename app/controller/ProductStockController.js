@@ -56,7 +56,7 @@ module.exports = {
                 { model: warehouses,
                     attributes: ['name'],
                 }
-            ]
+            ],
 
         }).then(result => {
             // var totaldatanya = 0
