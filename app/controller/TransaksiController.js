@@ -756,6 +756,40 @@ module.exports = {
     
 
     async indexLunasRetur(req, res) {
+         let page = parseInt(req.query.page)
+        let limit = parseInt(req.query.limit)
+        const count = await transaksis.count({
+            where: {
+                status: {
+                        [Op.or]: [
+                            {
+                        [Op.like]: '%F%'
+                      },
+                      {
+                        [Op.like]: '%G%'
+                      },
+                      {
+                        [Op.like]: '%H%'
+                      },
+                      {
+                        [Op.like]: '%I%'
+                      },
+                      {
+                        [Op.like]: '%J%'
+                      },
+                      {
+                        [Op.like]: '%K%'
+                      },
+                      {
+                        [Op.like]: '%L%'
+                      },
+                      {
+                        [Op.like]: '%M'
+                      }
+                    ]
+                },
+            }
+       })
          let status = req.query.status
          let invoiceId = req.query.invoiceId
          let namabank = req.query.namabank
@@ -773,6 +807,8 @@ module.exports = {
         }
         
         let result = await transaksis.findAll({
+            offset: (page - 1) * limit,
+            limit: limit,
             where:{
                 status: {
                     [Op.or]: [
@@ -780,7 +816,25 @@ module.exports = {
                     [Op.like]: '%F%'
                   },
                   {
+                    [Op.like]: '%G%'
+                  },
+                  {
+                    [Op.like]: '%H%'
+                  },
+                  {
+                    [Op.like]: '%I%'
+                  },
+                  {
+                    [Op.like]: '%J%'
+                  },
+                  {
                     [Op.like]: '%K%'
+                  },
+                  {
+                    [Op.like]: '%L%'
+                  },
+                  {
+                    [Op.like]: '%M'
                   }
                 ]
              },
@@ -830,7 +884,17 @@ module.exports = {
             ]
              
         }).then(result => {
-            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            var totalPage = (parseInt(count) / limit) + 1
+            returnData = {
+                result,
+                metadata: {
+                    page: page,
+                    count: result.length,
+                    totalPage: parseInt(totalPage),
+                    totalData:  count,
+                }
+            }
+            return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
             }).catch(function (err){
                 return apiResponse.ErrorResponse(res, err);
             });
