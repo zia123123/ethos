@@ -75,9 +75,9 @@ module.exports = {
     },
 
     async index(req, res) {
-        let page = parseInt(req.query.page)
-        let limit = parseInt(req.query.limit)
-        const count = await products.count({
+        // let page = parseInt(req.query.page)
+        // let limit = parseInt(req.query.limit)
+        // const count = await products.count({
             // where: {
             //     status: {
             //         [Op.or]: [
@@ -92,10 +92,10 @@ module.exports = {
             //     ]
             //     },
             // }
-        })
+      //  })
         let result = await products.findAll({
-            offset: (page - 1) * limit,
-            limit: limit,
+            // offset: (page - 1) * limit,
+            // limit: limit,
             attributes: ['weight','id', 'name','expiry_date','price','link','discount','quantity','sku','hpp'],
             include: [ 
                 { model: suppliers,
@@ -103,17 +103,17 @@ module.exports = {
                 }
             ]
         }).then(result => {
-            var totalPage = (parseInt(count) / limit) + 1
-            returnData = {
-                result,
-                metadata: {
-                    page: page,
-                    count: result.length,
-                    totalPage: parseInt(totalPage),
-                    totalData:  count,
-                }
-            }
-            return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
+            // var totalPage = (parseInt(count) / limit) + 1
+            // returnData = {
+            //     result,
+            //     metadata: {
+            //         page: page,
+            //         count: result.length,
+            //         totalPage: parseInt(totalPage),
+            //         totalData:  count,
+            //     }
+            // }
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
                 return apiResponse.ErrorResponse(res, err);
             });
