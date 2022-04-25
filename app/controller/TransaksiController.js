@@ -512,7 +512,7 @@ module.exports = {
                 result[i].subsidi.toString(),
                 result[i].warehouse.address,
                 result[i].warehouse.postalcode,
-                result[i].auth.firstname,
+                result[i].auths.firstname,
                 "aa"));
             }
           // console.log(KeranjangArray)
