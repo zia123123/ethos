@@ -43,10 +43,26 @@ module.exports = {
     async index(req, res) {
         let page = parseInt(req.query.page)
         let limit = parseInt(req.query.limit)
+        const date = req.query.date?? ""
+        const status = req.query.status?? ""
+        const paymentMethod = req.query.paymentMethod?? ""
+        const warehouseId = req.query.warehouseId?? ""
+
+        console.log(date);
+        console.log(warehouseId);
+
         const count = await product_stocks.count()
         let result = await product_stocks.findAll({
             offset: (page - 1) * limit,
             limit: limit,
+            where: {
+                warehouseId: {
+                    [Op.like]: '%'+warehouseId+'%'
+                },
+                // createdAt: {
+                //     [Op.like]: '%'+date+'%'
+                // },
+            },
             order: [
                 ['id', 'DESC'],
             ],

@@ -193,35 +193,96 @@ module.exports = {
  //CONTOH PAGINATION
 
     async indexGudang(req, res) {
-      
+        
         let warehouseId = req.query.warehouseId
+        const date = req.query.date?? ""
+        const status = req.query.status?? ""
+        const paymentMethod = req.query.paymentMethod?? ""
         if( warehouseId == null ){
             warehouseId = ""
         }
         let page = parseInt(req.query.page)
         let limit = parseInt(req.query.limit)
-        const count = await transaksis.count({ where: {
-            warehouseId: warehouseId}})
+        const count = await transaksis.count(
+            { 
+                where: {
+                    warehouseId: {
+                        [Op.like]: '%'+warehouseId+'%'
+                    },
+                    status: {
+                        [Op.or]: [
+                            {
+                                [Op.like]: '%K%'
+                            },
+                            {
+                                [Op.like]: '%G%'
+                            },
+                        
+                        ]
+                    },
+                    [Op.and]: [
+                        {
+                            status: 
+                            {    
+                                [Op.like]: '%'+status+'%'
+                            }
+                        },
+                        {
+                            createdAt: 
+                            {    
+                                [Op.like]: '%'+date+'%'
+                            }
+                        },
+                        {
+                            typebayar: 
+                            {    
+                                [Op.like]: '%'+paymentMethod+'%'
+                            }
+                        },
+                    ],
+                },
+            }
+        )
         let result = await transaksis.findAll({
             offset: (page - 1) * limit,
             limit: limit,
             where: {
                 warehouseId: {
                     [Op.like]: '%'+warehouseId+'%'
-             },
+                },
                 status: {
                     [Op.or]: [
-                  {
-                    [Op.like]: '%K%'
-                  },
-                  {
-                    [Op.like]: '%G%'
-                  },
-                  
-                ]
-             },
-              },
-              order: [
+                        {
+                            [Op.like]: '%K%'
+                        },
+                        {
+                            [Op.like]: '%G%'
+                        },
+                    
+                    ]
+                },
+                [Op.and]: [
+                    {
+                        status: 
+                        {    
+                            [Op.like]: '%'+status+'%'
+                        }
+                    },
+                    {
+                        createdAt: 
+                        {    
+                            [Op.like]: '%'+date+'%'
+                        }
+                    },
+                    {
+                        typebayar: 
+                        {    
+                            [Op.like]: '%'+paymentMethod+'%'
+                        }
+                    },
+                ],
+            },
+            order: [
                 ['id', 'DESC'],
             ],
                         include: [ 
@@ -264,8 +325,28 @@ module.exports = {
         }
         let page = parseInt(req.query.page)
         let limit = parseInt(req.query.limit)
-        const count = await transaksis.count({ where: {
-            warehouseId: warehouseId}})
+        const count = await transaksis.count(
+            { 
+                where: {
+                    warehouseId: {
+                        [Op.like]: '%'+warehouseId+'%'
+                    },
+                    status: {
+                        [Op.or]: [
+                            {
+                                [Op.like]: '%H%'
+                            },
+                            {
+                                [Op.like]: '%N%'
+                            },
+                            {
+                                [Op.like]: '%I%'
+                            },
+                        ]
+                    },
+                },
+            }
+        )
         let result = await transaksis.findAll({
             offset: (page - 1) * limit,
             limit: limit,
@@ -1211,45 +1292,6 @@ module.exports = {
     async indexLunasRetur(req, res) {
          let page = parseInt(req.query.page)
         let limit = parseInt(req.query.limit)
-        const count = await transaksis.count({
-            where: {
-                status: {
-                        [Op.or]: [
-                            {
-                        [Op.like]: '%F%'
-                      },
-                      {
-                        [Op.like]: '%G%'
-                      },
-                      {
-                        [Op.like]: '%H%'
-                      },
-                      {
-                        [Op.like]: '%I%'
-                      },
-                      {
-                        [Op.like]: '%J%'
-                      },
-                      {
-                        [Op.like]: '%K%'
-                      },
-                      {
-                        [Op.like]: '%L%'
-                      },
-                      {
-                        [Op.like]: '%M%'
-                      }
-                      ,
-                      {
-                        [Op.like]: '%N%'
-                      },
-                      {
-                        [Op.like]: '%O%'
-                      }
-                    ]
-                },
-            }
-       })
          let status = req.query.status
          let invoiceId = req.query.invoiceId
          let namabank = req.query.namabank
@@ -1265,6 +1307,58 @@ module.exports = {
         if( status == null ){
             status = ""
         }
+
+        const count = await transaksis.count({
+            where:{
+                status: {
+                    [Op.or]: [
+                        {
+                    [Op.like]: '%F%'
+                  },
+                  {
+                    [Op.like]: '%G%'
+                  },
+                  {
+                    [Op.like]: '%H%'
+                  },
+                  {
+                    [Op.like]: '%I%'
+                  },
+                  {
+                    [Op.like]: '%J%'
+                  },
+                  {
+                    [Op.like]: '%K%'
+                  },
+                  {
+                    [Op.like]: '%L%'
+                  },
+                  {
+                    [Op.like]: '%M'
+                  }
+                ]
+             },
+               createdAt :  {
+                    [Op.and]: {
+                      [Op.gte]: startDate,
+                      [Op.lte]: endDate
+                    }
+                  },
+             //authId: req.params.userid,
+                [Op.and]: [
+                    {
+                    status: {    
+                        [Op.like]: '%'+status+'%'
+                    }
+                     },
+                     {
+                        invoiceId: {    
+                            [Op.like]: '%'+invoiceId+'%'
+                        }
+                         },
+                  ],
+              },
+       })
         
         let result = await transaksis.findAll({
             offset: (page - 1) * limit,
