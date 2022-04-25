@@ -409,7 +409,7 @@ module.exports = {
                   },
                 }
               },
-              attributes: ['invoiceId','awb','ongkoskirim','subsidi','products','expedisiName','typebayar'],
+              attributes: ['invoiceId','awb','ongkoskirim','subsidi','products','expedisiName','typebayar','memotransaksi'],
               order: [
                 ['id', 'DESC'],
             ],
@@ -510,7 +510,7 @@ module.exports = {
                 result[i].ongkoskirim.toString(),
                 result[i].subsidi.toString(),
                 result[i].auth.firstname,
-                result[i].warehouse.postalcode,
+                result[i].memotransaksi,
                 "aa"));
             }
           // console.log(KeranjangArray)
@@ -538,14 +538,14 @@ module.exports = {
                 "Recipient Kode POS",   
                 "AWB",
                 "3PL",
-                "COD",
+                "Total Harga Pesanan",
                 "TAG",
                 "Warehouse",
                 "TypeBayar",
                 "Ongkos Pengiriman",
                 "Subsidi Pengiriman",
                 "Nama CS",
-                "Kode Pos Pengirim",
+                "Memo",
                 ""
             ]
             let headingColumnIndex = 1;
@@ -631,7 +631,7 @@ module.exports = {
                   },
                 }
               },
-              attributes: ['invoiceId','awb','ongkoskirim','subsidi','products','expedisiName','typebayar'],
+              attributes: ['invoiceId','awb','ongkoskirim','subsidi','products','expedisiName','typebayar','memotransaksi'],
               order: [
                 ['id', 'DESC'],
             ],
@@ -732,7 +732,7 @@ module.exports = {
                 result[i].ongkoskirim.toString(),
                 result[i].subsidi.toString(),
                 result[i].auth.firstname,
-                result[i].warehouse.postalcode,
+                result[i].memotransaksi,
                 "aa"));
             }
           // console.log(KeranjangArray)
@@ -760,14 +760,14 @@ module.exports = {
                 "Recipient Kode POS",   
                 "AWB",
                 "3PL",
-                "COD",
+                "Total Harga Pesanan",
                 "TAG",
                 "Warehouse",
                 "TypeBayar",
                 "Ongkos Pengiriman",
                 "Subsidi Pengiriman",
                 "Nama CS",
-                "Kode Pos Pengirim",
+                "Memo",
                 ""
             ]
             let headingColumnIndex = 1;
@@ -976,7 +976,7 @@ module.exports = {
                 result[i].ongkoskirim.toString(),
                 result[i].subsidi.toString(),
                 result[i].auth.firstname,
-                result[i].warehouse.postalcode,
+                result[i].memotransaksi,
                 "aa"));
             }
           // console.log(KeranjangArray)
@@ -1004,14 +1004,14 @@ module.exports = {
                 "Recipient Kode POS",   
                 "AWB",
                 "3PL",
-                "COD",
+                "Total Harga Pesanan",
                 "TAG",
                 "Warehouse",
                 "TypeBayar",
                 "Ongkos Pengiriman",
                 "Subsidi Pengiriman",
                 "Nama CS",
-                "Kode Pos Pengirim",
+                "MEMO",
                 ""
             ]
             let headingColumnIndex = 1;
