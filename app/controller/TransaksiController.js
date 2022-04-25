@@ -195,12 +195,23 @@ module.exports = {
     async indexGudang(req, res) {
         
         let warehouseId = req.query.warehouseId
-        const date = req.query.date
-        const status = req.query.status
-        const paymentMethod = req.query.paymentMethod
+        let date = req.query.date
+        let status = req.query.status
+        let paymentMethod = req.query.paymentMethod
+        
         if( warehouseId == null ){
             warehouseId = ""
         }
+        if( date == null ){
+            date = ""
+        }
+        if( status == null ){
+            status = ""
+        }
+        if( paymentMethod == null ){
+            paymentMethod = ""
+        }
+
         let page = parseInt(req.query.page)
         let limit = parseInt(req.query.limit)
         const count = await transaksis.count(

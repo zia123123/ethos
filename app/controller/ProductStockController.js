@@ -46,12 +46,24 @@ module.exports = {
         const date = req.query.date
         const status = req.query.status
         const paymentMethod = req.query.paymentMethod
-        const warehouseId = req.query.warehouseId
+        let warehouseId = req.query.warehouseId
 
-        console.log(date);
-        console.log(warehouseId);
+        if (warehouseId == null || warehouseId == undefined) {
+            warehouseId = ""
+        }
 
-        const count = await product_stocks.count()
+        const count = await product_stocks.count(
+            {
+                where: {
+                    warehouseId: {
+                        [Op.like]: '%'+warehouseId+'%'
+                    },
+                    // createdAt: {
+                    //     [Op.like]: '%'+date+'%'
+                    // },
+                },
+            }
+        )
         let result = await product_stocks.findAll({
             offset: (page - 1) * limit,
             limit: limit,
