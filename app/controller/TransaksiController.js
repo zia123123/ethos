@@ -466,8 +466,8 @@ module.exports = {
                   this.subsidi = subsidi;
                   this.gudangKota = gudangKota;
                   this.gudangAlamat = gudangAlamat;
-                  this.gudangPost = gudangPost;
                   this.namacs = namacs;
+                  this.gudangPost = gudangPost;
                   this.aa = aa;
                 }
               }
@@ -511,8 +511,8 @@ module.exports = {
                 result[i].ongkoskirim.toString(),
                 result[i].subsidi.toString(),
                 result[i].warehouse.address,
-                result[i].warehouse.postalcode,
                 result[i].auth.firstname,
+                result[i].warehouse.postalcode,
                 "aa"));
             }
           // console.log(KeranjangArray)
