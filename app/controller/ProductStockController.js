@@ -43,10 +43,10 @@ module.exports = {
     async index(req, res) {
         let page = parseInt(req.query.page)
         let limit = parseInt(req.query.limit)
-        const date = req.query.date?? ""
-        const status = req.query.status?? ""
-        const paymentMethod = req.query.paymentMethod?? ""
-        const warehouseId = req.query.warehouseId?? ""
+        const date = req.query.date
+        const status = req.query.status
+        const paymentMethod = req.query.paymentMethod
+        const warehouseId = req.query.warehouseId
 
         console.log(date);
         console.log(warehouseId);
