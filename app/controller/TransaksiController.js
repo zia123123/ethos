@@ -35,6 +35,7 @@ module.exports = {
             invoiceId: req.body.warehouseId,
             expedisiName: req.body.expedisiName,
             authId: req.body.authId,
+            groupId: req.body.groupId,
             createdAt: tanggal,
             idtransaksi: req.body.idtransaksi,
             products: keranjangdata,
@@ -513,7 +514,7 @@ module.exports = {
                 result[i].warehouse.name,
                 type,
                 result[i].ongkoskirim.toString(),
-                result[i].subsidi.toString(),
+                result[i].ongkoskirim.toString(),
                 result[i].warehouse.address,
                 result[i].warehouse.postalcode,
                 "aa"));

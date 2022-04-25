@@ -80,6 +80,9 @@ module.exports = (sequelize, DataTypes) => {
     products: {
       type: DataTypes.STRING
     },
+    groupId: {
+      type: DataTypes.INTEGER
+    },
     expedisiName: {
       allowNull: false,
       type: DataTypes.STRING,
