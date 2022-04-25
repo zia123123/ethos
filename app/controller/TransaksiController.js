@@ -419,8 +419,7 @@ module.exports = {
                             },
                             { model: warehouses,
                                 include: [ {
-                                     model: districts,
-                                    attributes: ['name']
+                                     model: districts
                                 },
                                 { model: cityregencies,
                                     attributes: ['name']
