@@ -513,8 +513,8 @@ module.exports = {
                 result[i].daexpedisis.totalharga.toString(),result[i].auth.firstname,
                 result[i].warehouse.name,
                 type,
+                result[i].subsidi.toString(),
                 result[i].ongkoskirim.toString(),
-                "aa",
                 result[i].warehouse.address,
                 result[i].warehouse.postalcode,
                 "aa"));
