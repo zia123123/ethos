@@ -439,7 +439,7 @@ module.exports = {
         }).then(result => {
           //  console.log(result)
             class Transaksi {
-                constructor(SenderPhone,Invoice,part1,qty1,part2,qty2,part3,qty3,RecepientName,RecepientNo,RecepientAdress,RecepientProvinsi,RecepientKota,RecepientKecamatan,RecepientKodePos,memo,awb,expedisi,ongkos,tag,warehousename,typebayar,ongkir,subsidi,gudangKota,gudangAlamat,namacs,gudangPost,aa) {
+                constructor(SenderPhone,Invoice,part1,qty1,part2,qty2,part3,qty3,RecepientName,RecepientNo,RecepientAdress,RecepientProvinsi,RecepientKota,RecepientKecamatan,RecepientKodePos,memo,awb,expedisi,ongkos,tag,warehousename,typebayar,ongkir,subsidi,gudangAlamat,namacs,gudangPost,aa) {
                   this.SenderPhone = SenderPhone;
                   this.Invoice = Invoice;
                   this.part1 = part1;
@@ -464,7 +464,7 @@ module.exports = {
                   this.typebayar = typebayar;
                   this.ongkir = ongkir;
                   this.subsidi = subsidi;
-                  this.gudangKota = gudangKota;
+                 
                   this.gudangAlamat = gudangAlamat;
                   this.namacs = namacs;
                   this.gudangPost = gudangPost;
@@ -510,10 +510,9 @@ module.exports = {
                 type,
                 result[i].ongkoskirim.toString(),
                 result[i].subsidi.toString(),
-               "aa",
                 result[i].warehouse.address,
-                result[i].auth.firstname,
                 result[i].warehouse.postalcode,
+                result[i].auth.firstname,
                 "aa"));
             }
           // console.log(KeranjangArray)
@@ -547,7 +546,6 @@ module.exports = {
                 "TypeBayar",
                 "Ongkos Pengiriman",
                 "Subsidi Pengiriman",
-                "Kota Pengirim",
                 "Alamat Pengirim",
                 "Kode Pos Pengirim",
                 "Nama CS",
