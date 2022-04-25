@@ -439,7 +439,7 @@ module.exports = {
         }).then(result => {
           //  console.log(result)
             class Transaksi {
-                constructor(SenderPhone,Invoice,part1,qty1,part2,qty2,part3,qty3,RecepientName,RecepientNo,RecepientAdress,RecepientProvinsi,RecepientKota,RecepientKecamatan,RecepientKodePos,memo,awb,expedisi,ongkos,tag,warehousename,typebayar,ongkir,subsidi,gudangKota,gudangAlamat,gudangPost,namacs,aa) {
+                constructor(SenderPhone,Invoice,part1,qty1,part2,qty2,part3,qty3,RecepientName,RecepientNo,RecepientAdress,RecepientProvinsi,RecepientKota,RecepientKecamatan,RecepientKodePos,memo,awb,expedisi,ongkos,tag,warehousename,typebayar,ongkir,subsidi,gudangKota,gudangAlamat,namacs,gudangPost,aa) {
                   this.SenderPhone = SenderPhone;
                   this.Invoice = Invoice;
                   this.part1 = part1;
