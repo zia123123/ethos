@@ -464,9 +464,8 @@ module.exports = {
                   this.typebayar = typebayar;
                   this.ongkir = ongkir;
                   this.subsidi = subsidi;
-                 
-                  this.gudangAlamat = gudangAlamat;
                   this.namacs = namacs;
+                  this.gudangAlamat = gudangAlamat;
                   this.gudangPost = gudangPost;
                   this.aa = aa;
                 }
@@ -510,9 +509,9 @@ module.exports = {
                 type,
                 result[i].ongkoskirim.toString(),
                 result[i].subsidi.toString(),
+                result[i].auth.firstname,
                 result[i].warehouse.address,
                 result[i].warehouse.postalcode,
-                result[i].auth.firstname,
                 "aa"));
             }
           // console.log(KeranjangArray)
@@ -546,9 +545,9 @@ module.exports = {
                 "TypeBayar",
                 "Ongkos Pengiriman",
                 "Subsidi Pengiriman",
+                "Nama CS",
                 "Alamat Pengirim",
                 "Kode Pos Pengirim",
-                "Nama CS",
                 ""
             ]
             let headingColumnIndex = 1;
