@@ -510,7 +510,7 @@ module.exports = {
                 result[i].ongkoskirim.toString(),
                 result[i].subsidi.toString(),
                 result[i].auth.firstname,
-                result[i].warehouse.address,
+                result[i].warehouse.district.name,
                 result[i].warehouse.postalcode,
                 "aa"));
             }
