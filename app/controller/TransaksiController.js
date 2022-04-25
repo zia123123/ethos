@@ -439,7 +439,7 @@ module.exports = {
         }).then(result => {
           //  console.log(result)
             class Transaksi {
-                constructor(SenderPhone,Invoice,part1,qty1,part2,qty2,part3,qty3,RecepientName,RecepientNo,RecepientAdress,RecepientProvinsi,RecepientKota,RecepientKecamatan,RecepientKodePos,memo,awb,expedisi,ongkos,tag,warehousename,typebayar,ongkir,subsidi,gudangKota,gudangAlamat,gudangPost,aa) {
+                constructor(SenderPhone,Invoice,part1,qty1,part2,qty2,part3,qty3,RecepientName,RecepientNo,RecepientAdress,RecepientProvinsi,RecepientKota,RecepientKecamatan,RecepientKodePos,memo,awb,expedisi,ongkos,tag,warehousename,typebayar,ongkir,subsidi,gudangKota,gudangAlamat,gudangPost,namacs,aa) {
                   this.SenderPhone = SenderPhone;
                   this.Invoice = Invoice;
                   this.part1 = part1;
@@ -467,6 +467,7 @@ module.exports = {
                   this.gudangKota = gudangKota;
                   this.gudangAlamat = gudangAlamat;
                   this.gudangPost = gudangPost;
+                  this.namacs = namacs;
                   this.aa = aa;
                 }
               }
@@ -511,6 +512,7 @@ module.exports = {
                 result[i].subsidi.toString(),
                 result[i].warehouse.address,
                 result[i].warehouse.postalcode,
+                result[i].auth.firstname,
                 "aa"));
             }
           // console.log(KeranjangArray)
@@ -577,7 +579,6 @@ module.exports = {
                 return apiResponse.ErrorResponse(res, err);
             });
     },
-
 
     async ExcelFinance(req, res) {
         let startDate = req.query.startDate+"T00:00:00.000Z"
@@ -619,7 +620,39 @@ module.exports = {
                     [Op.like]: '%'+expedisiName+'%'
                 },
                 status: {
+                    [Op.or]: [
+                        {
+                    [Op.like]: '%F%'
+                  },
+                  {
+                    [Op.like]: '%G%'
+                  },
+                  {
                     [Op.like]: '%H%'
+                  },
+                  {
+                    [Op.like]: '%I%'
+                  },
+                  {
+                    [Op.like]: '%J%'
+                  },
+                  {
+                    [Op.like]: '%K%'
+                  },
+                  {
+                    [Op.like]: '%L%'
+                  },
+                  {
+                    [Op.like]: '%M%'
+                  }
+                  ,
+                  {
+                    [Op.like]: '%N%'
+                  },
+                  {
+                    [Op.like]: '%O%'
+                  }
+                ]
                   },
                 }
               },
@@ -653,7 +686,7 @@ module.exports = {
         }).then(result => {
           //  console.log(result)
             class Transaksi {
-                constructor(SenderPhone,Invoice,part1,qty1,part2,qty2,part3,qty3,part4,qty4,part5,qty5,RecepientName,RecepientNo,RecepientAdress,RecepientProvinsi,RecepientKota,RecepientKecamatan,RecepientKodePos,memo,awb,expedisi,ongkos,tag,warehousename,typebayar,ongkir,subsidi,gudangKota,gudangAlamat,gudangPost,aa) {
+                constructor(SenderPhone,Invoice,part1,qty1,part2,qty2,part3,qty3,RecepientName,RecepientNo,RecepientAdress,RecepientProvinsi,RecepientKota,RecepientKecamatan,RecepientKodePos,memo,awb,expedisi,ongkos,tag,warehousename,typebayar,ongkir,subsidi,gudangKota,gudangAlamat,gudangPost,namacs,aa) {
                   this.SenderPhone = SenderPhone;
                   this.Invoice = Invoice;
                   this.part1 = part1;
@@ -662,10 +695,6 @@ module.exports = {
                   this.qty2 = qty2;
                   this.part3 = part3;
                   this.qty3 = qty3;
-                  this.part4 = part4;
-                  this.qty4 = qty4;
-                  this.part5 = part5;
-                  this.qty5 = qty5;
                   this.RecepientName = RecepientName;
                   this.RecepientNo = RecepientNo;
                   this.RecepientAdress = RecepientAdress;
@@ -685,6 +714,7 @@ module.exports = {
                   this.gudangKota = gudangKota;
                   this.gudangAlamat = gudangAlamat;
                   this.gudangPost = gudangPost;
+                  this.namacs = namacs;
                   this.aa = aa;
                 }
               }
@@ -701,7 +731,7 @@ module.exports = {
                 var  KeranjangArray = [];
                 let keranjangdata =  result[i].products.replace(/\\n/g, '')
                 let datakeranjang = eval(keranjangdata)
-                for(var j=0;j<=5;j++){
+                for(var j=0;j<=3;j++){
                     if(datakeranjang[j] === undefined){
                         KeranjangArray.push(new Keranjang("","",""));
                     }else{
@@ -718,8 +748,6 @@ module.exports = {
                 KeranjangArray[0].namaproduct,KeranjangArray[0].sku,KeranjangArray[0].jumlahproduct.toString(),
                 KeranjangArray[1].namaproduct, KeranjangArray[1].sku,KeranjangArray[1].jumlahproduct.toString(),
                 KeranjangArray[2].namaproduct,KeranjangArray[2].sku,KeranjangArray[2].jumlahproduct.toString(),
-                KeranjangArray[3].namaproduct, KeranjangArray[3].sku,KeranjangArray[3].jumlahproduct.toString(),
-                KeranjangArray[4].namaproduct, KeranjangArray[4].sku,KeranjangArray[4].jumlahproduct.toString(),
                 result[i].customer.nama,result[i].customer.notelp,
                 result[i].customer.alamat,result[i].customer.provinsiname,
                 result[i].customer.cityname,result[i].customer.districtname,
@@ -731,6 +759,7 @@ module.exports = {
                 result[i].subsidi.toString(),
                 result[i].warehouse.address,
                 result[i].warehouse.postalcode,
+                result[i].auth.firstname,
                 "aa"));
             }
           // console.log(KeranjangArray)
@@ -749,12 +778,6 @@ module.exports = {
                 "Nama Produk 3",
                 "SKU 3",
                 "Qty 3",
-                "Nama Produk 4",
-                "SKU 4",
-                "Qty 4",
-                "Nama Produk 5",
-                "SKU 5",
-                "Qty 5",
                 "Recepient Name",
                 "Recipient Phone No",
                 "Recipient Address",
@@ -804,6 +827,7 @@ module.exports = {
             });
     },
 
+  
     async indexAll(req, res) {
         let invoiceId = req.query.invoiceId
         if( invoiceId == null ){
@@ -997,7 +1021,14 @@ module.exports = {
                         [Op.like]: '%L%'
                       },
                       {
-                        [Op.like]: '%M'
+                        [Op.like]: '%M%'
+                      }
+                      ,
+                      {
+                        [Op.like]: '%N%'
+                      },
+                      {
+                        [Op.like]: '%O%'
                       }
                     ]
                 },
