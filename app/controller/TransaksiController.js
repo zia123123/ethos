@@ -514,7 +514,7 @@ module.exports = {
                 result[i].warehouse.name,
                 type,
                 result[i].ongkoskirim.toString(),
-                result[i].ongkoskirim.toString(),
+                "aa",
                 result[i].warehouse.address,
                 result[i].warehouse.postalcode,
                 "aa"));
