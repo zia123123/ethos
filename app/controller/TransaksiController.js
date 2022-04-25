@@ -510,7 +510,7 @@ module.exports = {
                 type,
                 result[i].ongkoskirim.toString(),
                 result[i].subsidi.toString(),
-                result[i].warehouse.districts.name,
+                result[i].warehouse.district.name,
                 result[i].warehouse.address,
                 result[i].auth.firstname,
                 result[i].warehouse.postalcode,
