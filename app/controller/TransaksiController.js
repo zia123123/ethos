@@ -195,9 +195,9 @@ module.exports = {
     async indexGudang(req, res) {
         
         let warehouseId = req.query.warehouseId
-        const date = req.query.date?? ""
-        const status = req.query.status?? ""
-        const paymentMethod = req.query.paymentMethod?? ""
+        const date = req.query.date
+        const status = req.query.status
+        const paymentMethod = req.query.paymentMethod
         if( warehouseId == null ){
             warehouseId = ""
         }
