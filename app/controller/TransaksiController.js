@@ -1414,8 +1414,8 @@ module.exports = {
             });
     },
 
-    async jumlahClosing(req, res) {
-        let result = await transaksis.count({ 
+    async jumlahClosing(req, res) {  
+        transaksis.count({ 
             where: {
                 [Op.and]: [
                     {
@@ -1470,13 +1470,8 @@ module.exports = {
     },
 
     async jumlahRetur(req, res) {
-        let result = await transaksis.count()({ 
-            where: {
-                status: {
-                  [Op.like]: '%K%'
-                }
-              },
-        }).then(result => {
+        let result = await Op.query(' Select count(price) as penghasilan,createdAt as created_at from keranjans group by createdAt', 
+        { raw: true }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
                 return apiResponse.ErrorResponse(res, err);
