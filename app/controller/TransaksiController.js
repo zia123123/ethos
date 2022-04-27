@@ -1470,7 +1470,7 @@ module.exports = {
     },
 
     async jumlahRetur(req, res) {
-        let result = await Op.query(' Select count(price) as penghasilan,createdAt as created_at from keranjans group by createdAt', 
+        let result = await Op.query('Select count(price) as penghasilan,createdAt as created_at from keranjans group by createdAt', 
         { raw: true }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
