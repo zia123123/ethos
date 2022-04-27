@@ -43,13 +43,23 @@ module.exports = {
     async index(req, res) {
         let page = parseInt(req.query.page)
         let limit = parseInt(req.query.limit)
-        const date = req.query.date
-        const status = req.query.status
-        const paymentMethod = req.query.paymentMethod
+        let date = req.query.date
+        let product = req.query.product
+        // let paymentMethod = req.query.paymentMethod
         let warehouseId = req.query.warehouseId
 
-        if (warehouseId == null || warehouseId == undefined) {
+        if (warehouseId == null) {
             warehouseId = ""
+        }
+        if (date == null) {
+            startDate = new Date("2015-01-01 07:00:00")
+            endDate = new Date()
+        }else{
+            startDate = new Date(date + " 07:00:00")
+            endDate = new Date(date + " 06:59:59").setDate(new Date(startDate).getDate() + 1)
+        }
+        if (product == null) {
+            product = ""
         }
 
         const count = await product_stocks.count(
@@ -58,9 +68,9 @@ module.exports = {
                     warehouseId: {
                         [Op.like]: '%'+warehouseId+'%'
                     },
-                    // createdAt: {
-                    //     [Op.like]: '%'+date+'%'
-                    // },
+                    createdAt: {
+                        [Op.like]: '%'+date+'%'
+                    },
                 },
             }
         )
@@ -71,17 +81,27 @@ module.exports = {
                 warehouseId: {
                     [Op.like]: '%'+warehouseId+'%'
                 },
-                // createdAt: {
-                //     [Op.like]: '%'+date+'%'
-                // },
+                createdAt :  {
+                    [Op.and]: {
+                      [Op.gte]: startDate,
+                      [Op.lte]: endDate
+                    }
+                  },
             },
             order: [
                 ['id', 'DESC'],
             ],
             include: [ 
-                { model: products,
+                { 
+                    model: products,
+                    where:{
+                        name: {
+                            [Op.like]: '%'+product+'%'
+                        },
+                    }
                 },
-                { model: warehouses,
+                { 
+                    model: warehouses,
                     attributes: ['name'],
                 }
             ],

@@ -220,37 +220,28 @@ module.exports = {
                     warehouseId: {
                         [Op.like]: '%'+warehouseId+'%'
                     },
-                    status: {
-                        [Op.or]: [
-                            {
-                                [Op.like]: '%K%'
-                            },
-                            {
-                                [Op.like]: '%G%'
-                            },
-                        
-                        ]
+                    createdAt: {
+                        [Op.like]: '%'+date+'%'
                     },
-                    [Op.and]: [
-                        {
-                            status: 
-                            {    
-                                [Op.like]: '%'+status+'%'
-                            }
-                        },
-                        {
-                            createdAt: 
-                            {    
-                                [Op.like]: '%'+date+'%'
-                            }
-                        },
-                        {
-                            typebayar: 
-                            {    
-                                [Op.like]: '%'+paymentMethod+'%'
-                            }
-                        },
-                    ],
+                    status: {
+                        [Op.and]:[
+                            {[Op.like]: '%'+status+'%'},
+                            {
+                                [Op.or]: [
+                                    {
+                                        [Op.like]: '%K%'
+                                    },
+                                    {
+                                        [Op.like]: '%G%'
+                                    },
+                                ]
+                            },
+                        ]
+                        
+                    },
+                    typebayar: {
+                        [Op.like]: '%'+paymentMethod+'%'
+                    },
                 },
             }
         )
@@ -261,37 +252,28 @@ module.exports = {
                 warehouseId: {
                     [Op.like]: '%'+warehouseId+'%'
                 },
-                status: {
-                    [Op.or]: [
-                        {
-                            [Op.like]: '%K%'
-                        },
-                        {
-                            [Op.like]: '%G%'
-                        },
-                    
-                    ]
+                createdAt: {
+                    [Op.like]: '%'+date+'%'
                 },
-                [Op.and]: [
-                    {
-                        status: 
-                        {    
-                            [Op.like]: '%'+status+'%'
-                        }
-                    },
-                    {
-                        createdAt: 
-                        {    
-                            [Op.like]: '%'+date+'%'
-                        }
-                    },
-                    {
-                        typebayar: 
-                        {    
-                            [Op.like]: '%'+paymentMethod+'%'
-                        }
-                    },
-                ],
+                status: {
+                    [Op.and]:[
+                        {[Op.like]: '%'+status+'%'},
+                        {
+                            [Op.or]: [
+                                {
+                                    [Op.like]: '%K%'
+                                },
+                                {
+                                    [Op.like]: '%G%'
+                                },
+                            ]
+                        },
+                    ]
+                    
+                },
+                typebayar: {
+                    [Op.like]: '%'+paymentMethod+'%'
+                },
             },
             order: [
                 ['id', 'DESC'],
@@ -323,17 +305,40 @@ module.exports = {
             
             return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
             //return apiResponse.successResponseWithData(res, "SUCCESS", result);
-            }).catch(function (err){
-                return apiResponse.ErrorResponse(res, err);
-            });
+        }).catch(function (err){
+            console.log(err);
+            return apiResponse.ErrorResponse(res, err);
+        })
     },
 
     async indexGudangRiwayat(req, res) {
       
         let warehouseId = req.query.warehouseId
+        let date = req.query.date
+        let expedition = req.query.expedition
+        let paymentMethod = req.query.paymentMethod
+        let transactionStatus = req.query.transactionStatus
+        let paymentStatus = req.query.paymentStatus
+
         if( warehouseId == null ){
             warehouseId = ""
         }
+        if( date == null ){
+            date = ""
+        }
+        if( expedition == null ){
+            expedition = ""
+        }
+        if( paymentMethod == null ){
+            paymentMethod = ""
+        }
+        if( transactionStatus == null ){
+            transactionStatus = ""
+        }
+        if( paymentStatus == null ){
+            paymentStatus = ""
+        }
+
         let page = parseInt(req.query.page)
         let limit = parseInt(req.query.limit)
         const count = await transaksis.count(
@@ -342,17 +347,34 @@ module.exports = {
                     warehouseId: {
                         [Op.like]: '%'+warehouseId+'%'
                     },
+                    createdAt: {
+                        [Op.like]: '%'+date+'%'
+                    },
+                    expedisiName: {
+                        [Op.like]: '%'+expedition+'%'
+                    },
+                    typebayar: {
+                        [Op.like]: '%'+paymentMethod+'%'
+                    },
+                    pembayaran: {
+                        [Op.like]: '%'+paymentStatus+'%'
+                    },
                     status: {
-                        [Op.or]: [
+                        [Op.and]:[
+                            {[Op.like]: '%'+transactionStatus+'%'},
                             {
-                                [Op.like]: '%H%'
-                            },
-                            {
-                                [Op.like]: '%N%'
-                            },
-                            {
-                                [Op.like]: '%I%'
-                            },
+                                [Op.or]: [
+                                    {
+                                        [Op.like]: '%H%'
+                                    },
+                                    {
+                                        [Op.like]: '%N%'
+                                    },
+                                    {
+                                        [Op.like]: '%I%'
+                                    },
+                                ]
+                            }
                         ]
                     },
                 },
@@ -364,20 +386,37 @@ module.exports = {
             where: {
                 warehouseId: {
                     [Op.like]: '%'+warehouseId+'%'
-             },
+                },
+                createdAt: {
+                    [Op.like]: '%'+date+'%'
+                },
+                expedisiName: {
+                    [Op.like]: '%'+expedition+'%'
+                },
+                typebayar: {
+                    [Op.like]: '%'+paymentMethod+'%'
+                },
+                pembayaran: {
+                    [Op.like]: '%'+paymentStatus+'%'
+                },
                 status: {
-                    [Op.or]: [
-                  {
-                    [Op.like]: '%H%'
-                  },
-                  {
-                    [Op.like]: '%N%'
-                  },
-                  {
-                    [Op.like]: '%I%'
-                  },
-                ]
-             },
+                    [Op.and]:[
+                        {[Op.like]: '%'+transactionStatus+'%'},
+                        {
+                            [Op.or]: [
+                                {
+                                    [Op.like]: '%H%'
+                                },
+                                {
+                                    [Op.like]: '%N%'
+                                },
+                                {
+                                    [Op.like]: '%I%'
+                                },
+                            ]
+                        }
+                    ]
+                },
               },
               order: [
                 ['id', 'DESC'],
@@ -1465,8 +1504,8 @@ module.exports = {
             });
     },
 
-    async jumlahClosing(req, res) {
-        let result = await transaksis.count({ 
+    async jumlahClosing(req, res) {  
+        transaksis.count({ 
             where: {
                 [Op.and]: [
                     {
@@ -1521,13 +1560,8 @@ module.exports = {
     },
 
     async jumlahRetur(req, res) {
-        let result = await transaksis.count()({ 
-            where: {
-                status: {
-                  [Op.like]: '%K%'
-                }
-              },
-        }).then(result => {
+        let result = await Op.query(' Select count(price) as penghasilan,createdAt as created_at from keranjans group by createdAt', 
+        { raw: true }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
                 return apiResponse.ErrorResponse(res, err);
