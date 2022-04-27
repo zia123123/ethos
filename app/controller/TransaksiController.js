@@ -32,6 +32,8 @@ module.exports = {
             districtname: req.body.districtname,
             cityregencyId: req.body.cityregencyId,
             warehouseId: req.body.warehouseId,
+            groupname: req.body.groupname,
+            idGroup: req.body.idGroup,
             invoiceId: req.body.warehouseId,
             expedisiName: req.body.expedisiName,
             authId: req.body.authId,
@@ -1750,6 +1752,7 @@ module.exports = {
     async addlogstatus(req, res) {
         req.transaksi.status = req.body.logstatus;
         req.transaksi.sudahbayar = req.body.sudahbayar;
+        req.transaksi.updateFinance = req.body.updateFinance;
         req.transaksi.awb = req.body.awb;
         req.transaksi.kurangbayar = req.body.kurangbayar;
         req.transaksi.statusbarang = req.body.statusbarang;
