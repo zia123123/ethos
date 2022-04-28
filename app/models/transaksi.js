@@ -77,11 +77,19 @@ module.exports = (sequelize, DataTypes) => {
     districtname:{
       type: DataTypes.STRING,
     },
+
+    groupname:{
+      type: DataTypes.STRING,
+    },
+
     products: {
       type: DataTypes.STRING
     },
-    groupId: {
+    idGroup: {
       type: DataTypes.INTEGER
+    },
+    updateFinance: {
+      type: DataTypes.STRING
     },
     expedisiName: {
       allowNull: false,
