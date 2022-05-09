@@ -1770,4 +1770,38 @@ module.exports = {
         })
     },
 
+    async importPermintaanPesanan(req, res){
+        let error = ''
+        let success = ''
+        const orders = req.body
+
+        for (let index = 0; index < orders.length; index++) {
+            if (orders[index].Invoice.length == 0) {
+                if (error) {
+                    error += ', '
+                }
+                error += `Invoice index ke-${index+1} kosong`
+                continue
+            }
+            if (orders[index].AWB.length > 0) {
+                transaksis.update(
+                    {
+                        status: "H", 
+                        awb: orders[index].AWB
+                    },
+                    {
+                        where: {invoiceId: orders[index].Invoice}
+                    }
+                )
+                if (success) {
+                    success += ', '
+                }
+                success += `AWB dan Status dari Invoice index ke-${index+1} berhasil diubah`
+            }
+        }
+        console.log('Success:', success);
+        console.log('Error:',error);
+        return apiResponse.successResponseWithData(res, "SUCCESS", success);
+    }
+
 }
