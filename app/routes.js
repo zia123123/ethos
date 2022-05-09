@@ -415,6 +415,7 @@ router.post('/api/transaksi/create', TransaksiController.create);
 router.get('/api/transaksi/cs/:userid', TransaksiController.index);
 router.get('/api/transaksi/all', TransaksiController.indexAll);
 router.get('/api/transaksi/gudang', TransaksiController.indexGudang);
+router.post('/api/transaksi/gudang/import', TransaksiController.importPermintaanPesanan);
 router.get('/api/transaksi/gudangriwyat', TransaksiController.indexGudangRiwayat);
 router.get('/api/financeweb', TransaksiController.indexFinanceWeb);
 router.get('/api/transaksi/excelfinance', TransaksiController.indexFinanceExcel);
