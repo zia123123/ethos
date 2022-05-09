@@ -499,8 +499,8 @@ module.exports = {
     },
 
     async ExcelGudang(req, res) {
-        let startDate = req.query.startDate+"T00:00:00.000Z"
-        let endDate = req.query.endDate+"T23:59:00.000Z"
+        let startDate = req.query.startDate
+        let endDate = req.query.endDate
         
 
         let typebayar = req.query.typebayar
