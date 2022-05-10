@@ -432,6 +432,9 @@ router.get('/api/transaksi/progress', TransaksiController.jumlahOnprogress);
 router.get('/api/getexcel/', TransaksiController.ExcelGudang);
 router.get('/api/getexcelFinanceRiwayat/', TransaksiController.ExcelFinanceRiwayat);
 router.get('/api/getexcelFinance/', TransaksiController.ExcelFinance);
+router.get('/api/getexcelTemplateGudang/', TransaksiController.ExcelTemplateGudang);
+
+
 
 
 router.delete('/api/transaksi/delete/:id',TransaksiController.finddelete, TransaksiController.delete);
