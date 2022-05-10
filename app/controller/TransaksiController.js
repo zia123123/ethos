@@ -1930,6 +1930,7 @@ module.exports = {
         req.transaksi.sudahbayar = req.body.sudahbayar;
         req.transaksi.updateFinance = req.body.updateFinance;
         req.transaksi.awb = req.body.awb;
+        req.transaksi.updateFinance = req.body.updateFinance;
         req.transaksi.kurangbayar = req.body.kurangbayar;
         req.transaksi.statusbarang = req.body.statusbarang;
         req.transaksi.logstatus = req.transaksi.logstatus+"#"+req.body.logstatus;
