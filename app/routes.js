@@ -96,6 +96,7 @@ const UnitController = require('./controller/UnitController');
 
 const InbondController = require('./controller/InbondController');
 const Ekpedisicontroller = require('./controller/Ekpedisicontroller');
+const DashboardController = require('./controller/DashboardController');
 
 
 const multer = require('multer')
@@ -488,6 +489,9 @@ router.get('/api/keranjang/:id', KeranjangController.find, KeranjangController.s
 router.patch('/api/keranjang/update/:id', KeranjangController.find,KeranjangController.update);
 
 router.get('/api/keranjang/outbond/:transaksiId', KeranjangController.array);
+
+//dashboard ceo
+router.get('/api/dashboard-ceo/omset', DashboardController.omset);
 
 
 
