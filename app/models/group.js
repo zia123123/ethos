@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
   group.associate = function(models) {
     group.belongsTo(models.auths, { foreginKey: "authId"})
     group.hasMany(models.mapgroup,{ foreginKey: "group"})
+    group.hasMany(models.pengajuanbiaya,{ foreginKey: "group"})
     group.hasMany(models.mapprice)
   };
   return group;
