@@ -18,6 +18,10 @@ const SaldoController = require('./controller/SaldoController');
 
 const MapCsController = require('./controller/MapCsController');
 
+const PengajuanBiayaController = require('./controller/PengajuanBiayaController');
+
+
+
 
 const DfodController = require('./controller/DfodController');
 const AuthenController = require('./controller/AuthenController');
@@ -162,6 +166,20 @@ router.get('/api/product/:id', ProductController.find, ProductController.show);
 router.patch('/api/product/update/:id', ProductController.findUpdate,ProductController.updateProduct);
 router.delete('/api/product/delete/:id', ProductController.finddelete,ProductController.delete);
     
+
+
+//pengajuanbiayaiklan
+router.post('/api/pengajuanbiaya/create', PengajuanBiayaController.create);
+router.get('/api/pengajuanbiaya/', PengajuanBiayaController.index);
+router.get('/api/pengajuanbiaya/finance', PengajuanBiayaController.indexfinance);
+router.get('/api/pengajuanbiaya/supervisor', PengajuanBiayaController.indexsupervisor);
+router.get('/api/pengajuanbiaya/advertiser', PengajuanBiayaController.indexadvertiser);
+//router.get('/api/suppproduct/', PengajuanBiayaController.indexBySupp);
+router.get('/api/pengajuanbiaya/:id', PengajuanBiayaController.find, PengajuanBiayaController.show);
+router.patch('/api/pengajuanbiaya/update/:id', PengajuanBiayaController.find,PengajuanBiayaController.update);
+router.delete('/api/pengajuanbiaya/delete/:id', PengajuanBiayaController.find,PengajuanBiayaController.delete);
+
+
 
 //mapcs
 router.post('/api/mapcs/create', MapCsController.create);
@@ -438,16 +456,9 @@ router.get('/api/getexcelTemplateGudang/', TransaksiController.ExcelTemplateGuda
 
 
 router.delete('/api/transaksi/delete/:id',TransaksiController.finddelete, TransaksiController.delete);
-
-
 router.get('/api/lunasretur/transaksi', TransaksiController.indexLunasRetur);
-
-
-
 router.put('/api/transaksi/buktibayar/:id',uploadHandler.any(),TransaksiController.createBuktibayar);
-
 router.get('/api/transaksi/filter/:clue', TransaksiController.filterTransaksi);
-
 router.put('/api/transaksi/addlog/:id', TransaksiController.findAddLog, TransaksiController.addlogstatus);
 
 
@@ -475,6 +486,9 @@ router.get('/api/norek/cs/:id', NorekController.getNorekBycs);
 router.get('/api/norek/finance/:id', NorekController.getNorekByfinance);
 router.get('/api/norek/:id', NorekController.find, NorekController.show);
 router.patch('/api/norek/update/:id', NorekController.find,NorekController.update);
+
+
+
 
 
 
