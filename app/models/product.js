@@ -59,7 +59,8 @@ module.exports = (sequelize, DataTypes) => {
     product.hasMany(models.dropout)
     product.hasMany(models.domains)
     product.hasMany(models.mapprice)
-
+    product.hasMany(models.pengajuanbiaya)
+  
   };
 
   return product;
