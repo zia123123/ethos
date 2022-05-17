@@ -113,6 +113,7 @@ module.exports = (sequelize, DataTypes) => {
   transaksi.associate = function(models) {
 
     transaksi.hasOne(models.daexpedisis)
+    transaksi.hasOne(models.dfods)
     transaksi.hasMany(models.buktibayars)
     transaksi.hasOne(models.deliveryfods)
     transaksi.hasOne(models.returs)
