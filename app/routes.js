@@ -492,6 +492,9 @@ router.get('/api/keranjang/outbond/:transaksiId', KeranjangController.array);
 
 //dashboard ceo
 router.get('/api/dashboard-ceo/omset', DashboardController.omset);
+router.get('/api/dashboard-ceo/omset-product', DashboardController.omsetProduct);
+router.get('/api/dashboard-ceo/omset-internal', DashboardController.omsetInternal);
+router.get('/api/dashboard-ceo/omset-partner', DashboardController.omsetPartner);
 
 
 

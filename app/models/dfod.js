@@ -43,6 +43,7 @@ module.exports = (sequelize, DataTypes) => {
     tableName: "dfods"
   });
   dfod.associate = function(models) {
+    dfod.belongsTo(models.transaksis, { foreginKey: "transaksi_Id"})
   };
 
   return dfod;
