@@ -619,7 +619,7 @@ module.exports = {
                 let datakeranjang = eval(keranjangdata)
                 for(var j=0;j<=3;j++){
                     if(datakeranjang[j] === undefined){
-                        KeranjangArray.push(new Keranjang("","",""));
+                        KeranjangArray.push(new Keranjang("","","",""));
                     }else{
                         KeranjangArray.push(new Keranjang(datakeranjang[j].namaproduct,datakeranjang[j].sku,datakeranjang[j].jumlahproduct,datakeranjang[j].weight));
                     }
