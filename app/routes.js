@@ -506,9 +506,13 @@ router.get('/api/keranjang/outbond/:transaksiId', KeranjangController.array);
 
 //dashboard ceo
 router.get('/api/dashboard-ceo/omset', DashboardController.omset);
-router.get('/api/dashboard-ceo/omset-product', DashboardController.omsetProduct);
+router.get('/api/dashboard-ceo/omset-produk-kota', DashboardController.omsetProdukKota);
 router.get('/api/dashboard-ceo/omset-internal', DashboardController.omsetInternal);
 router.get('/api/dashboard-ceo/omset-partner', DashboardController.omsetPartner);
+router.get('/api/dashboard-ceo/sku-by-group', DashboardController.skuByGroup);
+router.get('/api/dashboard-ceo/omset-produk-utama', DashboardController.omsetProdukUtama);
+router.get('/api/dashboard-ceo/adv-by-group', DashboardController.advByGroup);
+router.get('/api/dashboard-ceo/sku-by-adv-and-group', DashboardController.skuByAdvAndGroup);
 
 
 

@@ -14,7 +14,8 @@ const sequelize = new Sequelize("mysql::ethos:");
 module.exports = {
 
     async omset (req, res){
-        let startDate = '2015-01-01T00:00:00.000Z',
+        const date = new Date();
+        let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
             endDate   = new Date
 
         if (req.query.startDate) {
@@ -60,33 +61,66 @@ module.exports = {
         });
     },
 
-    async omsetProduct (req, res){
-        // let startDate = req.query.startDate+"T00:00:00.000Z"
-        // let endDate = req.query.endDate+"T17:00:00.000Z"
+    async omsetProdukKota (req, res){
+        const date = new Date();
+        let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
+        endDate   = new Date
+
+    if (req.query.startDate) {
+        startDate = req.query.startDate+"T00:00:00.000Z"    
+    }
+    if (req.query.endDate) {
+        endDate = req.query.endDate+"T23:59:59.000Z"    
+    }
 
         let result = await transaksis.findAll({
             attributes: [
                 'cityname',
-                [sequelize.fn('sum', 
-                sequelize.cast( 
-                sequelize.fn('left', 
-                sequelize.fn('substring_index', sequelize.col('products'), 'jumlahproduct: ', -1), 
-                sequelize.fn('locate', ',', 
-                sequelize.fn('substring_index', sequelize.col('products'), 'jumlahproduct: ', -1))), 'UNSIGNED')), 'jumlah_produk']
+                'products'
             ],
             where:{
                 status: 'I',
-                // createdAt :  {
-                //     [Op.and]: {
-                //       [Op.gte]: startDate,
-                //       [Op.lte]: endDate
-                //     }
-                // }
+                createdAt :  {
+                    [Op.and]: {
+                      [Op.gte]: startDate,
+                      [Op.lte]: endDate
+                    }
+                }
             },
-            group: ['cityname'],
-            order: [sequelize.col('jumlah_produk')]
         }).then(result => {
-            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            var  KeranjangArray = [];
+            for (let i = 0; i < result.length; i++) {
+                class Keranjang { //dapetin dari produk
+                    constructor(cityname, jumlahproduct) {
+                      this.city_name = cityname;
+                      this.jumlah_product = jumlahproduct;
+                    }
+                  }
+                let keranjangdata =  result[i].products.replace(/\\n/g, '')
+                // console.log(keranjangdata);
+                let datakeranjang = eval(keranjangdata)
+                for(var j=0;j<datakeranjang.length;j++){
+                    if(datakeranjang[j] === undefined){
+                        KeranjangArray.push(new Keranjang("","",""));
+                    }else{
+                        let obj = KeranjangArray.find(o => o.city_name === result[i].cityname)
+                        if (obj === undefined) {
+                            KeranjangArray.push(new Keranjang(result[i].cityname, datakeranjang[j].jumlahproduct));
+                        }else{
+                            let add = KeranjangArray.find((o, i) => {
+                                if (o.city_name === datakeranjang[j].cityname) {
+                                    KeranjangArray[i].jumlah_product += datakeranjang[j].jumlahproduct
+                                    return true; // stop searching
+                                }
+                            });
+                        }
+                    }
+                } 
+            }
+            KeranjangArray.sort((a, b) => {
+                return a.jumlah_product - b.jumlah_product;
+            });
+            return apiResponse.successResponseWithData(res, "SUCCESS", KeranjangArray);
         }).catch(function (err){
             console.log(err);
             return apiResponse.ErrorResponse(res, err);
@@ -94,7 +128,8 @@ module.exports = {
     },
 
     async omsetInternal (req, res){
-        let startDate = '2015-01-01T00:00:00.000Z',
+        const date = new Date();
+        let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
             endDate   = new Date
 
         if (req.query.startDate) {
@@ -172,7 +207,8 @@ module.exports = {
     },
 
     async omsetPartner (req, res){
-        let startDate = '2015-01-01T00:00:00.000Z',
+        const date = new Date();
+        let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
             endDate   = new Date
 
         if (req.query.startDate) {
@@ -243,6 +279,362 @@ module.exports = {
             group: [sequelize.fn('date', sequelize.col('transaksis.createdAt'))]
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
+        }).catch(function (err){
+            console.log(err);
+            return apiResponse.ErrorResponse(res, err);
+        });
+    },
+
+    async skuByGroup (req, res){
+        if (req.query.groupId == null) {
+            return apiResponse.ErrorResponse(res, 'Group tidak boleh kosong');
+        }
+
+        const groupId = req.query.groupId
+
+        let result = await transaksis.findAll({
+            attributes: 
+            [
+                'products',
+                // [sequelize.cast( 
+                // sequelize.fn('left', 
+                // sequelize.fn('substring_index', sequelize.col('products'), 'productId: ', -1), 
+                // sequelize.fn('locate', ',', 
+                // sequelize.fn('substring_index', sequelize.col('products'), 'productId: ', -1))), 'UNSIGNED'), 'id_produk'],
+
+                // [sequelize.literal(`left(substring_index(products, 'namaproduct: "', -1), locate(',', substring_index(products, 'namaproduct: ', -1))-3)`), 'nama_produk'],
+
+                // [sequelize.literal(`left(substring_index(products, 'sku: "', -1), locate(',', substring_index(products, 'sku: ', -1))-3)`), 'sku_produk'],
+            ],
+            include: [
+                { 
+                    model: daexpedisis,
+                    attributes: [
+                        // [sequelize.fn('sum', sequelize.col('daexpedisis.totalharga')), 'totalomset'],
+                    ],
+                },
+                { 
+                    model: dfods,
+                    attributes: [],
+                },
+                { 
+                    model: auths,
+                    required: true,
+                    attributes:[
+                        // 'nama'
+                    ],
+                    include:[
+                        {
+                            model: mapgroup,
+                            required: true,
+                            attributes:[
+                                // 'nama'
+                            ],
+                            include:[
+                                {
+                                    model: group,
+                                    required: true,
+                                    attributes:[
+                                        // 'nama'
+                                    ],
+                                    where:{
+                                        id: groupId
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+            ],
+            raw: true,
+        }).then(result => {
+            var  KeranjangArray = [];
+            for (let i = 0; i < result.length; i++) {
+                class Keranjang { //dapetin dari produk
+                    constructor(productId, namaproduct, sku, jumlahproduct) {
+                      this.product_id = productId;
+                      this.nama_product = namaproduct;
+                      this.sku = sku;
+                      this.jumlah_product = jumlahproduct;
+                    }
+                  }
+                let keranjangdata =  result[i].products.replace(/\\n/g, '')
+                // console.log(keranjangdata);
+                let datakeranjang = eval(keranjangdata)
+                for(var j=0;j<datakeranjang.length;j++){
+                    if(datakeranjang[j] === undefined){
+                        KeranjangArray.push(new Keranjang("","",""));
+                    }else{
+                        let obj = KeranjangArray.find(o => o.nama_product === datakeranjang[j].namaproduct);
+                        if (obj === undefined) {
+                            KeranjangArray.push(new Keranjang(datakeranjang[j].productId, datakeranjang[j].namaproduct,datakeranjang[j].sku,datakeranjang[j].jumlahproduct));
+                        }
+                    }
+                } 
+            }
+            return apiResponse.successResponseWithData(res, "SUCCESS", KeranjangArray);
+        }).catch(function (err){
+            console.log(err);
+            return apiResponse.ErrorResponse(res, err);
+        });
+    },
+
+    async omsetProdukUtama (req, res){
+        if (req.query.groupId == null) {
+            return apiResponse.ErrorResponse(res, 'Group tidak boleh kosong');
+        }
+        if (req.query.productId == null) {
+            return apiResponse.ErrorResponse(res, 'Produk tidak boleh kosong');
+        }
+
+        const groupId = req.query.groupId
+        const productId = req.query.productId
+        const date = new Date();
+        let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
+            endDate   = new Date
+
+        if (req.query.startDate) {
+            startDate = req.query.startDate+"T00:00:00.000Z"    
+        }
+        if (req.query.endDate) {
+            endDate = req.query.endDate+"T23:59:59.000Z"    
+        }
+
+        let result = await transaksis.findAll({
+            where:{
+                status: 'I',
+                createdAt :  {
+                    [Op.and]: {
+                      [Op.gte]: startDate,
+                      [Op.lte]: endDate
+                    }
+                }
+            },
+            attributes: 
+            [
+                [sequelize.fn('date', sequelize.col('transaksis.createdAt')), 'date'],
+                'products',
+                'daexpedisis.totalHarga',
+                'auth->mapgroups->group.name',
+            ],
+            include: [
+                { 
+                    model: daexpedisis,
+                    attributes: [
+                        // [sequelize.fn('sum', sequelize.col('daexpedisis.totalharga')), 'totalomset'],
+                    ],
+                },
+                { 
+                    model: dfods,
+                    attributes: [],
+                },
+                { 
+                    model: auths,
+                    required: true,
+                    attributes:[
+                        // 'nama'
+                    ],
+                    include:[
+                        {
+                            model: mapgroup,
+                            required: true,
+                            attributes:[
+                                // 'nama'
+                            ],
+                            include:[
+                                {
+                                    model: group,
+                                    required: true,
+                                    attributes:[
+                                        // 'nama'
+                                    ],
+                                    where:{
+                                        id: groupId
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+            ],
+            raw: true,
+        }).then(result => {
+            var  KeranjangArray = [];
+            for (let i = 0; i < result.length; i++) {
+                class Keranjang { //dapetin dari produk
+                    constructor(date, groupname, productId, namaproduct, sku, jumlahproduct, totalharga) {
+                      this.date = date;
+                      this.group_name = groupname;
+                      this.product_id = productId;
+                      this.nama_product = namaproduct;
+                      this.sku = sku;
+                      this.jumlah_product = jumlahproduct;
+                      this.total_harga = totalharga;
+                    }
+                  }
+                let keranjangdata =  result[i].products.replace(/\\n/g, '')
+                // console.log(keranjangdata);
+                let datakeranjang = eval(keranjangdata)
+                for(var j=0;j<datakeranjang.length;j++){
+                    if (datakeranjang[j].productId != productId) {
+                        continue
+                    }
+                    if(datakeranjang[j] === undefined){
+                        KeranjangArray.push(new Keranjang("","",""));
+                    }else{
+                        let obj = KeranjangArray.find(o => o.date === result[i].date)
+                        if (obj === undefined) {
+                            KeranjangArray.push(new Keranjang(result[i].date, result[i].name, datakeranjang[j].productId, datakeranjang[j].namaproduct,datakeranjang[j].sku,datakeranjang[j].jumlahproduct, datakeranjang[j].jumlahproduct * datakeranjang[j].price));
+                        }else{
+                            let add = KeranjangArray.find((o, i) => {
+                                if (o.date === datakeranjang[j].date) {
+                                    KeranjangArray[i].jumlah_product += datakeranjang[j].jumlahproduct
+                                    KeranjangArray[i].total_harga += datakeranjang[j].jumlahproduct * datakeranjang[j].price;
+                                    return true; // stop searching
+                                }
+                            });
+                        }
+                    }
+                } 
+            }
+            return apiResponse.successResponseWithData(res, "SUCCESS", KeranjangArray);
+        }).catch(function (err){
+            console.log(err);
+            return apiResponse.ErrorResponse(res, err);
+        });
+    },
+
+    async advByGroup (req, res){
+        if (req.query.groupId == null) {
+            return apiResponse.ErrorResponse(res, 'Group tidak boleh kosong');
+        }
+
+        const groupId = req.query.groupId
+
+        let result = await mapgroup.findAll({
+            attributes: 
+            [
+                'group.name',
+                [sequelize.col('auth.id'), 'auth_id'],
+                'auth.firstname'
+            ],
+            include: [
+                { 
+                    model: auths,
+                    required: true,
+                    attributes:[
+                        // 'nama'
+                    ],
+                    include: [
+                        {
+                            model: transaksis,
+                            required: true,
+                            attributes:[
+                                // 'nama'
+                            ],   
+                        }
+                    ]
+                },
+                { 
+                    model: group,
+                    required: true,
+                    attributes:[
+                        // 'nama'
+                    ],
+                    where:{
+                        id: groupId
+                    },
+                },
+            ],
+            raw: true,
+        }).then(result => {
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+        }).catch(function (err){
+            console.log(err);
+            return apiResponse.ErrorResponse(res, err);
+        });
+    },
+
+    async skuByAdvAndGroup (req, res){
+        if (req.query.groupId == null) {
+            return apiResponse.ErrorResponse(res, 'Group tidak boleh kosong');
+        }
+
+        if (req.query.authId == null) {
+            return apiResponse.ErrorResponse(res, 'Adv tidak boleh kosong');
+        }
+
+        const groupId = req.query.groupId
+        const authId = req.query.authId
+
+        let result = await transaksis.findAll({
+            where:{
+                authId: authId
+            },
+            attributes: 
+            [
+                'auth->mapgroups->group.name',
+                'auth.firstname',
+                'products'
+            ],
+            include: [
+                { 
+                    model: auths,
+                    required: true,
+                    attributes:[
+                        // 'nama'
+                    ],
+                    include:[
+                        {
+                            model: mapgroup,
+                            required: true,
+                            attributes:[
+                                // 'nama'
+                            ],
+                            include:[
+                                {
+                                    model: group,
+                                    required: true,
+                                    attributes:[
+                                        // 'nama'
+                                    ],
+                                    where:{
+                                        id: groupId
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+            ],
+            raw: true,
+        }).then(result => {
+            var  KeranjangArray = [];
+            for (let i = 0; i < result.length; i++) {
+                class Keranjang { //dapetin dari produk
+                    constructor(productId, namaproduct, sku, jumlahproduct) {
+                      this.product_id = productId;
+                      this.nama_product = namaproduct;
+                      this.sku = sku;
+                      this.jumlah_product = jumlahproduct;
+                    }
+                  }
+                let keranjangdata =  result[i].products.replace(/\\n/g, '')
+                // console.log(keranjangdata);
+                let datakeranjang = eval(keranjangdata)
+                for(var j=0;j<datakeranjang.length;j++){
+                    if(datakeranjang[j] === undefined){
+                        KeranjangArray.push(new Keranjang("","",""));
+                    }else{
+                        let obj = KeranjangArray.find(o => o.nama_product === datakeranjang[j].namaproduct);
+                        if (obj === undefined) {
+                            KeranjangArray.push(new Keranjang(datakeranjang[j].productId, datakeranjang[j].namaproduct,datakeranjang[j].sku,datakeranjang[j].jumlahproduct));
+                        }
+                    }
+                } 
+            }
+            console.log(KeranjangArray);
+            return apiResponse.successResponseWithData(res, "SUCCESS", KeranjangArray);
         }).catch(function (err){
             console.log(err);
             return apiResponse.ErrorResponse(res, err);
