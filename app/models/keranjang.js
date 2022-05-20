@@ -38,10 +38,10 @@ module.exports = (sequelize, DataTypes) => {
     discount: {
       type: DataTypes.INTEGER
     },
-    transaksiId: {
-      type: DataTypes.BIGINT,
-      allowNull: false,
-    },
+    // transaksiId: {
+    //   type: DataTypes.BIGINT,
+    //   allowNull: false,
+    // },
   }, {
     tableName: "keranjangs"
   });
@@ -49,6 +49,7 @@ module.exports = (sequelize, DataTypes) => {
     keranjang.belongsTo(models.products, { foreginKey: "productId"})
     keranjang.belongsTo(models.customers, { foreginKey: "customerId"})
     keranjang.belongsTo(models.auths, { foreginKey: "authId"})
+    keranjang.belongsTo(models.transaksis, { foreignKey: "transaksiId", targetKey:'idtransaksi'})
 
   };
 
