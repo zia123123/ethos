@@ -1,4 +1,4 @@
-const { pengajuanbiaya,auths,product,group } = require('../models/index');
+const { pengajuanbiaya,auths,products,group } = require('../models/index');
 const { Op } = require("sequelize");
 const apiResponse = require("../helpers/apiResponse");
 
