@@ -1,4 +1,4 @@
-const { pengajuanbiaya,auths,products } = require('../models/index');
+const { pengajuanbiaya,auths,product,group } = require('../models/index');
 const { Op } = require("sequelize");
 const apiResponse = require("../helpers/apiResponse");
 
@@ -84,6 +84,9 @@ module.exports = {
                 { model: products,
                     attributes: ['name'],
                 },
+                { model: group,
+                    attributes: ['name'],
+                },
             ]
         }).then(result => {
             var totalPage = (parseInt(count) / limit) + 1
@@ -127,6 +130,9 @@ module.exports = {
                         attributes: ['notelp','firstname'],
                     },
                     { model: products,
+                        attributes: ['name'],
+                    },
+                    { model: group,
                         attributes: ['name'],
                     },
                 ]
@@ -211,6 +217,9 @@ module.exports = {
                     attributes: ['notelp','firstname'],
                 },
                 { model: products,
+                    attributes: ['name'],
+                },
+                { model: group,
                     attributes: ['name'],
                 },
             ]
