@@ -14,6 +14,9 @@ module.exports = {
       akun: {
         type: Sequelize.STRING
       },
+      platform: {
+        type: Sequelize.STRING
+      },
       superVisorId: {
         type: Sequelize.INTEGER
       },
