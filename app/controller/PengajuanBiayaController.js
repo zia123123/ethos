@@ -15,6 +15,7 @@ module.exports = {
                 supervisorName: req.body.supervisorName,
                 nominal: req.body.nominal, 
                 status:  req.body.status,
+                platform:  req.body.platform,
                 tanggalapproval:  req.body.tanggalapproval,
                 tanggaltrf:  req.body.tanggaltrf,
                 disetujui:  req.body.disetujui,
@@ -118,9 +119,6 @@ module.exports = {
                         {
                         [Op.like]: '%1%'
                             },
-                        {
-                        [Op.like]: '%2%'
-                      },
                     ]
                       },
                 },
@@ -185,6 +183,9 @@ module.exports = {
                         {
                         [Op.like]: '%3%'
                       },
+                      {
+                        [Op.like]: '%4%'
+                      },
                     ]
                       },
                 }}
@@ -204,7 +205,15 @@ module.exports = {
                 ]
                   },
 
-            }
+            },
+            include: [ 
+                { model: auths,
+                    attributes: ['notelp','firstname'],
+                },
+                { model: products,
+                    attributes: ['name'],
+                },
+            ]
         }).then(result => {
             var totalPage = (parseInt(count) / limit) + 1
             returnData = {

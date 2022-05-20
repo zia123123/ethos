@@ -21,6 +21,9 @@ module.exports = (sequelize, DataTypes) => {
     status: {
       type: DataTypes.INTEGER,
     },
+    platform: {
+      type: DataTypes.STRING
+    },
     tanggalapproval: {
       type: DataTypes.DATE,
     },
