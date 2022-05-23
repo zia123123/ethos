@@ -33,13 +33,28 @@ module.exports = {
     },
 
     async index(req, res) {
+        let startDate = req.query.startDate+"T00:00:00.000Z"
+        let endDate = req.query.endDate+"T23:59:00.000Z"
         let result = await keranjangs.findAll({
+            createdAt :  {
+                [Op.and]: {
+                  [Op.gte]: startDate,
+                  [Op.lte]: endDate
+                }
+              },
+            where: {
+                authId: {
+                [Op.like]: req.params.transaksiId,
+            },
+        },
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
                 return apiResponse.ErrorResponse(res, err);
             });
     },
+
+
     async findByIdtransaksi(req, res) {
         let result = await keranjangs.findAll({
             where: {
