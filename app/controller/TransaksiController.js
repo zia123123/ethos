@@ -788,8 +788,6 @@ module.exports = {
     async ExcelFinance(req, res) {
         let startDate = req.query.startDate+"T00:00:00.000Z"
         let endDate = req.query.endDate+"T23:59:00.000Z"
-        
-
         let typebayar = req.query.typebayar
         if(isNaN(parseFloat(typebayar))){
             typebayar = ""
@@ -1884,6 +1882,14 @@ module.exports = {
         console.log('Success:', success);
         console.log('Error:',error);
         return apiResponse.successResponseWithData(res, "SUCCESS", success);
-    }
+    },
+
+    async getidInvoice(req, res) {
+        let result = await transaksis.count().then(result => {
+            return apiResponse.successResponseWithData(res, "SUCCESS", result+1);
+            }).catch(function (err){
+                return apiResponse.ErrorResponse(res, err);
+            });
+    },
 
 }

@@ -198,6 +198,9 @@ router.patch('/api/supplier/update/:id', SupplierController.find,SupplierControl
 router.delete('/api/supplier/delete/:id', SupplierController.find,SupplierController.delete);
 
 
+router.get('/api/getidinvoice', TransaksiController.getidInvoice);
+
+
 //inbond
 router.post('/api/inbond/create', InbondController.create);
 router.get('/api/inbond/', InbondController.index);

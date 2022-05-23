@@ -44,9 +44,10 @@ module.exports = {
               },
             where: {
                 authId: {
-                [Op.like]: req.params.transaksiId,
+                [Op.like]: req.query.authId,
             },
         },
+        attributes: ['id', 'namaproduct','jumlahproduct','price','createdAt'],
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
