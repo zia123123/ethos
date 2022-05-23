@@ -1851,6 +1851,13 @@ module.exports = {
         const orders = req.body
 
         for (let index = 0; index < orders.length; index++) {
+            if (orders[index].Invoice === undefined) {
+                if (error) {
+                    error += ', '
+                }
+                error += `Invoice index ke-${index+1} tidak ada`
+                continue
+            }
             if (orders[index].Invoice.length == 0) {
                 if (error) {
                     error += ', '
