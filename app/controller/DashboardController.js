@@ -85,20 +85,22 @@ module.exports = {
                 'products'
             ],
             where:{
-                [Op.or]: [
-                    {
-                        [Op.like]: '%G%'
-                    },
-                    {
-                        [Op.like]: '%H%'
-                    }, 
-                    {
-                        [Op.like]: '%I%'
-                    },
-                    {
-                        [Op.like]: '%K%'
-                    },
-                ],
+                status:{
+                    [Op.or]: [
+                        {
+                            [Op.like]: '%G%'
+                        },
+                        {
+                            [Op.like]: '%H%'
+                        }, 
+                        {
+                            [Op.like]: '%I%'
+                        },
+                        {
+                            [Op.like]: '%K%'
+                        },
+                    ]
+                },
                 createdAt :  {
                     [Op.and]: {
                       [Op.gte]: startDate,
@@ -107,9 +109,10 @@ module.exports = {
                 }
             },
         }).then(result => {
-            var  sArray = [];
+            var  KeranjangArray = [];
+            console.log(result);
             for (let i = 0; i < result.length; i++) {
-                class s { //dapetin dari produk
+                class Keranjang { //dapetin dari produk
                     constructor(cityname, jumlahproduct) {
                       this.city_name = cityname;
                       this.jumlah_product = jumlahproduct;
@@ -428,20 +431,22 @@ module.exports = {
 
         let result = await transaksis.findAll({
             where:{
-                [Op.or]: [
-                    {
-                        [Op.like]: '%G%'
-                    },
-                    {
-                        [Op.like]: '%H%'
-                    }, 
-                    {
-                        [Op.like]: '%I%'
-                    },
-                    {
-                        [Op.like]: '%K%'
-                    },
-                ],
+                status:{
+                    [Op.or]: [
+                        {
+                            [Op.like]: '%G%'
+                        },
+                        {
+                            [Op.like]: '%H%'
+                        }, 
+                        {
+                            [Op.like]: '%I%'
+                        },
+                        {
+                            [Op.like]: '%K%'
+                        },
+                    ]
+                },
                 createdAt :  {
                     [Op.and]: {
                       [Op.gte]: startDate,
@@ -1084,32 +1089,13 @@ module.exports = {
                       [Op.gte]: startDate,
                       [Op.lte]: endDate
                     }
-                },
-                [Op.or]: [
-                    {
-                        [Op.like]: '%G%'
-                    },
-                    {
-                        [Op.like]: '%H%'
-                    }, 
-                    {
-                        [Op.like]: '%I%'
-                    },
-                    {
-                        [Op.like]: '%K%'
-                    },
-                ],
+                }
             },
             attributes: 
             [
-                [sequelize.fn('date', sequelize.col('transaksis.createdAt')), 'date'],
-                'auth->mapgroups->group.internal',
-                'daexpedisis.totalHarga',
-                // [sequelize.literal(`SUM( CASE WHEN auth->mapgroups->group.internal = 1 then daexpedisis.totalHarga else 0 end)`), 'internal'],
-                // [sequelize.literal(`SUM( CASE WHEN auth->mapgroups->group.internal = 0 then daexpedisis.totalHarga else 0 end)`), 'partner'],
-                // [sequelize.literal(`SUM( CASE WHEN transaksis.status = 'K' then daexpedisis.totalHarga else 0 end)`), 'return'],
-                // [sequelize.literal(`SUM( CASE WHEN transaksis.status = 'K' OR transaksis.status = 'I' then daexpedisis.totalHarga WHEN dfod.biayapengembalian > 0 OR dfod.biayapengiriman > 0 then dfod.biayapengembalian + dfod.biayapengiriman else 0 end)`), 'omset'],
-                // [sequelize.literal(`SUM(SUM( CASE WHEN transaksis.status = 'K' OR transaksis.status = 'I' then daexpedisis.totalHarga WHEN dfod.biayapengembalian > 0 OR dfod.biayapengiriman > 0 then dfod.biayapengembalian + dfod.biayapengiriman else 0 end)) Over (Order by date(transaksis.createdAt))`), 'kumulatif_omset'],
+                [sequelize.literal("JSON_OBJECT('sum_of_omset', SUM(CASE WHEN `auth->mapgroups->group`.`internal` = 1 AND `auth->mapgroups`.`type` != 'CRM' AND transaksis.status = 'I' THEN daexpedisis.totalharga ELSE 0 END ), 'return', SUM(CASE WHEN `auth->mapgroups->group`.internal = 1 AND `auth->mapgroups`.type != 'CRM' AND transaksis.status = 'K' THEN daexpedisis.totalharga ELSE 0 END ))"), 'akuisisi'],
+                [sequelize.literal("JSON_OBJECT('sum_of_omset', SUM(CASE WHEN `auth->mapgroups->group`.`internal` = 1 AND `auth->mapgroups`.`type` = 'CRM' AND transaksis.status = 'I' THEN daexpedisis.totalharga ELSE 0 END ), 	'return', SUM(CASE WHEN `auth->mapgroups->group`.`internal` = 1 AND `auth->mapgroups`.`type` = 'CRM' AND transaksis.status = 'K' THEN daexpedisis.totalharga ELSE 0 END ))"), 'crm'],
+                [sequelize.literal("JSON_OBJECT('sum_of_omset', SUM(CASE WHEN `auth->mapgroups->group`.`internal` = 0 AND transaksis.status = 'I' THEN daexpedisis.totalharga ELSE 0 END ),	'return', SUM(CASE WHEN `auth->mapgroups->group`.`internal` = 0 AND transaksis.status = 'K' THEN daexpedisis.totalharga ELSE 0 END ))"), 'partner'],
             ],
             include: [
                 { 
@@ -1118,10 +1104,10 @@ module.exports = {
                         // [sequelize.fn('sum', sequelize.col('daexpedisis.totalharga')), 'totalomset'],
                     ],
                 },
-                { 
-                    model: dfods,
-                    attributes: [],
-                },
+                // { 
+                //     model: dfods,
+                //     attributes: [],
+                // },
                 { 
                     model: auths,
                     required: true,
