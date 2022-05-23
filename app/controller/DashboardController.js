@@ -759,8 +759,9 @@ module.exports = {
             ],
             raw: true,
         }).then(result => {
-            console.log(result.length);
-            var  KeranjangArray = [];
+            // console.log(result);
+            var KeranjangArray = [];
+            var customers = [];
             for (let i = 0; i < result.length; i++) {
                 class Keranjang { //dapetin dari produk
                     constructor(productId, namaproduct, sku, jumlahproduct, groupname, advname, status) {
@@ -770,14 +771,12 @@ module.exports = {
                       this.jumlah_product = jumlahproduct;
                       this.group_name = groupname;
                       this.adv_name = advname;
-                      this.lead = 0;
                       this.closing = 0;
-                      if (status == 'A') {
-                        this.lead = jumlahproduct;
-                      }else if(status == 'I'){
-                        this.closing = jumlahproduct;
+                      this.lead = 1;
+                      if(status == 'G' || status == 'H' || status == 'I'){
+                        this.closing += 1;
                       }
-                      this.sum_of_cr = 0;
+                      this.sum_of_cr = (this.closing/this.lead) * 100;
                     }
                   }
                 let keranjangdata =  result[i].products.replace(/\\n/g, '')
@@ -793,13 +792,20 @@ module.exports = {
                         let obj = KeranjangArray.find(o => o.nama_product === datakeranjang[j].namaproduct)
                         if (obj === undefined) {
                             KeranjangArray.push(new Keranjang(datakeranjang[j].productId, datakeranjang[j].namaproduct,datakeranjang[j].sku,datakeranjang[j].jumlahproduct, result[i].name, datakeranjang[j].advertiser, result[i].status));
+                            let findCustomer = customers.find(e => e == datakeranjang[j].customerId)
+                            if (findCustomer === undefined) {
+                                customers.push(datakeranjang[j].customerId)
+                            }
                         }else{
                             let add = KeranjangArray.find((o, index) => {
                                 if (o.nama_product === datakeranjang[j].namaproduct) {
-                                    if (result[i].status == 'A') {
-                                        KeranjangArray[index].lead += datakeranjang[j].jumlahproduct;
-                                    }else if(result[i].status == 'I'){
-                                        KeranjangArray[index].closing += datakeranjang[j].jumlahproduct;
+                                    if(result[i].status == 'G' || result[i].status == 'H' || result[i].status == 'I'){
+                                        KeranjangArray[index].closing += 1;
+                                    }
+                                    let findCustomer = customers.find(e => e == datakeranjang[j].customerId)
+                                    if (findCustomer === undefined) {
+                                        customers.push(datakeranjang[j].customerId)
+                                        KeranjangArray[index].lead += 1
                                     }
                                     KeranjangArray[index].jumlah_product += datakeranjang[j].jumlahproduct
                                     if (KeranjangArray[index].lead != 0) {
@@ -812,7 +818,6 @@ module.exports = {
                     }
                 } 
             }
-            console.log(KeranjangArray);
             return apiResponse.successResponseWithData(res, "SUCCESS", KeranjangArray);
         }).catch(function (err){
             console.log(err);
@@ -840,11 +845,11 @@ module.exports = {
         let result = await transaksis.findAll({
             attributes: 
             [
-                'auth->mapgroups->group.name',
+                // 'auth->mapgroups->group.name',
                 [sequelize.col('auth.id'), 'auth_id'],
                 'auth.firstname',
-                'products',
-                'transaksis.status',
+                // 'products',
+                // 'transaksis.status',
             ],
             include: [
                 { 
@@ -877,64 +882,71 @@ module.exports = {
                 },
             ],
             raw: true,
+            group: [sequelize.col('auth.id')]
         }).then(result => {
-            console.log(result.length);
-            var  KeranjangArray = [];
-            for (let i = 0; i < result.length; i++) {
-                class Keranjang { //dapetin dari produk
-                    constructor(productId, namaproduct, sku, jumlahproduct, groupname, advname, status, csId, csName) {
-                      this.product_id = productId;
-                      this.nama_product = namaproduct;
-                      this.sku = sku;
-                      this.jumlah_product = jumlahproduct;
-                      this.group_name = groupname;
-                      this.adv_name = advname;
-                      this.lead = 0;
-                      this.closing = 0;
-                      if (status == 'A') {
-                        this.lead = jumlahproduct;
-                      }else if(status == 'I'){
-                        this.closing = jumlahproduct;
-                      }
-                      this.sum_of_cr = 0;
-                      this.cs_id = csId;
-                      this.cs_name = csName;
-                    }
-                  }
-                let keranjangdata =  result[i].products.replace(/\\n/g, '')
-                // console.log(keranjangdata);
-                let datakeranjang = eval(keranjangdata)
-                for(var j=0;j<datakeranjang.length;j++){
-                    if (datakeranjang[j].productId != productId || datakeranjang[j].advertiser != adv) {
-                        continue
-                    }
-                    if(datakeranjang[j] === undefined){
-                        KeranjangArray.push(new Keranjang("","",""));
-                    }else{
-                        let obj = KeranjangArray.find(o => o.cs_id === result[i].auth_id)
-                        if (obj === undefined) {
-                            KeranjangArray.push(new Keranjang(datakeranjang[j].productId, datakeranjang[j].namaproduct,datakeranjang[j].sku,datakeranjang[j].jumlahproduct, result[i].name, datakeranjang[j].advertiser, result[i].status, result[i].auth_id, result[i].firstname));
-                        }else{
-                            let add = KeranjangArray.find((o, index) => {
-                                if (o.nama_product === datakeranjang[j].namaproduct) {
-                                    if (result[i].status == 'A') {
-                                        KeranjangArray[index].lead += datakeranjang[j].jumlahproduct;
-                                    }else if(result[i].status == 'I'){
-                                        KeranjangArray[index].closing += datakeranjang[j].jumlahproduct;
-                                    }
-                                    KeranjangArray[index].jumlah_product += datakeranjang[j].jumlahproduct
-                                    if (KeranjangArray[index].lead != 0) {
-                                        KeranjangArray[index].sum_of_cr = (KeranjangArray[index].closing/KeranjangArray[index].lead) * 100
-                                    }
-                                    return true; // stop searching
-                                }
-                            });
-                        }
-                    }
-                } 
-            }
-            console.log(KeranjangArray);
-            return apiResponse.successResponseWithData(res, "SUCCESS", KeranjangArray);
+            // var  KeranjangArray = [];
+            // var  customers = [];
+            // for (let i = 0; i < result.length; i++) {
+            //     class Keranjang { //dapetin dari produk
+            //         constructor(productId, namaproduct, sku, jumlahproduct, groupname, advname, status, csId, csName) {
+            //           this.product_id = productId;
+            //           this.nama_product = namaproduct;
+            //           this.sku = sku;
+            //           this.jumlah_product = jumlahproduct;
+            //           this.group_name = groupname;
+            //           this.adv_name = advname;
+            //           this.lead = 1;
+            //           this.closing = 0;
+            //           if(status == 'G' || status == 'H' || status == 'I'){
+            //             this.closing += 1;
+            //           }
+            //           this.sum_of_cr = (this.closing/this.lead) * 100;
+            //           this.cs_id = csId;
+            //           this.cs_name = csName;
+            //         }
+            //       }
+            //     let keranjangdata =  result[i].products.replace(/\\n/g, '')
+            //     // console.log(keranjangdata);
+            //     let datakeranjang = eval(keranjangdata)
+            //     for(var j=0;j<datakeranjang.length;j++){
+            //         if (datakeranjang[j].productId != productId || datakeranjang[j].advertiser != adv) {
+            //             continue
+            //         }
+            //         if(datakeranjang[j] === undefined){
+            //             KeranjangArray.push(new Keranjang("","",""));
+            //         }else{
+            //             let obj = KeranjangArray.find(o => o.cs_id === result[i].auth_id)
+            //             if (obj === undefined) {
+            //                 KeranjangArray.push(new Keranjang(datakeranjang[j].productId, datakeranjang[j].namaproduct,datakeranjang[j].sku,datakeranjang[j].jumlahproduct, result[i].name, datakeranjang[j].advertiser, result[i].status, result[i].auth_id, result[i].firstname));
+
+            //                 let findCustomer = customers.find(e => e == datakeranjang[j].customerId)
+            //                 if (findCustomer === undefined) {
+            //                     customers.push(datakeranjang[j].customerId)
+            //                 }
+            //             }else{
+            //                 let add = KeranjangArray.find((o, index) => {
+            //                     if (o.nama_product === datakeranjang[j].namaproduct) {
+            //                         if(result[i].status == 'G' || result[i].status == 'H' || result[i].status == 'I'){
+            //                             KeranjangArray[index].closing += 1;
+            //                         }
+            //                         let findCustomer = customers.find(e => e == datakeranjang[j].customerId)
+            //                         if (findCustomer === undefined) {
+            //                             customers.push(datakeranjang[j].customerId)
+            //                             KeranjangArray[index].lead += 1
+            //                         }
+            //                         KeranjangArray[index].jumlah_product += datakeranjang[j].jumlahproduct
+            //                         if (KeranjangArray[index].lead != 0) {
+            //                             KeranjangArray[index].sum_of_cr = (KeranjangArray[index].closing/KeranjangArray[index].lead) * 100
+            //                         }
+            //                         return true; // stop searching
+            //                     }
+            //                 });
+            //             }
+            //         }
+            //     } 
+            // }
+            // console.log(KeranjangArray);
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
         }).catch(function (err){
             console.log(err);
             return apiResponse.ErrorResponse(res, err);
@@ -1007,8 +1019,8 @@ module.exports = {
             ],
             raw: true,
         }).then(result => {
-            console.log(result.length);
             var  KeranjangArray = [];
+            var  customers = [];
             for (let i = 0; i < result.length; i++) {
                 class Keranjang { //dapetin dari produk
                     constructor(productId, namaproduct, sku, jumlahproduct, groupname, advname, status, csId, csName) {
@@ -1018,14 +1030,12 @@ module.exports = {
                       this.jumlah_product = jumlahproduct;
                       this.group_name = groupname;
                       this.adv_name = advname;
-                      this.lead = 0;
+                      this.lead = 1;
                       this.closing = 0;
-                      if (status == 'A') {
-                        this.lead = jumlahproduct;
-                      }else if(status == 'I'){
-                        this.closing = jumlahproduct;
+                      if(status == 'G' || status == 'H' || status == 'I'){
+                        this.closing += 1;
                       }
-                      this.sum_of_cr = 0;
+                      this.sum_of_cr = (this.closing/this.lead) * 100;
                       this.cs_id = csId;
                       this.cs_name = csName;
                     }
@@ -1043,13 +1053,21 @@ module.exports = {
                         let obj = KeranjangArray.find(o => o.cs_id === result[i].auth_id)
                         if (obj === undefined) {
                             KeranjangArray.push(new Keranjang(datakeranjang[j].productId, datakeranjang[j].namaproduct,datakeranjang[j].sku,datakeranjang[j].jumlahproduct, result[i].name, datakeranjang[j].advertiser, result[i].status, result[i].auth_id, result[i].firstname));
+
+                            let findCustomer = customers.find(e => e == datakeranjang[j].customerId)
+                            if (findCustomer === undefined) {
+                                customers.push(datakeranjang[j].customerId)
+                            }
                         }else{
                             let add = KeranjangArray.find((o, index) => {
                                 if (o.nama_product === datakeranjang[j].namaproduct) {
-                                    if (result[i].status == 'A') {
-                                        KeranjangArray[index].lead += datakeranjang[j].jumlahproduct;
-                                    }else if(result[i].status == 'I'){
-                                        KeranjangArray[index].closing += datakeranjang[j].jumlahproduct;
+                                    if(result[i].status == 'G' || result[i].status == 'H' || result[i].status == 'I'){
+                                        KeranjangArray[index].closing += 1;
+                                    }
+                                    let findCustomer = customers.find(e => e == datakeranjang[j].customerId)
+                                    if (findCustomer === undefined) {
+                                        customers.push(datakeranjang[j].customerId)
+                                        KeranjangArray[index].lead += 1
                                     }
                                     KeranjangArray[index].jumlah_product += datakeranjang[j].jumlahproduct
                                     if (KeranjangArray[index].lead != 0) {
