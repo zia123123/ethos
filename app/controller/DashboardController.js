@@ -5,7 +5,8 @@ const {
     auths,
     mapgroup,
     group,
-    dfods
+    dfods,
+    keranjangs
    } = require('../models/index');
 const { Op, where, Sequelize } = require("sequelize");
 const apiResponse = require("../helpers/apiResponse");
@@ -16,7 +17,7 @@ module.exports = {
     async omset (req, res){
         const date = new Date();
         let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
-            endDate   = new Date
+            endDate   = date.setDate(date.getDate() + 1);
 
         if (req.query.startDate) {
             startDate = req.query.startDate+"T00:00:00.000Z"    
@@ -30,8 +31,8 @@ module.exports = {
                 [sequelize.fn('date', sequelize.col('transaksis.createdAt')), 'date'],
                 [sequelize.literal(`SUM( CASE WHEN transaksis.status = 'I' then daexpedisis.totalHarga else 0 end)`), 'success'],
                 [sequelize.literal(`SUM( CASE WHEN transaksis.status = 'K' then daexpedisis.totalHarga else 0 end)`), 'return'],
-                [sequelize.literal(`SUM( CASE WHEN transaksis.status = 'K' OR transaksis.status = 'I' then daexpedisis.totalHarga WHEN dfod.biayapengembalian > 0 OR dfod.biayapengiriman > 0 then dfod.biayapengembalian + dfod.biayapengiriman else 0 end)`), 'omset'],
-                [sequelize.literal(`SUM(SUM( CASE WHEN transaksis.status = 'K' OR transaksis.status = 'I' then daexpedisis.totalHarga WHEN dfod.biayapengembalian > 0 OR dfod.biayapengiriman > 0 then dfod.biayapengembalian + dfod.biayapengiriman else 0 end)) Over (Order by date(transaksis.createdAt))`), 'kumulatif_omset'],
+                [sequelize.literal(`SUM( CASE WHEN transaksis.status = 'K' OR transaksis.status = 'I' OR transaksis.status = 'G' OR transaksis.status = 'H' then daexpedisis.totalHarga WHEN dfod.biayapengembalian > 0 OR dfod.biayapengiriman > 0 then dfod.biayapengembalian + dfod.biayapengiriman else 0 end)`), 'omset'],
+                [sequelize.literal(`SUM(SUM( CASE WHEN transaksis.status = 'K' OR transaksis.status = 'I' OR transaksis.status = 'G' OR transaksis.status = 'H' then daexpedisis.totalHarga WHEN dfod.biayapengembalian > 0 OR dfod.biayapengiriman > 0 then dfod.biayapengembalian + dfod.biayapengiriman else 0 end)) Over (Order by date(transaksis.createdAt))`), 'kumulatif_omset'],
             ],
             include: [
                 { 
@@ -69,7 +70,7 @@ module.exports = {
         const productId = req.query.productId
         const date = new Date();
         let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
-        endDate   = new Date
+            endDate   = date.setDate(date.getDate() + 1);
 
         if (req.query.startDate) {
             startDate = req.query.startDate+"T00:00:00.000Z"    
@@ -84,7 +85,22 @@ module.exports = {
                 'products'
             ],
             where:{
-                status: 'I',
+                status:{
+                    [Op.or]: [
+                        {
+                            [Op.like]: '%G%'
+                        },
+                        {
+                            [Op.like]: '%H%'
+                        }, 
+                        {
+                            [Op.like]: '%I%'
+                        },
+                        {
+                            [Op.like]: '%K%'
+                        },
+                    ]
+                },
                 createdAt :  {
                     [Op.and]: {
                       [Op.gte]: startDate,
@@ -94,6 +110,7 @@ module.exports = {
             },
         }).then(result => {
             var  KeranjangArray = [];
+            console.log(result);
             for (let i = 0; i < result.length; i++) {
                 class Keranjang { //dapetin dari produk
                     constructor(cityname, jumlahproduct) {
@@ -138,7 +155,7 @@ module.exports = {
     async omsetInternal (req, res){
         const date = new Date();
         let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
-            endDate   = new Date
+            endDate   = date.setDate(date.getDate() + 1);
 
         if (req.query.startDate) {
             startDate = req.query.startDate+"T00:00:00.000Z"    
@@ -161,8 +178,8 @@ module.exports = {
                 [sequelize.fn('date', sequelize.col('transaksis.createdAt')), 'date'],
                 [sequelize.literal(`SUM( CASE WHEN transaksis.status = 'I' then daexpedisis.totalHarga else 0 end)`), 'success'],
                 [sequelize.literal(`SUM( CASE WHEN transaksis.status = 'K' then daexpedisis.totalHarga else 0 end)`), 'return'],
-                [sequelize.literal(`SUM( CASE WHEN transaksis.status = 'K' OR transaksis.status = 'I' then daexpedisis.totalHarga WHEN dfod.biayapengembalian > 0 OR dfod.biayapengiriman > 0 then dfod.biayapengembalian + dfod.biayapengiriman else 0 end)`), 'omset'],
-                [sequelize.literal(`SUM(SUM( CASE WHEN transaksis.status = 'K' OR transaksis.status = 'I' then daexpedisis.totalHarga WHEN dfod.biayapengembalian > 0 OR dfod.biayapengiriman > 0 then dfod.biayapengembalian + dfod.biayapengiriman else 0 end)) Over (Order by date(transaksis.createdAt))`), 'kumulatif_omset'],
+                [sequelize.literal(`SUM( CASE WHEN transaksis.status = 'K' OR transaksis.status = 'I' OR transaksis.status = 'G' OR transaksis.status = 'H' then daexpedisis.totalHarga WHEN dfod.biayapengembalian > 0 OR dfod.biayapengiriman > 0 then dfod.biayapengembalian + dfod.biayapengiriman else 0 end)`), 'omset'],
+                [sequelize.literal(`SUM(SUM( CASE WHEN transaksis.status = 'K' OR transaksis.status = 'I' OR transaksis.status = 'G' OR transaksis.status = 'H' then daexpedisis.totalHarga WHEN dfod.biayapengembalian > 0 OR dfod.biayapengiriman > 0 then dfod.biayapengembalian + dfod.biayapengiriman else 0 end)) Over (Order by date(transaksis.createdAt))`), 'kumulatif_omset'],
             ],
             include: [
                 { 
@@ -217,7 +234,7 @@ module.exports = {
     async omsetPartner (req, res){
         const date = new Date();
         let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
-            endDate   = new Date
+            endDate   = date.setDate(date.getDate() + 1);
 
         if (req.query.startDate) {
             startDate = req.query.startDate+"T00:00:00.000Z"    
@@ -240,8 +257,8 @@ module.exports = {
                 [sequelize.fn('date', sequelize.col('transaksis.createdAt')), 'date'],
                 [sequelize.literal(`SUM( CASE WHEN transaksis.status = 'I' then daexpedisis.totalHarga else 0 end)`), 'success'],
                 [sequelize.literal(`SUM( CASE WHEN transaksis.status = 'K' then daexpedisis.totalHarga else 0 end)`), 'return'],
-                [sequelize.literal(`SUM( CASE WHEN transaksis.status = 'K' OR transaksis.status = 'I' then daexpedisis.totalHarga WHEN dfod.biayapengembalian > 0 OR dfod.biayapengiriman > 0 then dfod.biayapengembalian + dfod.biayapengiriman else 0 end)`), 'omset'],
-                [sequelize.literal(`SUM(SUM( CASE WHEN transaksis.status = 'K' OR transaksis.status = 'I' then daexpedisis.totalHarga WHEN dfod.biayapengembalian > 0 OR dfod.biayapengiriman > 0 then dfod.biayapengembalian + dfod.biayapengiriman else 0 end)) Over (Order by date(transaksis.createdAt))`), 'kumulatif_omset'],
+                [sequelize.literal(`SUM( CASE WHEN transaksis.status = 'K' OR transaksis.status = 'I' OR transaksis.status = 'G' OR transaksis.status = 'H' then daexpedisis.totalHarga WHEN dfod.biayapengembalian > 0 OR dfod.biayapengiriman > 0 then dfod.biayapengembalian + dfod.biayapengiriman else 0 end)`), 'omset'],
+                [sequelize.literal(`SUM(SUM( CASE WHEN transaksis.status = 'K' OR transaksis.status = 'I' OR transaksis.status = 'G' OR transaksis.status = 'H' then daexpedisis.totalHarga WHEN dfod.biayapengembalian > 0 OR dfod.biayapengiriman > 0 then dfod.biayapengembalian + dfod.biayapengiriman else 0 end)) Over (Order by date(transaksis.createdAt))`), 'kumulatif_omset'],
             ],
             include: [
                 { 
@@ -403,7 +420,7 @@ module.exports = {
         const productId = req.query.productId
         const date = new Date();
         let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
-            endDate   = new Date
+            endDate   = date.setDate(date.getDate() + 1);
 
         if (req.query.startDate) {
             startDate = req.query.startDate+"T00:00:00.000Z"    
@@ -414,7 +431,22 @@ module.exports = {
 
         let result = await transaksis.findAll({
             where:{
-                status: 'I',
+                status:{
+                    [Op.or]: [
+                        {
+                            [Op.like]: '%G%'
+                        },
+                        {
+                            [Op.like]: '%H%'
+                        }, 
+                        {
+                            [Op.like]: '%I%'
+                        },
+                        {
+                            [Op.like]: '%K%'
+                        },
+                    ]
+                },
                 createdAt :  {
                     [Op.and]: {
                       [Op.gte]: startDate,
@@ -530,8 +562,7 @@ module.exports = {
             attributes: 
             [
                 'group.name',
-                [sequelize.col('auth.id'), 'auth_id'],
-                'auth.firstname'
+                'auth->keranjangs.advertiser'
             ],
             include: [
                 { 
@@ -542,11 +573,25 @@ module.exports = {
                     ],
                     include: [
                         {
-                            model: transaksis,
+                            model: keranjangs,
                             required: true,
                             attributes:[
                                 // 'nama'
-                            ],   
+                            ], 
+                            where:{
+                                advertiser:{
+                                    [Op.not]: ""
+                                }
+                            },
+                            include:[
+                                { 
+                                    model: transaksis,
+                                    required: true,
+                                    attributes:[
+                                        // 'nama'
+                                    ],
+                                },
+                            ]  
                         }
                     ]
                 },
@@ -562,6 +607,7 @@ module.exports = {
                 },
             ],
             raw: true,
+            group: ['auth->keranjangs.advertiser'],
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
         }).catch(function (err){
@@ -575,17 +621,14 @@ module.exports = {
             return apiResponse.ErrorResponse(res, 'Group tidak boleh kosong');
         }
 
-        if (req.query.authId == null) {
+        if (req.query.adv == null) {
             return apiResponse.ErrorResponse(res, 'Adv tidak boleh kosong');
         }
 
         const groupId = req.query.groupId
-        const authId = req.query.authId
+        const adv = req.query.adv
 
         let result = await transaksis.findAll({
-            where:{
-                authId: authId
-            },
             attributes: 
             [
                 'auth->mapgroups->group.name',
@@ -638,6 +681,9 @@ module.exports = {
                 // console.log(keranjangdata);
                 let datakeranjang = eval(keranjangdata)
                 for(var j=0;j<datakeranjang.length;j++){
+                    if (datakeranjang[j].advertiser != adv) {
+                        continue
+                    }
                     if(datakeranjang[j] === undefined){
                         KeranjangArray.push(new Keranjang("","",""));
                     }else{
@@ -661,7 +707,7 @@ module.exports = {
             return apiResponse.ErrorResponse(res, 'Group tidak boleh kosong');
         }
 
-        if (req.query.authId == null) {
+        if (req.query.adv == null) {
             return apiResponse.ErrorResponse(res, 'Adv tidak boleh kosong');
         }
 
@@ -670,13 +716,10 @@ module.exports = {
         }
 
         const groupId = req.query.groupId
-        const authId = req.query.authId
+        const adv = req.query.adv
         const productId = req.query.productId
 
         let result = await transaksis.findAll({
-            where:{
-                authId: authId
-            },
             attributes: 
             [
                 'auth->mapgroups->group.name',
@@ -741,7 +784,7 @@ module.exports = {
                 // console.log(keranjangdata);
                 let datakeranjang = eval(keranjangdata)
                 for(var j=0;j<datakeranjang.length;j++){
-                    if (datakeranjang[j].productId != productId) {
+                    if (datakeranjang[j].productId != productId || datakeranjang[j].advertiser != adv) {
                         continue
                     }
                     if(datakeranjang[j] === undefined){
@@ -749,7 +792,257 @@ module.exports = {
                     }else{
                         let obj = KeranjangArray.find(o => o.nama_product === datakeranjang[j].namaproduct)
                         if (obj === undefined) {
-                            KeranjangArray.push(new Keranjang(datakeranjang[j].productId, datakeranjang[j].namaproduct,datakeranjang[j].sku,datakeranjang[j].jumlahproduct, result[i].name, result[i].firstname, result[i].status));
+                            KeranjangArray.push(new Keranjang(datakeranjang[j].productId, datakeranjang[j].namaproduct,datakeranjang[j].sku,datakeranjang[j].jumlahproduct, result[i].name, datakeranjang[j].advertiser, result[i].status));
+                        }else{
+                            let add = KeranjangArray.find((o, index) => {
+                                if (o.nama_product === datakeranjang[j].namaproduct) {
+                                    if (result[i].status == 'A') {
+                                        KeranjangArray[index].lead += datakeranjang[j].jumlahproduct;
+                                    }else if(result[i].status == 'I'){
+                                        KeranjangArray[index].closing += datakeranjang[j].jumlahproduct;
+                                    }
+                                    KeranjangArray[index].jumlah_product += datakeranjang[j].jumlahproduct
+                                    if (KeranjangArray[index].lead != 0) {
+                                        KeranjangArray[index].sum_of_cr = (KeranjangArray[index].closing/KeranjangArray[index].lead) * 100
+                                    }
+                                    return true; // stop searching
+                                }
+                            });
+                        }
+                    }
+                } 
+            }
+            console.log(KeranjangArray);
+            return apiResponse.successResponseWithData(res, "SUCCESS", KeranjangArray);
+        }).catch(function (err){
+            console.log(err);
+            return apiResponse.ErrorResponse(res, err);
+        });
+    },
+
+    async csByGroupAdvProduct (req, res){
+        if (req.query.groupId == null) {
+            return apiResponse.ErrorResponse(res, 'Group tidak boleh kosong');
+        }
+
+        if (req.query.adv == null) {
+            return apiResponse.ErrorResponse(res, 'Adv tidak boleh kosong');
+        }
+
+        if (req.query.productId == null) {
+            return apiResponse.ErrorResponse(res, 'Produk tidak boleh kosong');
+        }
+
+        const groupId = req.query.groupId
+        const adv = req.query.adv
+        const productId = req.query.productId
+
+        let result = await transaksis.findAll({
+            attributes: 
+            [
+                'auth->mapgroups->group.name',
+                [sequelize.col('auth.id'), 'auth_id'],
+                'auth.firstname',
+                'products',
+                'transaksis.status',
+            ],
+            include: [
+                { 
+                    model: auths,
+                    required: true,
+                    attributes:[
+                        // 'nama'
+                    ],
+                    include:[
+                        {
+                            model: mapgroup,
+                            required: true,
+                            attributes:[
+                                // 'nama'
+                            ],
+                            include:[
+                                {
+                                    model: group,
+                                    required: true,
+                                    attributes:[
+                                        // 'nama'
+                                    ],
+                                    where:{
+                                        id: groupId
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+            ],
+            raw: true,
+        }).then(result => {
+            console.log(result.length);
+            var  KeranjangArray = [];
+            for (let i = 0; i < result.length; i++) {
+                class Keranjang { //dapetin dari produk
+                    constructor(productId, namaproduct, sku, jumlahproduct, groupname, advname, status, csId, csName) {
+                      this.product_id = productId;
+                      this.nama_product = namaproduct;
+                      this.sku = sku;
+                      this.jumlah_product = jumlahproduct;
+                      this.group_name = groupname;
+                      this.adv_name = advname;
+                      this.lead = 0;
+                      this.closing = 0;
+                      if (status == 'A') {
+                        this.lead = jumlahproduct;
+                      }else if(status == 'I'){
+                        this.closing = jumlahproduct;
+                      }
+                      this.sum_of_cr = 0;
+                      this.cs_id = csId;
+                      this.cs_name = csName;
+                    }
+                  }
+                let keranjangdata =  result[i].products.replace(/\\n/g, '')
+                // console.log(keranjangdata);
+                let datakeranjang = eval(keranjangdata)
+                for(var j=0;j<datakeranjang.length;j++){
+                    if (datakeranjang[j].productId != productId || datakeranjang[j].advertiser != adv) {
+                        continue
+                    }
+                    if(datakeranjang[j] === undefined){
+                        KeranjangArray.push(new Keranjang("","",""));
+                    }else{
+                        let obj = KeranjangArray.find(o => o.cs_id === result[i].auth_id)
+                        if (obj === undefined) {
+                            KeranjangArray.push(new Keranjang(datakeranjang[j].productId, datakeranjang[j].namaproduct,datakeranjang[j].sku,datakeranjang[j].jumlahproduct, result[i].name, datakeranjang[j].advertiser, result[i].status, result[i].auth_id, result[i].firstname));
+                        }else{
+                            let add = KeranjangArray.find((o, index) => {
+                                if (o.nama_product === datakeranjang[j].namaproduct) {
+                                    if (result[i].status == 'A') {
+                                        KeranjangArray[index].lead += datakeranjang[j].jumlahproduct;
+                                    }else if(result[i].status == 'I'){
+                                        KeranjangArray[index].closing += datakeranjang[j].jumlahproduct;
+                                    }
+                                    KeranjangArray[index].jumlah_product += datakeranjang[j].jumlahproduct
+                                    if (KeranjangArray[index].lead != 0) {
+                                        KeranjangArray[index].sum_of_cr = (KeranjangArray[index].closing/KeranjangArray[index].lead) * 100
+                                    }
+                                    return true; // stop searching
+                                }
+                            });
+                        }
+                    }
+                } 
+            }
+            console.log(KeranjangArray);
+            return apiResponse.successResponseWithData(res, "SUCCESS", KeranjangArray);
+        }).catch(function (err){
+            console.log(err);
+            return apiResponse.ErrorResponse(res, err);
+        });
+    },
+
+    async closingRateAdvCs (req, res){
+        if (req.query.groupId == null) {
+            return apiResponse.ErrorResponse(res, 'Group tidak boleh kosong');
+        }
+
+        if (req.query.adv == null) {
+            return apiResponse.ErrorResponse(res, 'Adv tidak boleh kosong');
+        }
+
+        if (req.query.productId == null) {
+            return apiResponse.ErrorResponse(res, 'Produk tidak boleh kosong');
+        }
+
+        if (req.query.csId == null) {
+            return apiResponse.ErrorResponse(res, 'CS tidak boleh kosong');
+        }
+
+        const groupId = req.query.groupId
+        const adv = req.query.adv
+        const productId = req.query.productId
+        const csId = req.query.csId
+
+        let result = await transaksis.findAll({
+            where:{
+                authId: csId
+            },
+            attributes: 
+            [
+                'auth->mapgroups->group.name',
+                [sequelize.col('auth.id'), 'auth_id'],
+                'auth.firstname',
+                'products',
+                'transaksis.status',
+            ],
+            include: [
+                { 
+                    model: auths,
+                    required: true,
+                    attributes:[
+                        // 'nama'
+                    ],
+                    include:[
+                        {
+                            model: mapgroup,
+                            required: true,
+                            attributes:[
+                                // 'nama'
+                            ],
+                            include:[
+                                {
+                                    model: group,
+                                    required: true,
+                                    attributes:[
+                                        // 'nama'
+                                    ],
+                                    where:{
+                                        id: groupId
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+            ],
+            raw: true,
+        }).then(result => {
+            console.log(result.length);
+            var  KeranjangArray = [];
+            for (let i = 0; i < result.length; i++) {
+                class Keranjang { //dapetin dari produk
+                    constructor(productId, namaproduct, sku, jumlahproduct, groupname, advname, status, csId, csName) {
+                      this.product_id = productId;
+                      this.nama_product = namaproduct;
+                      this.sku = sku;
+                      this.jumlah_product = jumlahproduct;
+                      this.group_name = groupname;
+                      this.adv_name = advname;
+                      this.lead = 0;
+                      this.closing = 0;
+                      if (status == 'A') {
+                        this.lead = jumlahproduct;
+                      }else if(status == 'I'){
+                        this.closing = jumlahproduct;
+                      }
+                      this.sum_of_cr = 0;
+                      this.cs_id = csId;
+                      this.cs_name = csName;
+                    }
+                  }
+                let keranjangdata =  result[i].products.replace(/\\n/g, '')
+                // console.log(keranjangdata);
+                let datakeranjang = eval(keranjangdata)
+                for(var j=0;j<datakeranjang.length;j++){
+                    if (datakeranjang[j].productId != productId || datakeranjang[j].advertiser != adv) {
+                        continue
+                    }
+                    if(datakeranjang[j] === undefined){
+                        KeranjangArray.push(new Keranjang("","",""));
+                    }else{
+                        let obj = KeranjangArray.find(o => o.cs_id === result[i].auth_id)
+                        if (obj === undefined) {
+                            KeranjangArray.push(new Keranjang(datakeranjang[j].productId, datakeranjang[j].namaproduct,datakeranjang[j].sku,datakeranjang[j].jumlahproduct, result[i].name, datakeranjang[j].advertiser, result[i].status, result[i].auth_id, result[i].firstname));
                         }else{
                             let add = KeranjangArray.find((o, index) => {
                                 if (o.nama_product === datakeranjang[j].namaproduct) {
@@ -780,7 +1073,7 @@ module.exports = {
     async omsetPencapaianGroup (req, res){
         const date = new Date();
         let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
-            endDate   = new Date
+            endDate   = date.setDate(date.getDate() + 1);
 
         if (req.query.startDate) {
             startDate = req.query.startDate+"T00:00:00.000Z"    
@@ -796,19 +1089,13 @@ module.exports = {
                       [Op.gte]: startDate,
                       [Op.lte]: endDate
                     }
-                },
-                status: 'I'
+                }
             },
             attributes: 
             [
-                [sequelize.fn('date', sequelize.col('transaksis.createdAt')), 'date'],
-                'auth->mapgroups->group.internal',
-                'daexpedisis.totalHarga',
-                // [sequelize.literal(`SUM( CASE WHEN auth->mapgroups->group.internal = 1 then daexpedisis.totalHarga else 0 end)`), 'internal'],
-                // [sequelize.literal(`SUM( CASE WHEN auth->mapgroups->group.internal = 0 then daexpedisis.totalHarga else 0 end)`), 'partner'],
-                // [sequelize.literal(`SUM( CASE WHEN transaksis.status = 'K' then daexpedisis.totalHarga else 0 end)`), 'return'],
-                // [sequelize.literal(`SUM( CASE WHEN transaksis.status = 'K' OR transaksis.status = 'I' then daexpedisis.totalHarga WHEN dfod.biayapengembalian > 0 OR dfod.biayapengiriman > 0 then dfod.biayapengembalian + dfod.biayapengiriman else 0 end)`), 'omset'],
-                // [sequelize.literal(`SUM(SUM( CASE WHEN transaksis.status = 'K' OR transaksis.status = 'I' then daexpedisis.totalHarga WHEN dfod.biayapengembalian > 0 OR dfod.biayapengiriman > 0 then dfod.biayapengembalian + dfod.biayapengiriman else 0 end)) Over (Order by date(transaksis.createdAt))`), 'kumulatif_omset'],
+                [sequelize.literal("JSON_OBJECT('sum_of_omset', SUM(CASE WHEN `auth->mapgroups->group`.`internal` = 1 AND `auth->mapgroups`.`type` != 'CRM' AND transaksis.status = 'I' THEN daexpedisis.totalharga ELSE 0 END ), 'return', SUM(CASE WHEN `auth->mapgroups->group`.internal = 1 AND `auth->mapgroups`.type != 'CRM' AND transaksis.status = 'K' THEN daexpedisis.totalharga ELSE 0 END ))"), 'akuisisi'],
+                [sequelize.literal("JSON_OBJECT('sum_of_omset', SUM(CASE WHEN `auth->mapgroups->group`.`internal` = 1 AND `auth->mapgroups`.`type` = 'CRM' AND transaksis.status = 'I' THEN daexpedisis.totalharga ELSE 0 END ), 	'return', SUM(CASE WHEN `auth->mapgroups->group`.`internal` = 1 AND `auth->mapgroups`.`type` = 'CRM' AND transaksis.status = 'K' THEN daexpedisis.totalharga ELSE 0 END ))"), 'crm'],
+                [sequelize.literal("JSON_OBJECT('sum_of_omset', SUM(CASE WHEN `auth->mapgroups->group`.`internal` = 0 AND transaksis.status = 'I' THEN daexpedisis.totalharga ELSE 0 END ),	'return', SUM(CASE WHEN `auth->mapgroups->group`.`internal` = 0 AND transaksis.status = 'K' THEN daexpedisis.totalharga ELSE 0 END ))"), 'partner'],
             ],
             include: [
                 { 
@@ -817,10 +1104,10 @@ module.exports = {
                         // [sequelize.fn('sum', sequelize.col('daexpedisis.totalharga')), 'totalomset'],
                     ],
                 },
-                { 
-                    model: dfods,
-                    attributes: [],
-                },
+                // { 
+                //     model: dfods,
+                //     attributes: [],
+                // },
                 { 
                     model: auths,
                     required: true,

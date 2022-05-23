@@ -515,6 +515,8 @@ router.get('/api/dashboard-ceo/adv-by-group', DashboardController.advByGroup);
 router.get('/api/dashboard-ceo/sku-by-adv-and-group', DashboardController.skuByAdvAndGroup);
 router.get('/api/dashboard-ceo/closing-rate-adv', DashboardController.closingRateAdv);
 router.get('/api/dashboard-ceo/omset-pencapaian-group', DashboardController.omsetPencapaianGroup);
+router.get('/api/dashboard-ceo/cs-by-group-adv-product', DashboardController.csByGroupAdvProduct);
+router.get('/api/dashboard-ceo/closing-rate-adv-cs', DashboardController.closingRateAdvCs);
 
 
 
