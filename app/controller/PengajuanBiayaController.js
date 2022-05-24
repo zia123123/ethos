@@ -208,6 +208,9 @@ module.exports = {
                     {
                     [Op.like]: '%3%'
                   },
+                  {
+                    [Op.like]: '%4%'
+                  },
                 ]
                   },
 
