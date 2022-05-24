@@ -1135,10 +1135,11 @@ module.exports = {
           
             for(var i=0;i<result.length;i++){
                 class Keranjang {
-                    constructor(namaproduct,sku,jumlahproduct) {
+                    constructor(namaproduct,sku,jumlahproduct,supervisor) {
                       this.namaproduct = namaproduct;
                       this.sku = sku;
                       this.jumlahproduct = jumlahproduct;
+                      this.supervisor = supervisor;
                     }
                   }
                 var  KeranjangArray = [];
@@ -1148,7 +1149,7 @@ module.exports = {
                     if(datakeranjang[j] === undefined){
                         KeranjangArray.push(new Keranjang("","",""));
                     }else{
-                        KeranjangArray.push(new Keranjang(datakeranjang[j].namaproduct,datakeranjang[j].sku,datakeranjang[j].jumlahproduct));
+                        KeranjangArray.push(new Keranjang(datakeranjang[j].namaproduct,datakeranjang[j].sku,datakeranjang[j].jumlahproduct,datakeranjang[j].supervisor));
                     }
                    
                 }    
@@ -1161,6 +1162,7 @@ module.exports = {
                 KeranjangArray[0].namaproduct,KeranjangArray[0].sku,KeranjangArray[0].jumlahproduct.toString(),
                 KeranjangArray[1].namaproduct, KeranjangArray[1].sku,KeranjangArray[1].jumlahproduct.toString(),
                 KeranjangArray[2].namaproduct,KeranjangArray[2].sku,KeranjangArray[2].jumlahproduct.toString(),
+                KeranjangArray[0].supervisor,
                 result[i].customer.nama,result[i].customer.notelp,
                 result[i].customer.alamat,result[i].customer.provinsiname,
                 result[i].customer.cityname,result[i].customer.districtname,
@@ -1174,6 +1176,10 @@ module.exports = {
                 result[i].memotransaksi,
                 "aa"));
             }
+
+
+
+
           // console.log(KeranjangArray)
             const wb = new xl.Workbook();
             const ws = wb.addWorksheet('Data Transaksi');
@@ -1190,6 +1196,7 @@ module.exports = {
                 "Nama Produk 3",
                 "SKU 3",
                 "Qty 3",
+                "Supervisor",
                 "Recepient Name",
                 "Recipient Phone No",
                 "Recipient Address",
