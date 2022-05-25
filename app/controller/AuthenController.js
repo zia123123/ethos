@@ -1,4 +1,4 @@
-const { auths,mapgroup,group} = require('../models/index');
+const { auths,mapgroup,group, Sequelize} = require('../models/index');
 const bcrypt = require('bcrypt');
 const { Op } = require("sequelize");
 const jwt = require('jsonwebtoken');
@@ -198,10 +198,105 @@ module.exports = {
     },
 
     async index(req, res) {
+        let search = '',
+            role = ''
+
+        if (req.query.search != null) {
+            search = req.query.search
+        }
+        if (req.query.role != null) {
+            role = req.query.role
+        }
+
+        let page = parseInt(req.query.page)
+        let limit = parseInt(req.query.limit)
+
+        const count = await auths.count({
+            include:[
+                {
+                    model: mapgroup,
+                    attributes: [],
+                    include: [
+                        {
+                            model: group,
+                            attributes: [],
+                        }
+                    ]
+                }
+            ],
+            where:{
+                role:{
+                    [Op.like]: `%${role}%`
+                },
+                [Op.or]:[
+                    {
+                        firstname:{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        '$mapgroups->group.name$':{
+                            [Op.like]: `%${search}%`
+                        },
+                    }
+                ]
+            },
+        })
+
         let result = await auths.findAll({
-            attributes: ['id', 'firstname'],
+            // offset: (page - 1) * limit,
+            // limit: limit,
+            attributes: 
+            [
+                'id', 
+                'firstname', 
+                [Sequelize.col('mapgroups->group.id'), 'group_id'], 
+                [Sequelize.col('mapgroups->group.name'), 'group_name'],
+                'role'
+            ],
+            include:[
+                {
+                    model: mapgroup,
+                    attributes: [],
+                    include: [
+                        {
+                            model: group,
+                            attributes: [],
+                        }
+                    ]
+                }
+            ],
+            where:{
+                role:{
+                    [Op.like]: `%${role}%`
+                },
+                [Op.or]:[
+                    {
+                        firstname:{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        '$mapgroups->group.name$':{
+                            [Op.like]: `%${search}%`
+                        },
+                    }
+                ]
+            }
         }).then(result => {
-            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            var totalPage = (parseInt(count) / limit) + 1
+            returnData = {
+                result,
+                metadata: {
+                    page: page,
+                    count: result.length,
+                    totalPage: parseInt(totalPage),
+                    totalData:  count,
+                }
+            }
+            
+            return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
+            // return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
                 return apiResponse.ErrorResponse(res, err);
             });
@@ -227,7 +322,13 @@ module.exports = {
         req.user.jeniskelamin = req.body.jeniskelamin;
         req.user.statuskawin = req.body.statuskawin;
         req.user.status = req.body.status;
-        req.user.firstname = req.body.firstname+datatype;
+        if (req.body.firstname != null) {
+            req.user.firstname = req.body.firstname+datatype;
+        }
+        if (req.body.password != null) {
+            let password = bcrypt.hashSync(req.body.password, Number.parseInt(authConfig.rounds));
+            req.user.password = password;
+        }
         req.user.save().then(user => {
         return apiResponse.successResponseWithData(res, "SUCCESS", user);
         })

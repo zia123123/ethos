@@ -119,10 +119,19 @@ module.exports = {
                     },
                     status: {
                         [Op.or]: [
-                        {
-                        [Op.like]: '%1%'
+                            {
+                                [Op.like]: '%1%'
                             },
-                    ]
+                            {
+                                [Op.like]: '%2%'
+                            },
+                            {
+                                [Op.like]: '%3%'
+                            },
+                            {
+                                [Op.like]: '%4%'
+                            },
+                        ]
                       },
                 },
                 include: [ 
@@ -148,13 +157,19 @@ module.exports = {
                 },
                 status: {
                     [Op.or]: [
-                    {
-                    [Op.like]: '%1%'
+                        {
+                            [Op.like]: '%1%'
                         },
-                    {
-                    [Op.like]: '%2%'
-                  },
-                ]
+                        {
+                            [Op.like]: '%2%'
+                        },
+                        {
+                            [Op.like]: '%3%'
+                        },
+                        {
+                            [Op.like]: '%4%'
+                        },
+                    ]
                   },
 
             }

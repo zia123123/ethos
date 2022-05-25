@@ -63,7 +63,6 @@ module.exports = {
     },
 
     async omsetProdukKota (req, res){
-        console.log(req.query.arrayString.split(', '));
         if (req.query.productId == null) {
             return apiResponse.ErrorResponse(res, 'Produk tidak boleh kosong');
         }
