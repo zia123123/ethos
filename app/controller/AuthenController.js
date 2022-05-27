@@ -208,8 +208,8 @@ module.exports = {
             role = req.query.role
         }
 
-        let page = parseInt(req.query.page)
-        let limit = parseInt(req.query.limit)
+        const page = parseInt(req.query.page),
+              limit = parseInt(req.query.limit)
 
         const count = await auths.count({
             include:[
@@ -244,8 +244,9 @@ module.exports = {
         })
 
         let result = await auths.findAll({
-            // offset: (page - 1) * limit,
-            // limit: limit,
+            offset: (page - 1) * limit,
+            limit: limit,
+            subQuery:false,
             attributes: 
             [
                 'id', 
@@ -326,7 +327,7 @@ module.exports = {
             req.user.firstname = req.body.firstname+datatype;
         }
         if (req.body.password != null) {
-            let password = bcrypt.hashSync(req.body.password, Number.parseInt(authConfig.rounds));
+            let password = bcrypt.hashSync(req.query.password, Number.parseInt(authConfig.rounds));
             req.user.password = password;
         }
         req.user.save().then(user => {
