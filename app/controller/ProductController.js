@@ -170,6 +170,8 @@ module.exports = {
 
     // Update
     async updateProduct(req, res) {
+        var link = req.files[0].filename
+        req.product.link = "https://storage.googleapis.com/ethos-kreatif-app.appspot.com/"+link;
         req.product.name = req.body.name;
         req.product.expiry_date = req.body.expiry_date;
         req.product.conversion = req.body.conversion;
