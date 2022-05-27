@@ -62,12 +62,71 @@ module.exports = {
         let page = parseInt(req.query.page)
         let limit = parseInt(req.query.limit)
         let authId = parseInt(req.query.authId)
+        let search = req.query.search
+        let date = req.query.date
+        let status = req.query.status
+
+        if (req.query.search == null) {
+            search = ''
+        }
+        if (req.query.date == null) {
+            date = ''
+        }
+        if (req.query.status == null) {
+            status = ''
+        }
+
         const count = await pengajuanbiaya.count({ 
                 where: {
                     authId: {
                         [Op.like]: '%'+authId+'%'
                     },
-                }}
+                    createdAt: {
+                        [Op.like]: '%'+date+'%'
+                    },
+                    status: {
+                        [Op.like]: '%'+status+'%'
+                    },
+                    [Op.or]:[
+                        {
+                            namabank:{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                        {
+                            platform:{
+                                [Op.like]: `%${search}%`
+                            },
+                        },
+                        {
+                            '$product.name$':{
+                                [Op.like]: `%${search}%`
+                            },
+                        },
+                        {
+                            akun:{
+                                [Op.like]: `%${search}%`
+                            },
+                        },
+                        {
+                            nominal:{
+                                [Op.like]: `%${search}%`
+                            },
+                        },
+                    ]
+                },
+                include: [ 
+                    { model: auths,
+                        attributes: ['notelp','firstname'],
+                    },
+                    { model: products,
+                        attributes: ['name'],
+                    },
+                    { model: group,
+                        attributes: ['name'],
+                    },
+                ]
+            }
         )
         let result = await pengajuanbiaya.findAll({
             offset: (page - 1) * limit,
@@ -76,6 +135,39 @@ module.exports = {
                 authId: {
                     [Op.like]: '%'+authId+'%'
                 },
+                createdAt: {
+                    [Op.like]: '%'+date+'%'
+                },
+                status: {
+                    [Op.like]: '%'+status+'%'
+                },
+                [Op.or]:[
+                    {
+                        namabank:{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        platform:{
+                            [Op.like]: `%${search}%`
+                        },
+                    },
+                    {
+                        '$product.name$':{
+                            [Op.like]: `%${search}%`
+                        },
+                    },
+                    {
+                        akun:{
+                            [Op.like]: `%${search}%`
+                        },
+                    },
+                    {
+                        nominal:{
+                            [Op.like]: `%${search}%`
+                        },
+                    },
+                ]
             },
             include: [ 
                 { model: auths,
@@ -87,7 +179,8 @@ module.exports = {
                 { model: group,
                     attributes: ['name'],
                 },
-            ]
+            ],
+            order:[['createdAt', 'DESC']]
         }).then(result => {
             var totalPage = (parseInt(count) / limit) + 1
             returnData = {
@@ -112,6 +205,19 @@ module.exports = {
         let page = parseInt(req.query.page)
         let limit = parseInt(req.query.limit)
         let superVisorId = parseInt(req.query.superVisorId)
+        let search = req.query.search
+        let date = req.query.date
+        let status = req.query.status
+
+        if (req.query.search == null) {
+            search = ''
+        }
+        if (req.query.date == null) {
+            date = ''
+        }
+        if (req.query.status == null) {
+            status = ''
+        }
         const count = await pengajuanbiaya.count({ 
                 where: {
                     superVisorId: {
@@ -132,7 +238,40 @@ module.exports = {
                                 [Op.like]: '%4%'
                             },
                         ]
-                      },
+                    },
+                    createdAt: {
+                        [Op.like]: '%'+date+'%'
+                    },
+                    status: {
+                        [Op.like]: '%'+status+'%'
+                    },
+                    [Op.or]:[
+                        {
+                            namabank:{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                        {
+                            platform:{
+                                [Op.like]: `%${search}%`
+                            },
+                        },
+                        {
+                            '$product.name$':{
+                                [Op.like]: `%${search}%`
+                            },
+                        },
+                        {
+                            akun:{
+                                [Op.like]: `%${search}%`
+                            },
+                        },
+                        {
+                            nominal:{
+                                [Op.like]: `%${search}%`
+                            },
+                        },
+                    ]
                 },
                 include: [ 
                     { model: auths,
@@ -170,9 +309,53 @@ module.exports = {
                             [Op.like]: '%4%'
                         },
                     ]
-                  },
-
-            }
+                },
+                createdAt: {
+                    [Op.like]: '%'+date+'%'
+                },
+                status: {
+                    [Op.like]: '%'+status+'%'
+                },
+                [Op.or]:[
+                    {
+                        namabank:{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        platform:{
+                            [Op.like]: `%${search}%`
+                        },
+                    },
+                    {
+                        '$product.name$':{
+                            [Op.like]: `%${search}%`
+                        },
+                    },
+                    {
+                        akun:{
+                            [Op.like]: `%${search}%`
+                        },
+                    },
+                    {
+                        nominal:{
+                            [Op.like]: `%${search}%`
+                        },
+                    },
+                ]
+            },
+            include: [ 
+                { model: auths,
+                    attributes: ['notelp','firstname'],
+                },
+                { model: products,
+                    attributes: ['name'],
+                },
+                { model: group,
+                    attributes: ['name'],
+                },
+            ],
+            order:[['createdAt', 'DESC']]
         }).then(result => {
             var totalPage = (parseInt(count) / limit) + 1
             returnData = {
@@ -194,40 +377,139 @@ module.exports = {
     async indexfinance(req, res) {
         let page = parseInt(req.query.page)
         let limit = parseInt(req.query.limit)
+        let search = req.query.search
+        let date = req.query.date
+        let status = req.query.status
+
+        if (req.query.search == null) {
+            search = ''
+        }
+        if (req.query.date == null) {
+            date = ''
+        }
+        if (req.query.status == null) {
+            status = ''
+        }
         const count = await pengajuanbiaya.count({ 
                 where: {
                     status: {
-                        [Op.or]: [
-                        {
-                        [Op.like]: '%2%'
+                        [Op.and]:[
+                            {
+                                [Op.or]: [
+                                    {
+                                        [Op.like]: '%2%'
+                                    },
+                                    {
+                                        [Op.like]: '%3%'
+                                    },
+                                    {
+                                        [Op.like]: '%4%'
+                                    },
+                                ]
                             },
+                            {
+                                [Op.like]: '%'+status+'%'
+                            }
+                        ]
+                    },
+                    createdAt: {
+                        [Op.like]: '%'+date+'%'
+                    },
+                    [Op.or]:[
                         {
-                        [Op.like]: '%3%'
-                      },
-                      {
-                        [Op.like]: '%4%'
-                      },
+                            namabank:{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                        {
+                            platform:{
+                                [Op.like]: `%${search}%`
+                            },
+                        },
+                        {
+                            '$product.name$':{
+                                [Op.like]: `%${search}%`
+                            },
+                        },
+                        {
+                            akun:{
+                                [Op.like]: `%${search}%`
+                            },
+                        },
+                        {
+                            nominal:{
+                                [Op.like]: `%${search}%`
+                            },
+                        },
                     ]
-                      },
-                }}
+                },
+                include: [ 
+                    { model: auths,
+                        attributes: ['notelp','firstname'],
+                    },
+                    { model: products,
+                        attributes: ['name'],
+                    },
+                    { model: group,
+                        attributes: ['name'],
+                    },
+                ],
+            }
         )
         let result = await pengajuanbiaya.findAll({
             offset: (page - 1) * limit,
             limit: limit,
             where: {
                 status: {
-                    [Op.or]: [
-                    {
-                    [Op.like]: '%2%'
+                    [Op.and]:[
+                        {
+                            [Op.or]: [
+                                {
+                                    [Op.like]: '%2%'
+                                },
+                                {
+                                    [Op.like]: '%3%'
+                                },
+                                {
+                                    [Op.like]: '%4%'
+                                },
+                            ]
                         },
+                        {
+                            [Op.like]: '%'+status+'%'
+                        }
+                    ]
+                },
+                createdAt: {
+                    [Op.like]: '%'+date+'%'
+                },
+                [Op.or]:[
                     {
-                    [Op.like]: '%3%'
-                  },
-                  {
-                    [Op.like]: '%4%'
-                  },
+                        namabank:{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        platform:{
+                            [Op.like]: `%${search}%`
+                        },
+                    },
+                    {
+                        '$product.name$':{
+                            [Op.like]: `%${search}%`
+                        },
+                    },
+                    {
+                        akun:{
+                            [Op.like]: `%${search}%`
+                        },
+                    },
+                    {
+                        nominal:{
+                            [Op.like]: `%${search}%`
+                        },
+                    },
                 ]
-                  },
 
             },
             include: [ 
@@ -240,7 +522,8 @@ module.exports = {
                 { model: group,
                     attributes: ['name'],
                 },
-            ]
+            ],
+            order:[['createdAt', 'DESC']]
         }).then(result => {
             var totalPage = (parseInt(count) / limit) + 1
             returnData = {

@@ -891,6 +891,17 @@ module.exports = {
                                     }
                                 }
                             ]
+                        },
+                        {
+                            model: keranjangs,
+                            required: true,
+                            attributes:[
+                                // 'nama'
+                            ], 
+                            where:{
+                                advertiser: adv,
+                                productId: productId
+                            },
                         }
                     ]
                 },

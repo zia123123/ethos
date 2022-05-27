@@ -248,6 +248,11 @@ module.exports = {
                         '$mapgroups->group.name$':{
                             [Op.like]: `%${search}%`
                         },
+                    },
+                    {
+                        '$groups.name$':{
+                            [Op.like]: `%${search}%`
+                        },
                     }
                 ]
             },
