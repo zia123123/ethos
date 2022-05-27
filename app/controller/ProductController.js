@@ -184,6 +184,9 @@ module.exports = {
         req.product.is_active = req.body.is_active;
         req.product.interval_year_expiry_date = req.body.interval_year_expiry_date;
         req.product.supplierId = req.body.supplierId;
+        req.product.quantity = req.body.quantity;
+        req.product.sku = req.body.sku;
+        req.product.unitId = req.body.unitId;
         req.product.save().then(product => {
         return apiResponse.successResponseWithData(res, "SUCCESS", product);
         })
