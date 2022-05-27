@@ -1,4 +1,4 @@
-const { products,product_stocks,suppliers,warehouses } = require('../models/index');
+const { products,product_stocks,suppliers,warehouses, units } = require('../models/index');
 const { Op } = require("sequelize");
 const apiResponse = require("../helpers/apiResponse");
 const { Storage } = require('@google-cloud/storage');
@@ -54,13 +54,17 @@ module.exports = {
                 },
                 { model: suppliers,
                     attributes: ['name'],
-                }
+                },
+                { model: units,
+                    attributes: ['name'],
+                },
             ]
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
-            }).catch(function (err){
-                return apiResponse.ErrorResponse(res, err);
-            });
+        }).catch(function (err){
+            console.log(err);
+            return apiResponse.ErrorResponse(res, err);
+        });
     },
 
 

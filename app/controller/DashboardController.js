@@ -110,7 +110,6 @@ module.exports = {
             },
         }).then(result => {
             var  KeranjangArray = [];
-            console.log(result);
             for (let i = 0; i < result.length; i++) {
                 class Keranjang { //dapetin dari produk
                     constructor(cityname, jumlahproduct) {
@@ -318,7 +317,22 @@ module.exports = {
 
         let result = await transaksis.findAll({
             where:{
-                status: 'I',
+                status:{
+                    [Op.or]: [
+                        {
+                            [Op.like]: '%G%'
+                        },
+                        {
+                            [Op.like]: '%H%'
+                        }, 
+                        {
+                            [Op.like]: '%I%'
+                        },
+                        {
+                            [Op.like]: '%K%'
+                        },
+                    ]
+                },
             },
             attributes: 
             [
@@ -884,68 +898,6 @@ module.exports = {
             raw: true,
             group: [sequelize.col('auth.id')]
         }).then(result => {
-            // var  KeranjangArray = [];
-            // var  customers = [];
-            // for (let i = 0; i < result.length; i++) {
-            //     class Keranjang { //dapetin dari produk
-            //         constructor(productId, namaproduct, sku, jumlahproduct, groupname, advname, status, csId, csName) {
-            //           this.product_id = productId;
-            //           this.nama_product = namaproduct;
-            //           this.sku = sku;
-            //           this.jumlah_product = jumlahproduct;
-            //           this.group_name = groupname;
-            //           this.adv_name = advname;
-            //           this.lead = 1;
-            //           this.closing = 0;
-            //           if(status == 'G' || status == 'H' || status == 'I'){
-            //             this.closing += 1;
-            //           }
-            //           this.sum_of_cr = (this.closing/this.lead) * 100;
-            //           this.cs_id = csId;
-            //           this.cs_name = csName;
-            //         }
-            //       }
-            //     let keranjangdata =  result[i].products.replace(/\\n/g, '')
-            //     // console.log(keranjangdata);
-            //     let datakeranjang = eval(keranjangdata)
-            //     for(var j=0;j<datakeranjang.length;j++){
-            //         if (datakeranjang[j].productId != productId || datakeranjang[j].advertiser != adv) {
-            //             continue
-            //         }
-            //         if(datakeranjang[j] === undefined){
-            //             KeranjangArray.push(new Keranjang("","",""));
-            //         }else{
-            //             let obj = KeranjangArray.find(o => o.cs_id === result[i].auth_id)
-            //             if (obj === undefined) {
-            //                 KeranjangArray.push(new Keranjang(datakeranjang[j].productId, datakeranjang[j].namaproduct,datakeranjang[j].sku,datakeranjang[j].jumlahproduct, result[i].name, datakeranjang[j].advertiser, result[i].status, result[i].auth_id, result[i].firstname));
-
-            //                 let findCustomer = customers.find(e => e == datakeranjang[j].customerId)
-            //                 if (findCustomer === undefined) {
-            //                     customers.push(datakeranjang[j].customerId)
-            //                 }
-            //             }else{
-            //                 let add = KeranjangArray.find((o, index) => {
-            //                     if (o.nama_product === datakeranjang[j].namaproduct) {
-            //                         if(result[i].status == 'G' || result[i].status == 'H' || result[i].status == 'I'){
-            //                             KeranjangArray[index].closing += 1;
-            //                         }
-            //                         let findCustomer = customers.find(e => e == datakeranjang[j].customerId)
-            //                         if (findCustomer === undefined) {
-            //                             customers.push(datakeranjang[j].customerId)
-            //                             KeranjangArray[index].lead += 1
-            //                         }
-            //                         KeranjangArray[index].jumlah_product += datakeranjang[j].jumlahproduct
-            //                         if (KeranjangArray[index].lead != 0) {
-            //                             KeranjangArray[index].sum_of_cr = (KeranjangArray[index].closing/KeranjangArray[index].lead) * 100
-            //                         }
-            //                         return true; // stop searching
-            //                     }
-            //                 });
-            //             }
-            //         }
-            //     } 
-            // }
-            // console.log(KeranjangArray);
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
         }).catch(function (err){
             console.log(err);
@@ -1111,9 +1063,9 @@ module.exports = {
             },
             attributes: 
             [
-                [sequelize.literal("JSON_OBJECT('sum_of_omset', SUM(CASE WHEN `auth->mapgroups->group`.`internal` = 1 AND `auth->mapgroups`.`type` != 'CRM' AND transaksis.status = 'I' THEN daexpedisis.totalharga ELSE 0 END ), 'return', SUM(CASE WHEN `auth->mapgroups->group`.internal = 1 AND `auth->mapgroups`.type != 'CRM' AND transaksis.status = 'K' THEN daexpedisis.totalharga ELSE 0 END ))"), 'akuisisi'],
-                [sequelize.literal("JSON_OBJECT('sum_of_omset', SUM(CASE WHEN `auth->mapgroups->group`.`internal` = 1 AND `auth->mapgroups`.`type` = 'CRM' AND transaksis.status = 'I' THEN daexpedisis.totalharga ELSE 0 END ), 	'return', SUM(CASE WHEN `auth->mapgroups->group`.`internal` = 1 AND `auth->mapgroups`.`type` = 'CRM' AND transaksis.status = 'K' THEN daexpedisis.totalharga ELSE 0 END ))"), 'crm'],
-                [sequelize.literal("JSON_OBJECT('sum_of_omset', SUM(CASE WHEN `auth->mapgroups->group`.`internal` = 0 AND transaksis.status = 'I' THEN daexpedisis.totalharga ELSE 0 END ),	'return', SUM(CASE WHEN `auth->mapgroups->group`.`internal` = 0 AND transaksis.status = 'K' THEN daexpedisis.totalharga ELSE 0 END ))"), 'partner'],
+                [sequelize.literal("JSON_OBJECT('sum_of_omset', SUM(CASE WHEN `auth->mapgroups->group`.`internal` = 1 AND `auth->mapgroups`.`type` != 'CRM' AND (transaksis.status = 'G' OR transaksis.status = 'H' OR transaksis.status = 'I' OR transaksis.status = 'K') THEN daexpedisis.totalharga WHEN `auth->mapgroups->group`.`internal` = 1 AND `auth->mapgroups`.`type` != 'CRM' AND dfod.biayapengembalian > 0 OR dfod.biayapengiriman > 0 then dfod.biayapengembalian + dfod.biayapengiriman ELSE 0 END ), 'return', SUM(CASE WHEN `auth->mapgroups->group`.internal = 1 AND `auth->mapgroups`.type != 'CRM' AND transaksis.status = 'K' THEN daexpedisis.totalharga ELSE 0 END ))"), 'akuisisi'],
+                [sequelize.literal("JSON_OBJECT('sum_of_omset', SUM(CASE WHEN `auth->mapgroups->group`.`internal` = 1 AND `auth->mapgroups`.`type` = 'CRM' AND (transaksis.status = 'G' OR transaksis.status = 'H' OR transaksis.status = 'I' OR transaksis.status = 'K') THEN daexpedisis.totalharga WHEN `auth->mapgroups->group`.`internal` = 1 AND `auth->mapgroups`.`type` = 'CRM' AND dfod.biayapengembalian > 0 OR dfod.biayapengiriman > 0 then dfod.biayapengembalian + dfod.biayapengiriman ELSE 0 END ), 	'return', SUM(CASE WHEN `auth->mapgroups->group`.`internal` = 1 AND `auth->mapgroups`.`type` = 'CRM' AND transaksis.status = 'K' THEN daexpedisis.totalharga ELSE 0 END ))"), 'crm'],
+                [sequelize.literal("JSON_OBJECT('sum_of_omset', SUM(CASE WHEN `auth->mapgroups->group`.`internal` = 0 AND (transaksis.status = 'G' OR transaksis.status = 'H' OR transaksis.status = 'I' OR transaksis.status = 'K') THEN daexpedisis.totalharga WHEN `auth->mapgroups->group`.`internal` = 0 AND dfod.biayapengembalian > 0 OR dfod.biayapengiriman > 0 then dfod.biayapengembalian + dfod.biayapengiriman ELSE 0 END ),	'return', SUM(CASE WHEN `auth->mapgroups->group`.`internal` = 0 AND transaksis.status = 'K' THEN daexpedisis.totalharga ELSE 0 END ))"), 'partner'],
             ],
             include: [
                 { 
@@ -1122,10 +1074,10 @@ module.exports = {
                         // [sequelize.fn('sum', sequelize.col('daexpedisis.totalharga')), 'totalomset'],
                     ],
                 },
-                // { 
-                //     model: dfods,
-                //     attributes: [],
-                // },
+                { 
+                    model: dfods,
+                    attributes: [],
+                },
                 { 
                     model: auths,
                     required: true,

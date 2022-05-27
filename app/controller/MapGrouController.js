@@ -65,7 +65,7 @@ module.exports = {
             },
             include: [ 
                 { model: auths,
-                    attributes: ['firstname'],
+                    attributes: ['id', 'firstname'],
                 },
                 
             ]
