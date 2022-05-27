@@ -164,7 +164,7 @@ router.post('/api/product/create',uploadHandler.any(), ProductController.create)
 router.get('/api/product/', ProductController.index);
 router.get('/api/suppproduct/', ProductController.indexBySupp);
 router.get('/api/product/:id', ProductController.find, ProductController.show);
-router.patch('/api/product/update/:id',uploadHandler.any(), ProductController.findUpdate,ProductController.updateProduct);
+router.patch('/api/product/update/:id',ProductController.findUpdate,uploadHandler.any(),ProductController.updateProduct);
 router.delete('/api/product/delete/:id', ProductController.finddelete,ProductController.delete);
     
 
