@@ -88,6 +88,7 @@ module.exports = {
             ],
         }).then(result => {
             var KeranjangArray = [];
+            var total = 0;
             for(var i=0;i<result.length;i++){
                 class Keranjang {
                     constructor(namaproduct,price,jumlahproduct) {
@@ -103,10 +104,19 @@ module.exports = {
                        j=3;
                     }else{
                         KeranjangArray.push(new Keranjang(datakeranjang[j].namaproduct,datakeranjang[j].price,datakeranjang[j].jumlahproduct));
+                        total += datakeranjang[j].price
                     }
                 }          
             }
-           console.log(KeranjangArray)
+           returnData = {
+                status: 200,
+                message: "SUCCESS",
+                data: KeranjangArray,
+                totalpenhasilan:  total,
+        }
+ 
+        return res.status(200).json(returnData);
+        // return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
            // wb.write(filename,res);
             //var data = fs.readFileSync(path.resolve(__dirname, 'transaksidata.xlsx'))
             //return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
