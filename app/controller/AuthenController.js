@@ -188,7 +188,13 @@ module.exports = {
     },
 
     async find(req, res, next) {
-        let user = await auths.findByPk(req.params.id);
+        let user = await auths.findByPk(req.params.id,{
+            include:[
+                {
+                    model: group,
+                }
+            ]
+        });
         if (!user) {
         return apiResponse.notFoundResponse(res, "Not Fond");
         } else {
@@ -222,6 +228,10 @@ module.exports = {
                             attributes: [],
                         }
                     ]
+                },
+                {
+                    model: group,
+                    attributes: [],
                 }
             ],
             where:{
@@ -238,6 +248,11 @@ module.exports = {
                         '$mapgroups->group.name$':{
                             [Op.like]: `%${search}%`
                         },
+                    },
+                    {
+                        '$groups.name$':{
+                            [Op.like]: `%${search}%`
+                        },
                     }
                 ]
             },
@@ -251,8 +266,8 @@ module.exports = {
             [
                 'id', 
                 'firstname', 
-                [Sequelize.col('mapgroups->group.id'), 'group_id'], 
-                [Sequelize.col('mapgroups->group.name'), 'group_name'],
+                [Sequelize.literal('CASE WHEN `mapgroups->group`.`id` IS NOT NULL THEN `mapgroups->group`.`id` WHEN groups.id IS NOT NULL THEN groups.id ELSE NULL END'), 'group_id'], 
+                [Sequelize.literal('CASE WHEN `mapgroups->group`.`name` IS NOT NULL THEN `mapgroups->group`.`name` WHEN groups.name IS NOT NULL THEN groups.name ELSE NULL END'), 'group_name'],
                 'role'
             ],
             include:[
@@ -265,6 +280,10 @@ module.exports = {
                             attributes: [],
                         }
                     ]
+                },
+                {
+                    model: group,
+                    attributes: [],
                 }
             ],
             where:{
@@ -279,6 +298,11 @@ module.exports = {
                     },
                     {
                         '$mapgroups->group.name$':{
+                            [Op.like]: `%${search}%`
+                        },
+                    },
+                    {
+                        '$groups.name$':{
                             [Op.like]: `%${search}%`
                         },
                     }
@@ -326,8 +350,8 @@ module.exports = {
         if (req.body.firstname != null) {
             req.user.firstname = req.body.firstname+datatype;
         }
-        if (req.body.password != null) {
-            let password = bcrypt.hashSync(req.query.password, Number.parseInt(authConfig.rounds));
+        if (req.body.password != null && req.body.password != '') {
+            let password = bcrypt.hashSync(req.body.password, Number.parseInt(authConfig.rounds));
             req.user.password = password;
         }
         req.user.save().then(user => {
