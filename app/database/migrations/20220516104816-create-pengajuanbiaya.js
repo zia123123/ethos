@@ -23,6 +23,9 @@ module.exports = {
       supervisorName: {
         type: Sequelize.STRING
       },
+      ditransfer: {
+        type: Sequelize.STRING
+      },
       nominal: {
         type: Sequelize.BIGINT
       },

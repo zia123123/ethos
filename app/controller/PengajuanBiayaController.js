@@ -558,6 +558,7 @@ module.exports = {
         req.pengajuanbiayas.tanggalapproval = req.body.tanggalapproval;
         req.pengajuanbiayas.tanggaltrf = req.body.tanggaltrf;
         req.pengajuanbiayas.platform = req.body.platform;
+        req.pengajuanbiayas.ditransfer = req.body.ditransfer;
         req.pengajuanbiayas.disetujui = req.body.disetujui;
         req.pengajuanbiayas.productId = req.body.productId;
         req.pengajuanbiayas.save().then(pengajuanbiayas => {

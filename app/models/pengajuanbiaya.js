@@ -33,6 +33,9 @@ module.exports = (sequelize, DataTypes) => {
     disetujui: {
       type: DataTypes.STRING,
     },
+    ditransfer: {
+      type: DataTypes.STRING
+    },
     createdAt: {
       allowNull: false,
       type: DataTypes.STRING,
