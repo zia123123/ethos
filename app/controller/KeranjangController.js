@@ -1,4 +1,4 @@
-const { keranjangs,product_stocks,products } = require('../models/index');
+const { keranjangs,product_stocks,products,transaksis } = require('../models/index');
 const { Op } = require("sequelize");
 const apiResponse = require("../helpers/apiResponse");
 
@@ -50,6 +50,67 @@ module.exports = {
         attributes: ['id', 'namaproduct','jumlahproduct','price','createdAt'],
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            }).catch(function (err){
+                return apiResponse.ErrorResponse(res, err);
+            });
+    },
+
+    async penghasilan(req, res) {
+        let startDate = req.query.startDate+"T00:00:00.000Z"
+        let endDate = req.query.endDate+"T23:59:00.000Z"
+        let result = await transaksis.findAll({
+            where: {
+                createdAt :  {
+                    [Op.and]: {
+                      [Op.gte]: startDate,
+                      [Op.lte]: endDate
+                    }
+                  },
+                [Op.and]: {
+                    authId: {
+                        [Op.like]: req.query.authId,
+                    },
+                    status: {
+                        [Op.or]: [
+                            {
+                                [Op.like]: '%H%'
+                            },
+                            {
+                                [Op.like]: '%I%'
+                            },
+                        ]
+                      },
+                }
+              },
+              attributes: ['createdAt','products','expedisiName','typebayar'],
+              order: [
+                ['id', 'DESC'],
+            ],
+        }).then(result => {
+            var KeranjangArray = [];
+            for(var i=0;i<result.length;i++){
+                class Keranjang {
+                    constructor(namaproduct,price,jumlahproduct) {
+                      this.namaproduct = namaproduct;
+                      this.price = price;
+                      this.jumlahproduct = jumlahproduct;
+                    }
+                  }
+                let keranjangdata =  result[i].products.replace(/\\n/g, '')
+                let datakeranjang = eval(keranjangdata)
+                for(var j=0;j<=3;j++){
+                    if(datakeranjang[j] === undefined){
+                       j=3;
+                    }else{
+                        KeranjangArray.push(new Keranjang(datakeranjang[j].namaproduct,datakeranjang[j].price,datakeranjang[j].jumlahproduct));
+                    }
+                }          
+            }
+           console.log(KeranjangArray)
+           // wb.write(filename,res);
+            //var data = fs.readFileSync(path.resolve(__dirname, 'transaksidata.xlsx'))
+            //return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
+           return apiResponse.successResponseWithData(res, "SUCCESS", KeranjangArray);
             }).catch(function (err){
                 return apiResponse.ErrorResponse(res, err);
             });
