@@ -321,7 +321,11 @@ module.exports = {
         let paymentMethod = req.query.paymentMethod
         let transactionStatus = req.query.transactionStatus
         let paymentStatus = req.query.paymentStatus
+        let search = req.query.search
 
+        if( search == null ){
+            search = ""
+        }
         if( warehouseId == null ){
             warehouseId = ""
         }
@@ -379,6 +383,28 @@ module.exports = {
                             }
                         ]
                     },
+                    [Op.or]:[
+                        {
+                            invoiceId:{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                        {
+                            awb:{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                        {
+                            nama:{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                        {
+                            expedisiName:{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                    ]
                 },
             }
         )
@@ -419,6 +445,28 @@ module.exports = {
                         }
                     ]
                 },
+                [Op.or]:[
+                    {
+                        invoiceId:{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        awb:{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        nama:{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        expedisiName:{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                ]
               },
               order: [
                 ['id', 'DESC'],
@@ -572,35 +620,74 @@ module.exports = {
         }).then(result => {
           //  console.log(result)
             class Transaksi {
-                constructor(SenderPhone,Invoice,part1,qty1,part2,qty2,part3,qty3,RecepientName,RecepientNo,RecepientAdress,RecepientProvinsi,RecepientKota,RecepientKecamatan,RecepientKodePos,memo,awb,expedisi,ongkos,tag,warehousename,typebayar,ongkir,subsidi,gudangAlamat,namacs,gudangPost,aa) {
-                  this.SenderPhone = SenderPhone;
-                  this.Invoice = Invoice;
-                  this.part1 = part1;
-                  this.qty1 = qty1;
-                  this.part2 = part2;
-                  this.qty2 = qty2;
-                  this.part3 = part3;
-                  this.qty3 = qty3;
-                  this.RecepientName = RecepientName;
-                  this.RecepientNo = RecepientNo;
-                  this.RecepientAdress = RecepientAdress;
-                  this.RecepientProvinsi = RecepientProvinsi;
-                  this.RecepientKota = RecepientKota;
-                  this.RecepientKecamatan = RecepientKecamatan;
-                  this.RecepientKodePos = RecepientKodePos;
-                  this.memo = memo;
-                  this.awb = awb;
-                  this.expedisi = expedisi;
-                  this.ongkos = ongkos;
-                  this.tag = tag;
-                  this.warehousename = warehousename;
-                  this.typebayar = typebayar;
-                  this.ongkir = ongkir;
-                  this.subsidi = subsidi;
-                  this.namacs = namacs;
-                  this.gudangAlamat = gudangAlamat;
-                  this.gudangPost = gudangPost;
-                  this.aa = aa;
+                constructor(
+                    Sender,
+                    SenderPhone,
+                    Invoice,
+                    prd1,
+                    sku1,
+                    qty1,
+                    weight1,
+                    prd2,
+                    sku2,
+                    qty2,
+                    weight2,
+                    prd3,
+                    sku3,
+                    qty3,
+                    weight3,
+                    RecepientName,
+                    RecepientPhone,
+                    ReceipentAddress,
+                    ReceipentProvince,
+                    ReceipentCity,
+                    ReceipentDistrict,
+                    ReceipentKodePos,
+                    awb,
+                    expedition,
+                    totalHarga,
+                    tag,
+                    gudangPost,
+                    ongkos,
+                    typebayar,
+                    subsidi,
+                    namacs,
+                    memo,
+                    aa
+                ) {
+                  this.Sender = Sender; //1
+                  this.SenderPhone = SenderPhone; //2
+                  this.Invoice = Invoice; //3
+                  this.prd1 = prd1; //4
+                  this.sku1 = sku1; //5
+                  this.qty1 = qty1; //6
+                  this.weight1 = weight1; //7
+                  this.prd2 = prd2; //8
+                  this.sku2 = sku2; //9
+                  this.qty2 = qty2; //10
+                  this.weight2 = weight2; //11
+                  this.prd3 = prd3; // 12
+                  this.sku3 = sku3; // 13
+                  this.qty3 = qty3; // 14
+                  this.weight3 = weight3; // 15
+                  this.RecepientName = RecepientName; // 16
+                  this.RecepientPhone = RecepientPhone; // 17
+                  this.ReceipentAddress = ReceipentAddress; // 18
+                  this.ReceipentProvince = ReceipentProvince; // 19
+                  this.ReceipentCity = ReceipentCity; // 20
+                  this.ReceipentDistrict = ReceipentDistrict; // 21
+                  this.ReceipentKodePos = ReceipentKodePos; // 22
+                  this.awb = awb; // 23
+                  this.expedition = expedition; // 24
+                  this.totalHarga = totalHarga; // 25
+                  this.tag = tag; // 26
+                  this.gudangPost = gudangPost; // 27
+                  this.ongkos = ongkos; // 28
+                  this.typebayar = typebayar; // 29
+                  this.subsidi = subsidi; // 30
+                  this.namacs = namacs; // 31
+                  this.memo = memo; // 32
+                  this.aa = aa; // 33
                 }
               }
             var  TransaksiArray = [];
@@ -630,22 +717,41 @@ module.exports = {
                 }else{
                   var type = "COD"
                 }           
-                TransaksiArray.push(new Transaksi("FHG",result[i].auth.notelp,result[i].invoiceId,
-                KeranjangArray[0].namaproduct,KeranjangArray[0].sku,KeranjangArray[0].jumlahproduct.toString(),KeranjangArray[0].weight.toString(),
-                KeranjangArray[1].namaproduct, KeranjangArray[1].sku,KeranjangArray[1].jumlahproduct.toString(),KeranjangArray[1].weight.toString(),
-                KeranjangArray[2].namaproduct,KeranjangArray[2].sku,KeranjangArray[2].jumlahproduct.toString(),KeranjangArray[2].weight.toString(),
-                result[i].customer.nama,result[i].customer.notelp,
-                result[i].customer.alamat,result[i].customer.provinsiname,
-                result[i].customer.cityname,result[i].customer.districtname,
-                result[i].customer.postalcode,result[i].awb,result[i].expedisiName,
-                result[i].daexpedisis.totalharga.toString(),result[i].auth.firstname,
-                result[i].warehouse.name,
-                type,
-                result[i].ongkoskirim.toString(),
-                result[i].subsidi.toString(),
-                result[i].auth.firstname,
-                result[i].memotransaksi,
-                "aa"));
+                TransaksiArray.push(new Transaksi(
+                    "FHG", // 1
+                    result[i].auth.notelp, // 2
+                    result[i].invoiceId, // 3
+                    KeranjangArray[0].namaproduct, // 4
+                    KeranjangArray[0].sku, // 5
+                    KeranjangArray[0].jumlahproduct.toString(), // 6
+                    KeranjangArray[0].weight.toString(), // 7
+                    KeranjangArray[1].namaproduct, // 8
+                    KeranjangArray[1].sku, // 9
+                    KeranjangArray[1].jumlahproduct.toString(), // 10
+                    KeranjangArray[1].weight.toString(), // 11
+                    KeranjangArray[2].namaproduct, // 12
+                    KeranjangArray[2].sku, // 13
+                    KeranjangArray[2].jumlahproduct.toString(), // 14
+                    KeranjangArray[2].weight.toString(), // 15
+                    result[i].customer.nama, // 16
+                    result[i].customer.notelp, // 17
+                    result[i].customer.alamat, // 18
+                    result[i].customer.provinsiname, // 19
+                    result[i].customer.cityname, // 20
+                    result[i].customer.districtname, // 21
+                    result[i].customer.postalcode, // 22
+                    result[i].awb, // 23
+                    result[i].expedisiName, // 24
+                    result[i].daexpedisis.totalharga.toString(), // 25
+                    result[i].auth.firstname, // 26
+                    result[i].warehouse.name, // 27
+                    type, // 28
+                    result[i].ongkoskirim.toString(), // 29
+                    result[i].subsidi.toString(), // 30
+                    result[i].auth.firstname, // 31
+                    result[i].memotransaksi, // 32
+                    "aa" // 33
+                ));
             }
           // console.log(KeranjangArray)
             const wb = new xl.Workbook();
@@ -694,6 +800,12 @@ module.exports = {
             TransaksiArray.forEach( record => {
                 let columnIndex = 1;
                 Object.keys(record ).forEach(columnName =>{
+                    // console.log('record: '+record);
+                    // console.log('columnName: '+columnName);
+                    // console.log('columnIndex: '+columnIndex);
+                    // console.log('rowIndex: '+rowIndex);
+                    // console.log('record [columnName]: '+record [columnName]);
+                    // console.log('==========================================');
                     ws.cell(rowIndex,columnIndex++)
                         .string(record [columnName])
                 });
@@ -796,148 +908,212 @@ module.exports = {
                             },
             ]
         }).then(result => {
-          //  console.log(result)
-            class Transaksi {
-                constructor(SenderPhone,Invoice,part1,qty1,part2,qty2,part3,qty3,RecepientName,RecepientNo,RecepientAdress,RecepientProvinsi,RecepientKota,RecepientKecamatan,RecepientKodePos,memo,awb,expedisi,ongkos,tag,warehousename,typebayar,ongkir,subsidi,gudangAlamat,namacs,gudangPost,aa) {
-                  this.SenderPhone = SenderPhone;
-                  this.Invoice = Invoice;
-                  this.part1 = part1;
-                  this.qty1 = qty1;
-                  this.part2 = part2;
-                  this.qty2 = qty2;
-                  this.part3 = part3;
-                  this.qty3 = qty3;
-                  this.RecepientName = RecepientName;
-                  this.RecepientNo = RecepientNo;
-                  this.RecepientAdress = RecepientAdress;
-                  this.RecepientProvinsi = RecepientProvinsi;
-                  this.RecepientKota = RecepientKota;
-                  this.RecepientKecamatan = RecepientKecamatan;
-                  this.RecepientKodePos = RecepientKodePos;
-                  this.memo = memo;
-                  this.awb = awb;
-                  this.expedisi = expedisi;
-                  this.ongkos = ongkos;
-                  this.tag = tag;
-                  this.warehousename = warehousename;
-                  this.typebayar = typebayar;
-                  this.ongkir = ongkir;
-                  this.subsidi = subsidi;
-                  this.namacs = namacs;
-                  this.gudangAlamat = gudangAlamat;
-                  this.gudangPost = gudangPost;
-                  this.aa = aa;
-                }
-              }
-            var  TransaksiArray = [];
-          
-            for(var i=0;i<result.length;i++){
-                class Keranjang {
-                    constructor(namaproduct,sku,jumlahproduct,weight) {
-                      this.namaproduct = namaproduct;
-                      this.sku = sku;
-                      this.jumlahproduct = jumlahproduct;
-                      this.weight = weight;
-                    }
+            //  console.log(result)
+              class Transaksi {
+                  constructor(
+                      Sender,
+                      SenderPhone,
+                      Invoice,
+                      prd1,
+                      sku1,
+                      qty1,
+                      weight1,
+                      prd2,
+                      sku2,
+                      qty2,
+                      weight2,
+                      prd3,
+                      sku3,
+                      qty3,
+                      weight3,
+                      RecepientName,
+                      RecepientPhone,
+                      ReceipentAddress,
+                      ReceipentProvince,
+                      ReceipentCity,
+                      ReceipentDistrict,
+                      ReceipentKodePos,
+                      awb,
+                      expedition,
+                      totalHarga,
+                      tag,
+                      gudangPost,
+                      ongkos,
+                      typebayar,
+                      subsidi,
+                      namacs,
+                      memo,
+                      aa
+                  ) {
+                    this.Sender = Sender; //1
+                    this.SenderPhone = SenderPhone; //2
+                    this.Invoice = Invoice; //3
+                    this.prd1 = prd1; //4
+                    this.sku1 = sku1; //5
+                    this.qty1 = qty1; //6
+                    this.weight1 = weight1; //7
+                    this.prd2 = prd2; //8
+                    this.sku2 = sku2; //9
+                    this.qty2 = qty2; //10
+                    this.weight2 = weight2; //11
+                    this.prd3 = prd3; // 12
+                    this.sku3 = sku3; // 13
+                    this.qty3 = qty3; // 14
+                    this.weight3 = weight3; // 15
+                    this.RecepientName = RecepientName; // 16
+                    this.RecepientPhone = RecepientPhone; // 17
+                    this.ReceipentAddress = ReceipentAddress; // 18
+                    this.ReceipentProvince = ReceipentProvince; // 19
+                    this.ReceipentCity = ReceipentCity; // 20
+                    this.ReceipentDistrict = ReceipentDistrict; // 21
+                    this.ReceipentKodePos = ReceipentKodePos; // 22
+                    this.awb = awb; // 23
+                    this.expedition = expedition; // 24
+                    this.totalHarga = totalHarga; // 25
+                    this.tag = tag; // 26
+                    this.gudangPost = gudangPost; // 27
+                    this.ongkos = ongkos; // 28
+                    this.typebayar = typebayar; // 29
+                    this.subsidi = subsidi; // 30
+                    this.namacs = namacs; // 31
+                    this.memo = memo; // 32
+                    this.aa = aa; // 33
                   }
-                var  KeranjangArray = [];
-                let keranjangdata =  result[i].products.replace(/\\n/g, '')
-                let datakeranjang = eval(keranjangdata)
-                for(var j=0;j<=3;j++){
-                    if(datakeranjang[j] === undefined){
-                        KeranjangArray.push(new Keranjang("","","",""));
-                    }else{
-                        KeranjangArray.push(new Keranjang(datakeranjang[j].namaproduct,datakeranjang[j].sku,datakeranjang[j].jumlahproduct,datakeranjang[j].weight));
-                    }
-                   
-                }    
-                if(result[i].typebayar == 1){
-                  var type = "Transfer"
-                }else{
-                  var type = "COD"
-                }           
-                TransaksiArray.push(new Transaksi("FHG",result[i].auth.notelp,result[i].invoiceId,
-                KeranjangArray[0].namaproduct,KeranjangArray[0].sku,KeranjangArray[0].jumlahproduct.toString(),KeranjangArray[0].weight.toString(),
-                KeranjangArray[1].namaproduct, KeranjangArray[1].sku,KeranjangArray[1].jumlahproduct.toString(),KeranjangArray[1].weight.toString(),
-                KeranjangArray[2].namaproduct,KeranjangArray[2].sku,KeranjangArray[2].jumlahproduct.toString(),KeranjangArray[2].weight.toString(),
-                result[i].customer.nama,result[i].customer.notelp,
-                result[i].customer.alamat,result[i].customer.provinsiname,
-                result[i].customer.cityname,result[i].customer.districtname,
-                result[i].customer.postalcode,result[i].awb,result[i].expedisiName,
-                result[i].daexpedisis.totalharga.toString(),result[i].auth.firstname,
-                result[i].warehouse.name,
-                type,
-                result[i].ongkoskirim.toString(),
-                result[i].subsidi.toString(),
-                result[i].auth.firstname,
-                result[i].memotransaksi,
-                "aa"));
-            }
-          // console.log(KeranjangArray)
-            const wb = new xl.Workbook();
-            const ws = wb.addWorksheet('Data Transaksi');
-            const headingColumnNames = [
-                "Sender",
-                "Sender Phone No.",
-                "Invoice",
-                "Nama Produk 1",
-                "SKU 1",
-                "Qty 1",
-                "Weight",
-                "Nama Produk 2",
-                "SKU 2",
-                "Qty 2",
-                "Weight",
-                "Nama Produk 3",
-                "SKU 3",
-                "Qty 3",
-                "Weight",
-                "Recepient Name",
-                "Recipient Phone No",
-                "Recipient Address",
-                "Recipient Provinsi",
-                "Recipient Kabupaten / Kota",
-                "Recipient Kecamatan",
-                "Recipient Kode POS",   
-                "AWB",
-                "3PL",
-                "Total Harga Pesanan",
-                "TAG",
-                "Warehouse",
-                "Ongkos Pengiriman",
-                "TypeBayar",
-                "Subsidi Pengiriman",
-                "Nama CS",
-                "Memo",
-                ""
-            ]
-            let headingColumnIndex = 1;
-            headingColumnNames.forEach(heading => {
-                ws.cell(1, headingColumnIndex++)
-                    .string(heading)
-            });
-            let rowIndex = 2;
-            TransaksiArray.forEach( record => {
-                let columnIndex = 1;
-                Object.keys(record ).forEach(columnName =>{
-                    ws.cell(rowIndex,columnIndex++)
-                        .string(record [columnName])
-                });
-                rowIndex++;
-            }); 
-            var filename = +Date.now()+'-transaksidata.xlsx'
-            returnData = {
-                metadata: {
-                    link: filename,
                 }
-            }
-            wb.write(filename,res);
-            //var data = fs.readFileSync(path.resolve(__dirname, 'transaksidata.xlsx'))
-            //return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
-           //return apiResponse.successResponseWithData(res, "SUCCESS", result);
-            }).catch(function (err){
-                return apiResponse.ErrorResponse(res, err);
-            });
+              var  TransaksiArray = [];
+            
+              for(var i=0;i<result.length;i++){
+                  class Keranjang {
+                      constructor(namaproduct,sku,jumlahproduct,weight) {
+                        this.namaproduct = namaproduct;
+                        this.sku = sku;
+                        this.jumlahproduct = jumlahproduct;
+                        this.weight = weight;
+                      }
+                    }
+                  var  KeranjangArray = [];
+                  let keranjangdata =  result[i].products.replace(/\\n/g, '')
+                  let datakeranjang = eval(keranjangdata)
+                  for(var j=0;j<=3;j++){
+                      if(datakeranjang[j] === undefined){
+                          KeranjangArray.push(new Keranjang("","","",""));
+                      }else{
+                          KeranjangArray.push(new Keranjang(datakeranjang[j].namaproduct,datakeranjang[j].sku,datakeranjang[j].jumlahproduct,datakeranjang[j].weight));
+                      }
+                     
+                  }    
+                  if(result[i].typebayar == 1){
+                    var type = "Transfer"
+                  }else{
+                    var type = "COD"
+                  }           
+                  TransaksiArray.push(new Transaksi(
+                      "FHG", // 1
+                      result[i].auth.notelp, // 2
+                      result[i].invoiceId, // 3
+                      KeranjangArray[0].namaproduct, // 4
+                      KeranjangArray[0].sku, // 5
+                      KeranjangArray[0].jumlahproduct.toString(), // 6
+                      KeranjangArray[0].weight.toString(), // 7
+                      KeranjangArray[1].namaproduct, // 8
+                      KeranjangArray[1].sku, // 9
+                      KeranjangArray[1].jumlahproduct.toString(), // 10
+                      KeranjangArray[1].weight.toString(), // 11
+                      KeranjangArray[2].namaproduct, // 12
+                      KeranjangArray[2].sku, // 13
+                      KeranjangArray[2].jumlahproduct.toString(), // 14
+                      KeranjangArray[2].weight.toString(), // 15
+                      result[i].customer.nama, // 16
+                      result[i].customer.notelp, // 17
+                      result[i].customer.alamat, // 18
+                      result[i].customer.provinsiname, // 19
+                      result[i].customer.cityname, // 20
+                      result[i].customer.districtname, // 21
+                      result[i].customer.postalcode, // 22
+                      result[i].awb, // 23
+                      result[i].expedisiName, // 24
+                      result[i].daexpedisis.totalharga.toString(), // 25
+                      result[i].auth.firstname, // 26
+                      result[i].warehouse.name, // 27
+                      type, // 28
+                      result[i].ongkoskirim.toString(), // 29
+                      result[i].subsidi.toString(), // 30
+                      result[i].auth.firstname, // 31
+                      result[i].memotransaksi, // 32
+                      "aa" // 33
+                  ));
+              }
+            // console.log(KeranjangArray)
+              const wb = new xl.Workbook();
+              const ws = wb.addWorksheet('Data Transaksi');
+              const headingColumnNames = [
+                  "Sender",
+                  "Sender Phone No.",
+                  "Invoice",
+                  "Nama Produk 1",
+                  "SKU 1",
+                  "Qty 1",
+                  "Weight",
+                  "Nama Produk 2",
+                  "SKU 2",
+                  "Qty 2",
+                  "Weight",
+                  "Nama Produk 3",
+                  "SKU 3",
+                  "Qty 3",
+                  "Weight",
+                  "Recepient Name",
+                  "Recipient Phone No",
+                  "Recipient Address",
+                  "Recipient Provinsi",
+                  "Recipient Kabupaten / Kota",
+                  "Recipient Kecamatan",
+                  "Recipient Kode POS",   
+                  "AWB",
+                  "3PL",
+                  "Total Harga Pesanan",
+                  "TAG",
+                  "Warehouse",
+                  "Ongkos Pengiriman",
+                  "TypeBayar",
+                  "Subsidi Pengiriman",
+                  "Nama CS",
+                  "Memo",
+                  ""
+              ]
+              let headingColumnIndex = 1;
+              headingColumnNames.forEach(heading => {
+                  ws.cell(1, headingColumnIndex++)
+                      .string(heading)
+              });
+              let rowIndex = 2;
+              TransaksiArray.forEach( record => {
+                  let columnIndex = 1;
+                  Object.keys(record ).forEach(columnName =>{
+                    //   console.log('record: '+record);
+                    //   console.log('columnName: '+columnName);
+                    //   console.log('columnIndex: '+columnIndex);
+                    //   console.log('rowIndex: '+rowIndex);
+                    //   console.log('record [columnName]: '+record [columnName]);
+                    //   console.log('==========================================');
+                      ws.cell(rowIndex,columnIndex++)
+                          .string(record [columnName])
+                  });
+                  rowIndex++;
+              }); 
+              var filename = +Date.now()+'-transaksidata.xlsx'
+              returnData = {
+                  metadata: {
+                      link: filename,
+                  }
+              }
+              wb.write(filename,res);
+              //var data = fs.readFileSync(path.resolve(__dirname, 'transaksidata.xlsx'))
+              //return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
+             //return apiResponse.successResponseWithData(res, "SUCCESS", result);
+              }).catch(function (err){
+                  return apiResponse.ErrorResponse(res, err);
+              });
     },
 
 
@@ -1530,15 +1706,31 @@ module.exports = {
             status: {
                 [Op.or]: [
                     {
-                [Op.like]: '%D%'
-              },
-              {
-                [Op.like]: '%C%'
-              }, {
-                [Op.like]: '%E%'
-              }
+                        [Op.like]: '%D%'
+                    },
+                    {
+                        [Op.like]: '%C%'
+                    }, {
+                        [Op.like]: '%E%'
+                    }
+                ]
+            },
+            include: [ 
+                { model: daexpedisis,
+                    attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank','totalharga'],
+                },
+                { model: auths,
+                    attributes: ['firstname'],
+                },
+                { model: buktibayars,
+                    // required: true,
+                    attributes: ['link'],
+                },
+                { model: customers,
+                    attributes: ['notelp','nama'],
+                },
             ]
-         },}})          
+        }})          
         let result = await transaksis.findAll({
             offset: (page - 1) * limit,
             limit: limit,
@@ -1568,6 +1760,7 @@ module.exports = {
                     attributes: ['firstname'],
                 },
                 { model: buktibayars,
+                    // required: true,
                     attributes: ['link'],
                 },
                 { model: customers,
@@ -1817,6 +2010,7 @@ module.exports = {
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
+                console.log(err);
                 return apiResponse.ErrorResponse(res, err);
             });
     },

@@ -432,6 +432,21 @@ module.exports = {
                             },
                         },
                         {
+                            '$auth.firstname$':{
+                                [Op.like]: `%${search}%`
+                            },
+                        },
+                        {
+                            '$group.name$':{
+                                [Op.like]: `%${search}%`
+                            },
+                        },
+                        {
+                            disetujui:{
+                                [Op.like]: `%${search}%`
+                            },
+                        },
+                        {
                             akun:{
                                 [Op.like]: `%${search}%`
                             },
@@ -496,6 +511,21 @@ module.exports = {
                     },
                     {
                         '$product.name$':{
+                            [Op.like]: `%${search}%`
+                        },
+                    },
+                    {
+                        '$auth.firstname$':{
+                            [Op.like]: `%${search}%`
+                        },
+                    },
+                    {
+                        '$group.name$':{
+                            [Op.like]: `%${search}%`
+                        },
+                    },
+                    {
+                        disetujui:{
                             [Op.like]: `%${search}%`
                         },
                     },
