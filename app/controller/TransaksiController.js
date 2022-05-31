@@ -1965,6 +1965,11 @@ module.exports = {
          let namabank = req.query.namabank
          let startDate = req.query.startDate+"T00:00:00.000Z"
          let endDate = req.query.endDate+"T17:00:00.000Z"
+         let search = req.query.search 
+        
+        if( search == null ){
+            search = ""
+        }
 
         if( invoiceId == null ){
             invoiceId = ""
@@ -1980,9 +1985,9 @@ module.exports = {
             where:{
                 status: {
                     [Op.or]: [
-                        {
-                    [Op.like]: '%F%'
-                  },
+                //         {
+                //     [Op.like]: '%F%'
+                //   },
                   {
                     [Op.like]: '%G%'
                   },
@@ -1992,26 +1997,30 @@ module.exports = {
                   {
                     [Op.like]: '%I%'
                   },
-                  {
-                    [Op.like]: '%J%'
-                  },
+                //   {
+                //     [Op.like]: '%J%'
+                //   },
                   {
                     [Op.like]: '%K%'
                   },
+                //   {
+                //     [Op.like]: '%L%'
+                //   },
+                //   {
+                //     [Op.like]: '%M'
+                //   },
                   {
-                    [Op.like]: '%L%'
+                    [Op.like]: '%N'
                   },
-                  {
-                    [Op.like]: '%M'
-                  }
                 ]
              },
-               createdAt :  {
+             typebayar: 1,
+                createdAt :  {
                     [Op.and]: {
-                      [Op.gte]: startDate,
-                      [Op.lte]: endDate
+                        [Op.gte]: startDate,
+                        [Op.lte]: endDate
                     }
-                  },
+                    },
              //authId: req.params.userid,
                 [Op.and]: [
                     {
@@ -2024,19 +2033,62 @@ module.exports = {
                             [Op.like]: '%'+invoiceId+'%'
                         }
                          },
+                    {
+                        [Op.or]:[
+                            {
+                                '$auth.firstname$':{
+                                    [Op.like]: `%${search}%`
+                                }
+                            },
+                            {
+                                nama:{
+                                    [Op.like]: `%${search}%`
+                                }
+                            },
+                            {
+                                invoiceId:{
+                                    [Op.like]: `%${search}%`
+                                }
+                            },
+                        ],
+                    }
                   ],
               },
+              include: [ 
+                { model: daexpedisis,
+                    where: {
+                        namabank: {
+                            [Op.or]: [
+                                {
+                            [Op.like]: '%'+namabank+'%'
+                          },
+                        ]
+                     },
+                    },
+                    attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank','totalharga'],
+                },
+                { model: auths,
+                    attributes: ['firstname'],
+                },
+                { model: customers,
+                    attributes: ['notelp','nama'],
+                },
+                { model: buktibayars,
+                    attributes: ['link'],
+                },
+            ]
        })
         
         let result = await transaksis.findAll({
             offset: (page - 1) * limit,
             limit: limit,
+            subQuery:false,
             where:{
                 status: {
                     [Op.or]: [
-                        {
-                    [Op.like]: '%F%'
-                  },
+                //         {
+                //     [Op.like]: '%F%'
+                //   },
                   {
                     [Op.like]: '%G%'
                   },
@@ -2046,20 +2098,24 @@ module.exports = {
                   {
                     [Op.like]: '%I%'
                   },
-                  {
-                    [Op.like]: '%J%'
-                  },
+                //   {
+                //     [Op.like]: '%J%'
+                //   },
                   {
                     [Op.like]: '%K%'
                   },
+                //   {
+                //     [Op.like]: '%L%'
+                //   },
+                //   {
+                //     [Op.like]: '%M'
+                //   },
                   {
-                    [Op.like]: '%L%'
-                  },
-                  {
-                    [Op.like]: '%M'
+                    [Op.like]: '%N'
                   }
                 ]
              },
+             typebayar: 1,
                createdAt :  {
                     [Op.and]: {
                       [Op.gte]: startDate,
@@ -2077,13 +2133,32 @@ module.exports = {
                         invoiceId: {    
                             [Op.like]: '%'+invoiceId+'%'
                         }
-                         },
+                    },
+                    {
+                        [Op.or]:[
+                            {
+                                '$auth.firstname$':{
+                                    [Op.like]: `%${search}%`
+                                }
+                            },
+                            {
+                                nama:{
+                                    [Op.like]: `%${search}%`
+                                }
+                            },
+                            {
+                                invoiceId:{
+                                    [Op.like]: `%${search}%`
+                                }
+                            },
+                        ],
+                    }
                   ],
               },
               order: [
                 ['id', 'DESC'],
             ],
-            attributes: ['id', 'nama','createdAt','pembayaran','status','idtransaksi','invoiceId','subsidi','ongkoskirim'],
+            attributes: ['id', 'nama','createdAt','pembayaran','status','idtransaksi','invoiceId','subsidi','ongkoskirim', 'updateFinance'],
             include: [ 
                 { model: daexpedisis,
                     where: {
@@ -2102,6 +2177,9 @@ module.exports = {
                 },
                 { model: customers,
                     attributes: ['notelp','nama'],
+                },
+                { model: buktibayars,
+                    attributes: ['link'],
                 },
             ]
              
