@@ -195,22 +195,18 @@ module.exports = {
  //CONTOH PAGINATION
 
     async indexGudang(req, res) {
-        
         let warehouseId = req.query.warehouseId
         let date = req.query.date
         let status = req.query.status
         let paymentMethod = req.query.paymentMethod
         let search = req.query.search
 
-        let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
-            endDate   = date.setDate(date.getDate() + 1);
+        // const now = new Date()
+        // let startDate = new Date(now.getFullYear(), now.getMonth(), 1),
+        //     endDate   = now.setDate(now.getDate() + 1);
 
-        if (req.query.startDate) {
-            startDate = req.query.startDate+"T00:00:00.000Z"    
-        }
-        if (req.query.endDate) {
-            endDate = req.query.endDate+"T23:59:59.000Z"    
-        }
+        //     startDate = req.query.startDate   
+        //     endDate = req.query.endDate  
         
         if( search == null ){
             search = ""
@@ -286,10 +282,10 @@ module.exports = {
                             }
                         },
                     ],
-                    [Op.and]: {
-                        [Op.gte]: startDate,
-                        [Op.lte]: endDate
-                    }
+                    // [Op.and]: {
+                    //     [Op.gte]: startDate,
+                    //     [Op.lte]: endDate
+                    // }
                 },
                 include: [ 
                     { model: warehouses,
@@ -362,10 +358,10 @@ module.exports = {
                         }
                     },
                 ],
-                [Op.and]: {
-                    [Op.gte]: startDate,
-                    [Op.lte]: endDate
-                }
+                // [Op.and]: {
+                //     [Op.gte]: startDate,
+                //     [Op.lte]: endDate
+                // }
             },
             order: [
                 ['id', 'DESC'],
@@ -413,15 +409,16 @@ module.exports = {
         let paymentStatus = req.query.paymentStatus
         let search = req.query.search
 
-        let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
-            endDate   = date.setDate(date.getDate() + 1);
+        // const now = new Date()
+        // let startDate = new Date(now.getFullYear(), now.getMonth(), 1),
+        //     endDate   = now.setDate(now.getDate() + 1);
 
-        if (req.query.startDate) {
-            startDate = req.query.startDate+"T00:00:00.000Z"    
-        }
-        if (req.query.endDate) {
-            endDate = req.query.endDate+"T23:59:59.000Z"    
-        }
+        // if (req.query.startDate) {
+        //     startDate = req.query.startDate+"T00:00:00.000Z"    
+        // }
+        // if (req.query.endDate) {
+        //     endDate = req.query.endDate+"T23:59:59.000Z"    
+        // }
 
         if( search == null ){
             search = ""
@@ -510,10 +507,10 @@ module.exports = {
                             }
                         },
                     ],
-                    [Op.and]: {
-                        [Op.gte]: startDate,
-                        [Op.lte]: endDate
-                    }
+                    // [Op.and]: {
+                    //     [Op.gte]: startDate,
+                    //     [Op.lte]: endDate
+                    // }
                 },
                 include: [ 
                     { model: warehouses,
@@ -595,10 +592,10 @@ module.exports = {
                         }
                     },
                 ],
-                [Op.and]: {
-                    [Op.gte]: startDate,
-                    [Op.lte]: endDate
-                }
+                // [Op.and]: {
+                //     [Op.gte]: startDate,
+                //     [Op.lte]: endDate
+                // }
               },
               order: [
                 ['id', 'DESC'],
