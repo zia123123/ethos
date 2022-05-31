@@ -200,7 +200,22 @@ module.exports = {
         let date = req.query.date
         let status = req.query.status
         let paymentMethod = req.query.paymentMethod
+        let search = req.query.search
+
+        // let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
+        //     endDate   = date.setDate(date.getDate() + 1);
+
+        // if (req.query.startDate) {
+        //     startDate = req.query.startDate+"T00:00:00.000Z"    
+        // }
+        // if (req.query.endDate) {
+        //     endDate = req.query.endDate+"T23:59:59.000Z"    
+        // }
         
+        if( search == null ){
+            search = ""
+        }
+
         if( warehouseId == null ){
             warehouseId = ""
         }
@@ -244,7 +259,51 @@ module.exports = {
                     typebayar: {
                         [Op.like]: '%'+paymentMethod+'%'
                     },
+                    [Op.or]:[
+                        {
+                            '$auth.firstname$':{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                        {
+                            invoiceId:{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                        {
+                            nama:{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                        {
+                            '$customer.notelp$':{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                        {
+                            '$daexpedisis.totalharga$':{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                    ],
+                    // [Op.and]: {
+                    //     [Op.gte]: startDate,
+                    //     [Op.lte]: endDate
+                    // }
                 },
+                include: [ 
+                    { model: warehouses,
+                        attributes: ['name'],
+                    }, { model: customers,
+                        attributes: ['notelp'],
+                    },
+                    { model: daexpedisis,
+                        attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank','totalharga'],
+                    },
+                    { model: auths,
+                        attributes: ['notelp','firstname'],
+                    }
+                ]
             }
         )
         let result = await transaksis.findAll({
@@ -276,11 +335,38 @@ module.exports = {
                 typebayar: {
                     [Op.like]: '%'+paymentMethod+'%'
                 },
+                [Op.or]:[
+                    {
+                        '$auth.firstname$':{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        invoiceId:{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        nama:{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        '$customer.notelp$':{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        '$daexpedisis.totalharga$':{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                ],
             },
             order: [
                 ['id', 'DESC'],
             ],
-                        include: [ 
+            include: [ 
                             { model: warehouses,
                                 attributes: ['name'],
                             }, { model: customers,
@@ -404,6 +490,11 @@ module.exports = {
                                 [Op.like]: `%${search}%`
                             }
                         },
+                        {
+                            '$auth.firstname$':{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
                     ]
                 },
             }
@@ -463,6 +554,11 @@ module.exports = {
                     },
                     {
                         expedisiName:{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        '$auth.firstname$':{
                             [Op.like]: `%${search}%`
                         }
                     },
