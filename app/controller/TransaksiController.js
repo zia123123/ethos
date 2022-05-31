@@ -497,7 +497,21 @@ module.exports = {
                         },
                     ]
                 },
-            }
+                include: [ 
+                    { model: warehouses,
+                        attributes: ['name'],
+                    }, { model: customers,
+                        attributes: ['notelp'],
+                    },
+                    { model: daexpedisis,
+                        attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank','totalharga'],
+                    },
+                    { model: auths,
+                        attributes: ['notelp','firstname'],
+                    }
+                ]
+            },
+            
         )
         let result = await transaksis.findAll({
             offset: (page - 1) * limit,
