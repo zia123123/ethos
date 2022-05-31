@@ -814,12 +814,11 @@ module.exports = {
                   this.totalHarga = totalHarga; // 25
                   this.tag = tag; // 26
                   this.gudangPost = gudangPost; // 27
-                  this.ongkos = ongkos; // 28
                   this.typebayar = typebayar; // 29
+                  this.ongkos = ongkos; // 28
                   this.subsidi = subsidi; // 30
                   this.namacs = namacs; // 31
                   this.memo = memo; // 32
-                  this.aa = aa; // 33
                 }
               }
             var  TransaksiArray = [];
@@ -1104,12 +1103,11 @@ module.exports = {
                     this.totalHarga = totalHarga; // 25
                     this.tag = tag; // 26
                     this.gudangPost = gudangPost; // 27
-                    this.ongkos = ongkos; // 28
                     this.typebayar = typebayar; // 29
+                    this.ongkos = ongkos; // 28
                     this.subsidi = subsidi; // 30
                     this.namacs = namacs; // 31
                     this.memo = memo; // 32
-                    this.aa = aa; // 33
                   }
                 }
               var  TransaksiArray = [];
