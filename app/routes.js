@@ -7,8 +7,6 @@ const mime = require('mime-types');
 //const auth_regional = require('./middlewares/auth-regional');
 
 //
-//const AuditPolicy = require('./policy/AuditPolicy');
-
 
 
 
@@ -145,7 +143,7 @@ const multerConf = {
 
 
 router.post('/api/ethos/register', AuthenController.signUp); 
-router.post('/api/ethos/productionnew/login', AuthenController.signIn);
+router.post('/api/ethos/production/login', AuthenController.signIn);
 router.post('/api/ethos/loginfinance', AuthenController.signInFinance);
 router.get('/api/ethos/advertiser', AuthenController.getListAdvertiser);
 router.get('/api/ethos/listuser', AuthenController.getListUser);
