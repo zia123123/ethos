@@ -459,6 +459,7 @@ router.get('/api/getexcelStatusBarang/', TransaksiController.ExcelGudangRiwayat)
 router.get('/api/getexcelFinanceRiwayat/', TransaksiController.ExcelFinanceRiwayat);
 router.get('/api/getexcelFinance/', TransaksiController.ExcelFinance);
 router.get('/api/getexcelTemplateGudang/', TransaksiController.ExcelTemplateGudang);
+router.get('/api/getexcelRiwayatAll/', TransaksiController.ExcelRiwayatAll);
 
 
 
