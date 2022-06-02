@@ -2027,11 +2027,27 @@ module.exports = {
         let page = parseInt(req.query.page)
         let limit = parseInt(req.query.limit)
         let search = req.query.search 
+        const date = new Date();
+        let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
+            endDate   = date.setDate(date.getDate() + 1);
+
+        if (req.query.startDate) {
+            startDate = req.query.startDate+"T00:00:00.000Z"    
+        }
+        if (req.query.endDate) {
+            endDate = req.query.endDate+"T23:59:59.000Z"    
+        }
         
         if( search == null ){
             search = ""
         }
         const count = await transaksis.count({where: {
+            createdAt :  {
+                [Op.and]: {
+                    [Op.gte]: startDate,
+                    [Op.lte]: endDate
+                }
+            },
             status: {
                 [Op.or]: [
                     {
@@ -2108,60 +2124,66 @@ module.exports = {
             limit: limit,
             subQuery:false,
             where: {
-                        status: {
-                            [Op.or]: [
-                                {
-                            [Op.like]: '%D%'
-                          },
-                          {
-                            [Op.like]: '%C%'
-                          }, {
-                            [Op.like]: '%E%'
-                          }
-                        ]
-                     },
-                     [Op.or]:[
-                        {
-                            '$auth.firstname$':{
-                                [Op.like]: `%${search}%`
-                            }
+                createdAt :  {
+                    [Op.and]: {
+                        [Op.gte]: startDate,
+                        [Op.lte]: endDate
+                    }
+                },
+                    status: {
+                        [Op.or]: [
+                            {
+                        [Op.like]: '%D%'
                         },
                         {
-                            '$customer.notelp$':{
-                                [Op.like]: `%${search}%`
-                            }
-                        },
-                        {
-                            '$daexpedisis.totalharga$':{
-                                [Op.like]: `%${search}%`
-                            }
-                        },
-                        {
-                            '$daexpedisis.namabank$':{
-                                [Op.like]: `%${search}%`
-                            }
-                        },
-                        {
-                            '$daexpedisis.namabank$':{
-                                [Op.like]: `%${search}%`
-                            }
-                        },
-                        {
-                            '$daexpedisis.norekening$':{
-                                [Op.like]: `%${search}%`
-                            }
-                        },
-                        {
-                            nama:{
-                                [Op.like]: `%${search}%`
-                            }
-                        },
-                        {
-                            invoiceId:{
-                                [Op.like]: `%${search}%`
-                            }
-                        },
-                    ],
+                        [Op.like]: '%C%'
+                        }, {
+                        [Op.like]: '%E%'
+                        }
+                    ]
+                    },
+                    [Op.or]:[
+                    {
+                        '$auth.firstname$':{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        '$customer.notelp$':{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        '$daexpedisis.totalharga$':{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        '$daexpedisis.namabank$':{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        '$daexpedisis.namabank$':{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        '$daexpedisis.norekening$':{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        nama:{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        invoiceId:{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                ],
               },
               order: [
                 ['id', 'DESC'],
@@ -2307,7 +2329,7 @@ module.exports = {
                         [Op.gte]: startDate,
                         [Op.lte]: endDate
                     }
-                    },
+                },
              //authId: req.params.userid,
                 [Op.and]: [
                     {
@@ -2895,7 +2917,6 @@ module.exports = {
         // if( paymentStatus == null ){
         //     paymentStatus = ""
         // }
-        console.log('tes');
 
         let page = parseInt(req.query.page)
         let limit = parseInt(req.query.limit)
