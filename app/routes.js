@@ -445,6 +445,7 @@ router.get('/api/transaksi/user/:userid', TransaksiController.findByuser);
 router.get('/api/transaksi/detail/:id', TransaksiController.getDetail);
 router.get('/api/jumlah/closing', TransaksiController.jumlahClosing);
 router.get('/api/jumlah/penghasilan', TransaksiController.jumlahPenghasilan);
+router.get('/api/transaksi/daftartransaksi', TransaksiController.daftarTransaksi);
 
 router.get('/api/keranjang/penghasilan', KeranjangController.penghasilan);
 

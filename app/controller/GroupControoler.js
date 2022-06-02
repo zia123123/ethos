@@ -49,10 +49,23 @@ module.exports = {
     },
 
     async indexKu(req, res) {
+        let search = req.query.search
+
+        if( search == null ){
+            search = ""
+        }
+
         let result = await group.findAll({
             where: {
                 authId: req.query.id,
-        },
+                [Op.or]:[
+                    {
+                        name:{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                ],
+            },
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
