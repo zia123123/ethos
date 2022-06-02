@@ -632,8 +632,16 @@ module.exports = {
         let search = req.query.search
         let status = req.query.status
         let warehouseId = req.query.warehouseId
-        let startDate = req.query.startDate+"T00:00:00.000Z"
-        let endDate = req.query.endDate+"T23:59:00.000Z"
+        const date = new Date();
+        let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
+            endDate   = date.setDate(date.getDate() + 1);
+
+        if (req.query.startDate) {
+            startDate = req.query.startDate+"T00:00:00.000Z"    
+        }
+        if (req.query.endDate) {
+            endDate = req.query.endDate+"T23:59:59.000Z"    
+        }
         
         if( warehouseId == null ){
             warehouseId = ""
