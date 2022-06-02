@@ -196,17 +196,20 @@ module.exports = {
 
     async indexGudang(req, res) {
         let warehouseId = req.query.warehouseId
-        let date = req.query.date
         let status = req.query.status
         let paymentMethod = req.query.paymentMethod
         let search = req.query.search
 
-        // const now = new Date()
-        // let startDate = new Date(now.getFullYear(), now.getMonth(), 1),
-        //     endDate   = now.setDate(now.getDate() + 1);
+        const date = new Date();
+        let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
+            endDate   = date.setDate(date.getDate() + 1);
 
-        //     startDate = req.query.startDate   
-        //     endDate = req.query.endDate  
+        if (req.query.startDate) {
+            startDate = req.query.startDate+"T00:00:00.000Z"    
+        }
+        if (req.query.endDate) {
+            endDate = req.query.endDate+"T23:59:59.000Z"    
+        }
         
         if( search == null ){
             search = ""
@@ -214,9 +217,6 @@ module.exports = {
 
         if( warehouseId == null ){
             warehouseId = ""
-        }
-        if( date == null ){
-            date = ""
         }
         if( status == null ){
             status = ""
@@ -234,7 +234,10 @@ module.exports = {
                         [Op.like]: '%'+warehouseId+'%'
                     },
                     createdAt: {
-                        [Op.like]: '%'+date+'%'
+                        [Op.and]: {
+                            [Op.gte]: startDate,
+                            [Op.lte]: endDate
+                        }
                     },
                     status: {
                         [Op.and]:[
@@ -282,10 +285,6 @@ module.exports = {
                             }
                         },
                     ],
-                    // [Op.and]: {
-                    //     [Op.gte]: startDate,
-                    //     [Op.lte]: endDate
-                    // }
                 },
                 include: [ 
                     { model: warehouses,
@@ -310,7 +309,10 @@ module.exports = {
                     [Op.like]: '%'+warehouseId+'%'
                 },
                 createdAt: {
-                    [Op.like]: '%'+date+'%'
+                    [Op.and]: {
+                        [Op.gte]: startDate,
+                        [Op.lte]: endDate
+                    }
                 },
                 status: {
                     [Op.and]:[
@@ -358,10 +360,6 @@ module.exports = {
                         }
                     },
                 ],
-                // [Op.and]: {
-                //     [Op.gte]: startDate,
-                //     [Op.lte]: endDate
-                // }
             },
             order: [
                 ['id', 'DESC'],
@@ -402,32 +400,28 @@ module.exports = {
     async indexGudangRiwayat(req, res) {
       
         let warehouseId = req.query.warehouseId
-        let date = req.query.date
         let expedition = req.query.expedition
         let paymentMethod = req.query.paymentMethod
         let transactionStatus = req.query.transactionStatus
         let paymentStatus = req.query.paymentStatus
         let search = req.query.search
 
-        // const now = new Date()
-        // let startDate = new Date(now.getFullYear(), now.getMonth(), 1),
-        //     endDate   = now.setDate(now.getDate() + 1);
+        const date = new Date();
+        let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
+            endDate   = date.setDate(date.getDate() + 1);
 
-        // if (req.query.startDate) {
-        //     startDate = req.query.startDate+"T00:00:00.000Z"    
-        // }
-        // if (req.query.endDate) {
-        //     endDate = req.query.endDate+"T23:59:59.000Z"    
-        // }
+        if (req.query.startDate) {
+            startDate = req.query.startDate+"T00:00:00.000Z"    
+        }
+        if (req.query.endDate) {
+            endDate = req.query.endDate+"T23:59:59.000Z"    
+        }
 
         if( search == null ){
             search = ""
         }
         if( warehouseId == null ){
             warehouseId = ""
-        }
-        if( date == null ){
-            date = ""
         }
         if( expedition == null ){
             expedition = ""
@@ -451,7 +445,10 @@ module.exports = {
                         [Op.like]: '%'+warehouseId+'%'
                     },
                     createdAt: {
-                        [Op.like]: '%'+date+'%'
+                        [Op.and]: {
+                            [Op.gte]: startDate,
+                            [Op.lte]: endDate
+                        }
                     },
                     expedisiName: {
                         [Op.like]: '%'+expedition+'%'
@@ -507,10 +504,6 @@ module.exports = {
                             }
                         },
                     ],
-                    // [Op.and]: {
-                    //     [Op.gte]: startDate,
-                    //     [Op.lte]: endDate
-                    // }
                 },
                 include: [ 
                     { model: warehouses,
@@ -536,7 +529,10 @@ module.exports = {
                     [Op.like]: '%'+warehouseId+'%'
                 },
                 createdAt: {
-                    [Op.like]: '%'+date+'%'
+                    [Op.and]: {
+                        [Op.gte]: startDate,
+                        [Op.lte]: endDate
+                    }
                 },
                 expedisiName: {
                     [Op.like]: '%'+expedition+'%'
@@ -592,10 +588,6 @@ module.exports = {
                         }
                     },
                 ],
-                // [Op.and]: {
-                //     [Op.gte]: startDate,
-                //     [Op.lte]: endDate
-                // }
               },
               order: [
                 ['id', 'DESC'],
@@ -635,24 +627,188 @@ module.exports = {
 
 
     async riwayatall(req, res) {
-       
-        let result = await transaksis.findAll({
-           
-            where: {
-                status: {
-                    [Op.or]: [
-                  {
-                    [Op.like]: '%H%'
-                  },
-                  {
-                    [Op.like]: '%N%'
-                  },
-                  {
-                    [Op.like]: '%I%'
-                  },
+        let page = parseInt(req.query.page)
+        let limit = parseInt(req.query.limit)
+        let search = req.query.search
+        let status = req.query.status
+        let warehouseId = req.query.warehouseId
+        let startDate = req.query.startDate+"T00:00:00.000Z"
+        let endDate = req.query.endDate+"T23:59:00.000Z"
+        
+        if( warehouseId == null ){
+            warehouseId = ""
+        }
+        if( status == null ){
+            status = ""
+        }
+        if( search == null ){
+            search = ""
+        }
+
+        let count = await transaksis.count(
+            {
+                where: {
+                    createdAt :  {
+                        [Op.and]: {
+                          [Op.gte]: startDate,
+                          [Op.lte]: endDate
+                        }
+                    },
+                    status: {
+                        [Op.and]:[
+                            {
+                                [Op.or]: [
+                                    {
+                                        [Op.like]: '%H%'
+                                    },
+                                    {
+                                        [Op.like]: '%N%'
+                                    },
+                                    {
+                                        [Op.like]: '%I%'
+                                    },
+                                ]
+                            },
+                            {
+                                [Op.like]: `%${status}%`
+                            }
+                        ]
+                    },
+                    warehouseId:{
+                        [Op.like]: `%${warehouseId}%`
+                    },
+                    [Op.or]:[
+                        {
+                            '$auth.firstname$':{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                        {
+                            nama:{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                        {
+                            '$customer.notelp$':{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                        {
+                            invoiceId:{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                        {
+                            '$warehouse.name$':{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                        {
+                            awb:{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                        {
+                            expedisiName:{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                        {
+                            '$daexpedisis.totalharga$':{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                    ],
+                },
+                include: [ 
+                    { model: warehouses,
+                    },
+                     { model: customers,
+                    },
+                    { model: daexpedisis,
+                    },
+                    { model: auths,
+                       
+                    }
                 ]
-             },
-              },
+            }
+        )
+        let result = await transaksis.findAll({
+            offset: (page - 1) * limit,
+            limit: limit,
+            where: {
+                createdAt :  {
+                    [Op.and]: {
+                      [Op.gte]: startDate,
+                      [Op.lte]: endDate
+                    }
+                },
+                status: {
+                    [Op.and]:[
+                        {
+                            [Op.or]: [
+                                {
+                                    [Op.like]: '%H%'
+                                },
+                                {
+                                    [Op.like]: '%N%'
+                                },
+                                {
+                                    [Op.like]: '%I%'
+                                },
+                            ]
+                        },
+                        {
+                            [Op.like]: `%${status}%`
+                        }
+                    ]
+                },
+                warehouseId:{
+                    [Op.like]: `%${warehouseId}%`
+                },
+                [Op.or]:[
+                    {
+                        '$auth.firstname$':{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        nama:{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        '$customer.notelp$':{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        invoiceId:{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        '$warehouse.name$':{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        awb:{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        expedisiName:{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        '$daexpedisis.totalharga$':{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                ],
+            },
               order: [
                 ['id', 'DESC'],
             ],
@@ -668,7 +824,18 @@ module.exports = {
                             }
             ]
         }).then(result => {
-            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            var totalPage = (parseInt(count) / limit) + 1
+            returnData = {
+                result,
+                metadata: {
+                    page: page,
+                    count: result.length,
+                    totalPage: parseInt(totalPage),
+                    totalData:  count,
+                }
+            }
+            
+            return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
             //return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
                 return apiResponse.ErrorResponse(res, err);
@@ -747,7 +914,7 @@ module.exports = {
                             },
             ]
         }).then(result => {
-          //  console.log(result)
+        //    console.log(result)
             class Transaksi {
                 constructor(
                     Sender,
@@ -782,7 +949,14 @@ module.exports = {
                     subsidi,
                     namacs,
                     memo,
-                    aa
+                    // prd4,
+                    // sku4,
+                    // qty4,
+                    // weight4,
+                    // prd5,
+                    // sku5,
+                    // qty5,
+                    // weight5,
                 ) {
                   this.Sender = Sender; //1
                   this.SenderPhone = SenderPhone; //2
@@ -799,6 +973,14 @@ module.exports = {
                   this.sku3 = sku3; // 13
                   this.qty3 = qty3; // 14
                   this.weight3 = weight3; // 15
+                //   this.prd4 = prd4; 
+                //   this.sku4 = sku4; 
+                //   this.qty4 = qty4; 
+                //   this.weight4 = weight4; 
+                //   this.prd5 = prd5; 
+                //   this.sku5 = sku5; 
+                //   this.qty5 = qty5; 
+                //   this.weight5 = weight5; 
                   this.RecepientName = RecepientName; // 16
                   this.RecepientPhone = RecepientPhone; // 17
                   this.ReceipentAddress = ReceipentAddress; // 18
@@ -878,7 +1060,14 @@ module.exports = {
                     result[i].subsidi.toString(), // 30
                     result[i].auth.firstname, // 31
                     result[i].memotransaksi, // 32
-                    "aa" // 33
+                    // KeranjangArray[3].namaproduct, 
+                    // KeranjangArray[3].sku, 
+                    // KeranjangArray[3].jumlahproduct.toString(),
+                    // KeranjangArray[3].weight.toString(),
+                    // KeranjangArray[4].namaproduct,
+                    // KeranjangArray[4].sku,
+                    // KeranjangArray[4].jumlahproduct.toString(),
+                    // KeranjangArray[4].weight.toString(),
                 ));
             }
           // console.log(KeranjangArray)
