@@ -440,12 +440,12 @@ router.post('/api/transaksi/gudang/import', TransaksiController.importPermintaan
 router.get('/api/transaksi/gudangriwyat', TransaksiController.indexGudangRiwayat);
 router.get('/api/financeweb', TransaksiController.indexFinanceWeb);
 router.get('/api/transaksi/excelfinance', TransaksiController.indexFinanceExcel);
+router.get('/api/transaksi/daftartransaksi', TransaksiController.daftarTransaksi);
 router.get('/api/transaksi/:id', TransaksiController.find, TransaksiController.show);
 router.get('/api/transaksi/user/:userid', TransaksiController.findByuser);
 router.get('/api/transaksi/detail/:id', TransaksiController.getDetail);
 router.get('/api/jumlah/closing', TransaksiController.jumlahClosing);
 router.get('/api/jumlah/penghasilan', TransaksiController.jumlahPenghasilan);
-router.get('/api/transaksi/daftartransaksi', TransaksiController.daftarTransaksi);
 
 router.get('/api/keranjang/penghasilan', KeranjangController.penghasilan);
 

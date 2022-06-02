@@ -244,9 +244,9 @@ module.exports = {
                             {[Op.like]: '%'+status+'%'},
                             {
                                 [Op.or]: [
-                                    {
-                                        [Op.like]: '%K%'
-                                    },
+                                    // {
+                                    //     [Op.like]: '%K%'
+                                    // },
                                     {
                                         [Op.like]: '%G%'
                                     },
@@ -319,9 +319,9 @@ module.exports = {
                         {[Op.like]: '%'+status+'%'},
                         {
                             [Op.or]: [
-                                {
-                                    [Op.like]: '%K%'
-                                },
+                                // {
+                                //     [Op.like]: '%K%'
+                                // },
                                 {
                                     [Op.like]: '%G%'
                                 },
@@ -2108,7 +2108,7 @@ module.exports = {
                     attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank','totalharga'],
                 },
                 { model: auths,
-                    attributes: ['firstname'],
+                    attributes: ['firstname', 'notelp'],
                 },
                 { model: buktibayars,
                     // required: true,
@@ -2880,7 +2880,6 @@ module.exports = {
     },
 
     async daftarTransaksi(req, res) {
-        console.log('set');
         let warehouseId = req.query.warehouseId
         let expedition = req.query.expedition
         let paymentMethod = req.query.paymentMethod
