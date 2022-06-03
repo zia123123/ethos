@@ -2194,7 +2194,7 @@ module.exports = {
                     attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank','totalharga'],
                 },
                 { model: auths,
-                    attributes: ['firstname'],
+                    attributes: ['firstname', 'notelp'],
                 },
                 { model: buktibayars,
                     // required: true,
