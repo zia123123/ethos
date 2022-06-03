@@ -65,9 +65,49 @@ module.exports = {
     },
 
     async index(req, res) {
-        let result = await returs.findAll({
+        let page = parseInt(req.query.page)
+        let limit = parseInt(req.query.limit)
+        let search = req.query.search
+
+        if( search == null ){
+            search = ""
+        }
+
+        let filter = {
             where: {
                 state: 1,
+                [Op.or]:[
+                    {
+                        '$transaksis->auth.firstname$':{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        '$transaksis->customer.nama$':{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        '$transaksis->customer.notelp$':{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        '$transaksis.awb$':{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        '$transaksis.invoiceId$':{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        keterangan:{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                ],
             },
             include: [ 
                 { model: transaksis,
@@ -84,9 +124,29 @@ module.exports = {
                 },
                 
             ]
+        }
+
+        let count = await returs.count(filter)
+
+        if (isNaN(limit) == false && isNaN(page) == false) {
+            filter['offset'] = (page - 1) * limit
+            filter['limit'] = limit
+        }
+
+        let result = await returs.findAll(filter).then(result => {
+            var totalPage = (parseInt(count) / limit) + 1
+            returnData = {
+                result,
+                metadata: {
+                    page: page,
+                    count: result.length,
+                    totalPage: parseInt(totalPage),
+                    totalData:  count,
+                }
+            }
             
-        }).then(result => {
-            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
+            // return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
                 return apiResponse.ErrorResponse(res, err);
             });
