@@ -108,3 +108,6 @@ dist
 .tern-port
 
 .ethos-firestore-key
+
+# database 
+config/database.js
