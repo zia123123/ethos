@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      mutation.hasMany(models.mutation_details)
+      mutation.hasMany(models.mutation_details, { onDelete: 'CASCADE' })
     }
   };
   mutation.init({

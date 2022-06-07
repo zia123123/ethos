@@ -530,6 +530,7 @@ router.get('/api/dashboard-ceo/closing-rate-adv-cs', DashboardController.closing
 router.get('/api/mutation/', MutationController.index);
 router.get('/api/mutation/:id', MutationController.detail);
 router.post('/api/mutation', MutationController.import);
+router.delete('/api/mutation/delete/:id', MutationController.find, MutationController.delete);
 
 
 module.exports = router;

@@ -19,9 +19,17 @@ module.exports = {
         let page = parseInt(req.query.page)
         let limit = parseInt(req.query.limit)
         let search = req.query.search
+        const finish = req.query.finish
+        let queryFinish = {[Op.like]: `%%`}
 
         if( search == null ){
             search = ""
+        }
+
+        if (finish == 100) {
+            queryFinish = {[Op.like]: `%100%`}
+        }else if (finish == 0) {
+            queryFinish = {[Op.lt]: 100}
         }
 
         const date = new Date();
@@ -46,10 +54,7 @@ module.exports = {
                 }
             },
             having: 
-                Sequelize.where(Sequelize.literal('(CASE WHEN COUNT(mutation_details.id) > 0 THEN (SUM(CASE WHEN mutation_details.invoice IS NOT NULL THEN 1 ELSE 0 END)/COUNT(mutation_details.id)) * 100 ELSE 0 END)'), 
-                    {
-                        [Op.like]: `%${search}%`
-                    }
+                Sequelize.where(Sequelize.literal(`(CASE WHEN COUNT(mutation_details.id) > 0 THEN (SUM(CASE WHEN mutation_details.invoice IS NOT NULL THEN 1 ELSE 0 END)/COUNT(mutation_details.id)) * 100 ELSE 0 END)`),queryFinish
                 ),
             attributes: [
                 'id',
@@ -194,5 +199,27 @@ module.exports = {
         }).catch(function (err)  {
             return apiResponse.ErrorResponse(res, err);
         });
-    }
+    },
+
+    async find(req, res, next) {
+        let result = await mutation.findByPk(req.params.id,{
+            include:[
+                {
+                    model: mutation_details,
+                }
+            ]
+        });
+        if (!result) {
+        return apiResponse.notFoundResponse(res, "Not Fond");
+        } else {
+            req.mutation = result;
+            next();
+        }
+    },
+
+    async delete(req, res) {
+        req.mutation.destroy().then(mutation => {
+            res.json({ msg: "Berhasil di delete" });
+        })
+    },
 }
