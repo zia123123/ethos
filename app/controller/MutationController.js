@@ -147,6 +147,16 @@ module.exports = {
                             [Op.like]: `%${search}%`
                         }
                     },
+                    {
+                        bank:{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        date:{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
                 ]
             },
             include:[

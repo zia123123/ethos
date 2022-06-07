@@ -100,6 +100,7 @@ const InbondController = require('./controller/InbondController');
 const Ekpedisicontroller = require('./controller/Ekpedisicontroller');
 const DashboardController = require('./controller/DashboardController');
 const MutationController = require('./controller/MutationController');
+const MutationDetailController = require('./controller/MutationDetailController');
 
 
 const multer = require('multer')
@@ -533,5 +534,6 @@ router.post('/api/mutation', MutationController.import);
 router.delete('/api/mutation/delete/:id', MutationController.find, MutationController.delete);
 router.delete('/api/mutation/delete-detail/:id', MutationController.findDetail, MutationController.delete);
 
+router.get('/api/mutation-detail/', MutationDetailController.index);
 
 module.exports = router;
