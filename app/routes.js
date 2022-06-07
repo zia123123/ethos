@@ -99,6 +99,7 @@ const UnitController = require('./controller/UnitController');
 const InbondController = require('./controller/InbondController');
 const Ekpedisicontroller = require('./controller/Ekpedisicontroller');
 const DashboardController = require('./controller/DashboardController');
+const MutationController = require('./controller/MutationController');
 
 
 const multer = require('multer')
@@ -526,6 +527,7 @@ router.get('/api/dashboard-ceo/omset-pencapaian-group', DashboardController.omse
 router.get('/api/dashboard-ceo/cs-by-group-adv-product', DashboardController.csByGroupAdvProduct);
 router.get('/api/dashboard-ceo/closing-rate-adv-cs', DashboardController.closingRateAdvCs);
 
+router.get('/api/mutation/', MutationController.index);
 
 
 module.exports = router;
