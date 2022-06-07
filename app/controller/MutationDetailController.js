@@ -19,7 +19,6 @@ module.exports = {
         let page = parseInt(req.query.page)
         let limit = parseInt(req.query.limit)
         let search = req.query.search
-        const mutationId = req.params.id
 
         if( search == null ){
             search = ""
