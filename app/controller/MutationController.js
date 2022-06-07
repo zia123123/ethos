@@ -176,5 +176,23 @@ module.exports = {
         }).catch(function (err){
             return apiResponse.ErrorResponse(res, err);
         });
+    },
+
+    async import(req, res){
+        const createMutation = await mutation.create().then(result => {
+            const orders = req.body
+            for (let index = 0; index < orders.length; index++) {
+                mutation_details.create({
+                    mutationId: result.id,
+                    date: orders[index].Tanggal,
+                    bank: orders[index].Bank,
+                    description: orders[index].Deskripsi,
+                    debit: orders[index].Debit,
+                })
+            }
+            return apiResponse.successResponseWithData(res, "SUCCESS", orders);
+        }).catch(function (err)  {
+            return apiResponse.ErrorResponse(res, err);
+        });
     }
 }

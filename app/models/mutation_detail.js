@@ -1,6 +1,12 @@
 module.exports = (sequelize, DataTypes) => {
 
   const mutation_detail = sequelize.define('mutation_details', {
+    date: {
+      type: DataTypes.DATE,
+    },
+    bank: {
+      type: DataTypes.STRING,
+    },
     description: {
       type: DataTypes.INTEGER,
       allowNull: false,
