@@ -528,6 +528,7 @@ router.get('/api/dashboard-ceo/cs-by-group-adv-product', DashboardController.csB
 router.get('/api/dashboard-ceo/closing-rate-adv-cs', DashboardController.closingRateAdvCs);
 
 router.get('/api/mutation/', MutationController.index);
+router.get('/api/mutation/:id', MutationController.detail);
 
 
 module.exports = router;
