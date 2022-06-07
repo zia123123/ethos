@@ -531,6 +531,7 @@ router.get('/api/mutation/', MutationController.index);
 router.get('/api/mutation/:id', MutationController.detail);
 router.post('/api/mutation', MutationController.import);
 router.delete('/api/mutation/delete/:id', MutationController.find, MutationController.delete);
+router.delete('/api/mutation/delete-detail/:id', MutationController.findDetail, MutationController.delete);
 
 
 module.exports = router;

@@ -187,6 +187,9 @@ module.exports = {
         const createMutation = await mutation.create().then(result => {
             const orders = req.body
             for (let index = 0; index < orders.length; index++) {
+                if (orders[index] == null || orders[index] == undefined) {
+                    continue
+                }
                 mutation_details.create({
                     mutationId: result.id,
                     date: orders[index].Tanggal,
@@ -210,7 +213,7 @@ module.exports = {
             ]
         });
         if (!result) {
-        return apiResponse.notFoundResponse(res, "Not Fond");
+        return apiResponse.notFoundResponse(res, "Not Found");
         } else {
             req.mutation = result;
             next();
@@ -221,5 +224,21 @@ module.exports = {
         req.mutation.destroy().then(mutation => {
             res.json({ msg: "Berhasil di delete" });
         })
+    },
+
+    async findDetail(req, res, next) {
+        let result = await mutation_details.findByPk(req.params.id,{
+            include:[
+                {
+                    model: mutation,
+                }
+            ]
+        });
+        if (!result) {
+        return apiResponse.notFoundResponse(res, "Not Found");
+        } else {
+            req.mutation = result;
+            next();
+        }
     },
 }
