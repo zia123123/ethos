@@ -3540,11 +3540,6 @@ module.exports = {
                     this.namagrup = namagrup;
                     this.namaja = namaja;
                     this.statustranksasi = statustranksasi;
-                    this.namacs2 = namacs;
-                    this.namaadv2 = namaadv;
-                    this.namagrup2 = namagrup;
-                    this.namaja2 = namaja;
-                    this.statustranksasi2 = statustranksasi;
                 }
               }
             var  TransaksiArray = [];
@@ -3672,11 +3667,6 @@ module.exports = {
                 "Kode Unik",
                 "Total Harga Pesanan",
                 // "Verifikator",
-                "Nama CS",
-                "Nama ADV",
-                "Nama Grup",
-                "Nama JA",
-                "Status Transaksi",
                 "Nama CS",
                 "Nama ADV",
                 "Nama Grup",
