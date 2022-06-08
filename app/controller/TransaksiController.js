@@ -1,7 +1,7 @@
 const {
     returs,deliveryfods, transaksis,statustranksasis,keranjangs,products,
     daexpedisis,customers,warehouses,auths,buktibayars,product_stocks,
-    districts,cityregencies,province, Sequelize 
+    districts,cityregencies,province, mapgroup, group, Sequelize 
    } = require('../models/index');
 const { Op } = require("sequelize");
 const { exportstocsv }  = require("export-to-csv"); 
@@ -3368,6 +3368,335 @@ module.exports = {
             //return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
            //return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
+                return apiResponse.ErrorResponse(res, err);
+            });
+    },
+
+    async ExcelVerifikasiPembayaran(req, res) {
+        const date = new Date();
+        let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
+            endDate   = date.setDate(date.getDate() + 1);
+
+        if (req.query.startDate) {
+            startDate = req.query.startDate+"T00:00:00.000Z"    
+        }
+        if (req.query.endDate) {
+            endDate = req.query.endDate+"T23:59:59.000Z"    
+        }
+        // let typebayar = req.query.typebayar
+        // if(isNaN(parseFloat(typebayar))){
+        //     typebayar = ""
+        // }
+
+        let bank = req.query.bank
+        if( bank == null ){
+            bank = ""
+        }
+
+        // let warehouseId = req.query.warehouseId
+        // if( warehouseId == null ){
+        //     warehouseId = ""
+        // }
+
+        
+        let result = await transaksis.findAll({
+            where: {
+                createdAt :  {
+                    [Op.and]: {
+                      [Op.gte]: startDate,
+                      [Op.lte]: endDate
+                    }
+                  },
+                  status: {
+                    [Op.or]: [
+                        {
+                            [Op.like]: '%D%'
+                        },
+                        // {
+                        //     [Op.like]: '%C%'
+                        // }, 
+                        {
+                            [Op.like]: '%E%'
+                        }
+                    ]
+                },
+                '$daexpedisis.namabank$': {
+                    [Op.like]: `%${bank}%`
+                },
+              },
+              attributes: ['invoiceId','awb','ongkoskirim','subsidi', 'discount', 'products','expedisiName','typebayar','memotransaksi', 'expedisiName', 'status', 'createdAt'],
+              order: [
+                ['id', 'DESC'],
+            ],
+            include: [ 
+                            { model: customers,
+            
+                            },
+                            { model: warehouses,
+                                include: [ {
+                                     model: districts,
+                                    attributes: ['name']
+                                },
+                                { model: cityregencies,
+                                    attributes: ['name']
+                                },
+                                { model: province,
+                                    attributes: ['name']
+                                }]
+                            },
+                            { model: auths,
+                                attributes: ['notelp','firstname', [Sequelize.literal('`auth->mapgroups->group`.`name`'), 'groupname']],
+                                include:[
+                                    {
+                                        model: mapgroup,
+                                        attributes:[
+                                            // 'nama'
+                                        ],
+                                        include:[
+                                            {
+                                                model: group,
+                                                attributes:[
+                                                    
+                                                ],
+                                                where:{
+                                                    internal: 1
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            { model: daexpedisis,
+                                attributes: ['totalharga','namabank','norekening', 'biayatambahan', 'biayacod'],
+                            },
+            ]
+        }).then(result => {
+            // return apiResponse.successResponseWithData(res, "SUCCESS", result);
+        //    console.log(result)
+            class Transaksi {
+                constructor(
+                    warehousename,
+                    typebayar,
+                    Invoice,
+                    awb,
+                    date,
+                    RecepientName, 
+                    RecepientNo,
+                    RecepientAdress,
+                    namabank,
+                    norekening,
+                    expedisiName,
+                    prd1,
+                    domain1,
+                    qty1,
+                    price1,
+                    sku1,
+                    prd2,
+                    qty2,
+                    price2,
+                    ongkir,
+                    subsidi,
+                    discount,
+                    biayatambahan,
+                    biayacod,
+                    kodeunik,
+                    totalHarga,
+                    verifikator,
+                    namacs,
+                    namaadv,
+                    namagrup,
+                    namaja,
+                    statustranksasi
+                ) {
+                    this.warehousename = warehousename;
+                    this.typebayar = typebayar;
+                    this.Invoice = Invoice;
+                    this.awb = awb;
+                    this.date = date;
+                    this.RecepientName = RecepientName;
+                    this.RecepientNo = RecepientNo;
+                    this.RecepientAdress = RecepientAdress;
+                    this.namabank = namabank;
+                    this.norekening = norekening;
+                    this.expedisiName = expedisiName;
+                    this.prd1 = prd1;
+                    this.domain1 = domain1;
+                    this.qty1 = qty1;
+                    this.price1 = price1;
+                    this.sku1 = sku1;
+                    this.prd2 = prd2;
+                    this.qty2 = qty2;
+                    this.price2 = price2;
+                    this.ongkir = ongkir;
+                    this.subsidi = subsidi;
+                    this.discount = discount;
+                    this.biayatambahan = biayatambahan;
+                    this.biayacod = biayacod;
+                    this.kodeunik = kodeunik;
+                    this.totalHarga = totalHarga;
+                    this.verifikator = verifikator;
+                    this.namacs = namacs;
+                    this.namaadv = namaadv;
+                    this.namagrup = namagrup;
+                    this.namaja = namaja;
+                    this.statustranksasi = statustranksasi;
+                }
+              }
+            var  TransaksiArray = [];
+          
+            for(var i=0;i<result.length;i++){
+                class Keranjang {
+                    constructor(namaproduct,sku,jumlahproduct,supervisor,advertiser,linkdomain,hpp, price) {
+                      this.namaproduct = namaproduct;
+                      this.sku = sku;
+                      this.jumlahproduct = jumlahproduct;
+                      this.supervisor = supervisor;
+                      this.advertiser = advertiser;
+                      this.linkdomain = linkdomain;
+                      this.hpp = hpp;
+                      this.price = price;
+                    }
+                  }
+                var  KeranjangArray = [];
+                let keranjangdata =  result[i].products.replace(/\\n/g, '')
+                let datakeranjang = eval(keranjangdata)
+                for(var j=0;j<=3;j++){
+                    if(datakeranjang[j] === undefined){
+                        KeranjangArray.push(new Keranjang("","",""));
+                    }else{
+                        KeranjangArray.push(new Keranjang(
+                            datakeranjang[j].namaproduct,
+                            datakeranjang[j].sku,
+                            datakeranjang[j].jumlahproduct,
+                            datakeranjang[j].supervisor,
+                            datakeranjang[j].advertiser,
+                            datakeranjang[j].linkdomain,
+                            datakeranjang[j].hpp,
+                            datakeranjang[j].price,
+                            
+                            ));
+                    }
+                   
+                }    
+                if(result[i].typebayar == 1){
+                  var type = "Transfer"
+                }else{
+                  var type = "COD"
+                }
+                
+                let statustranksasi
+                if (result[i].status == 'D') {
+                    statustranksasi = 'Verifikasi Finance'
+                }
+                else if (result[i].status == 'E') {
+                    statustranksasi = 'Kurang Bayar'
+                }
+
+                TransaksiArray.push(new Transaksi(
+                    result[i].warehouse.name,
+                    type,
+                    result[i].invoiceId,
+                    result[i].awb,
+                    new Date(result[i].createdAt).toISOString(),
+                    result[i].customer.nama,
+                    result[i].customer.notelp,
+                    result[i].customer.alamat,
+                    result[i].daexpedisis.namabank,
+                    result[i].daexpedisis.norekening,
+                    result[i].expedisiName,
+                    KeranjangArray[0].namaproduct,
+                    KeranjangArray[0].linkdomain,
+                    KeranjangArray[0].jumlahproduct.toString(),
+                    KeranjangArray[0].price == null? '': KeranjangArray[0].price.toString(),
+                    KeranjangArray[0].sku,
+                    KeranjangArray[1].namaproduct,
+                    KeranjangArray[1].jumlahproduct.toString(),
+                    KeranjangArray[1].price == null? '': KeranjangArray[1].price.toString(),
+                    result[i].ongkoskirim.toString(),
+                    result[i].subsidi.toString(),
+                    result[i].discount.toString(),
+                    result[i].daexpedisis.biayatambahan.toString(),
+                    result[i].daexpedisis.biayacod == null ? '' : result[i].daexpedisis.biayacod.toString(),
+                    'kode unik',
+                    result[i].daexpedisis.totalharga.toString(),
+                    'verifikator',
+                    result[i].auth.firstname,
+                    KeranjangArray[0].advertiser,
+                    result[i].auth.groupname?? '',
+                    result[i].auth.groupname?? '',
+                    statustranksasi
+                                   
+                ));
+            }
+        //   console.log(TransaksiArray)
+            const wb = new xl.Workbook();
+            const ws = wb.addWorksheet('Data Transaksi');
+            const headingColumnNames = [
+                "Gudang",
+                "Metode Pembayaran",
+                "Invoice Number",
+                "Nomor AWB",
+                "Tanggal & Jam Invoice",
+                "Nama Pelanggan",
+                "Nomor HP Pelanggan",
+                "Alamat Pelanggan",
+                "Bank",
+                "Nomor Rekening",
+                "Ekspedisi",
+                "*ProductName_1",
+                "Link Domain",
+                "*Quantity_1",
+                "*UnitPrice_1",
+                "SKU_1",
+                "*ProductName_2",
+                "Link Domain",
+                "*Quantity_2",
+                "*UnitPrice_2",
+                "Ongkos Kirim",
+                "Subsidi Ongkos Kirim",
+                "Diskon Transaksi",
+                "Biaya Tambahan",
+                "Admin COD",
+                "Kode Unik",
+                "Total Harga Pesanan",
+                "Verifikator",
+                "Nama CS",
+                "Nama ADV",
+                "Nama Grup",
+                "Nama JA",
+                "Status Transaksi",
+            ]
+            let headingColumnIndex = 1;
+            headingColumnNames.forEach(heading => {
+                ws.cell(1, headingColumnIndex++)
+                    .string(heading)
+            });
+            let rowIndex = 2;
+            TransaksiArray.forEach( record => {
+                let columnIndex = 1;
+                Object.keys(record ).forEach(columnName =>{
+                    console.log('columnName: '+columnName);
+                    console.log('columnIndex: '+columnIndex);
+                    console.log('rowIndex: '+rowIndex);
+                    console.log('record [columnName]: '+record [columnName]);
+                    console.log('==========================================');
+                    ws.cell(rowIndex,columnIndex++)
+                        .string(record [columnName])
+                });
+                rowIndex++;
+            }); 
+            var filename = +Date.now()+'-transaksidata.xlsx'
+            returnData = {
+                metadata: {
+                    link: filename,
+                }
+            }
+            wb.write(filename,res);
+            //var data = fs.readFileSync(path.resolve(__dirname, 'transaksidata.xlsx'))
+            //return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
+           //return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            }).catch(function (err){
+                console.log(err);
                 return apiResponse.ErrorResponse(res, err);
             });
     },
