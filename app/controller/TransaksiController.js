@@ -3622,8 +3622,8 @@ module.exports = {
                     'verifikator',
                     result[i].auth.firstname,
                     KeranjangArray[0].advertiser,
-                    result[i].auth.groupname?? '',
-                    result[i].auth.groupname?? '',
+                    result[i].auth.groupname,
+                    result[i].auth.groupname,
                     statustranksasi
                                    
                 ));
