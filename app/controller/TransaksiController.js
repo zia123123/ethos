@@ -3592,12 +3592,20 @@ module.exports = {
                     statustranksasi = 'Kurang Bayar'
                 }
 
+                const auth = JSON.parse(JSON.stringify(result[i].auth))
+                const date = new Date(result[i].createdAt)
+
                 TransaksiArray.push(new Transaksi(
                     result[i].warehouse.name,
                     type,
                     result[i].invoiceId,
                     result[i].awb,
-                    new Date(result[i].createdAt).toISOString(),
+                    [(date.getDate()),
+                        (date.getMonth()+1),
+                        date.getFullYear()].join('/') +' ' +
+                       [date.getHours(),
+                        date.getMinutes(),
+                        date.getSeconds()].join(':'),
                     result[i].customer.nama,
                     result[i].customer.notelp,
                     result[i].customer.alamat,
@@ -3622,8 +3630,8 @@ module.exports = {
                     'verifikator',
                     result[i].auth.firstname,
                     KeranjangArray[0].advertiser,
-                    result[i].auth.groupname,
-                    result[i].auth.groupname,
+                    auth.groupname,
+                    auth.groupname,
                     statustranksasi
                                    
                 ));
@@ -3649,7 +3657,6 @@ module.exports = {
                 "*UnitPrice_1",
                 "SKU_1",
                 "*ProductName_2",
-                "Link Domain",
                 "*Quantity_2",
                 "*UnitPrice_2",
                 "Ongkos Kirim",
