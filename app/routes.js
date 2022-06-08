@@ -536,5 +536,6 @@ router.delete('/api/mutation/delete/:id', MutationController.find, MutationContr
 router.delete('/api/mutation/delete-detail/:id', MutationController.findDetail, MutationController.delete);
 
 router.get('/api/mutation-detail/', MutationDetailController.index);
+router.patch('/api/mutation-detail/update', MutationDetailController.update);
 
 module.exports = router;

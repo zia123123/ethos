@@ -106,4 +106,23 @@ module.exports = {
             return apiResponse.ErrorResponse(res, err);
         });
     },
+
+    async update(req, res){
+        const orders = req.body
+        for (let index = 0; index < orders.length; index++){
+            if (orders[index].invoice != null && orders[index].id != null) {
+                mutation_details.update(
+                    {
+                        invoice: orders[index].invoice
+                    },
+                    {
+                        where: {
+                            id: orders[index].id
+                        }
+                    }
+                )
+            }
+        }
+        return apiResponse.successResponseWithData(res, "SUCCESS", orders)
+    },
 }

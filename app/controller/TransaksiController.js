@@ -3424,7 +3424,7 @@ module.exports = {
                     [Op.like]: `%${bank}%`
                 },
               },
-              attributes: ['invoiceId','awb','ongkoskirim','subsidi', 'discount', 'products','expedisiName','typebayar','memotransaksi', 'expedisiName', 'status', 'createdAt'],
+              attributes: ['id', 'invoiceId','awb','ongkoskirim','subsidi', 'discount', 'products','expedisiName','typebayar','memotransaksi', 'expedisiName', 'status', 'createdAt'],
               order: [
                 ['id', 'DESC'],
             ],
@@ -3534,7 +3534,7 @@ module.exports = {
                     this.biayacod = biayacod;
                     this.kodeunik = kodeunik;
                     this.totalHarga = totalHarga;
-                    this.verifikator = verifikator;
+                    // this.verifikator = verifikator;
                     this.namacs = namacs;
                     this.namaadv = namaadv;
                     this.namagrup = namagrup;
@@ -3625,7 +3625,7 @@ module.exports = {
                     result[i].discount.toString(),
                     result[i].daexpedisis.biayatambahan.toString(),
                     result[i].daexpedisis.biayacod == null ? '' : result[i].daexpedisis.biayacod.toString(),
-                    'kode unik',
+                    result[i].id%999,
                     result[i].daexpedisis.totalharga.toString(),
                     'verifikator',
                     result[i].auth.firstname,
@@ -3666,7 +3666,7 @@ module.exports = {
                 "Admin COD",
                 "Kode Unik",
                 "Total Harga Pesanan",
-                "Verifikator",
+                // "Verifikator",
                 "Nama CS",
                 "Nama ADV",
                 "Nama Grup",
