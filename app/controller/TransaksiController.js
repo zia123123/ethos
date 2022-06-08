@@ -3625,7 +3625,7 @@ module.exports = {
                     result[i].discount.toString(),
                     result[i].daexpedisis.biayatambahan.toString(),
                     result[i].daexpedisis.biayacod == null ? '' : result[i].daexpedisis.biayacod.toString(),
-                    result[i].id%999,
+                    (result[i].id%999).toString(),
                     result[i].daexpedisis.totalharga.toString(),
                     'verifikator',
                     result[i].auth.firstname,
