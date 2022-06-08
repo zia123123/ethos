@@ -2027,6 +2027,8 @@ module.exports = {
         let page = parseInt(req.query.page)
         let limit = parseInt(req.query.limit)
         let search = req.query.search 
+        let bank = req.query.bank 
+        
         const date = new Date();
         let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
             endDate   = date.setDate(date.getDate() + 1);
@@ -2041,6 +2043,10 @@ module.exports = {
         if( search == null ){
             search = ""
         }
+
+        if( bank == null ){
+            bank = ""
+        }
         const count = await transaksis.count({where: {
             createdAt :  {
                 [Op.and]: {
@@ -2053,12 +2059,16 @@ module.exports = {
                     {
                         [Op.like]: '%D%'
                     },
+                    // {
+                    //     [Op.like]: '%C%'
+                    // }, 
                     {
-                        [Op.like]: '%C%'
-                    }, {
                         [Op.like]: '%E%'
                     }
                 ]
+            },
+            '$daexpedisis.namabank$': {
+                [Op.like]: `%${bank}%`
             },
             [Op.or]:[
                 {
@@ -2135,12 +2145,16 @@ module.exports = {
                             {
                         [Op.like]: '%D%'
                         },
+                        // {
+                        // [Op.like]: '%C%'
+                        // }, 
                         {
-                        [Op.like]: '%C%'
-                        }, {
                         [Op.like]: '%E%'
                         }
                     ]
+                    },
+                    '$daexpedisis.namabank$': {
+                        [Op.like]: `%${bank}%`
                     },
                     [Op.or]:[
                     {
