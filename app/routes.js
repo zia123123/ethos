@@ -497,7 +497,7 @@ router.get('/api/norek/cs/:id', NorekController.getNorekBycs);
 router.get('/api/norek/finance/:id', NorekController.getNorekByfinance);
 router.get('/api/norek/:id', NorekController.find, NorekController.show);
 router.patch('/api/norek/update/:id', NorekController.find,NorekController.update);
-
+router.delete('/api/norek/:id', NorekController.find, NorekController.delete);
 
 
 

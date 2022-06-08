@@ -22,7 +22,7 @@ module.exports = {
     async find(req, res, next) {
         let nomorekening = await nomorekenings.findByPk(req.params.id);
         if (!nomorekening) {
-        return apiResponse.notFoundResponse(res, "Not Fond");
+        return apiResponse.notFoundResponse(res, "Not Found");
         } else {
             req.nomorekening = nomorekening;
             next();

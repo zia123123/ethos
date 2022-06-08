@@ -75,6 +75,7 @@ module.exports = {
             include:[
                 {
                     model: mutation,
+                    required: true,
                     attributes: []
                 }
             ],
