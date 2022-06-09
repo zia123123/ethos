@@ -32,16 +32,15 @@ module.exports = {
             queryFinish = {[Op.lt]: 100}
         }
 
-        console.log(req.query.startDate);
         const date = new Date();
         let startDate = new Date(date.getFullYear(), date.getMonth(), 1, 7, 0, 0),
             endDate   = new Date(date.setDate(date.getDate() + 1));
 
         if (req.query.startDate) {
-            startDate = new Date(req.query.startDate+"T00:00:00.000Z")
+            startDate = Math.floor(req.query.startDate) 
         }
         if (req.query.endDate) {
-            endDate = new Date(req.query.endDate+"T23:59:59.000Z")    
+            endDate = Math.floor(req.query.endDate)
         }
 
         let filter = 
