@@ -32,26 +32,27 @@ module.exports = {
             queryFinish = {[Op.lt]: 100}
         }
 
+        console.log(new Date(req.query.startDate));
         const date = new Date();
         let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
-            endDate   = date.setDate(date.getDate() + 1);
+            endDate   = new Date(date.setDate(date.getDate() + 1));
 
         if (req.query.startDate) {
-            startDate = req.query.startDate+"T00:00:00.000Z"    
+            startDate = new Date(req.query.startDate+"T00:00:00.000Z")    
         }
         if (req.query.endDate) {
-            endDate = req.query.endDate+"T23:59:59.000Z"    
+            endDate = new Date(req.query.endDate+"T23:59:59.000Z")    
         }
 
         let filter = 
         {
             where:{
-                createdAt :  {
-                    [Op.and]: {
-                      [Op.gte]: startDate,
-                      [Op.lte]: endDate
-                    }
-                }
+                // createdAt :  {
+                //     [Op.and]: {
+                //       [Op.gte]: startDate,
+                //       [Op.lte]: endDate
+                //     }
+                // }
             },
             having: 
                 Sequelize.where(Sequelize.literal(`(CASE WHEN COUNT(mutation_details.id) > 0 THEN (SUM(CASE WHEN mutation_details.invoice IS NOT NULL THEN 1 ELSE 0 END)/COUNT(mutation_details.id)) * 100 ELSE 0 END)`),queryFinish
