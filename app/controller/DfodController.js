@@ -65,9 +65,65 @@ module.exports = {
     },
 
     async index(req, res) {
-        let result = await deliveryfods.findAll({
+        let page = parseInt(req.query.page)
+        let limit = parseInt(req.query.limit)
+        let search = req.query.search
+        const finish = req.query.finish
+        let type = req.query.type
+
+        if( search == null ){
+            search = ""
+        }
+        if( type == null ){
+            type = ""
+        }
+
+        const date = new Date();
+        let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
+            endDate   = new Date(date.setDate(date.getDate() + 1));
+
+        if (req.query.startDate) {
+            startDate = Math.floor(req.query.startDate) 
+        }
+        if (req.query.endDate) {
+            endDate = Math.floor(req.query.endDate)
+        }
+
+        let filter = 
+        {
+            
             where: {
                 state: 1,
+                typedfod: {
+                    [Op.like]: `%${type}%`
+                },
+                [Op.or]:[
+                    {
+                        '$auth.notelp$':{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        '$customer.notelp$':{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        awbpengiriman:{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        awbpengembalian:{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        '$auth.nama$':{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                ]
             },
             include: [ 
                 { model: transaksis,
@@ -77,15 +133,25 @@ module.exports = {
                             attributes: ['nama','notelp'],
                         },
                         { model: auths,
-                            attributes: ['firstname','role'],
+                            attributes: ['firstname','role', 'notelp'],
                         },
                         
                     ]
                 },
                 
             ]
+                
             
-        }).then(result => {
+        }
+        let count = await mutation.count(filter)
+
+        if (isNaN(limit) == false && isNaN(page) == false) {
+            filter['offset'] = (page - 1) * limit
+            filter['limit'] = limit
+            filter['subQuery'] = false
+        }
+
+        let result = await deliveryfods.findAll(filter).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
                 return apiResponse.ErrorResponse(res, err);
