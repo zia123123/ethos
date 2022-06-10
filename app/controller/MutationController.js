@@ -33,7 +33,7 @@ module.exports = {
         }
 
         const date = new Date();
-        let startDate = new Date(date.getFullYear(), date.getMonth(), 1, 7, 0, 0),
+        let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
             endDate   = new Date(date.setDate(date.getDate() + 1));
 
         if (req.query.startDate) {

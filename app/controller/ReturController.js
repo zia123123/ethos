@@ -73,8 +73,25 @@ module.exports = {
             search = ""
         }
 
+        const date = new Date();
+        let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
+            endDate   = new Date(date.setDate(date.getDate() + 1));
+
+        if (req.query.startDate) {
+            startDate = Math.floor(req.query.startDate) 
+        }
+        if (req.query.endDate) {
+            endDate = Math.floor(req.query.endDate)
+        }
+
         let filter = {
             where: {
+                createdAt :  {
+                    [Op.and]: {
+                      [Op.gte]: startDate,
+                      [Op.lte]: endDate
+                    }
+                },
                 state: 1,
                 [Op.or]:[
                     {
