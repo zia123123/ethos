@@ -122,6 +122,7 @@ module.exports = {
     // Update
     async update(req, res) {
         req.nomorekening.nama_bank = req.body.nama_bank;
+        req.nomorekening.nama = req.body.nama;
         req.nomorekening.nomor = req.body.nomor;
         req.nomorekening.authId = req.body.authId;
         req.nomorekening.createdBy = req.body.createdBy;
