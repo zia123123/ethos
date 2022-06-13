@@ -732,8 +732,26 @@ module.exports = {
         const groupId = req.query.groupId
         const adv = req.query.adv
         const productId = req.query.productId
+        const date = new Date();
+        let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
+            endDate   = date.setDate(date.getDate() + 1);
+
+        if (req.query.startDate) {
+            startDate = req.query.startDate+"T00:00:00.000Z"    
+        }
+        if (req.query.endDate) {
+            endDate = req.query.endDate+"T23:59:59.000Z"    
+        }
 
         let result = await transaksis.findAll({
+            where:{
+                createdAt :  {
+                    [Op.and]: {
+                      [Op.gte]: startDate,
+                      [Op.lte]: endDate
+                    }
+                }
+            },
             attributes: 
             [
                 'auth->mapgroups->group.name',
@@ -937,10 +955,26 @@ module.exports = {
         const adv = req.query.adv
         const productId = req.query.productId
         const csId = req.query.csId
+        const date = new Date();
+        let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
+            endDate   = date.setDate(date.getDate() + 1);
+
+        if (req.query.startDate) {
+            startDate = req.query.startDate+"T00:00:00.000Z"    
+        }
+        if (req.query.endDate) {
+            endDate = req.query.endDate+"T23:59:59.000Z"    
+        }
 
         let result = await transaksis.findAll({
             where:{
-                authId: csId
+                authId: csId,
+                createdAt :  {
+                    [Op.and]: {
+                      [Op.gte]: startDate,
+                      [Op.lte]: endDate
+                    }
+                }
             },
             attributes: 
             [

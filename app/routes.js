@@ -7,8 +7,6 @@ const mime = require('mime-types');
 //const auth_regional = require('./middlewares/auth-regional');
 
 //
-//const AuditPolicy = require('./policy/AuditPolicy');
-
 
 
 
@@ -437,7 +435,7 @@ router.post('/api/lead/create', LeadController.create);
 
 
 //transaksi
-router.post('/api/transaksi/production/create', TransaksiController.create);
+router.post('/api/transaksi/productionnew/create', TransaksiController.create);
 router.get('/api/transaksi/cs/:userid', TransaksiController.index);
 router.get('/api/transaksi/all', TransaksiController.indexAll);
 router.get('/api/transaksi/gudang', TransaksiController.indexGudang);
@@ -446,6 +444,7 @@ router.post('/api/transaksi/gudang/import', TransaksiController.importPermintaan
 router.get('/api/transaksi/gudangriwyat', TransaksiController.indexGudangRiwayat);
 router.get('/api/financeweb', TransaksiController.indexFinanceWeb);
 router.get('/api/transaksi/excelfinance', TransaksiController.indexFinanceExcel);
+router.get('/api/transaksi/daftartransaksi', TransaksiController.daftarTransaksi);
 router.get('/api/transaksi/:id', TransaksiController.find, TransaksiController.show);
 router.get('/api/transaksi/user/:userid', TransaksiController.findByuser);
 router.get('/api/transaksi/detail/:id', TransaksiController.getDetail);
@@ -464,6 +463,7 @@ router.get('/api/getexcelStatusBarang/', TransaksiController.ExcelGudangRiwayat)
 router.get('/api/getexcelFinanceRiwayat/', TransaksiController.ExcelFinanceRiwayat);
 router.get('/api/getexcelFinance/', TransaksiController.ExcelFinance);
 router.get('/api/getexcelTemplateGudang/', TransaksiController.ExcelTemplateGudang);
+router.get('/api/getexcelRiwayatAll/', TransaksiController.ExcelRiwayatAll);
 
 
 

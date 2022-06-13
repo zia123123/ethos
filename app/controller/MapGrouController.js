@@ -58,10 +58,28 @@ module.exports = {
     },
 
     async myUser(req, res) {
+        let search = req.query.search
+
+        if( search == null ){
+            search = ""
+        }
+
         let result = await mapgroup.findAll({
             attributes: ['id','createdAt','status','type'],
             where:{
-                groupId: req.query.groupId
+                groupId: req.query.groupId,
+                [Op.or]:[
+                    {
+                        type:{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        '$auth.firstname$':{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                ],
             },
             include: [ 
                 { model: auths,

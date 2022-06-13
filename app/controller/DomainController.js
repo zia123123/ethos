@@ -34,9 +34,7 @@ module.exports = {
         }
         let result = await domains.findAll({
             where: {
-                    authId: {    
-                    [Op.like]: '%'+authId+'%'
-                }
+                    authId: authId
             },
             include: [ 
                 { model: auths,
