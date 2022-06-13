@@ -12,6 +12,8 @@ const mime = require('mime-types');
 
 
 
+const LeadController = require('./controller/LeadController');
+
 const CatalogControoler = require('./controller/CatalogControoler');
 
 const SaldoController = require('./controller/SaldoController');
@@ -430,6 +432,8 @@ router.post('/api/statusT/create', FTransaksiController.createstatustranksasis);
 router.get('/api/statusT/', FTransaksiController.indexstatustranksasis);
 router.post('/api/jenispaket/create', FTransaksiController.createjenispakets);
 router.get('/api/jenispaket/', FTransaksiController.indexsjenispakets);
+
+router.post('/api/lead/create', LeadController.create);
 
 
 //transaksi

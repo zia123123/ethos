@@ -38,6 +38,7 @@ module.exports = {
             cityregencyId: req.body.cityregencyId,
             districtId: req.body.districtId,    
         }).then(result => {
+
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
         }).catch(function (err)  {
             return apiResponse.ErrorResponse(res, err);
