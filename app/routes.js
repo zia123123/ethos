@@ -464,6 +464,7 @@ router.get('/api/getexcelTemplateGudang/', TransaksiController.ExcelTemplateGuda
 router.get('/api/getexcelRiwayatAll/', TransaksiController.ExcelRiwayatAll);
 router.get('/api/getexcelVerifikasiPembayaran/', TransaksiController.ExcelVerifikasiPembayaran);
 router.get('/api/getexcelLabel/', TransaksiController.ExcelLabel);
+// router.get('/api/getexcelShipper/', TransaksiController.ExcelShipper);
 
 
 

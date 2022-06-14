@@ -3896,10 +3896,10 @@ module.exports = {
                     var type = "COD"
                   }
                   const memo = result[i].memotransaksi.toUpperCase()
-                  let packingKayu = false
+                  let packingKayu = 'false'
 
                   if (memo.includes('PACKING KAYU') && memo.includes('TIDAK PERLU PACKING KAYU') == false) {
-                      packingKayu = true
+                      packingKayu = 'true'
                   }
 
                   const auth = JSON.parse(JSON.stringify(result[i].auth))
