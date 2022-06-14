@@ -3969,6 +3969,226 @@ module.exports = {
               TransaksiArray.forEach( record => {
                   let columnIndex = 1;
                   Object.keys(record ).forEach(columnName =>{
+                    //   console.log('record: '+record);
+                    //   console.log('columnName: '+columnName);
+                    //   console.log('columnIndex: '+columnIndex);
+                    //   console.log('rowIndex: '+rowIndex);
+                    //   console.log('record [columnName]: '+record [columnName]);
+                    //   console.log('==========================================');
+                      ws.cell(rowIndex,columnIndex++)
+                          .string(record [columnName])
+                  });
+                  rowIndex++;
+              }); 
+              var filename = +Date.now()+'-transaksidata.xlsx'
+              returnData = {
+                  metadata: {
+                      link: filename,
+                  }
+              }
+              wb.write(filename,res);
+              //var data = fs.readFileSync(path.resolve(__dirname, 'transaksidata.xlsx'))
+              //return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
+             //return apiResponse.successResponseWithData(res, "SUCCESS", result);
+              }).catch(function (err){
+                  console.log(err);
+                  return apiResponse.ErrorResponse(res, err);
+              });
+    },
+
+    async ExcelShipper(req, res) {
+        let startDate = req.query.startDate+"T00:00:00.000Z"
+        let endDate = req.query.endDate+"T23:59:00.000Z"
+
+        let expedisiName = req.query.expedisiName
+        if( expedisiName == null ){
+            expedisiName = ""
+        }
+
+        let warehouseId = req.query.warehouseId
+        if( warehouseId == null ){
+            warehouseId = ""
+        }
+
+        
+        let result = await transaksis.findAll({
+            where: {
+                createdAt :  {
+                    [Op.and]: {
+                      [Op.gte]: startDate,
+                      [Op.lte]: endDate
+                    }
+                  },
+                [Op.and]: {
+                warehouseId: {
+                    [Op.like]: '%'+warehouseId+'%'
+                },
+                expedisiName: {
+                    [Op.like]: '%'+expedisiName+'%'
+                },
+                status: {
+                    [Op.or]: [
+                        {
+                            [Op.like]: '%H%'
+                        },
+                        {
+                            [Op.like]: '%N%'
+                        },
+                        {
+                            [Op.like]: '%I%'
+                        },
+                    ]
+                  },
+                }
+              },
+              attributes: ['invoiceId','awb','ongkoskirim','subsidi','products','expedisiName','typebayar','memotransaksi', 'idtransaksi', 'createdAt'],
+              order: [
+                ['id', 'DESC'],
+            ],
+                        include: [ 
+                            { model: customers,
+            
+                            },
+                            { model: warehouses,
+                                include: [ {
+                                     model: districts,
+                                    attributes: ['name']
+                                },
+                                { model: cityregencies,
+                                    attributes: ['name']
+                                },
+                                { model: province,
+                                    attributes: ['name']
+                                }]
+                            },
+                            { model: auths,
+                                attributes: ['notelp','firstname', [Sequelize.literal('`auth->mapgroups->group`.`name`'), 'groupname']],
+                                include:[
+                                    {
+                                        model: mapgroup,
+                                        attributes:[
+                                            // 'nama'
+                                        ],
+                                        include:[
+                                            {
+                                                model: group,
+                                                attributes:[
+                                                    
+                                                ],
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            { model: daexpedisis,
+                                attributes: ['totalharga'],
+                            },
+            ]
+        }).then(result => {
+            //  console.log(result)
+              class Transaksi {
+                  constructor(
+                      tenantCode,
+                      invoiceNo,
+                      soNumber,
+                      soQuantity,
+                      partNo,
+                      uom,
+                      uomQuantity,
+                      customerName,
+                      customerPhoneNo,
+                      customerAddress,
+                      zip,
+                      expDate,
+                      awb,
+                      courier,
+                      notes,
+                      tag,
+                  ) {
+                    this.tenantCode = tenantCode; 
+                    this.invoiceNo = invoiceNo; 
+                    this.soNumber = soNumber; 
+                    this.soQuantity = soQuantity; 
+                    this.partNo = partNo;
+                    this.uom = uom;
+                    this.uomQuantity = uomQuantity;
+                    this.customerName = customerName;
+                    this.customerPhoneNo = customerPhoneNo;
+                    this.customerAddress = customerAddress;
+                    this.zip = zip;
+                    this.expDate = expDate;
+                    this.awb = awb;
+                    this.courier = courier;
+                    this.notes = notes;
+                    this.tag = tag;
+                  }
+                }
+              var  TransaksiArray = [];
+            
+              for(var i=0;i<result.length;i++){
+                  let keranjangdata =  result[i].products.replace(/\\n/g, '')
+                  let datakeranjang = eval(keranjangdata)
+                  let tag = '-'
+
+                  if (warehouseId == 3) {
+                      tag = 'Shipper|Kosambi'
+                  }
+                  else if (warehouseId == 4) {
+                      tag = 'Shipper|Tambak Sawah'
+                  }
+                  
+
+                  for(var j=0;j<datakeranjang.length;j++){
+                    TransaksiArray.push(new Transaksi(
+                        "FHG", 
+                        result[i].invoiceId,
+                        result[i].invoiceId,
+                        datakeranjang[j].jumlahproduct, 
+                        datakeranjang[j].sku, 
+                        'EA', 
+                        '1', 
+                        result[i].customer.nama,  
+                        result[i].customer.notelp, 
+                        result[i].customer.alamat, 
+                        '',
+                        '',
+                        result[i].awb, 
+                        result[i].expedisiName, 
+                        'HUBUNGI PENERIMA', 
+                        tag
+                    ));
+                  }     
+              }
+            // console.log(KeranjangArray)
+              const wb = new xl.Workbook();
+              const ws = wb.addWorksheet('Data Transaksi');
+              const headingColumnNames = [
+                  "TenantCode",
+                  "InvoiceNo",
+                  "SONumber",
+                  "SOQuantity",
+                  "PartNo",
+                  "UoM",
+                  "UoMQuantity",
+                  "CustomerName",
+                  "CustomerPhoneno",
+                  "CustomerAddress",
+                  "Zip",
+                  "ExpDate",
+                  "AWBNo",
+                  "Courier",
+                  "Notes",
+                  "TAG",
+              ]
+              let headingColumnIndex = 1;
+              headingColumnNames.forEach(heading => {
+                  ws.cell(1, headingColumnIndex++)
+                      .string(heading)
+              });
+              let rowIndex = 2;
+              TransaksiArray.forEach( record => {
+                  let columnIndex = 1;
+                  Object.keys(record ).forEach(columnName =>{
                       console.log('record: '+record);
                       console.log('columnName: '+columnName);
                       console.log('columnIndex: '+columnIndex);
