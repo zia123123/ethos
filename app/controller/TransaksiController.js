@@ -192,13 +192,12 @@ module.exports = {
             });
     },
 
- //CONTOH PAGINATION
-
     async indexGudang(req, res) {
         let warehouseId = req.query.warehouseId
         let status = req.query.status
         let paymentMethod = req.query.paymentMethod
         let search = req.query.search
+        let expedition = req.query.expedition
 
         const date = new Date();
         let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
@@ -223,6 +222,9 @@ module.exports = {
         }
         if( paymentMethod == null ){
             paymentMethod = ""
+        }
+        if( expedition == null ){
+            expedition = ""
         }
 
         let page = parseInt(req.query.page)
@@ -257,6 +259,9 @@ module.exports = {
                     },
                     typebayar: {
                         [Op.like]: '%'+paymentMethod+'%'
+                    },
+                    expedisiName: {
+                        [Op.like]: '%'+expedition+'%'
                     },
                     [Op.or]:[
                         {
@@ -332,6 +337,9 @@ module.exports = {
                 },
                 typebayar: {
                     [Op.like]: '%'+paymentMethod+'%'
+                },
+                expedisiName: {
+                    [Op.like]: '%'+expedition+'%'
                 },
                 [Op.or]:[
                     {
@@ -2489,7 +2497,7 @@ module.exports = {
               order: [
                 ['id', 'DESC'],
             ],
-            attributes: ['id', 'nama','createdAt','pembayaran','status','idtransaksi','invoiceId','subsidi','ongkoskirim', 'updateFinance'],
+            attributes: ['id', 'nama','createdAt','pembayaran','status','idtransaksi','invoiceId','subsidi','ongkoskirim', 'updateFinance', 'updatedAt'],
             include: [ 
                 { model: daexpedisis,
                     where: {
