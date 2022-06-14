@@ -3432,7 +3432,7 @@ module.exports = {
                     [Op.like]: `%${bank}%`
                 },
               },
-              attributes: ['id', 'invoiceId','awb','ongkoskirim','subsidi', 'discount', 'products','expedisiName','typebayar','memotransaksi', 'expedisiName', 'status', 'createdAt'],
+              attributes: ['id', 'invoiceId','awb','ongkoskirim','subsidi', 'discount', 'products','expedisiName','typebayar','memotransaksi', 'expedisiName', 'status', 'createdAt', 'updateFinance'],
               order: [
                 ['id', 'DESC'],
             ],
@@ -3453,7 +3453,7 @@ module.exports = {
                                 }]
                             },
                             { model: auths,
-                                attributes: ['notelp','firstname', [Sequelize.literal('`auth->mapgroups->group`.`name`'), 'groupname']],
+                                attributes: ['notelp','firstname', [Sequelize.literal('`auth->mapgroups->group`.`name`'), 'groupname'], [Sequelize.literal('`auth->mapgroups->group`.`internal`'), 'groupinternal']],
                                 include:[
                                     {
                                         model: mapgroup,
@@ -3486,6 +3486,7 @@ module.exports = {
                     warehousename,
                     typebayar,
                     Invoice,
+                    groupInternal,
                     awb,
                     date,
                     RecepientName, 
@@ -3494,14 +3495,8 @@ module.exports = {
                     namabank,
                     norekening,
                     expedisiName,
-                    prd1,
-                    domain1,
-                    qty1,
-                    price1,
-                    sku1,
-                    prd2,
-                    qty2,
-                    price2,
+                    expedisiPackage,
+                    products,
                     ongkir,
                     subsidi,
                     discount,
@@ -3509,6 +3504,7 @@ module.exports = {
                     biayacod,
                     kodeunik,
                     totalHarga,
+                    memo,
                     verifikator,
                     namacs,
                     namaadv,
@@ -3519,6 +3515,7 @@ module.exports = {
                     this.warehousename = warehousename;
                     this.typebayar = typebayar;
                     this.Invoice = Invoice;
+                    this.groupInternal = groupInternal;
                     this.awb = awb;
                     this.date = date;
                     this.RecepientName = RecepientName;
@@ -3527,14 +3524,8 @@ module.exports = {
                     this.namabank = namabank;
                     this.norekening = norekening;
                     this.expedisiName = expedisiName;
-                    this.prd1 = prd1;
-                    this.domain1 = domain1;
-                    this.qty1 = qty1;
-                    this.price1 = price1;
-                    this.sku1 = sku1;
-                    this.prd2 = prd2;
-                    this.qty2 = qty2;
-                    this.price2 = price2;
+                    this.expedisiPackage = expedisiPackage;
+                    this.products = products;
                     this.ongkir = ongkir;
                     this.subsidi = subsidi;
                     this.discount = discount;
@@ -3542,7 +3533,8 @@ module.exports = {
                     this.biayacod = biayacod;
                     this.kodeunik = kodeunik;
                     this.totalHarga = totalHarga;
-                    // this.verifikator = verifikator;
+                    this.memo = memo;
+                    this.verifikator = verifikator;
                     this.namacs = namacs;
                     this.namaadv = namaadv;
                     this.namagrup = namagrup;
@@ -3553,36 +3545,18 @@ module.exports = {
             var  TransaksiArray = [];
           
             for(var i=0;i<result.length;i++){
-                class Keranjang {
-                    constructor(namaproduct,sku,jumlahproduct,supervisor,advertiser,linkdomain,hpp, price) {
-                      this.namaproduct = namaproduct;
-                      this.sku = sku;
-                      this.jumlahproduct = jumlahproduct;
-                      this.supervisor = supervisor;
-                      this.advertiser = advertiser;
-                      this.linkdomain = linkdomain;
-                      this.hpp = hpp;
-                      this.price = price;
-                    }
-                  }
-                var  KeranjangArray = [];
                 let keranjangdata =  result[i].products.replace(/\\n/g, '')
                 let datakeranjang = eval(keranjangdata)
-                for(var j=0;j<=3;j++){
-                    if(datakeranjang[j] === undefined){
-                        KeranjangArray.push(new Keranjang("","",""));
-                    }else{
-                        KeranjangArray.push(new Keranjang(
-                            datakeranjang[j].namaproduct,
-                            datakeranjang[j].sku,
-                            datakeranjang[j].jumlahproduct,
-                            datakeranjang[j].supervisor,
-                            datakeranjang[j].advertiser,
-                            datakeranjang[j].linkdomain,
-                            datakeranjang[j].hpp,
-                            datakeranjang[j].price,
-                            
-                            ));
+                let products = ''
+                let adv = '-'
+                for(var j=0;j<datakeranjang.length;j++){
+                    if (products != '') {
+                        products += ', '
+                    }
+                    products += datakeranjang[j].sku+'-'+datakeranjang[j].jumlahproduct
+
+                    if (datakeranjang[j].advertiser != '' && adv == '-') {
+                        adv = datakeranjang[j].advertiser
                     }
                    
                 }    
@@ -3600,13 +3574,34 @@ module.exports = {
                     statustranksasi = 'Kurang Bayar'
                 }
 
+                let phoneNumber = result[i].customer.notelp
+                if (phoneNumber[0] == '0') {
+                    phoneNumber = '+62'+phoneNumber.substring(1)
+                }else if (phoneNumber[0] != 6 && phoneNumber[0] != '+') {
+                    phoneNumber = '+62' + phoneNumber
+                }
+
+                const expedition = result[i].expedisiName.split('(')
+
+                const expeditionName = expedition[0]
+                let expeditionPackage = '-'
+                if (expedition[1] !== undefined) {
+                expeditionPackage = expedition[1].replace(')', '')
+                }
+
                 const auth = JSON.parse(JSON.stringify(result[i].auth))
                 const date = new Date(result[i].createdAt)
+
+                let groupInternal = 'Partner'
+                if (auth.groupinternal == 1) {
+                    groupInternal = 'Ethos'
+                }
 
                 TransaksiArray.push(new Transaksi(
                     result[i].warehouse.name,
                     type,
                     result[i].invoiceId,
+                    groupInternal,
                     result[i].awb,
                     [(date.getDate()),
                         (date.getMonth()+1),
@@ -3615,19 +3610,13 @@ module.exports = {
                         date.getMinutes(),
                         date.getSeconds()].join(':'),
                     result[i].customer.nama,
-                    result[i].customer.notelp,
+                    phoneNumber,
                     result[i].customer.alamat,
                     result[i].daexpedisis.namabank,
                     result[i].daexpedisis.norekening,
-                    result[i].expedisiName,
-                    KeranjangArray[0].namaproduct,
-                    KeranjangArray[0].linkdomain,
-                    KeranjangArray[0].jumlahproduct.toString(),
-                    KeranjangArray[0].price == null? '': KeranjangArray[0].price.toString(),
-                    KeranjangArray[0].sku,
-                    KeranjangArray[1].namaproduct,
-                    KeranjangArray[1].jumlahproduct.toString(),
-                    KeranjangArray[1].price == null? '': KeranjangArray[1].price.toString(),
+                    expeditionName,
+                    expeditionPackage,
+                    products,
                     result[i].ongkoskirim.toString(),
                     result[i].subsidi.toString(),
                     result[i].discount.toString(),
@@ -3635,13 +3624,13 @@ module.exports = {
                     result[i].daexpedisis.biayacod == null ? '' : result[i].daexpedisis.biayacod.toString(),
                     (result[i].id%999).toString(),
                     result[i].daexpedisis.totalharga.toString(),
-                    'verifikator',
+                    result[i].memotransaksi,
+                    result[i].updateFinance,
                     result[i].auth.firstname,
-                    KeranjangArray[0].advertiser,
+                    adv,
                     auth.groupname,
                     auth.groupname,
-                    statustranksasi
-                                   
+                    statustranksasi     
                 ));
             }
         //   console.log(TransaksiArray)
@@ -3650,23 +3639,18 @@ module.exports = {
             const headingColumnNames = [
                 "Gudang",
                 "Metode Pembayaran",
-                "Invoice Number",
+                "Nomor Invoice",
+                "Group",
                 "Nomor AWB",
-                "Tanggal & Jam Invoice",
+                "Tanggal & Jam",
                 "Nama Pelanggan",
                 "Nomor HP Pelanggan",
                 "Alamat Pelanggan",
                 "Bank",
                 "Nomor Rekening",
                 "Ekspedisi",
-                "*ProductName_1",
-                "Link Domain",
-                "*Quantity_1",
-                "*UnitPrice_1",
-                "SKU_1",
-                "*ProductName_2",
-                "*Quantity_2",
-                "*UnitPrice_2",
+                "Paket Ekspedisi",
+                "Produk",
                 "Ongkos Kirim",
                 "Subsidi Ongkos Kirim",
                 "Diskon Transaksi",
@@ -3674,7 +3658,8 @@ module.exports = {
                 "Admin COD",
                 "Kode Unik",
                 "Total Harga Pesanan",
-                // "Verifikator",
+                "Memo Transaksi",
+                "Verifikator",
                 "Nama CS",
                 "Nama ADV",
                 "Nama Grup",
@@ -4418,13 +4403,12 @@ module.exports = {
                       groupInternal = 'Ethos'
                   }
 
-                  let phoneNumber = result[i].customer.notelp
-                  if (phoneNumber[0] == 0) {
-                      phoneNumber[0] = '+'
-                      phoneNumber.replace('+', '+62')
-                  }else if (phoneNumber[0] != 6) {
-                      phoneNumber = '+62' + phoneNumber
-                  }
+                let phoneNumber = result[i].customer.notelp
+                if (phoneNumber[0] == '0') {
+                    phoneNumber = '+62'+phoneNumber.substring(1)
+                }else if (phoneNumber[0] != 6 && phoneNumber[0] != '+') {
+                    phoneNumber = '+62' + phoneNumber
+                }
 
                   TransaksiArray.push(new Transaksi(
                     [(date.getDate()),
