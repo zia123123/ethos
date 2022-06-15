@@ -42,6 +42,7 @@ module.exports = {
                 advertiserId: req.params.id
             },
             include: [ { model: auths,
+                as:'auth',
                 attributes: ['id', 'firstname'] },
             ],
             attributes: ['id','start', 'expired','keterangan']

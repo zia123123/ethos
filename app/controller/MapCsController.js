@@ -34,6 +34,7 @@ module.exports = {
             include: [ { model: domains,
                 attributes: ['id', 'url','productId'], 
                 include: [ { model: auths,
+                    as:'auth',
                     attributes: ['id', 'firstname'] },
                 ],},
             ],
@@ -49,6 +50,7 @@ module.exports = {
                 domainId: req.query.domainId
             },
             include: [ { model: auths,
+                as:'auth',
                 attributes: ['id', 'firstname'] },
             ],
             attributes: ['id','status', 'createdAt']

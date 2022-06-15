@@ -45,6 +45,7 @@ module.exports = {
         .findAll({
             include: [ 
                 { model: auths,
+                    as:'auth',
                     attributes: ['notelp','firstname'],
                 },
                 { model: products,
@@ -117,6 +118,7 @@ module.exports = {
                 },
                 include: [ 
                     { model: auths,
+                        as:'auth',
                         attributes: ['notelp','firstname'],
                     },
                     { model: products,
@@ -171,6 +173,7 @@ module.exports = {
             },
             include: [ 
                 { model: auths,
+                    as:'auth',
                     attributes: ['notelp','firstname'],
                 },
                 { model: products,
@@ -275,6 +278,7 @@ module.exports = {
                 },
                 include: [ 
                     { model: auths,
+                        as:'auth',
                         attributes: ['notelp','firstname'],
                     },
                     { model: products,
@@ -346,6 +350,7 @@ module.exports = {
             },
             include: [ 
                 { model: auths,
+                    as:'auth',
                     attributes: ['notelp','firstname'],
                 },
                 { model: products,
@@ -460,6 +465,7 @@ module.exports = {
                 },
                 include: [ 
                     { model: auths,
+                        as:'auth',
                         attributes: ['notelp','firstname'],
                     },
                     { model: products,
@@ -544,6 +550,7 @@ module.exports = {
             },
             include: [ 
                 { model: auths,
+                    as:'auth',
                     attributes: ['notelp','firstname'],
                 },
                 { model: products,

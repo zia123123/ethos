@@ -104,6 +104,7 @@ module.exports = {
             attributes: ['id', 'nomor','nama_bank','createdBy','authId'],
             include: [ 
                 { model: auths,
+                    as:'auth',
                     attributes: ['id','firstname'],
                 }
             ]

@@ -38,6 +38,7 @@ module.exports = {
             },
             include: [ 
                 { model: auths,
+                    as:'auth',
                     attributes: ['firstname'],
                 },
                 { model: products,

@@ -101,6 +101,7 @@ module.exports = {
                     attributes: ['link'],
                 },
                 { model: auths,
+                    as:'auth',
                     attributes: ['firstname'],
                 },
                 
@@ -301,6 +302,7 @@ module.exports = {
                         attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank','totalharga'],
                     },
                     { model: auths,
+                        as:'auth',
                         attributes: ['notelp','firstname'],
                     }
                 ]
@@ -382,6 +384,7 @@ module.exports = {
                                 attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank','totalharga'],
                             },
                             { model: auths,
+                                as:'auth',
                                 attributes: ['notelp','firstname'],
                             }
             ]
@@ -523,6 +526,7 @@ module.exports = {
                         attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank','totalharga'],
                     },
                     { model: auths,
+                        as:'auth',
                         attributes: ['notelp','firstname'],
                     }
                 ]
@@ -610,6 +614,7 @@ module.exports = {
                                 attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank','totalharga'],
                             },
                             { model: auths,
+                                as:'auth',
                                 attributes: ['notelp','firstname'],
                             }
             ]
@@ -749,6 +754,7 @@ module.exports = {
                     { model: daexpedisis,
                     },
                     { model: auths,
+                        as:'auth',
                        
                     }
                 ]
@@ -841,6 +847,7 @@ module.exports = {
                             { model: daexpedisis,
                             },
                             { model: auths,
+                                as:'auth',
                                
                             }
             ]
@@ -928,6 +935,7 @@ module.exports = {
                                 }]
                             },
                             { model: auths,
+                                as:'auth',
                                 attributes: ['notelp','firstname'],
                             },
                             { model: daexpedisis,
@@ -1239,6 +1247,7 @@ module.exports = {
                                 }]
                             },
                             { model: auths,
+                                as:'auth',
                                 attributes: ['notelp','firstname'],
                             },
                             { model: daexpedisis,
@@ -1596,6 +1605,7 @@ module.exports = {
                                 }]
                             },
                             { model: auths,
+                                as:'auth',
                                 attributes: ['notelp','firstname'],
                             },
                             { model: daexpedisis,
@@ -1830,6 +1840,7 @@ module.exports = {
                                 }]
                             },
                             { model: auths,
+                                as:'auth',
                                 attributes: ['notelp','firstname'],
                             },
                             { model: daexpedisis,
@@ -2021,6 +2032,7 @@ module.exports = {
                     attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank','totalharga'],
                 },
                 { model: auths,
+                    as:'auth',
                     attributes: ['firstname'],
                 },
                 { model: buktibayars,
@@ -2131,6 +2143,7 @@ module.exports = {
                     attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank','totalharga'],
                 },
                 { model: auths,
+                    as:'auth',
                     attributes: ['firstname', 'notelp'],
                 },
                 { model: buktibayars,
@@ -2221,6 +2234,7 @@ module.exports = {
                     attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank','totalharga'],
                 },
                 { model: auths,
+                    as:'auth',
                     attributes: ['firstname', 'notelp'],
                 },
                 { model: buktibayars,
@@ -2275,6 +2289,7 @@ module.exports = {
                     attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank','totalharga'],
                 },
                 { model: auths,
+                    as:'auth',
                     attributes: ['firstname'],
                 },
                 { model: buktibayars,
@@ -2412,6 +2427,7 @@ module.exports = {
                     attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank','totalharga'],
                 },
                 { model: auths,
+                    as:'auth',
                     attributes: ['firstname'],
                 },
                 { model: customers,
@@ -2517,6 +2533,7 @@ module.exports = {
                     attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank','totalharga'],
                 },
                 { model: auths,
+                    as:'auth',
                     attributes: ['firstname'],
                 },
                 { model: customers,
@@ -3054,6 +3071,7 @@ module.exports = {
                         attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank','totalharga'],
                     },
                     { model: auths,
+                        as:'auth',
                         attributes: ['notelp','firstname'],
                     }
                 ]
@@ -3150,6 +3168,7 @@ module.exports = {
                                 attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank','totalharga'],
                             },
                             { model: auths,
+                                as:'auth',
                                 attributes: ['notelp','firstname'],
                             }
             ]
@@ -3257,6 +3276,7 @@ module.exports = {
                                 }]
                             },
                             { model: auths,
+                                as:'auth',
                                 attributes: ['notelp','firstname'],
                             },
                             { model: daexpedisis,
@@ -3472,6 +3492,7 @@ module.exports = {
                                 }]
                             },
                             { model: auths,
+                                as:'auth',
                                 attributes: ['notelp','firstname', [Sequelize.literal('`auth->mapgroups->group`.`name`'), 'groupname'], [Sequelize.literal('`auth->mapgroups->group`.`internal`'), 'groupinternal']],
                                 include:[
                                     {
@@ -3794,6 +3815,7 @@ module.exports = {
                                 }]
                             },
                             { model: auths,
+                                as:'auth',
                                 attributes: ['notelp','firstname', [Sequelize.literal('`auth->mapgroups->group`.`name`'), 'groupname']],
                                 include:[
                                     {
@@ -4095,6 +4117,7 @@ module.exports = {
                                 }]
                             },
                             { model: auths,
+                                as:'auth',
                                 attributes: ['notelp','firstname', [Sequelize.literal('`auth->mapgroups->group`.`name`'), 'groupname']],
                                 include:[
                                     {
@@ -4321,6 +4344,7 @@ module.exports = {
                                 }]
                             },
                             { model: auths,
+                                as:'auth',
                                 attributes: ['notelp','firstname', [Sequelize.literal('`auth->mapgroups->group`.`name`'), 'groupname'], [Sequelize.literal('`auth->mapgroups->group`.`internal`'), 'groupinternal']],
                                 include:[
                                     {

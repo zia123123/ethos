@@ -45,6 +45,7 @@ module.exports = {
             attributes: ['id','createdAt','type'],
             include: [ 
                 { model: auths,
+                    as:'auth',
                     attributes: ['firstname'],
                 },
                 
@@ -83,6 +84,7 @@ module.exports = {
             },
             include: [ 
                 { model: auths,
+                    as:'auth',
                     attributes: ['id', 'firstname'],
                 },
                 

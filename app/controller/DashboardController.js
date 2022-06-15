@@ -193,6 +193,7 @@ module.exports = {
                 },
                 { 
                     model: auths,
+                    as:'auth',
                     required: true,
                     attributes:[
                         // 'nama'
@@ -272,6 +273,7 @@ module.exports = {
                 },
                 { 
                     model: auths,
+                    as:'auth',
                     required: true,
                     attributes:[
                         // 'nama'
@@ -360,6 +362,7 @@ module.exports = {
                 },
                 { 
                     model: auths,
+                    as:'auth',
                     required: true,
                     attributes:[
                         // 'nama'
@@ -488,6 +491,7 @@ module.exports = {
                 },
                 { 
                     model: auths,
+                    as:'auth',
                     required: true,
                     attributes:[
                         // 'nama'
@@ -581,6 +585,7 @@ module.exports = {
             include: [
                 { 
                     model: auths,
+                    as:'auth',
                     required: true,
                     attributes:[
                         // 'nama'
@@ -652,6 +657,7 @@ module.exports = {
             include: [
                 { 
                     model: auths,
+                    as:'auth',
                     required: true,
                     attributes:[
                         // 'nama'
@@ -762,6 +768,7 @@ module.exports = {
             include: [
                 { 
                     model: auths,
+                    as:'auth',
                     required: true,
                     attributes:[
                         // 'nama'
@@ -886,6 +893,7 @@ module.exports = {
             include: [
                 { 
                     model: auths,
+                    as:'auth',
                     required: true,
                     attributes:[
                         // 'nama'
@@ -987,6 +995,7 @@ module.exports = {
             include: [
                 { 
                     model: auths,
+                    as:'auth',
                     required: true,
                     attributes:[
                         // 'nama'
@@ -1125,6 +1134,7 @@ module.exports = {
                 },
                 { 
                     model: auths,
+                    as:'auth',
                     required: true,
                     attributes:[
                         // 'nama'

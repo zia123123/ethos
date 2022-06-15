@@ -38,6 +38,7 @@ module.exports = {
             include: [ { model: mapgroup,
                 attributes: ['id'],
                 include: [ { model: auths,
+                    as:'auth',
                     attributes: ['firstname']
                 }]
             }]

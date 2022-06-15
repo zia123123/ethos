@@ -125,7 +125,8 @@ module.exports = {
                     include: [ 
                         { model: group,  
                             include: [ 
-                                { model: auths,  
+                                { model: auths,
+                                    as:'auth',
                                     attributes: ['firstname'],
                                 }
                             ]

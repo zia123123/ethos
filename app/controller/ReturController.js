@@ -48,6 +48,7 @@ module.exports = {
                           
                         },
                         { model: auths,
+                            as:'auth',
                             attributes: ['id','firstname','role'],
                         },
                         
@@ -134,6 +135,7 @@ module.exports = {
                             attributes: ['nama','notelp'],
                         },
                         { model: auths,
+                            as:'auth',
                             attributes: ['firstname','role'],
                         },
                         
@@ -192,6 +194,7 @@ module.exports = {
                             attributes: ['nama','notelp'],
                         },
                         { model: auths,
+                            as:'auth',
                             attributes: ['firstname','role'],
                         },
                         
