@@ -2793,10 +2793,13 @@ module.exports = {
         req.transaksi.sudahbayar = req.body.sudahbayar;
         req.transaksi.updateFinance = req.body.updateFinance;
         req.transaksi.awb = req.body.awb;
-        req.transaksi.updateFinance = req.body.updateFinance;
+        req.transaksi.authIDFinance = req.body.verificationId;
         req.transaksi.kurangbayar = req.body.kurangbayar;
         req.transaksi.statusbarang = req.body.statusbarang;
         req.transaksi.logstatus = req.transaksi.logstatus+"#"+req.body.logstatus;
+        if (req.body.verificationId != null) {
+            req.transaksi.tanggalVerifikasi = new Date();
+        }
         req.transaksi.save().then(transaksi => {
         return apiResponse.successResponseWithData(res, "SUCCESS", transaksi);
         })
@@ -2823,8 +2826,9 @@ module.exports = {
     async importPermintaanPesanan(req, res){
         let error = ''
         let success = ''
-        const orders = req.body
+        const orders = req.body.data
         console.log(orders);
+        console.log(req.body.inputer);
 
         for (let index = 0; index < orders.length; index++) {
             if (orders[index]['Nama Pelanggan'] === undefined) {
@@ -2849,7 +2853,9 @@ module.exports = {
                 transaksis.update(
                     {
                         status: "H", 
-                        awb: orders[index].AWB
+                        awb: orders[index].AWB,
+                        authIDWarehouse: parseInt(req.body.inputer),
+                        tanggalAWB: new Date()
                     },
                     {
                         where: {

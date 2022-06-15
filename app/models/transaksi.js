@@ -97,6 +97,12 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       type: DataTypes.STRING,
     },
+    tanggalAWB: {
+      type: 'DATETIME',
+    },
+    tanggalVerifikasi: {
+      type: 'DATETIME',
+    },
     // linkdomain: {
     //   type: DataTypes.STRING
     // },
@@ -119,6 +125,8 @@ module.exports = (sequelize, DataTypes) => {
     transaksi.hasOne(models.returs)
     // transaksi.belongsTo(models.expedisis, { foreginKey: "expedisiId"})   
     transaksi.belongsTo(models.auths, { foreginKey: "authId"})
+    transaksi.belongsTo(models.auths, { foreignKey: "authIDFinance"})
+    transaksi.belongsTo(models.auths, { foreignKey: "authIDWarehouse"})
     transaksi.belongsTo(models.customers, { foreginKey: "customerId"})
     transaksi.belongsTo(models.warehouses, { foreginKey: "warehouseId"})
     // transaksi.hasOne(models.keranjangs)
