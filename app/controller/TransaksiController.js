@@ -640,6 +640,7 @@ module.exports = {
         let search = req.query.search
         let status = req.query.status
         let warehouseId = req.query.warehouseId
+        let paymentMethod = req.query.paymentMethod
         const date = new Date();
         let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
             endDate   = date.setDate(date.getDate() + 1);
@@ -656,6 +657,9 @@ module.exports = {
         }
         if( status == null ){
             status = ""
+        }
+        if( paymentMethod == null ){
+            paymentMethod = ""
         }
         if( search == null ){
             search = ""
@@ -693,6 +697,7 @@ module.exports = {
                     warehouseId:{
                         [Op.like]: `%${warehouseId}%`
                     },
+                    typebayar:paymentMethod,
                     [Op.or]:[
                         {
                             '$auth.firstname$':{
@@ -2819,36 +2824,44 @@ module.exports = {
         let error = ''
         let success = ''
         const orders = req.body
+        console.log(orders);
 
         for (let index = 0; index < orders.length; index++) {
-            if (orders[index].Invoice === undefined) {
+            if (orders[index]['Nama Pelanggan'] === undefined) {
                 if (error) {
                     error += ', '
                 }
-                error += `Invoice index ke-${index+1} tidak ada`
+                error += `Nama Pelanggan index ke-${index+1} tidak ada`
                 continue
             }
-            if (orders[index].Invoice.length == 0) {
+            if (orders[index]['Nama Pelanggan'].length == 0) {
                 if (error) {
                     error += ', '
                 }
-                error += `Invoice index ke-${index+1} kosong`
+                error += `Nama Pelanggan index ke-${index+1} kosong`
                 continue
             }
             if (orders[index].AWB.length > 0) {
+                const customer = orders[index]['Nama Pelanggan'].split('|')
+                const customerName = customer[0]
+                const customerTransactionId = customer[1]
+
                 transaksis.update(
                     {
                         status: "H", 
                         awb: orders[index].AWB
                     },
                     {
-                        where: {invoiceId: orders[index].Invoice}
+                        where: {
+                            nama: customerName,
+                            idtransaksi: customerTransactionId
+                        }
                     }
                 )
                 if (success) {
                     success += ', '
                 }
-                success += `AWB dan Status dari Invoice index ke-${index+1} berhasil diubah`
+                success += `AWB dan Status dari Nama Pelanggan index ke-${index+1} berhasil diubah`
             }
         }
         console.log('Success:', success);
@@ -3715,6 +3728,11 @@ module.exports = {
             warehouseId = ""
         }
 
+        let typebayar = req.query.typebayar
+        if(isNaN(parseFloat(typebayar))){
+            typebayar = ""
+        }
+
         
         let result = await transaksis.findAll({
             where: {
@@ -3730,6 +3748,9 @@ module.exports = {
                 },
                 expedisiName: {
                     [Op.like]: '%'+expedisiName+'%'
+                },
+                typebayar: {
+                    [Op.like]: '%'+typebayar+'%'
                 },
                 status: {
                     [Op.or]: [
@@ -3856,6 +3877,7 @@ module.exports = {
                   let productsSpace = '';
                   let productNotes = '';
                   let adv = '-'
+                  let spv = '-'
 
                   for(var j=0;j<datakeranjang.length;j++){
                     //   if(datakeranjang[j] === undefined){
@@ -3878,8 +3900,12 @@ module.exports = {
                     }
                      productNotes += datakeranjang[j].namaproduct+' '+datakeranjang[j].jumlahproduct
 
-                     if (datakeranjang[j].advertiser != '' && adv == '-') {
+                    if (datakeranjang[j].advertiser != '' && adv == '-') {
                         adv = datakeranjang[j].advertiser
+                    }
+
+                    if (datakeranjang[j].supervisor != '' && spv == '-') {
+                        spv = datakeranjang[j].supervisor
                     }
                   }    
 
@@ -3922,7 +3948,7 @@ module.exports = {
                       productNotes, 
                       packingKayu, 
                       result[i].memotransaksi, 
-                      result[i].auth.firstname + ' | ' + result[i].expedisiName + ' | ' + type + ' | ' + adv + ' | ' + auth.groupname, 
+                      result[i].auth.firstname + ' | ' + result[i].expedisiName + ' | ' + type + ' | ' + adv + ' | ' + spv, 
                       auth.groupname, 
                       productsSpace
                   ));
@@ -4003,6 +4029,11 @@ module.exports = {
             warehouseId = ""
         }
 
+        let typebayar = req.query.typebayar
+        if(isNaN(parseFloat(typebayar))){
+            typebayar = ""
+        }
+
         
         let result = await transaksis.findAll({
             where: {
@@ -4018,6 +4049,9 @@ module.exports = {
                 },
                 expedisiName: {
                     [Op.like]: '%'+expedisiName+'%'
+                },
+                typebayar: {
+                    [Op.like]: '%'+typebayar+'%'
                 },
                 status: {
                     [Op.or]: [
@@ -4129,6 +4163,14 @@ module.exports = {
                   else if (warehouseId == 4) {
                       tag = 'Shipper|Tambak Sawah'
                   }
+
+                  const expedition = result[i].expedisiName.split('(')
+
+                  const expeditionName = expedition[0]
+                  let expeditionPackage = '-'
+                  if (expedition[1] !== undefined) {
+                    expeditionPackage = expedition[1].replace(')', '')
+                  }
                   
                   for(var j=0;j<datakeranjang.length;j++){
                     TransaksiArray.push(new Transaksi(
@@ -4145,7 +4187,7 @@ module.exports = {
                         '',
                         '',
                         result[i].awb, 
-                        result[i].expedisiName, 
+                        expeditionName, 
                         'HUBUNGI PENERIMA', 
                         tag
                     ));
@@ -4361,6 +4403,7 @@ module.exports = {
                   let adv = '-'
                   let weightTotal = 0
                   let quantityTotal = 0
+                  let spv = '-'
 
                   for(var j=0;j<datakeranjang.length;j++){
                     if (products != '') {
@@ -4373,8 +4416,12 @@ module.exports = {
                     }
                      productNotes += datakeranjang[j].namaproduct+' '+datakeranjang[j].jumlahproduct
 
-                     if (datakeranjang[j].advertiser != '' && adv == '-') {
+                    if (datakeranjang[j].advertiser != '' && adv == '-') {
                         adv = datakeranjang[j].advertiser
+                    }
+
+                    if (datakeranjang[j].supervisor != '' && spv == '-') {
+                        spv = datakeranjang[j].supervisor
                     }
 
                     weightTotal += (datakeranjang[j].jumlahproduct*datakeranjang[j].weight)
@@ -4429,7 +4476,7 @@ module.exports = {
                       result[i].customer.provinsiname, 
                       result[i].customer.cityname, 
                       result[i].customer.districtname,
-                      result[i].memotransaksi + '|' + products + '|' + auth.firstname + '|' + type + '|' + adv + '|' + auth.groupname + '|' + auth.groupname, 
+                      result[i].memotransaksi + '|' + products + '|' + auth.firstname + '|' + type + '|' + adv + '|' + spv + '|' + auth.groupname, 
                       (weightTotal/1000).toString(),
                       quantityTotal.toString(),
                       productNotes, 
