@@ -104,6 +104,14 @@ module.exports = {
                     as:'auth',
                     attributes: ['firstname'],
                 },
+                { model: auths,
+                    as:'authWarehouse',
+                    attributes: ['firstname'],
+                },
+                { model: auths,
+                    as:'authFinance',
+                    attributes: ['firstname'],
+                },
                 
             ]
         }).then(result => {
