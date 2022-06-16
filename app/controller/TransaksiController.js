@@ -409,7 +409,6 @@ module.exports = {
     },
 
     async indexGudangRiwayat(req, res) {
-      
         let warehouseId = req.query.warehouseId
         let expedition = req.query.expedition
         let paymentMethod = req.query.paymentMethod
@@ -419,13 +418,13 @@ module.exports = {
 
         const date = new Date();
         let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
-            endDate   = date.setDate(date.getDate() + 1);
+            endDate   = new Date(date.setDate(date.getDate() + 1));
 
         if (req.query.startDate) {
-            startDate = req.query.startDate+"T00:00:00.000Z"    
+            startDate = Math.floor(req.query.startDate) 
         }
         if (req.query.endDate) {
-            endDate = req.query.endDate+"T23:59:59.000Z"    
+            endDate = Math.floor(req.query.endDate)
         }
 
         if( search == null ){
@@ -455,7 +454,7 @@ module.exports = {
                     warehouseId: {
                         [Op.like]: '%'+warehouseId+'%'
                     },
-                    createdAt: {
+                    tanggalAWB: {
                         [Op.and]: {
                             [Op.gte]: startDate,
                             [Op.lte]: endDate
@@ -528,7 +527,11 @@ module.exports = {
                     { model: auths,
                         as:'auth',
                         attributes: ['notelp','firstname'],
-                    }
+                    },
+                    { model: auths,
+                        as:'authWarehouse',
+                        attributes: ['notelp','firstname'],
+                    },
                 ]
             },
             
@@ -540,7 +543,7 @@ module.exports = {
                 warehouseId: {
                     [Op.like]: '%'+warehouseId+'%'
                 },
-                createdAt: {
+                tanggalAWB: {
                     [Op.and]: {
                         [Op.gte]: startDate,
                         [Op.lte]: endDate
@@ -602,9 +605,9 @@ module.exports = {
                 ],
               },
               order: [
-                ['id', 'DESC'],
+                ['tanggalAWB', 'DESC'],
             ],
-                        include: [ 
+            include: [ 
                             { model: warehouses,
                                 attributes: ['name'],
                             }, { model: customers,
@@ -616,7 +619,11 @@ module.exports = {
                             { model: auths,
                                 as:'auth',
                                 attributes: ['notelp','firstname'],
-                            }
+                            },
+                            { model: auths,
+                                as:'authWarehouse',
+                                attributes: ['notelp','firstname'],
+                            },
             ]
         }).then(result => {
             var totalPage = (parseInt(count) / limit) + 1
