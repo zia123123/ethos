@@ -2914,7 +2914,7 @@ module.exports = {
                 continue
             }
             if (orders[index].AWB.length > 0) {
-                const customer = orders[index]['Nama Pelanggan'].split('|')
+                const customer = orders[index]['Nama Pelanggan'].split(',')
                 const customerName = customer[0]
                 const customerTransactionId = customer[1]
 
@@ -4551,7 +4551,7 @@ module.exports = {
                       expeditionPackage, 
                       groupInternal,
                       result[i].invoiceId,
-                      result[i].customer.nama+'|'+result[i].idtransaksi, 
+                      result[i].customer.nama+','+result[i].idtransaksi, 
                       phoneNumber, 
                       result[i].customer.alamat, 
                       result[i].customer.provinsiname, 
