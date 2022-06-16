@@ -394,6 +394,14 @@ module.exports = {
                             { model: auths,
                                 as:'auth',
                                 attributes: ['notelp','firstname'],
+                            },
+                            { model: auths,
+                                as:'authWarehouse',
+                                attributes: ['notelp','firstname'],
+                            },
+                            { model: auths,
+                                as:'authFinance',
+                                attributes: ['notelp','firstname'],
                             }
             ]
         }).then(result => {
@@ -2330,6 +2338,7 @@ module.exports = {
          let invoiceId = req.query.invoiceId
          let namabank = req.query.namabank
          let search = req.query.search 
+         
          const date = new Date();
          let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
             endDate   = date.setDate(date.getDate() + 1);
