@@ -2862,6 +2862,13 @@ module.exports = {
                 error += `Nama Pelanggan index ke-${index+1} kosong`
                 continue
             }
+            if (orders[index].AWB === undefined) {
+                if (error) {
+                    error += ', '
+                }
+                error += `AWB index ke-${index+1} tidak ada`
+                continue
+            }
             if (orders[index].AWB.length > 0) {
                 const customer = orders[index]['Nama Pelanggan'].split('|')
                 const customerName = customer[0]
