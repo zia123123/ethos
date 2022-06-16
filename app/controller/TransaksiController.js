@@ -429,10 +429,10 @@ module.exports = {
             endDate   = new Date(date.setDate(date.getDate() + 1));
 
         if (req.query.startDate) {
-            startDate = Math.floor(req.query.startDate) 
+            startDate = new Date(req.query.startDate * 1)
         }
         if (req.query.endDate) {
-            endDate = Math.floor(req.query.endDate)
+            endDate = new Date(req.query.endDate * 1)
         }
 
         if( search == null ){
