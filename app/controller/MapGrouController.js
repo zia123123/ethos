@@ -148,16 +148,16 @@ module.exports = {
                             required: false,
                             where:{
                                 domainId: domainId,
-                                id: {
-                                    [Op.eq]: null
-                                }
+                                // id: {
+                                //     [Op.eq]: null
+                                // }
                             }
                         }
                     ]
                 },
             ],
             where:{
-                groupId: Sequelize.literal(`groupId = (SELECT groupId FROM mapgroups where authId = ${authId})`)
+                groupId: Sequelize.literal(`groupId = (SELECT groupId FROM mapgroups where authId = ${authId})`+' AND `auth->mapcs`.`id` IS NULL')
             }
 
         }).then(result => {
