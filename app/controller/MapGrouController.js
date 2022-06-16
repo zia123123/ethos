@@ -1,4 +1,4 @@
-const { mapgroup,auths,group } = require('../models/index');
+const { mapgroup,auths,group,mapcs, Sequelize } = require('../models/index');
 const { Op } = require("sequelize");
 const apiResponse = require("../helpers/apiResponse");
 
@@ -125,5 +125,47 @@ module.exports = {
             
         })
     },
+
+    async csNullByAuthDomain(req, res){
+        const authId = req.query.authId
+        const domainId = req.query.domainId
+        const role = req.query.role
+
+        let result = await mapgroup.findAll({
+            attributes: ['id','createdAt','type'],
+            include: [ 
+                { model: auths,
+                    as:'auth',
+                    required: true,
+                    attributes: ['id', 'firstname'],
+                    where:{
+                        role: role
+                    },
+
+                    include:[
+                        {
+                            model: mapcs,
+                            required: false,
+                            where:{
+                                domainId: domainId,
+                                id: {
+                                    [Op.eq]: null
+                                }
+                            }
+                        }
+                    ]
+                },
+            ],
+            where:{
+                groupId: Sequelize.literal(`groupId = (SELECT groupId FROM mapgroups where authId = ${authId})`)
+            }
+
+        }).then(result => {
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+        }).catch(function (err){
+            console.log(err);
+            return apiResponse.ErrorResponse(res, err);
+        });
+    }
 
 }

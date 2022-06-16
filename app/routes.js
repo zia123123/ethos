@@ -549,4 +549,6 @@ router.post('/api/lead/', LeadController.create);
 router.get('/api/lead/:id', LeadController.find, LeadController.show);
 router.put('/api/lead/:id', LeadController.find, LeadController.update);
 
+router.get('/api/mapgroups/cs-null-by-auth-domain', MapGrouController.csNullByAuthDomain);
+
 module.exports = router;

@@ -77,6 +77,7 @@ module.exports = (sequelize, DataTypes) => {
     auth.hasMany(models.mappingnoreks,{ onDelete: 'cascade' },{ constraints: true}, { foreginKey: "auth"})
     auth.hasMany(models.group,{ foreginKey: "auth"})
     auth.hasMany(models.mapgroup,{ foreginKey: "auth"})
+    auth.hasMany(models.mapcs,{ foreginKey: "auth"})
     auth.hasMany(models.keranjangs)
     auth.hasMany(models.customers)
     auth.hasMany(models.pengajuanbiaya)
