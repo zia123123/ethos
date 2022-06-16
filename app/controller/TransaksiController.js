@@ -2341,14 +2341,14 @@ module.exports = {
          
          const date = new Date();
          let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
-            endDate   = date.setDate(date.getDate() + 1);
-
-        if (req.query.startDate) {
-            startDate = req.query.startDate+"T00:00:00.000Z"    
-        }
-        if (req.query.endDate) {
-            endDate = req.query.endDate+"T23:59:59.000Z"    
-        }
+             endDate   = new Date(date.setDate(date.getDate() + 1));
+ 
+         if (req.query.startDate) {
+             startDate = new Date(req.query.startDate * 1)
+         }
+         if (req.query.endDate) {
+             endDate = new Date(req.query.endDate * 1)
+         }
         
         if( search == null ){
             search = ""
@@ -2398,7 +2398,7 @@ module.exports = {
                 ]
              },
              typebayar: 1,
-                createdAt :  {
+             tanggalVerifikasi :  {
                     [Op.and]: {
                         [Op.gte]: startDate,
                         [Op.lte]: endDate
@@ -2508,7 +2508,7 @@ module.exports = {
                 ]
              },
              typebayar: 1,
-               createdAt :  {
+             tanggalVerifikasi :  {
                     [Op.and]: {
                       [Op.gte]: startDate,
                       [Op.lte]: endDate
@@ -2548,7 +2548,7 @@ module.exports = {
                   ],
               },
               order: [
-                ['id', 'DESC'],
+                ['tanggalVerifikasi', 'DESC'],
             ],
             attributes: ['id', 'nama','createdAt','pembayaran','status','idtransaksi','invoiceId','subsidi','ongkoskirim', 'updateFinance', 'updatedAt', 'tanggalVerifikasi', 'authIDFinance'],
             include: [ 
