@@ -101,6 +101,7 @@ const Ekpedisicontroller = require('./controller/Ekpedisicontroller');
 const DashboardController = require('./controller/DashboardController');
 const MutationController = require('./controller/MutationController');
 const MutationDetailController = require('./controller/MutationDetailController');
+const LeadController = require('./controller/LeadController');
 
 
 const multer = require('multer')
@@ -542,5 +543,10 @@ router.get('/api/mutation-detail/', MutationDetailController.index);
 router.get('/api/mutation-detail/invoice-null', MutationDetailController.indexInvoiceNull);
 router.get('/api/mutation-detail/invoice/:id', MutationDetailController.indexByInvoice);
 router.patch('/api/mutation-detail/update', MutationDetailController.update);
+
+router.get('/api/lead/', LeadController.index);
+router.post('/api/lead/', LeadController.create);
+router.get('/api/lead/:id', LeadController.find, LeadController.show);
+router.put('/api/lead/:id', LeadController.find, LeadController.update);
 
 module.exports = router;
