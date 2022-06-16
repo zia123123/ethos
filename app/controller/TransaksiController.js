@@ -2817,12 +2817,16 @@ module.exports = {
         req.transaksi.sudahbayar = req.body.sudahbayar;
         req.transaksi.updateFinance = req.body.updateFinance;
         req.transaksi.awb = req.body.awb;
-        req.transaksi.authIDFinance = req.body.verificationId;
+        req.transaksi.authIDFinance = req.body.verificationFinanceId;
+        req.transaksi.authIDWarehouse = req.body.verificationWarehouseId;
         req.transaksi.kurangbayar = req.body.kurangbayar;
         req.transaksi.statusbarang = req.body.statusbarang;
         req.transaksi.logstatus = req.transaksi.logstatus+"#"+req.body.logstatus;
-        if (req.body.verificationId != null) {
+        if (req.body.verificationFinanceId != null) {
             req.transaksi.tanggalVerifikasi = new Date();
+        }
+        if (req.body.verificationWarehouseId != null) {
+            req.transaksi.tanggalAWB = new Date();
         }
         req.transaksi.save().then(transaksi => {
         return apiResponse.successResponseWithData(res, "SUCCESS", transaksi);
