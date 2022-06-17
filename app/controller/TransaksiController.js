@@ -2850,6 +2850,7 @@ module.exports = {
         req.transaksi.sudahbayar = req.body.sudahbayar;
         req.transaksi.updateFinance = req.body.updateFinance;
         req.transaksi.awb = req.body.awb;
+        req.transaksi.memoCancel = req.body.memoCancel;
         req.transaksi.authIDFinance = req.body.verificationFinanceId;
         req.transaksi.authIDWarehouse = req.body.verificationWarehouseId;
         req.transaksi.kurangbayar = req.body.kurangbayar;

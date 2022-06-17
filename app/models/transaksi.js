@@ -103,6 +103,9 @@ module.exports = (sequelize, DataTypes) => {
     tanggalVerifikasi: {
       type: 'DATETIME',
     },
+    memoCancel: {
+      type: DataTypes.STRING
+    },
     // linkdomain: {
     //   type: DataTypes.STRING
     // },
