@@ -192,4 +192,81 @@ module.exports = {
         })
     },
 
+    async getCustomerPhoneNumbers(req, res) {
+        let search = ''
+
+        if (req.query.search != null) {
+            search = req.query.search
+        }
+        let result = await customers.findAll({
+            where:{
+                notelp:{
+                    [Op.like]: `%${search}%`
+                }
+            },
+           attributes:['notelp'],
+           group: ['notelp'],
+           order: ['notelp']
+        }).then(result => {
+          
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            }).catch(function (err){
+                return apiResponse.ErrorResponse(res, err);
+            });
+    },
+
+    async getCustomerByPhoneNumber(req, res) {
+        let phoneNumber = req.params.phone
+        let result = await customers.findAll({
+            limit:1,
+            where:{
+                notelp:phoneNumber
+            },
+           order: [['createdAt', 'DESC']]
+        }).then(result => {
+          
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+        }).catch(function (err){
+            console.log(err);
+            return apiResponse.ErrorResponse(res, err);
+        });
+    },
+
+    async createByLead(req, res) { 
+        let result = await customers.create({
+            // warehouseId: req.body.warehouseId,
+            // idorigin: req.body.idorigin,
+            nama: req.lead.nama,
+            authId: req.lead.authId,
+            notelp: req.lead.no_hp,
+            lead: req.lead.id,
+            // notelp2: req.body.notelp2,
+            // provinsiname: req.body.provinsiname,
+            // cityname: req.body.cityname,
+            // districtname: req.body.districtname,
+            // email: req.body.email,
+            // destinations: req.body.destinations,
+            // alamat: req.body.alamat,
+            // rt:req.body.rt,
+            // rw:req.body.rw,
+            // groupId:req.body.groupId,
+            // kelurahan: req.body.kelurahan,
+            // memoid: req.body.memoid,
+            // jeniskelamin:req.body.jeniskelamin,
+            // pekerjaan:req.body.pekerjaan,
+            // postalcode: req.body.postalcode,
+            // provinceId: req.body.provinceId,
+            // cityregencyId: req.body.cityregencyId,
+            // districtId: req.body.districtId,    
+        }).then(result => {
+            returnData = {
+                result,
+                lead: req.lead
+            }
+            return apiResponse.successResponseWithData(res, "SUCCESS CREATE", returnData);
+        }).catch(function (err)  {
+            return apiResponse.ErrorResponse(res, err);
+        });
+      },
+
 }

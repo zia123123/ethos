@@ -1,5 +1,5 @@
 const {
-    leads, auths, products, domains, Sequelize 
+    leads, auths, products, domains, customers, Sequelize 
    } = require('../models/index');
 const { Op } = require("sequelize");
 const { exportstocsv }  = require("export-to-csv"); 
@@ -332,4 +332,74 @@ module.exports = {
             return apiResponse.ErrorResponse(res, err);
         });
     },
+
+    async getLeadByPhoneNumberDomainCs(req, res, next){
+        let page = parseInt(req.query.page)
+        let limit = parseInt(req.query.limit)
+        let csId = req.query.csId
+        let phoneNumber = req.query.phoneNumber
+        let domain = req.query.domainId
+
+        let filter = 
+        {
+            where:{
+                authId: csId,
+                no_hp: phoneNumber,
+                domainId: domain
+            },
+            include:[
+                {
+                    model: auths,
+                    as: 'auth',
+                    required: true,
+                    // attributes: []
+                },
+                {
+                    model: products,
+                    required: true,
+                    // attributes: []
+                },
+                {
+                    model: domains,
+                    required: true,
+                    // attributes: []
+                },
+                {
+                    model: customers,
+                    required: false,
+                    // attributes: []
+                },
+            ],
+        }
+        let count = await leads.count(filter)
+
+        if (isNaN(limit) == false && isNaN(page) == false) {
+            filter['offset'] = (page - 1) * limit
+            filter['limit'] = limit
+            filter['subQuery'] = false
+        }
+
+        let result = await leads.findAll(filter).then(result => {
+            var totalPage = (parseInt(count) / limit) + 1
+            returnData = {
+                result,
+                metadata: {
+                    page: page,
+                    count: result.length,
+                    totalPage: parseInt(totalPage),
+                    totalData:  count,
+                }
+            }
+
+            if (result[0].customer) {
+                return apiResponse.successResponseWithData(res, "SUCCESS", returnData);    
+            }
+            
+            req.lead = result[0]
+            next()
+            // return apiResponse.successResponseWithData(res, "SUCCESS", result);
+        }).catch(function (err){
+            return apiResponse.ErrorResponse(res, err);
+        });
+    }
 }

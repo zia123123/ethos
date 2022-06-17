@@ -552,4 +552,9 @@ router.put('/api/lead/:id', LeadController.find, LeadController.update);
 
 router.get('/api/mapgroups/cs-null-by-auth-domain', MapGrouController.csNullByAuthDomain);
 
+router.get('/api/customer-phone-number/', CustomerController.getCustomerPhoneNumbers);
+router.get('/api/customer-phone-number/:phone', CustomerController.getCustomerByPhoneNumber);
+
+router.get('/api/lead-after-domain/', LeadController.getLeadByPhoneNumberDomainCs, CustomerController.createByLead);
+
 module.exports = router;

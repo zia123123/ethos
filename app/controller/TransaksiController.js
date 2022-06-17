@@ -2856,6 +2856,7 @@ module.exports = {
         req.transaksi.authIDWarehouse = req.body.verificationWarehouseId;
         req.transaksi.kurangbayar = req.body.kurangbayar;
         req.transaksi.statusbarang = req.body.statusbarang;
+        req.transaksi.leadsId = req.body.leadsId;
         req.transaksi.logstatus = req.transaksi.logstatus+"#"+req.body.logstatus;
         if (req.body.verificationFinanceId != null) {
             req.transaksi.tanggalVerifikasi = new Date();

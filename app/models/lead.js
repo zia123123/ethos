@@ -22,7 +22,8 @@ module.exports = (sequelize, DataTypes) => {
     lead.associate = function(models) {
       lead.belongsTo(models.auths, {foreignKey: "authId"}),
       lead.belongsTo(models.products, {foreignKey: "productId"}),
-      lead.belongsTo(models.domains, {foreignKey: "domainId"})
+      lead.belongsTo(models.domains, {foreignKey: "domainId"}),
+      lead.hasOne(models.customers, {foreignKey: "lead"})
     };
   
     return lead;
