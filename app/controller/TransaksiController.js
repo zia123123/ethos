@@ -4443,6 +4443,7 @@ module.exports = {
                       totalHarga,
                       ongkoskirim,
                       subsidi,
+                      packingKayu
                   ) {
                     this.datetime = datetime; 
                     this.paymentMethod = paymentMethod; 
@@ -4464,6 +4465,7 @@ module.exports = {
                     this.totalHarga = totalHarga;
                     this.ongkoskirim = ongkoskirim;
                     this.subsidi = subsidi;
+                    this.packingKayu = packingKayu;
                   }
                 }
               var  TransaksiArray = [];
@@ -4539,6 +4541,12 @@ module.exports = {
                     phoneNumber = '+62' + phoneNumber
                 }
 
+                  let packingKayu = 'false'
+
+                  if (memo.includes('PACKING KAYU') && memo.includes('TIDAK PERLU PACKING KAYU') == false) {
+                      packingKayu = 'true'
+                  }
+
                   TransaksiArray.push(new Transaksi(
                     [(date.getDate()),
                         (date.getMonth()+1),
@@ -4565,6 +4573,7 @@ module.exports = {
                       result[i].daexpedisis.totalharga.toString(),
                       result[i].ongkoskirim.toString(),
                       result[i].subsidi.toString(),
+                      packingKayu
                   ));
               }
             // console.log(KeranjangArray)
@@ -4577,7 +4586,7 @@ module.exports = {
                   "Gudang",
                   "Ekspedisi",
                   "Paket Ekspedisi",
-                  "Group",
+                  "Nama Group",
                   "Invoice Number",
                   "Nama Pelanggan",
                   "Nomor Telephone Pelanggan",
@@ -4592,6 +4601,7 @@ module.exports = {
                   "Harga Total Pemesanan",
                   "Ongkos Kirim",
                   "Subsidi Ongkos Kirim",
+                  "Packing Kayu"
               ]
               let headingColumnIndex = 1;
               headingColumnNames.forEach(heading => {
