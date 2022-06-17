@@ -4239,10 +4239,10 @@ module.exports = {
                   let tag = '-'
 
                   if (warehouseId == 3) {
-                      tag = 'Shipper|Kosambi'
+                      tag = 'Shipper|Kapuk'
                   }
                   else if (warehouseId == 4) {
-                      tag = 'Shipper|Tambak Sawah'
+                      tag = 'Shipper|Tandes'
                   }
 
                   const expedition = result[i].expedisiName.split('(')
