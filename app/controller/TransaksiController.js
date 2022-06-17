@@ -668,7 +668,7 @@ module.exports = {
         let search = req.query.search
         let status = req.query.status
         let warehouseId = req.query.warehouseId
-        let paymentMethod = req.query.paymentMethod
+        let paymentMethod = parseInt(req.query.paymentMethod)
         const date = new Date();
         let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
             endDate   = date.setDate(date.getDate() + 1);
@@ -813,6 +813,7 @@ module.exports = {
                         }
                     ]
                 },
+                typebayar:paymentMethod,
                 warehouseId:{
                     [Op.like]: `%${warehouseId}%`
                 },
