@@ -4015,7 +4015,7 @@ module.exports = {
                         date.getMinutes(),
                         date.getSeconds()].join(':'), 
                       result[i].invoiceId, 
-                      result[i].customer.nama+'|'+result[i].idtransaksi+'|'+products, 
+                      result[i].customer.nama, 
                       result[i].customer.notelp, 
                       result[i].customer.alamat, 
                       result[i].awb, 
