@@ -49,6 +49,7 @@ module.exports = {
             ongkoskirim:  req.body.ongkoskirim,
             subsidi:  req.body.subsidi,
             memotransaksi: req.body.memotransaksi,
+            leadsId: req.body.leadsId,
         }).then(result => {
             let keranjang = keranjangs.bulkCreate(datakeranjang, { individualHooks: true }).then(keranjang =>{
                 return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
