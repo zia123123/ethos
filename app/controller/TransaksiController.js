@@ -431,7 +431,46 @@ module.exports = {
         let paymentMethod = req.query.paymentMethod
         let transactionStatus = req.query.transactionStatus
         let paymentStatus = req.query.paymentStatus
+        let searchWords = []
         let search = req.query.search
+
+        if( search == null ){
+            search = ""
+        }else{
+            const words = search.toLowerCase().split(' ')
+            words.forEach(word => {
+                console.log(word);
+                searchWords.push({
+                    [Op.or]:[
+                        {
+                            invoiceId:{
+                                [Op.like]: `%${word}%`
+                            }
+                        },
+                        {
+                            awb:{
+                                [Op.like]: `%${word}%`
+                            }
+                        },
+                        {
+                            nama:{
+                                [Op.like]: `%${word}%`
+                            }
+                        },
+                        {
+                            expedisiName:{
+                                [Op.like]: `%${word}%`
+                            }
+                        },
+                        {
+                            '$auth.firstname$':{
+                                [Op.like]: `%${word}%`
+                            }
+                        },
+                    ]
+                })
+            })
+        }
 
         const date = new Date();
         let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
@@ -444,9 +483,6 @@ module.exports = {
             endDate = new Date(req.query.endDate * 1)
         }
 
-        if( search == null ){
-            search = ""
-        }
         if( warehouseId == null ){
             warehouseId = ""
         }
@@ -504,33 +540,7 @@ module.exports = {
                             }
                         ]
                     },
-                    [Op.or]:[
-                        {
-                            invoiceId:{
-                                [Op.like]: `%${search}%`
-                            }
-                        },
-                        {
-                            awb:{
-                                [Op.like]: `%${search}%`
-                            }
-                        },
-                        {
-                            nama:{
-                                [Op.like]: `%${search}%`
-                            }
-                        },
-                        {
-                            expedisiName:{
-                                [Op.like]: `%${search}%`
-                            }
-                        },
-                        {
-                            '$auth.firstname$':{
-                                [Op.like]: `%${search}%`
-                            }
-                        },
-                    ],
+                    [Op.and]: searchWords,
                 },
                 include: [ 
                     { model: warehouses,
@@ -593,54 +603,28 @@ module.exports = {
                         }
                     ]
                 },
-                [Op.or]:[
-                    {
-                        invoiceId:{
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        awb:{
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        nama:{
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        expedisiName:{
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        '$auth.firstname$':{
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                ],
+                [Op.and]: searchWords
               },
               order: [
                 ['tanggalAWB', 'DESC'],
             ],
             include: [ 
-                            { model: warehouses,
-                                attributes: ['name'],
-                            }, { model: customers,
-                                attributes: ['notelp'],
-                            },
-                            { model: daexpedisis,
-                                attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank','totalharga'],
-                            },
-                            { model: auths,
-                                as:'auth',
-                                attributes: ['notelp','firstname'],
-                            },
-                            { model: auths,
-                                as:'authWarehouse',
-                                attributes: ['notelp','firstname'],
-                            },
+                { model: warehouses,
+                    attributes: ['name'],
+                }, { model: customers,
+                    attributes: ['notelp'],
+                },
+                { model: daexpedisis,
+                    attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank','totalharga'],
+                },
+                { model: auths,
+                    as:'auth',
+                    attributes: ['notelp','firstname'],
+                },
+                { model: auths,
+                    as:'authWarehouse',
+                    attributes: ['notelp','firstname'],
+                },
             ]
         }).then(result => {
             var totalPage = (parseInt(count) / limit) + 1
