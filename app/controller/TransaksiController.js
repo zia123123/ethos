@@ -668,7 +668,7 @@ module.exports = {
         let search = req.query.search
         let status = req.query.status
         let warehouseId = req.query.warehouseId
-        let paymentMethod = parseInt(req.query.paymentMethod)
+        let paymentMethod = {[Op.like]: '%%'}
         const date = new Date();
         let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
             endDate   = date.setDate(date.getDate() + 1);
@@ -686,8 +686,8 @@ module.exports = {
         if( status == null ){
             status = ""
         }
-        if( paymentMethod == null ){
-            paymentMethod = ""
+        if( req.query.paymentMethod != null ){
+            paymentMethod = req.query.paymentMethod
         }
         if( search == null ){
             search = ""
@@ -725,7 +725,7 @@ module.exports = {
                     warehouseId:{
                         [Op.like]: `%${warehouseId}%`
                     },
-                    typebayar:paymentMethod,
+                    typebayar: paymentMethod,
                     [Op.or]:[
                         {
                             '$auth.firstname$':{
@@ -813,7 +813,7 @@ module.exports = {
                         }
                     ]
                 },
-                typebayar:paymentMethod,
+                typebayar: paymentMethod,
                 warehouseId:{
                     [Op.like]: `%${warehouseId}%`
                 },
