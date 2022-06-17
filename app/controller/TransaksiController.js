@@ -4258,7 +4258,7 @@ module.exports = {
                         "FHG", 
                         result[i].invoiceId,
                         result[i].invoiceId,
-                        datakeranjang[j].jumlahproduct, 
+                        datakeranjang[j].jumlahproduct.toString(), 
                         datakeranjang[j].sku, 
                         'EA', 
                         '1', 
