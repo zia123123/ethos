@@ -211,7 +211,7 @@ module.exports = {
         }
 
         const date = new Date();
-        let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
+        let startDate = new Date(0),
             endDate   = date.setDate(date.getDate() + 1);
 
         if (req.query.startDate) {

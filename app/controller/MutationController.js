@@ -111,14 +111,14 @@ module.exports = {
         }
 
         const date = new Date();
-        let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
+        let startDate = new Date(0),
             endDate   = date.setDate(date.getDate() + 1);
 
         if (req.query.startDate) {
-            startDate = req.query.startDate+"T00:00:00.000Z"    
+            startDate = Math.floor(req.query.startDate) 
         }
         if (req.query.endDate) {
-            endDate = req.query.endDate+"T23:59:59.000Z"    
+            endDate = Math.floor(req.query.endDate)
         }
 
         let filter = 
