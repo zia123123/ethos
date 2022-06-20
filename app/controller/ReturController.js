@@ -1,4 +1,4 @@
-const { returs,transaksis,auths,customers } = require('../models/index');
+const { returs,transaksis,auths,customers, Sequelize } = require('../models/index');
 const { Op } = require("sequelize");
 const { exportstocsv }  = require("export-to-csv"); 
 const { Parser } = require('json2csv');
@@ -136,7 +136,12 @@ module.exports = {
                         },
                         { model: auths,
                             as:'auth',
-                            attributes: ['firstname','role'],
+                            attributes: [
+                                'firstname',
+                                'role', 
+                                [Sequelize.literal('CASE WHEN typebayar = 1 THEN "Transfer" WHEN typebayar = 2 THEN "COD" ELSE 0 END'), 'payment_method']
+                            ],
+                            // where: Sequelize.where(Sequelize.literal(``))
                         },
                         
                     ]
@@ -167,6 +172,7 @@ module.exports = {
             return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
             // return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
+                console.log(err);
                 return apiResponse.ErrorResponse(res, err);
             });
     },

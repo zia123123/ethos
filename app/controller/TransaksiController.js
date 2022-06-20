@@ -2076,11 +2076,16 @@ module.exports = {
             endDate   = date.setDate(date.getDate() + 1);
 
         if (req.query.startDate) {
-            startDate = req.query.startDate+"T00:00:00.000Z"    
+            startDate = Math.floor(new Date(req.query.startDate * 1))
+            startDate = new Date(startDate)
         }
         if (req.query.endDate) {
-            endDate = req.query.endDate+"T23:59:59.000Z"    
+            endDate = Math.floor(new Date(req.query.endDate * 1)) 
+            endDate = new Date(endDate) 
         }
+
+        // console.log(cek);
+        // console.log(endDate);
         
         if( search == null ){
             search = ""
