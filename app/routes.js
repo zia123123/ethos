@@ -467,6 +467,7 @@ router.get('/api/getexcelVerifikasiPembayaran/', TransaksiController.ExcelVerifi
 router.get('/api/getexcelLabel/', TransaksiController.ExcelLabel);
 router.get('/api/getexcelShipper/', TransaksiController.ExcelShipper);
 router.get('/api/getexcelPermintaanPesanan/', TransaksiController.ExcelPermintaanPesanan);
+router.get('/api/getexcelRequestKonfirmasiDFOD/', TransaksiController.ExcelRequestKonfirmasiDFOD);
 
 
 
