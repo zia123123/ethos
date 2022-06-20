@@ -2170,6 +2170,14 @@ module.exports = {
                 { model: customers,
                     attributes: ['notelp','nama'],
                 },
+                { model: auths,
+                    as:'authFinance',
+                    attributes: ['firstname', 'notelp'],
+                },
+                { model: auths,
+                    as:'authWarehouse',
+                    attributes: ['firstname', 'notelp'],
+                },
             ]
         })          
         let result = await transaksis.findAll({
@@ -2245,7 +2253,7 @@ module.exports = {
               order: [
                 ['createdAt', 'ASC'],
             ],
-            attributes: ['id', 'nama','createdAt','pembayaran','status','idtransaksi','invoiceId','subsidi','ongkoskirim', 'discount', 'memotransaksi'],
+            attributes: ['id', 'nama','createdAt','pembayaran','status','idtransaksi','invoiceId','subsidi','ongkoskirim', 'discount', 'memotransaksi', 'tanggalVerifikasi', 'tanggalAWB'],
             include: [ 
                 { model: daexpedisis,
                     attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank','totalharga'],
@@ -2260,6 +2268,14 @@ module.exports = {
                 },
                 { model: customers,
                     attributes: ['notelp','nama'],
+                },
+                { model: auths,
+                    as:'authFinance',
+                    attributes: ['firstname', 'notelp'],
+                },
+                { model: auths,
+                    as:'authWarehouse',
+                    attributes: ['firstname', 'notelp'],
                 },
             ]
              
