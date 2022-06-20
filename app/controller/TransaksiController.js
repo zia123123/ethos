@@ -559,6 +559,10 @@ module.exports = {
                         as:'authWarehouse',
                         attributes: ['notelp','firstname'],
                     },
+                    { model: auths,
+                        as:'authFinance',
+                        attributes: ['notelp','firstname'],
+                    },
                 ]
             },
             
@@ -623,6 +627,10 @@ module.exports = {
                 },
                 { model: auths,
                     as:'authWarehouse',
+                    attributes: ['notelp','firstname'],
+                },
+                { model: auths,
+                    as:'authFinance',
                     attributes: ['notelp','firstname'],
                 },
             ]
