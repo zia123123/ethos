@@ -183,7 +183,6 @@ module.exports = {
 
 
     async indexriwayat(req, res) {
-        console.log('tes');
         let page = parseInt(req.query.page)
         let limit = parseInt(req.query.limit)
         let search = req.query.search
@@ -198,7 +197,7 @@ module.exports = {
         }
 
         const date = new Date();
-        let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
+        let startDate = new Date(0),
             endDate   = new Date(date.setDate(date.getDate() + 1));
 
         if (req.query.startDate) {
