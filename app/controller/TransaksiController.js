@@ -4569,7 +4569,7 @@ module.exports = {
                       result[i].warehouse.name,
                       expeditionName, 
                       expeditionPackage, 
-                      groupInternal,
+                      auth.groupname,
                       result[i].invoiceId,
                       result[i].customer.nama+','+result[i].idtransaksi, 
                       phoneNumber, 
