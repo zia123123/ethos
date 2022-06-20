@@ -2073,7 +2073,7 @@ module.exports = {
         
         const date = new Date();
         let startDate = new Date(2015, 0, 1, 7, 0, 0),
-            endDate   = date.setDate(date.getDate() + 1);
+            endDate   = new Date(date.setDate(date.getDate() + 1));
 
         if (req.query.startDate) {
             startDate = Math.floor(new Date(req.query.startDate * 1))
