@@ -1,4 +1,4 @@
-const { deliveryfods,transaksis,auths,customers } = require('../models/index');
+const { deliveryfods,transaksis,auths,customers, Sequelize } = require('../models/index');
 const { Op } = require("sequelize");
 const { exportstocsv }  = require("export-to-csv"); 
 const { Parser } = require('json2csv');
@@ -80,7 +80,7 @@ module.exports = {
         }
 
         const date = new Date();
-        let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
+        let startDate = new Date(0),
             endDate   = new Date(date.setDate(date.getDate() + 1));
 
         if (req.query.startDate) {
@@ -134,7 +134,11 @@ module.exports = {
             },
             include: [ 
                 { model: transaksis,
-                    attributes: ['awb','invoiceId'],
+                    attributes: [
+                        'awb',
+                        'invoiceId', 
+                        [Sequelize.literal('CASE WHEN typebayar = 1 THEN "Transfer" WHEN typebayar = 2 THEN "COD" ELSE 0 END'), 'payment_method']
+                    ],
                     include: [ 
                         { model: customers,
                             attributes: ['nama','notelp'],
