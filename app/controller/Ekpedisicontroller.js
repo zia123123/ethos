@@ -42,7 +42,9 @@ module.exports = {
      //external
      async indexInternal(req, res) {
         let result = await ekpedisi.findAll({
-           
+            where:{
+                internal: true,
+            }
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
