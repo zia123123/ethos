@@ -2797,7 +2797,19 @@ module.exports = {
                    
                 },
                 { model: buktibayars,
-                    attributes: ['link'],
+                    attributes: ['link', 'memoTransfer'],
+                },
+                { model: auths,
+                    as: 'auth',
+                    attributes: ['firstname', 'notelp'],
+                },
+                { model: auths,
+                    as: 'authFinance',
+                    attributes: ['firstname', 'notelp'],
+                },
+                { model: auths,
+                    as: 'authWarehouse',
+                    attributes: ['firstname', 'notelp'],
                 },
                 
             ]
