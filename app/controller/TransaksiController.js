@@ -467,13 +467,26 @@ module.exports = {
                                 [Op.like]: `%${word}%`
                             }
                         },
+                        {
+                            '$warehouse.name$':{
+                                [Op.like]: `%${word}%`
+                            }
+                        },
+                        {
+                            '$authWarehouse.firstname$':{
+                                [Op.like]: `%${word}%`
+                            }
+                        },
+                        Sequelize.where(Sequelize.literal("(CASE WHEN `transaksis`.`status` = 'A' THEN 'New Transaksi' WHEN `transaksis`.`status` = 'B' THEN 'New Transaksi' WHEN `transaksis`.`status` = 'B' THEN 'New Transaksi' WHEN `transaksis`.`status` = 'C' THEN 'Menunggu Pembayaran' WHEN `transaksis`.`status` = 'D' THEN 'Verifikasi Finance' WHEN `transaksis`.`status` = 'E' THEN 'Kurang Bayar' WHEN `transaksis`.`status` = 'F' THEN 'Lunas' WHEN `transaksis`.`status` = 'G' THEN 'Siap Kirim' WHEN `transaksis`.`status` = 'H' THEN 'Dikirim' WHEN `transaksis`.`status` = 'I' THEN 'Sukses' WHEN `transaksis`.`status` = 'J' THEN 'Gagal' WHEN `transaksis`.`status` = 'K' THEN 'Return' WHEN `transaksis`.`status` = 'L' THEN 'Cancel' WHEN `transaksis`.`status` = 'M' THEN 'Sudah Bayar' WHEN `transaksis`.`status` = 'N' THEN 'DFOD' WHEN `transaksis`.`status` = 'O' THEN 'Kirim Ulang' END) LIKE '%"+word+"%' OR (CASE WHEN typebayar = 1 THEN 'Transfer' WHEN typebayar = 2 THEN 'COD' END)"),{
+                            [Op.like]: `%${word}%`
+                        }),
                     ]
                 })
             })
         }
 
         const date = new Date();
-        let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
+        let startDate = new Date(0),
             endDate   = new Date(date.setDate(date.getDate() + 1));
 
         if (req.query.startDate) {
@@ -609,7 +622,22 @@ module.exports = {
                 },
                 [Op.and]: searchWords
               },
-              order: [
+            attributes:[
+                'id',
+                'createdAt',
+                'tanggalAWB',
+                'invoiceId',
+                'awb',
+                'nama',
+                'expedisiName',
+                'typebayar',
+                'tanggalVerifikasi',
+                'tanggalAWB',
+                'status',
+                [Sequelize.literal("CASE WHEN `transaksis`.`status` = 'A' THEN 'New Transaksi' WHEN `transaksis`.`status` = 'B' THEN 'New Transaksi' WHEN `transaksis`.`status` = 'B' THEN 'New Transaksi' WHEN `transaksis`.`status` = 'C' THEN 'Menunggu Pembayaran' WHEN `transaksis`.`status` = 'D' THEN 'Verifikasi Finance' WHEN `transaksis`.`status` = 'E' THEN 'Kurang Bayar' WHEN `transaksis`.`status` = 'F' THEN 'Lunas' WHEN `transaksis`.`status` = 'G' THEN 'Siap Kirim' WHEN `transaksis`.`status` = 'H' THEN 'Dikirim' WHEN `transaksis`.`status` = 'I' THEN 'Sukses' WHEN `transaksis`.`status` = 'J' THEN 'Gagal' WHEN `transaksis`.`status` = 'K' THEN 'Return' WHEN `transaksis`.`status` = 'L' THEN 'Cancel' WHEN `transaksis`.`status` = 'M' THEN 'Sudah Bayar' WHEN `transaksis`.`status` = 'N' THEN 'DFOD' WHEN `transaksis`.`status` = 'O' THEN 'Kirim Ulang' END"), 'status_name'],
+                [Sequelize.literal("CASE WHEN typebayar = 1 THEN 'Transfer' WHEN typebayar = 2 THEN 'COD' END"), 'payment_method']
+            ],
+            order: [
                 ['tanggalAWB', 'DESC'],
             ],
             include: [ 
@@ -2094,100 +2122,101 @@ module.exports = {
         if( bank == null ){
             bank = ""
         }
-        const count = await transaksis.count({where: {
-            createdAt :  {
-                [Op.and]: {
-                    [Op.gte]: startDate,
-                    [Op.lte]: endDate
-                }
-            },
-            status: {
-                [Op.or]: [
-                    {
-                        [Op.like]: '%D%'
+        const count = await transaksis.count({
+            where: {
+                createdAt :  {
+                    [Op.and]: {
+                        [Op.gte]: startDate,
+                        [Op.lte]: endDate
+                    }
+                },
+                    status: {
+                        [Op.or]: [
+                        {
+                            [Op.like]: '%D%'
+                        },
+                        // {
+                        // [Op.like]: '%C%'
+                        // }, 
+                        {
+                            [Op.like]: '%E%'
+                        }
+                    ]
                     },
-                    // {
-                    //     [Op.like]: '%C%'
-                    // }, 
-                    {
-                        [Op.like]: '%E%'
-                    }
-                ]
-            },
-            '$daexpedisis.namabank$': {
-                [Op.like]: `%${bank}%`
-            },
-            [Op.or]:[
-                {
-                    '$auth.firstname$':{
-                        [Op.like]: `%${search}%`
-                    }
-                },
-                {
-                    '$customer.notelp$':{
-                        [Op.like]: `%${search}%`
-                    }
-                },
-                {
-                    '$daexpedisis.totalharga$':{
-                        [Op.like]: `%${search}%`
-                    }
-                },
-                {
-                    '$daexpedisis.namabank$':{
-                        [Op.like]: `%${search}%`
-                    }
-                },
-                {
-                    '$daexpedisis.namabank$':{
-                        [Op.like]: `%${search}%`
-                    }
-                },
-                {
-                    '$daexpedisis.norekening$':{
-                        [Op.like]: `%${search}%`
-                    }
-                },
-                {
-                    nama:{
-                        [Op.like]: `%${search}%`
-                    }
-                },
-                {
-                    invoiceId:{
-                        [Op.like]: `%${search}%`
-                    }
-                },
-            ],
-            },
+                    '$daexpedisis.namabank$': {
+                        [Op.like]: `%${bank}%`
+                    },
+                    [Op.or]:[
+                        {
+                            '$auth.firstname$':{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                        {
+                            '$customer.notelp$':{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                        {
+                            '$daexpedisis.totalharga$':{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                        {
+                            '$daexpedisis.namabank$':{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                        {
+                            '$daexpedisis.namabank$':{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                        {
+                            '$daexpedisis.norekening$':{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                        {
+                            nama:{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                        {
+                            invoiceId:{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                    ],
+              },
             include: [ 
                 { model: daexpedisis,
-                    attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank','totalharga'],
+                    // attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank','totalharga'],
                 },
                 { model: auths,
                     as:'auth',
-                    attributes: ['firstname', 'notelp'],
+                    // attributes: ['firstname', 'notelp'],
                 },
                 { model: buktibayars,
                     // required: true,
-                    attributes: ['link'],
+                    // attributes: ['link'],
                 },
                 { model: customers,
-                    attributes: ['notelp','nama'],
+                    // attributes: ['notelp','nama'],
                 },
                 { model: auths,
                     as:'authFinance',
-                    attributes: ['firstname', 'notelp'],
+                    // attributes: ['firstname', 'notelp'],
                 },
                 { model: auths,
                     as:'authWarehouse',
-                    attributes: ['firstname', 'notelp'],
+                    // attributes: ['firstname', 'notelp'],
                 },
             ]
         })          
         let result = await transaksis.findAll({
-            offset: (page - 1) * limit,
-            limit: limit,
+            // offset: (page - 1) * limit,
+            // limit: limit,
             subQuery:false,
             where: {
                 createdAt :  {
@@ -2198,14 +2227,14 @@ module.exports = {
                 },
                     status: {
                         [Op.or]: [
-                            {
-                        [Op.like]: '%D%'
+                        {
+                            [Op.like]: '%D%'
                         },
                         // {
                         // [Op.like]: '%C%'
                         // }, 
                         {
-                        [Op.like]: '%E%'
+                            [Op.like]: '%E%'
                         }
                     ]
                     },
@@ -2213,51 +2242,51 @@ module.exports = {
                         [Op.like]: `%${bank}%`
                     },
                     [Op.or]:[
-                    {
-                        '$auth.firstname$':{
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        '$customer.notelp$':{
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        '$daexpedisis.totalharga$':{
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        '$daexpedisis.namabank$':{
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        '$daexpedisis.namabank$':{
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        '$daexpedisis.norekening$':{
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        nama:{
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        invoiceId:{
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                ],
+                        {
+                            '$auth.firstname$':{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                        {
+                            '$customer.notelp$':{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                        {
+                            '$daexpedisis.totalharga$':{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                        {
+                            '$daexpedisis.namabank$':{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                        {
+                            '$daexpedisis.namabank$':{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                        {
+                            '$daexpedisis.norekening$':{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                        {
+                            nama:{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                        {
+                            invoiceId:{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                    ],
               },
-              order: [
-                ['createdAt', 'ASC'],
-            ],
+            // order: [
+            //     ['createdAt', 'ASC'],
+            // ],
             attributes: ['id', 'nama','createdAt','pembayaran','status','idtransaksi','invoiceId','subsidi','ongkoskirim', 'discount', 'memotransaksi', 'tanggalVerifikasi', 'tanggalAWB'],
             include: [ 
                 { model: daexpedisis,
@@ -2285,6 +2314,8 @@ module.exports = {
             ]
              
         }).then(result => {
+            console.log(result.length);
+            console.log(count);
             var totalPage = (parseInt(count) / limit) + 1
             returnData = {
                 result,
