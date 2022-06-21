@@ -1,4 +1,4 @@
-const { returs,transaksis,auths,customers, Sequelize } = require('../models/index');
+const { returs,transaksis,auths,customers, daexpedisis, Sequelize } = require('../models/index');
 const { Op } = require("sequelize");
 const { exportstocsv }  = require("export-to-csv"); 
 const { Parser } = require('json2csv');
@@ -129,21 +129,32 @@ module.exports = {
             },
             include: [ 
                 { model: transaksis,
-                    attributes: ['awb','invoiceId'],
+                    attributes: ['awb','invoiceId', 'tanggalVerifikasi', 'tanggalAWB'],
                     include: [ 
                         { model: customers,
-                            attributes: ['nama','notelp'],
+                            attributes: ['id','nama','notelp'],
                         },
                         { model: auths,
                             as:'auth',
                             attributes: [
                                 'firstname',
                                 'role', 
+                                'notelp',
                                 [Sequelize.literal('CASE WHEN typebayar = 1 THEN "Transfer" WHEN typebayar = 2 THEN "COD" ELSE 0 END'), 'payment_method']
                             ],
                             // where: Sequelize.where(Sequelize.literal(``))
                         },
-                        
+                        { model: auths,
+                            as:'authFinance',
+                            // where: Sequelize.where(Sequelize.literal(``))
+                        },
+                        { model: auths,
+                            as:'authWarehouse',
+                            // where: Sequelize.where(Sequelize.literal(``))
+                        },
+                        { model: daexpedisis,
+                            attributes: ['totalharga'],
+                        },
                     ]
                 },
                 

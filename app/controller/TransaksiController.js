@@ -2284,9 +2284,9 @@ module.exports = {
                         },
                     ],
               },
-            // order: [
-            //     ['createdAt', 'ASC'],
-            // ],
+            order: [
+                ['createdAt', 'ASC'],
+            ],
             attributes: ['id', 'nama','createdAt','pembayaran','status','idtransaksi','invoiceId','subsidi','ongkoskirim', 'discount', 'memotransaksi', 'tanggalVerifikasi', 'tanggalAWB'],
             include: [ 
                 { model: daexpedisis,
@@ -2314,8 +2314,6 @@ module.exports = {
             ]
              
         }).then(result => {
-            console.log(result.length);
-            console.log(count);
             var totalPage = (parseInt(count) / limit) + 1
             returnData = {
                 result,
