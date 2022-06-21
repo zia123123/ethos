@@ -5,6 +5,9 @@ module.exports = (sequelize, DataTypes) => {
     link: {
       type: DataTypes.STRING,
     },
+    memoTransfer: {
+      type: DataTypes.STRING,
+    },
   }, {
     tableName: "buktibayars"
   });

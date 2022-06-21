@@ -39,6 +39,11 @@ module.exports = {
 
     async index(req, res) {
         let result = await daexpedisis.findAll({
+            include:[
+                {
+                    model: transaksis
+                }
+            ]
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){

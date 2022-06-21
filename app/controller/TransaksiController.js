@@ -2698,6 +2698,7 @@ module.exports = {
         let result = await buktibayars.create({
             link: "https://storage.googleapis.com/ethos-kreatif-app.appspot.com/"+link,
             transaksisId: req.params.id,
+            memoTransfer: req.body.memoTransfer
         }).then(result => {
             let transaksi = transaksis.findOne({
                 where: {
