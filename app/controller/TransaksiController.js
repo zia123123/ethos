@@ -439,7 +439,6 @@ module.exports = {
         }else{
             const words = search.toLowerCase().split(' ')
             words.forEach(word => {
-                console.log(word);
                 searchWords.push({
                     [Op.or]:[
                         {
@@ -634,6 +633,9 @@ module.exports = {
                 'tanggalVerifikasi',
                 'tanggalAWB',
                 'status',
+                'ongkoskirim',
+                'customerId',
+                'memotransaksi',
                 [Sequelize.literal("CASE WHEN `transaksis`.`status` = 'A' THEN 'New Transaksi' WHEN `transaksis`.`status` = 'B' THEN 'New Transaksi' WHEN `transaksis`.`status` = 'B' THEN 'New Transaksi' WHEN `transaksis`.`status` = 'C' THEN 'Menunggu Pembayaran' WHEN `transaksis`.`status` = 'D' THEN 'Verifikasi Finance' WHEN `transaksis`.`status` = 'E' THEN 'Kurang Bayar' WHEN `transaksis`.`status` = 'F' THEN 'Lunas' WHEN `transaksis`.`status` = 'G' THEN 'Siap Kirim' WHEN `transaksis`.`status` = 'H' THEN 'Dikirim' WHEN `transaksis`.`status` = 'I' THEN 'Sukses' WHEN `transaksis`.`status` = 'J' THEN 'Gagal' WHEN `transaksis`.`status` = 'K' THEN 'Return' WHEN `transaksis`.`status` = 'L' THEN 'Cancel' WHEN `transaksis`.`status` = 'M' THEN 'Sudah Bayar' WHEN `transaksis`.`status` = 'N' THEN 'DFOD' WHEN `transaksis`.`status` = 'O' THEN 'Kirim Ulang' END"), 'status_name'],
                 [Sequelize.literal("CASE WHEN typebayar = 1 THEN 'Transfer' WHEN typebayar = 2 THEN 'COD' END"), 'payment_method']
             ],
@@ -2918,10 +2920,10 @@ module.exports = {
         req.transaksi.leadsId = req.body.leadsId;
         req.transaksi.logstatus = req.transaksi.logstatus+"#"+req.body.logstatus;
         if (req.body.verificationFinanceId != null) {
-            req.transaksi.tanggalVerifikasi = new Date();
+            req.transaksi.tanggalVerifikasi = new Date().toLocaleString();
         }
         if (req.body.verificationWarehouseId != null) {
-            req.transaksi.tanggalAWB = new Date();
+            req.transaksi.tanggalAWB = new Date().toLocaleString();
         }
         req.transaksi.save().then(transaksi => {
         return apiResponse.successResponseWithData(res, "SUCCESS", transaksi);

@@ -75,7 +75,7 @@ module.exports = {
         }
 
         const date = new Date();
-        let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
+        let startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 7, 0, 0),
             endDate   = date.setDate(date.getDate() + 1);
 
         if (req.query.startDate) {
@@ -114,6 +114,9 @@ module.exports = {
                     // attributes: []
                 },
             ],
+            order:[
+                ['id', 'DESC']
+            ]
         }
         let count = await leads.count(filter)
 
@@ -152,6 +155,7 @@ module.exports = {
             sumber: req.body.sumber,
             type: req.body.type,
         }).then(result => {
+            console.log(result);
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
         }).catch(function (err)  {
             return apiResponse.ErrorResponse(res, err);
