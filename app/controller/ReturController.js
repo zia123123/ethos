@@ -146,11 +146,11 @@ module.exports = {
                         },
                         { model: auths,
                             as:'authFinance',
-                            // where: Sequelize.where(Sequelize.literal(``))
+                            attributes: ['firstname']
                         },
                         { model: auths,
                             as:'authWarehouse',
-                            // where: Sequelize.where(Sequelize.literal(``))
+                            attributes: ['firstname']
                         },
                         { model: daexpedisis,
                             attributes: ['totalharga'],

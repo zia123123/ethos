@@ -1,7 +1,7 @@
 const {
     returs,deliveryfods, transaksis,statustranksasis,keranjangs,products,
     daexpedisis,customers,warehouses,auths,buktibayars,product_stocks,
-    districts,cityregencies,province, mapgroup, group, Sequelize 
+    districts,cityregencies,province, mapgroup, group, metodepembayarans, Sequelize 
    } = require('../models/index');
 const { Op } = require("sequelize");
 const { exportstocsv }  = require("export-to-csv"); 
@@ -660,6 +660,9 @@ module.exports = {
                 { model: auths,
                     as:'authFinance',
                     attributes: ['notelp','firstname'],
+                },
+                { model: metodepembayarans,
+                    attributes: ['nama'],
                 },
             ]
         }).then(result => {
@@ -2206,17 +2209,17 @@ module.exports = {
                 },
                 { model: auths,
                     as:'authFinance',
-                    // attributes: ['firstname', 'notelp'],
+                    attributes: ['firstname', 'notelp'],
                 },
                 { model: auths,
                     as:'authWarehouse',
-                    // attributes: ['firstname', 'notelp'],
+                    attributes: ['firstname', 'notelp'],
                 },
             ]
         })          
         let result = await transaksis.findAll({
-            // offset: (page - 1) * limit,
-            // limit: limit,
+            offset: (page - 1) * limit,
+            limit: limit,
             subQuery:false,
             where: {
                 createdAt :  {
