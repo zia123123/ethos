@@ -17,6 +17,9 @@ module.exports = (sequelize, DataTypes) => {
     biayacod: {
       type: DataTypes.INTEGER,
     },
+    subsidicod: {
+      type: DataTypes.INTEGER,
+    },
   }, {
     tableName: "daexpedisis"
   });
