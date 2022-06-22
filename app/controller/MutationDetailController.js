@@ -236,7 +236,7 @@ module.exports = {
         let filter = 
         {
             where:{
-                date :  {
+                createdAt :  {
                     [Op.and]: {
                       [Op.gte]: startDate,
                       [Op.lte]: endDate
