@@ -636,6 +636,7 @@ module.exports = {
                 'ongkoskirim',
                 'customerId',
                 'memotransaksi',
+                'subsidi',
                 [Sequelize.literal("CASE WHEN `transaksis`.`status` = 'A' THEN 'New Transaksi' WHEN `transaksis`.`status` = 'B' THEN 'New Transaksi' WHEN `transaksis`.`status` = 'B' THEN 'New Transaksi' WHEN `transaksis`.`status` = 'C' THEN 'Menunggu Pembayaran' WHEN `transaksis`.`status` = 'D' THEN 'Verifikasi Finance' WHEN `transaksis`.`status` = 'E' THEN 'Kurang Bayar' WHEN `transaksis`.`status` = 'F' THEN 'Lunas' WHEN `transaksis`.`status` = 'G' THEN 'Siap Kirim' WHEN `transaksis`.`status` = 'H' THEN 'Dikirim' WHEN `transaksis`.`status` = 'I' THEN 'Sukses' WHEN `transaksis`.`status` = 'J' THEN 'Gagal' WHEN `transaksis`.`status` = 'K' THEN 'Return' WHEN `transaksis`.`status` = 'L' THEN 'Cancel' WHEN `transaksis`.`status` = 'M' THEN 'Sudah Bayar' WHEN `transaksis`.`status` = 'N' THEN 'DFOD' WHEN `transaksis`.`status` = 'O' THEN 'Kirim Ulang' END"), 'status_name'],
                 [Sequelize.literal("CASE WHEN typebayar = 1 THEN 'Transfer' WHEN typebayar = 2 THEN 'COD' END"), 'payment_method']
             ],
