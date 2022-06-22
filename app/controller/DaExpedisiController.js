@@ -21,7 +21,7 @@ module.exports = {
                }
                let result =  daexpedisis.create({
                 ongkoskirim: req.body.ongkoskirim,
-                subsidi: req.body.subsidi,
+                subsidicod: req.body.subsidicod,
                 transaksisId: req.body.transaksiId,
                 namabank: req.body.namabank,
                 totalharga: harga,
