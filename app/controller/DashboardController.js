@@ -7,7 +7,8 @@ const {
     group,
     dfods,
     keranjangs,
-    leads
+    leads,
+    domains
    } = require('../models/index');
 const { Op, where, Sequelize } = require("sequelize");
 const apiResponse = require("../helpers/apiResponse");
@@ -1187,6 +1188,24 @@ module.exports = {
             endDate = req.query.endDate+"T23:59:59.000Z"    
         }
 
+        let countLead = await leads.count({
+            where:{
+                authId: csId,
+                createdAt :  {
+                    [Op.and]: {
+                      [Op.gte]: startDate,
+                      [Op.lte]: endDate
+                    }
+                }
+            },
+            include:[
+                {
+                    model: domains,
+                    group: ['productId']
+                }
+            ]
+        })
+
         let result = await transaksis.findAll({
             where:{
                 authId: csId,
@@ -1199,7 +1218,6 @@ module.exports = {
             },
             attributes: 
             [
-                'lead.nama',
                 [sequelize.col('auth.id'), 'auth_id'],
                 'auth.firstname',
                 'products',
@@ -1214,37 +1232,30 @@ module.exports = {
                         // 'nama'
                     ],
                 },
-                {
-                    model: leads,
-                    required: true,
-                    attributes:[
-                        // 'nama'
-                    ],
-                }
             ],
             raw: true,
         }).then(result => {
-            return apiResponse.successResponseWithData(res, "SUCCESS", result);
             var  KeranjangArray = [];
             var  customers = [];
-            let lead = 0
             for (let i = 0; i < result.length; i++) {
                 class Keranjang { //dapetin dari produk
                     constructor(productId, namaproduct, sku, jumlahproduct, groupname, advname, status, csId, csName) {
                       this.product_id = productId;
                       this.nama_product = namaproduct;
                       this.sku = sku;
-                      this.group_name = groupname;
-                      this.adv_name = advname;
+                    //   this.group_name = groupname;
+                    //   this.adv_name = advname;
                     //   this.lead = 1;
                       this.closing = 0;
+                      this.jumlah_product = 0;
                       if(status == 'G' || status == 'H' || status == 'I'){
                         this.jumlah_product = jumlahproduct;
                         this.closing += 1;
                       }
-                    //   this.sum_of_cr = (this.closing/this.lead) * 100;
-                      this.cs_id = csId;
-                      this.cs_name = csName;
+                      this.cr = (this.closing/countLead) * 100;
+                      this.ratio = (this.jumlah_product/this.closing) *100
+                    //   this.cs_id = csId;
+                    //   this.cs_name = csName;
                     }
                   }
                 let keranjangdata =  result[i].products.replace(/\\n/g, '')
@@ -1266,10 +1277,10 @@ module.exports = {
                                     }
                                     let findCustomer = customers.find(e => e == datakeranjang[j].customerId)
                                     customers.push(datakeranjang[j].customerId)
-                                    // KeranjangArray[index].lead += 1
-                                    // if (KeranjangArray[index].lead != 0) {
-                                    //     KeranjangArray[index].sum_of_cr = (KeranjangArray[index].closing/KeranjangArray[index].lead) * 100
+                                    // if (countLead != 0) {
+                                        KeranjangArray[index].cr = (KeranjangArray[index].closing/countLead) * 100
                                     // }
+                                    KeranjangArray[index].ratio = (KeranjangArray[index].jumlah_product/KeranjangArray[index].closing) * 100
                                     return true; // stop searching
                                 }
                             });
@@ -1277,8 +1288,11 @@ module.exports = {
                     }
                 } 
             }
-            console.log(KeranjangArray);
-            return apiResponse.successResponseWithData(res, "SUCCESS", KeranjangArray);
+            const returnData = {
+                lead: countLead,
+                data: KeranjangArray
+            }
+            return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
         }).catch(function (err){
             console.log(err);
             return apiResponse.ErrorResponse(res, err);
