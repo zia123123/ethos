@@ -6,7 +6,8 @@ const {
     mapgroup,
     group,
     dfods,
-    keranjangs
+    keranjangs,
+    leads
    } = require('../models/index');
 const { Op, where, Sequelize } = require("sequelize");
 const apiResponse = require("../helpers/apiResponse");
@@ -1163,6 +1164,121 @@ module.exports = {
             // group: [sequelize.fn('date', sequelize.col('transaksis.createdAt'))]
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
+        }).catch(function (err){
+            console.log(err);
+            return apiResponse.ErrorResponse(res, err);
+        });
+    },
+
+    async closingRateCs (req, res){
+        if (req.params.id == null) {
+            return apiResponse.ErrorResponse(res, 'CS tidak boleh kosong');
+        }
+
+        const csId = req.params.id
+        const date = new Date();
+        let startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 7, 0, 0),
+            endDate   = date.setDate(date.getDate() + 1);
+
+        if (req.query.startDate) {
+            startDate = req.query.startDate+"T00:00:00.000Z"    
+        }
+        if (req.query.endDate) {
+            endDate = req.query.endDate+"T23:59:59.000Z"    
+        }
+
+        let result = await transaksis.findAll({
+            where:{
+                authId: csId,
+                createdAt :  {
+                    [Op.and]: {
+                      [Op.gte]: startDate,
+                      [Op.lte]: endDate
+                    }
+                }
+            },
+            attributes: 
+            [
+                'lead.nama',
+                [sequelize.col('auth.id'), 'auth_id'],
+                'auth.firstname',
+                'products',
+                'transaksis.status',
+            ],
+            include: [
+                { 
+                    model: auths,
+                    as:'auth',
+                    required: true,
+                    attributes:[
+                        // 'nama'
+                    ],
+                },
+                {
+                    model: leads,
+                    required: true,
+                    attributes:[
+                        // 'nama'
+                    ],
+                }
+            ],
+            raw: true,
+        }).then(result => {
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            var  KeranjangArray = [];
+            var  customers = [];
+            let lead = 0
+            for (let i = 0; i < result.length; i++) {
+                class Keranjang { //dapetin dari produk
+                    constructor(productId, namaproduct, sku, jumlahproduct, groupname, advname, status, csId, csName) {
+                      this.product_id = productId;
+                      this.nama_product = namaproduct;
+                      this.sku = sku;
+                      this.group_name = groupname;
+                      this.adv_name = advname;
+                    //   this.lead = 1;
+                      this.closing = 0;
+                      if(status == 'G' || status == 'H' || status == 'I'){
+                        this.jumlah_product = jumlahproduct;
+                        this.closing += 1;
+                      }
+                    //   this.sum_of_cr = (this.closing/this.lead) * 100;
+                      this.cs_id = csId;
+                      this.cs_name = csName;
+                    }
+                  }
+                let keranjangdata =  result[i].products.replace(/\\n/g, '')
+                // console.log(keranjangdata);
+                let datakeranjang = eval(keranjangdata)
+                for(var j=0;j<datakeranjang.length;j++){
+                    if(datakeranjang[j] === undefined){
+                        KeranjangArray.push(new Keranjang("","",""));
+                    }else{
+                        let obj = KeranjangArray.find(o => o.product_id === datakeranjang[j].productId)
+                        if (obj === undefined) {
+                            KeranjangArray.push(new Keranjang(datakeranjang[j].productId, datakeranjang[j].namaproduct,datakeranjang[j].sku,datakeranjang[j].jumlahproduct, result[i].name, datakeranjang[j].advertiser, result[i].status, result[i].auth_id, result[i].firstname));
+                        }else{
+                            let add = KeranjangArray.find((o, index) => {
+                                if (o.nama_product === datakeranjang[j].namaproduct) {
+                                    if(result[i].status == 'G' || result[i].status == 'H' || result[i].status == 'I'){
+                                        KeranjangArray[index].closing += 1;
+                                        KeranjangArray[index].jumlah_product += datakeranjang[j].jumlahproduct
+                                    }
+                                    let findCustomer = customers.find(e => e == datakeranjang[j].customerId)
+                                    customers.push(datakeranjang[j].customerId)
+                                    // KeranjangArray[index].lead += 1
+                                    // if (KeranjangArray[index].lead != 0) {
+                                    //     KeranjangArray[index].sum_of_cr = (KeranjangArray[index].closing/KeranjangArray[index].lead) * 100
+                                    // }
+                                    return true; // stop searching
+                                }
+                            });
+                        }
+                    }
+                } 
+            }
+            console.log(KeranjangArray);
+            return apiResponse.successResponseWithData(res, "SUCCESS", KeranjangArray);
         }).catch(function (err){
             console.log(err);
             return apiResponse.ErrorResponse(res, err);

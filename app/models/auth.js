@@ -81,6 +81,7 @@ module.exports = (sequelize, DataTypes) => {
     auth.hasMany(models.keranjangs)
     auth.hasMany(models.customers)
     auth.hasMany(models.pengajuanbiaya)
+    auth.hasMany(models.leads)
 
 
   };

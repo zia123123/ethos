@@ -133,6 +133,7 @@ module.exports = (sequelize, DataTypes) => {
     transaksi.belongsTo(models.customers, { foreginKey: "customerId"})
     transaksi.belongsTo(models.warehouses, { foreginKey: "warehouseId"})
     transaksi.belongsTo(models.metodepembayarans, { foreignKey: "typebayar"})
+    transaksi.belongsTo(models.leads, { foreignKey: "leadsId"})
     // transaksi.hasOne(models.keranjangs)
 
     //transaksi.belongsTo(models.products, { foreginKey: "productId"})

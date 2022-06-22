@@ -20,8 +20,9 @@ module.exports = {
     async create(req, res) { 
         var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
         var tanggal = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
-        let keranjangdata =  req.body.products.replace(/\\n/g, '')
-        let datakeranjang = eval(keranjangdata)
+        // let keranjangdata =  req.body.products.replace(/\\n/g, '')
+        let keranjangdata =  req.body.products
+        // let datakeranjang = eval(keranjangdata)
         let result = await transaksis.create({
             nama: req.body.nama,
             customerId: req.body.customerId,
@@ -2784,7 +2785,7 @@ module.exports = {
             //attributes: ['id', 'nama','status','districtId','memotransaksi','idtransaksi','expedisiName'],
             include: [ 
                 { model: daexpedisis,
-                    attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank','totalharga'],
+                    attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank','totalharga', 'subsidicod'],
                 },
                 { model: customers,
                 },
@@ -2921,10 +2922,10 @@ module.exports = {
         req.transaksi.leadsId = req.body.leadsId;
         req.transaksi.logstatus = req.transaksi.logstatus+"#"+req.body.logstatus;
         if (req.body.verificationFinanceId != null) {
-            req.transaksi.tanggalVerifikasi = new Date().toLocaleString();
+            req.transaksi.tanggalVerifikasi = new Date();
         }
         if (req.body.verificationWarehouseId != null) {
-            req.transaksi.tanggalAWB = new Date().toLocaleString();
+            req.transaksi.tanggalAWB = new Date();
         }
         req.transaksi.save().then(transaksi => {
         return apiResponse.successResponseWithData(res, "SUCCESS", transaksi);

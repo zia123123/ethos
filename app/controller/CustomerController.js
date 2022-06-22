@@ -36,7 +36,8 @@ module.exports = {
             postalcode: req.body.postalcode,
             provinceId: req.body.provinceId,
             cityregencyId: req.body.cityregencyId,
-            districtId: req.body.districtId,    
+            districtId: req.body.districtId,
+            lead: req.lead.id   
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
         }).catch(function (err)  {

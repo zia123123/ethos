@@ -221,6 +221,18 @@ module.exports = {
             endDate = Math.floor(req.query.endDate)
         }
 
+        let mutationDate = {[Op.ne]: null}
+        if (req.query.mutationStartDate != null || req.query.mutationEndDate != null) {
+            const mutationStartDate = new Date(req.query.mutationStartDate)
+            const mutationEndDate = new Date(req.query.mutationEndDate)
+            mutationDate = {
+                [Op.and]: {
+                    [Op.gte]: mutationStartDate,
+                    [Op.lte]: mutationEndDate 
+                  }
+            }
+        }
+
         let filter = 
         {
             where:{
@@ -230,6 +242,7 @@ module.exports = {
                       [Op.lte]: endDate
                     }
                 },
+                date: mutationDate,
                 invoice: {
                     [Op.eq]: null
                 },

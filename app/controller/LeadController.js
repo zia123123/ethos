@@ -10,6 +10,7 @@ const fs = require("fs")
 const csvdir = "./app/public/docs"
 const apiResponse = require("../helpers/apiResponse");
 const xl = require('excel4node');
+const { isArray } = require('util');
 
 
 module.exports = {
@@ -145,21 +146,33 @@ module.exports = {
         });
     },
 
-    async create(req, res){
+    async create(req, res, next){
+        if (req.lead != null) {
+            req.body.no_hp = req.body.notelp
+            if (req.lead.length != 0) {
+                next()
+            }
+        }
+
         let result = await leads.create({
             authId: req.body.authId,
-            productId: req.body.productId,
+            productId: 3,
             domainId: req.body.domainId,
             no_hp: req.body.no_hp,
             nama: req.body.nama,
             sumber: req.body.sumber,
             type: req.body.type,
         }).then(result => {
-            console.log(result);
-            return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
+            if (req.lead != null ) {
+                req.lead = result
+                next()
+            }else{
+                return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
+            }
         }).catch(function (err)  {
             return apiResponse.ErrorResponse(res, err);
         });
+        
     },
 
     async find(req, res, next) {
@@ -405,5 +418,46 @@ module.exports = {
         }).catch(function (err){
             return apiResponse.ErrorResponse(res, err);
         });
-    }
+    },
+
+    async findLeadNull(req, res, next) {
+        let csId = req.body.authId
+        let phoneNumber = req.body.notelp
+
+        let result = await leads.findAll(
+            {
+                where:{
+                    authId: csId,
+                    no_hp: phoneNumber,
+                },
+                include:[
+                    {
+                        model: auths,
+                        as: 'auth',
+                        required: true,
+                        // attributes: []
+                    },
+                    {
+                        model: products,
+                        required: true,
+                        // attributes: []
+                    },
+                    {
+                        model: domains,
+                        required: true,
+                        // attributes: []
+                    },
+                    {
+                        model: customers,
+                        required: false,
+                        // attributes: []
+                    },
+                ],
+            }
+        )
+        // console.log(result);
+        // return result
+        req.lead = result;
+        next();
+    },
 }
