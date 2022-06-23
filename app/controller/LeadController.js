@@ -149,8 +149,11 @@ module.exports = {
     async create(req, res, next){
         if (req.lead != null) {
             req.body.no_hp = req.body.notelp
+            
             if (req.lead.length != 0) {
+                req.lead = req.lead[req.lead.length - 1]
                 next()
+                return 
             }
         }
 
@@ -422,6 +425,7 @@ module.exports = {
 
     async findLeadNull(req, res, next) {
         let csId = req.body.authId
+        let domainId = req.body.domainId
         let phoneNumber = req.body.notelp
 
         let result = await leads.findAll(
@@ -429,6 +433,7 @@ module.exports = {
                 where:{
                     authId: csId,
                     no_hp: phoneNumber,
+                    domainId: domainId
                 },
                 include:[
                     {
@@ -437,11 +442,11 @@ module.exports = {
                         required: true,
                         // attributes: []
                     },
-                    {
-                        model: products,
-                        required: true,
-                        // attributes: []
-                    },
+                    // {
+                    //     model: products,
+                    //     required: true,
+                    //     // attributes: []
+                    // },
                     {
                         model: domains,
                         required: true,
@@ -455,8 +460,6 @@ module.exports = {
                 ],
             }
         )
-        // console.log(result);
-        // return result
         req.lead = result;
         next();
     },
