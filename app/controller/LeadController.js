@@ -307,6 +307,9 @@ module.exports = {
                 authId: csId,
                 [Op.and]: searchWords
             },
+            order:[
+                ['id', 'DESC']
+            ],
             include:[
                 {
                     model: auths,
@@ -314,11 +317,11 @@ module.exports = {
                     required: true,
                     // attributes: []
                 },
-                {
-                    model: products,
-                    required: true,
-                    // attributes: []
-                },
+                // {
+                //     model: products,
+                //     required: true,
+                //     // attributes: []
+                // },
                 {
                     model: domains,
                     required: true,
