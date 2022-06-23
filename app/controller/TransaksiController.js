@@ -3004,8 +3004,64 @@ module.exports = {
         let expedition = req.query.expedition
         let paymentMethod = req.query.paymentMethod
         let transactionStatus = req.query.transactionStatus
-        // let paymentStatus = req.query.paymentStatus
+
+        let searchWords = []
         let search = req.query.search
+
+        if( search == null ){
+            search = ""
+        }else{
+            const words = search.toLowerCase().split(' ')
+            words.forEach(word => {
+                searchWords.push({
+                    [Op.or]:[
+                        {
+                            orderNumber:{
+                                [Op.like]: `%${word}%`
+                            }
+                        },
+                        {
+                            invoiceId:{
+                                [Op.like]: `%${word}%`
+                            }
+                        },
+                        {
+                            awb:{
+                                [Op.like]: `%${word}%`
+                            }
+                        },
+                        {
+                            nama:{
+                                [Op.like]: `%${word}%`
+                            }
+                        },
+                        {
+                            expedisiName:{
+                                [Op.like]: `%${word}%`
+                            }
+                        },
+                        {
+                            '$auth.firstname$':{
+                                [Op.like]: `%${word}%`
+                            }
+                        },
+                        {
+                            '$warehouse.name$':{
+                                [Op.like]: `%${word}%`
+                            }
+                        },
+                        {
+                            '$metodepembayaran.nama$':{
+                                [Op.like]: `%${word}%`
+                            }
+                        },
+                        Sequelize.where(Sequelize.literal("(CASE WHEN `transaksis`.`status` = 'A' THEN 'New Transaksi' WHEN `transaksis`.`status` = 'B' THEN 'New Transaksi' WHEN `transaksis`.`status` = 'B' THEN 'New Transaksi' WHEN `transaksis`.`status` = 'C' THEN 'Menunggu Pembayaran' WHEN `transaksis`.`status` = 'D' THEN 'Verifikasi Finance' WHEN `transaksis`.`status` = 'E' THEN 'Kurang Bayar' WHEN `transaksis`.`status` = 'F' THEN 'Lunas' WHEN `transaksis`.`status` = 'G' THEN 'Siap Kirim' WHEN `transaksis`.`status` = 'H' THEN 'Dikirim' WHEN `transaksis`.`status` = 'I' THEN 'Sukses' WHEN `transaksis`.`status` = 'J' THEN 'Gagal' WHEN `transaksis`.`status` = 'K' THEN 'Return' WHEN `transaksis`.`status` = 'L' THEN 'Cancel' WHEN `transaksis`.`status` = 'M' THEN 'Sudah Bayar' WHEN `transaksis`.`status` = 'N' THEN 'DFOD' WHEN `transaksis`.`status` = 'O' THEN 'Kirim Ulang' END)"),{
+                            [Op.like]: `%${word}%`
+                        }),
+                    ],
+                })
+            })
+        }
 
         const date = new Date();
         let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
@@ -3087,33 +3143,7 @@ module.exports = {
                             }
                         ]
                     },
-                    [Op.or]:[
-                        {
-                            invoiceId:{
-                                [Op.like]: `%${search}%`
-                            }
-                        },
-                        {
-                            awb:{
-                                [Op.like]: `%${search}%`
-                            }
-                        },
-                        {
-                            nama:{
-                                [Op.like]: `%${search}%`
-                            }
-                        },
-                        {
-                            expedisiName:{
-                                [Op.like]: `%${search}%`
-                            }
-                        },
-                        {
-                            '$auth.firstname$':{
-                                [Op.like]: `%${search}%`
-                            }
-                        },
-                    ],
+                    [Op.and]: searchWords
                 },
                 include: [ 
                     { model: warehouses,
@@ -3127,7 +3157,10 @@ module.exports = {
                     { model: auths,
                         as:'auth',
                         attributes: ['notelp','firstname'],
-                    }
+                    },
+                    { model: metodepembayarans,
+                        attributes: ['nama'],
+                    },
                 ]
             },
             
@@ -3181,33 +3214,7 @@ module.exports = {
                         }
                     ]
                 },
-                [Op.or]:[
-                    {
-                        invoiceId:{
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        awb:{
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        nama:{
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        expedisiName:{
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        '$auth.firstname$':{
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                ],
+                [Op.and]: searchWords,
               },
               order: [
                 ['id', 'DESC'],
@@ -3224,7 +3231,10 @@ module.exports = {
                             { model: auths,
                                 as:'auth',
                                 attributes: ['notelp','firstname'],
-                            }
+                            },
+                            { model: metodepembayarans,
+                                attributes: ['nama'],
+                            },
             ]
         }).then(result => {
             var totalPage = (parseInt(count) / limit) + 1
