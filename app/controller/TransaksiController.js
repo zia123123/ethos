@@ -35,7 +35,7 @@ module.exports = {
             warehouseId: req.body.warehouseId,
             groupname: req.body.groupname,
             idGroup: req.body.idGroup,
-            invoiceId: req.body.warehouseId,
+            // invoiceId: req.body.warehouseId,
             expedisiName: req.body.expedisiName,
             authId: req.body.authId,
             groupId: req.body.groupId,
