@@ -2313,7 +2313,64 @@ module.exports = {
          let status = req.query.status
          let invoiceId = req.query.invoiceId
          let namabank = req.query.namabank
-         let search = req.query.search 
+
+         let searchWords = []
+        let search = req.query.search
+
+        if( search == null ){
+            search = ""
+        }else{
+            const words = search.toLowerCase().split(' ')
+            words.forEach(word => {
+                searchWords.push({
+                    [Op.or]:[
+                        {
+                            '$auth.firstname$':{
+                                [Op.like]: `%${word}%`
+                            }
+                        },
+                        {
+                            orderNumber:{
+                                [Op.like]: `%${word}%`
+                            }
+                        },
+                        {
+                            nama:{
+                                [Op.like]: `%${word}%`
+                            }
+                        },
+                        {
+                            invoiceId:{
+                                [Op.like]: `%${word}%`
+                            }
+                        },
+                        {
+                            '$daexpedisis.totalharga$':{
+                                [Op.like]: `%${word}%`
+                            }
+                        },
+                        {
+                            '$daexpedisis.namabank$':{
+                                [Op.like]: `%${word}%`
+                            }
+                        },
+                        {
+                            '$daexpedisis.norekening$':{
+                                [Op.like]: `%${word}%`
+                            }
+                        },
+                        {
+                            '$authFinance.firstname$':{
+                                [Op.like]: `%${word}%`
+                            }
+                        },
+                        Sequelize.where(Sequelize.literal("(CASE WHEN `transaksis`.`status` = 'A' THEN 'New Transaksi' WHEN `transaksis`.`status` = 'B' THEN 'New Transaksi' WHEN `transaksis`.`status` = 'B' THEN 'New Transaksi' WHEN `transaksis`.`status` = 'C' THEN 'Menunggu Pembayaran' WHEN `transaksis`.`status` = 'D' THEN 'Verifikasi Finance' WHEN `transaksis`.`status` = 'E' THEN 'Kurang Bayar' WHEN `transaksis`.`status` = 'F' THEN 'Lunas' WHEN `transaksis`.`status` = 'G' THEN 'Siap Kirim' WHEN `transaksis`.`status` = 'H' THEN 'Dikirim' WHEN `transaksis`.`status` = 'I' THEN 'Sukses' WHEN `transaksis`.`status` = 'J' THEN 'Gagal' WHEN `transaksis`.`status` = 'K' THEN 'Return' WHEN `transaksis`.`status` = 'L' THEN 'Cancel' WHEN `transaksis`.`status` = 'M' THEN 'Sudah Bayar' WHEN `transaksis`.`status` = 'N' THEN 'DFOD' WHEN `transaksis`.`status` = 'O' THEN 'Kirim Ulang' END)"),{
+                            [Op.like]: `%${word}%`
+                        }),
+                    ],
+                })
+            })
+        }
          
          const date = new Date();
          let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
@@ -2325,10 +2382,6 @@ module.exports = {
          if (req.query.endDate) {
              endDate = new Date(req.query.endDate * 1)
          }
-        
-        if( search == null ){
-            search = ""
-        }
 
         if( invoiceId == null ){
             invoiceId = ""
@@ -2393,37 +2446,12 @@ module.exports = {
                         }
                          },
                     {
-                        [Op.or]:[
-                            {
-                                '$auth.firstname$':{
-                                    [Op.like]: `%${search}%`
-                                }
-                            },
-                            {
-                                nama:{
-                                    [Op.like]: `%${search}%`
-                                }
-                            },
-                            {
-                                invoiceId:{
-                                    [Op.like]: `%${search}%`
-                                }
-                            },
-                        ],
+                        [Op.and]: searchWords
                     }
                   ],
               },
               include: [ 
                 { model: daexpedisis,
-                    where: {
-                        namabank: {
-                            [Op.or]: [
-                                {
-                            [Op.like]: '%'+namabank+'%'
-                          },
-                        ]
-                     },
-                    },
                     attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank','totalharga'],
                 },
                 { model: auths,
@@ -2503,23 +2531,7 @@ module.exports = {
                         }
                     },
                     {
-                        [Op.or]:[
-                            {
-                                '$auth.firstname$':{
-                                    [Op.like]: `%${search}%`
-                                }
-                            },
-                            {
-                                nama:{
-                                    [Op.like]: `%${search}%`
-                                }
-                            },
-                            {
-                                invoiceId:{
-                                    [Op.like]: `%${search}%`
-                                }
-                            },
-                        ],
+                        [Op.and]: searchWords
                     }
                   ],
               },
