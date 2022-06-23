@@ -156,7 +156,7 @@ module.exports = {
 
         let result = await leads.create({
             authId: req.body.authId,
-            productId: 3,
+            productId: req.body.productId,
             domainId: req.body.domainId,
             no_hp: req.body.no_hp,
             nama: req.body.nama,
