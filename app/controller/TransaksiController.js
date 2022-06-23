@@ -22,7 +22,7 @@ module.exports = {
         var tanggal = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
         // let keranjangdata =  req.body.products.replace(/\\n/g, '')
         let keranjangdata =  req.body.products
-        // let datakeranjang = eval(keranjangdata)
+        let datakeranjang = eval(keranjangdata)
         let result = await transaksis.create({
             nama: req.body.nama,
             customerId: req.body.customerId,
@@ -52,9 +52,7 @@ module.exports = {
             memotransaksi: req.body.memotransaksi,
             leadsId: req.body.leadsId,
         }).then(result => {
-            let keranjang = keranjangs.bulkCreate(datakeranjang, { individualHooks: true }).then(keranjang =>{
-                return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
-            })
+            let keranjang = keranjangs.bulkCreate(datakeranjang, { individualHooks: true })
             // let keranjung = keranjangs.findAll({
             //     where: {
             //         transaksiId: {
@@ -86,6 +84,7 @@ module.exports = {
             // })
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
         }).catch(function (err)  {
+            console.log(err);
             return apiResponse.ErrorResponse(res, err);
         });
       },
