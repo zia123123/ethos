@@ -2063,8 +2063,62 @@ module.exports = {
     async indexFinanceWeb(req, res) {
         let page = parseInt(req.query.page)
         let limit = parseInt(req.query.limit)
-        let search = req.query.search 
         let bank = req.query.bank 
+
+        let searchWords = []
+        let search = req.query.search
+
+        if( search == null ){
+            search = ""
+        }else{
+            const words = search.toLowerCase().split(' ')
+            words.forEach(word => {
+                searchWords.push({
+                    [Op.or]:[
+                        {
+                            '$auth.firstname$':{
+                                [Op.like]: `%${word}%`
+                            }
+                        },
+                        // {
+                        //     '$customer.notelp$':{
+                        //         [Op.like]: `%${word}%`
+                        //     }
+                        // },
+                        {
+                            '$daexpedisis.totalharga$':{
+                                [Op.like]: `%${word}%`
+                            }
+                        },
+                        {
+                            '$daexpedisis.namabank$':{
+                                [Op.like]: `%${word}%`
+                            }
+                        },
+                        {
+                            '$daexpedisis.norekening$':{
+                                [Op.like]: `%${word}%`
+                            }
+                        },
+                        {
+                            nama:{
+                                [Op.like]: `%${word}%`
+                            }
+                        },
+                        {
+                            orderNumber:{
+                                [Op.like]: `%${word}%`
+                            }
+                        },
+                        // {
+                        //     invoiceId:{
+                        //         [Op.like]: `%${word}%`
+                        //     }
+                        // },
+                    ],
+                })
+            })
+        }
         
         const date = new Date();
         let startDate = new Date(2015, 0, 1, 7, 0, 0),
@@ -2077,13 +2131,6 @@ module.exports = {
         if (req.query.endDate) {
             endDate = Math.floor(new Date(req.query.endDate * 1)) 
             endDate = new Date(endDate) 
-        }
-
-        // console.log(cek);
-        // console.log(endDate);
-        
-        if( search == null ){
-            search = ""
         }
 
         if( bank == null ){
@@ -2113,48 +2160,7 @@ module.exports = {
                     '$daexpedisis.namabank$': {
                         [Op.like]: `%${bank}%`
                     },
-                    [Op.or]:[
-                        {
-                            '$auth.firstname$':{
-                                [Op.like]: `%${search}%`
-                            }
-                        },
-                        {
-                            '$customer.notelp$':{
-                                [Op.like]: `%${search}%`
-                            }
-                        },
-                        {
-                            '$daexpedisis.totalharga$':{
-                                [Op.like]: `%${search}%`
-                            }
-                        },
-                        {
-                            '$daexpedisis.namabank$':{
-                                [Op.like]: `%${search}%`
-                            }
-                        },
-                        {
-                            '$daexpedisis.namabank$':{
-                                [Op.like]: `%${search}%`
-                            }
-                        },
-                        {
-                            '$daexpedisis.norekening$':{
-                                [Op.like]: `%${search}%`
-                            }
-                        },
-                        {
-                            nama:{
-                                [Op.like]: `%${search}%`
-                            }
-                        },
-                        {
-                            invoiceId:{
-                                [Op.like]: `%${search}%`
-                            }
-                        },
-                    ],
+                    [Op.and]: searchWords
               },
             include: [ 
                 { model: daexpedisis,
@@ -2208,53 +2214,12 @@ module.exports = {
                     '$daexpedisis.namabank$': {
                         [Op.like]: `%${bank}%`
                     },
-                    [Op.or]:[
-                        {
-                            '$auth.firstname$':{
-                                [Op.like]: `%${search}%`
-                            }
-                        },
-                        {
-                            '$customer.notelp$':{
-                                [Op.like]: `%${search}%`
-                            }
-                        },
-                        {
-                            '$daexpedisis.totalharga$':{
-                                [Op.like]: `%${search}%`
-                            }
-                        },
-                        {
-                            '$daexpedisis.namabank$':{
-                                [Op.like]: `%${search}%`
-                            }
-                        },
-                        {
-                            '$daexpedisis.namabank$':{
-                                [Op.like]: `%${search}%`
-                            }
-                        },
-                        {
-                            '$daexpedisis.norekening$':{
-                                [Op.like]: `%${search}%`
-                            }
-                        },
-                        {
-                            nama:{
-                                [Op.like]: `%${search}%`
-                            }
-                        },
-                        {
-                            invoiceId:{
-                                [Op.like]: `%${search}%`
-                            }
-                        },
-                    ],
+                    [Op.and]: searchWords
               },
             order: [
                 ['createdAt', 'ASC'],
             ],
-            attributes: ['id', 'nama','createdAt','pembayaran','status','idtransaksi','invoiceId','subsidi','ongkoskirim', 'discount', 'memotransaksi', 'tanggalVerifikasi', 'tanggalAWB'],
+            attributes: ['id', 'nama','createdAt','pembayaran','status','idtransaksi','invoiceId','subsidi','ongkoskirim', 'discount', 'memotransaksi', 'tanggalVerifikasi', 'tanggalAWB', 'orderNumber'],
             include: [ 
                 { model: daexpedisis,
                     attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank','totalharga'],
