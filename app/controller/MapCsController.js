@@ -40,9 +40,10 @@ module.exports = {
             ],
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
-            }).catch(function (err){
-                return apiResponse.ErrorResponse(res, err);
-            });
+        }).catch(function (err){
+            console.log(err);
+            return apiResponse.ErrorResponse(res, err);
+        });
     },
     async getDataCs(req, res) {
         let result = await mapcs.findAll({
@@ -79,6 +80,32 @@ module.exports = {
         req.result.destroy().then(result => {
             res.json({ msg: "Berhasil di delete" });
         })
+    },
+
+    async indexByProduct(req, res) {
+        console.log(req);
+        let result = await mapcs.findAll({
+            where:{
+                authId: req.query.authId,
+            },
+            attributes: ['id', 'status'],
+            include: [ { model: domains,
+                required: true,
+                attributes: ['id', 'url','productId'],
+                where:{
+                    productId: req.query.productId,
+                },
+                include: [ { model: auths,
+                    as:'auth',
+                    attributes: ['id', 'firstname'] },
+                ],},
+            ],
+        }).then(result => {
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+        }).catch(function (err){
+            console.log(err);
+            return apiResponse.ErrorResponse(res, err);
+        });
     },
 
 }

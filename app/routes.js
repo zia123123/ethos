@@ -559,5 +559,6 @@ router.get('/api/customer-phone-number/:phone', CustomerController.getCustomerBy
 router.get('/api/lead-after-domain/', LeadController.getLeadByPhoneNumberDomainCs, CustomerController.createByLead);
 
 router.get('/api/dashboard-mobile/closingRateCs/:id', DashboardController.closingRateCs);
+router.get('/api/mapcsByProduct/', MapCsController.indexByProduct);
 
 module.exports = router;
