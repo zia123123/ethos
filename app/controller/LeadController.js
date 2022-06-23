@@ -270,11 +270,6 @@ module.exports = {
                             }
                         },
                         {
-                            '$product.name$':{
-                                [Op.like]: `%${word}%`
-                            }
-                        },
-                        {
                             '$domain.url$':{
                                 [Op.like]: `%${word}%`
                             }
@@ -317,14 +312,16 @@ module.exports = {
                     required: true,
                     // attributes: []
                 },
-                // {
-                //     model: products,
-                //     required: true,
-                //     // attributes: []
-                // },
                 {
                     model: domains,
                     required: true,
+                    include:[
+                        {
+                            model: products,
+                            required: true,
+                            // attributes: []
+                        },
+                    ]
                     // attributes: []
                 },
             ],
