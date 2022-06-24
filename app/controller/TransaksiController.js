@@ -432,11 +432,16 @@ module.exports = {
                             }
                         },
                         {
+                            '$metodepembayaran.nama$':{
+                                [Op.like]: `%${word}%`
+                            }
+                        },
+                        {
                             '$authWarehouse.firstname$':{
                                 [Op.like]: `%${word}%`
                             }
                         },
-                        Sequelize.where(Sequelize.literal("(CASE WHEN `transaksis`.`status` = 'A' THEN 'New Transaksi' WHEN `transaksis`.`status` = 'B' THEN 'New Transaksi' WHEN `transaksis`.`status` = 'B' THEN 'New Transaksi' WHEN `transaksis`.`status` = 'C' THEN 'Menunggu Pembayaran' WHEN `transaksis`.`status` = 'D' THEN 'Verifikasi Finance' WHEN `transaksis`.`status` = 'E' THEN 'Kurang Bayar' WHEN `transaksis`.`status` = 'F' THEN 'Lunas' WHEN `transaksis`.`status` = 'G' THEN 'Siap Kirim' WHEN `transaksis`.`status` = 'H' THEN 'Dikirim' WHEN `transaksis`.`status` = 'I' THEN 'Sukses' WHEN `transaksis`.`status` = 'J' THEN 'Gagal' WHEN `transaksis`.`status` = 'K' THEN 'Return' WHEN `transaksis`.`status` = 'L' THEN 'Cancel' WHEN `transaksis`.`status` = 'M' THEN 'Sudah Bayar' WHEN `transaksis`.`status` = 'N' THEN 'DFOD' WHEN `transaksis`.`status` = 'O' THEN 'Kirim Ulang' END) LIKE '%"+word+"%' OR (CASE WHEN typebayar = 1 THEN 'Transfer' WHEN typebayar = 2 THEN 'COD' END)"),{
+                        Sequelize.where(Sequelize.literal("(CASE WHEN `transaksis`.`status` = 'A' THEN 'New Transaksi' WHEN `transaksis`.`status` = 'B' THEN 'New Transaksi' WHEN `transaksis`.`status` = 'B' THEN 'New Transaksi' WHEN `transaksis`.`status` = 'C' THEN 'Menunggu Pembayaran' WHEN `transaksis`.`status` = 'D' THEN 'Verifikasi Finance' WHEN `transaksis`.`status` = 'E' THEN 'Kurang Bayar' WHEN `transaksis`.`status` = 'F' THEN 'Lunas' WHEN `transaksis`.`status` = 'G' THEN 'Siap Kirim' WHEN `transaksis`.`status` = 'H' THEN 'Dikirim' WHEN `transaksis`.`status` = 'I' THEN 'Sukses' WHEN `transaksis`.`status` = 'J' THEN 'Gagal' WHEN `transaksis`.`status` = 'K' THEN 'Return' WHEN `transaksis`.`status` = 'L' THEN 'Cancel' WHEN `transaksis`.`status` = 'M' THEN 'Sudah Bayar' WHEN `transaksis`.`status` = 'N' THEN 'DFOD' WHEN `transaksis`.`status` = 'O' THEN 'Kirim Ulang' END)"),{
                             [Op.like]: `%${word}%`
                         }),
                     ]
@@ -449,10 +454,10 @@ module.exports = {
             endDate   = new Date(date.setDate(date.getDate() + 1));
 
         if (req.query.startDate) {
-            startDate = new Date(req.query.startDate * 1)
+            startDate = req.query.startDate + 'T00:00:00'
         }
         if (req.query.endDate) {
-            endDate = new Date(req.query.endDate * 1)
+            endDate = req.query.endDate + 'T23:59:59'
         }
 
         if( warehouseId == null ){
@@ -479,7 +484,7 @@ module.exports = {
                     warehouseId: {
                         [Op.like]: '%'+warehouseId+'%'
                     },
-                    tanggalAWB: {
+                    createdAt: {
                         [Op.and]: {
                             [Op.gte]: startDate,
                             [Op.lte]: endDate
@@ -546,7 +551,7 @@ module.exports = {
                 warehouseId: {
                     [Op.like]: '%'+warehouseId+'%'
                 },
-                tanggalAWB: {
+                createdAt: {
                     [Op.and]: {
                         [Op.gte]: startDate,
                         [Op.lte]: endDate
@@ -597,8 +602,6 @@ module.exports = {
                 'customerId',
                 'memotransaksi',
                 'subsidi',
-                [Sequelize.literal("CASE WHEN `transaksis`.`status` = 'A' THEN 'New Transaksi' WHEN `transaksis`.`status` = 'B' THEN 'New Transaksi' WHEN `transaksis`.`status` = 'B' THEN 'New Transaksi' WHEN `transaksis`.`status` = 'C' THEN 'Menunggu Pembayaran' WHEN `transaksis`.`status` = 'D' THEN 'Verifikasi Finance' WHEN `transaksis`.`status` = 'E' THEN 'Kurang Bayar' WHEN `transaksis`.`status` = 'F' THEN 'Lunas' WHEN `transaksis`.`status` = 'G' THEN 'Siap Kirim' WHEN `transaksis`.`status` = 'H' THEN 'Dikirim' WHEN `transaksis`.`status` = 'I' THEN 'Sukses' WHEN `transaksis`.`status` = 'J' THEN 'Gagal' WHEN `transaksis`.`status` = 'K' THEN 'Return' WHEN `transaksis`.`status` = 'L' THEN 'Cancel' WHEN `transaksis`.`status` = 'M' THEN 'Sudah Bayar' WHEN `transaksis`.`status` = 'N' THEN 'DFOD' WHEN `transaksis`.`status` = 'O' THEN 'Kirim Ulang' END"), 'status_name'],
-                [Sequelize.literal("CASE WHEN typebayar = 1 THEN 'Transfer' WHEN typebayar = 2 THEN 'COD' END"), 'payment_method']
             ],
             order: [
                 ['tanggalAWB', 'DESC'],
@@ -1447,12 +1450,12 @@ module.exports = {
               TransaksiArray.forEach( record => {
                   let columnIndex = 1;
                   Object.keys(record ).forEach(columnName =>{
-                    //   console.log('record: '+record);
-                    //   console.log('columnName: '+columnName);
-                    //   console.log('columnIndex: '+columnIndex);
-                    //   console.log('rowIndex: '+rowIndex);
-                    //   console.log('record [columnName]: '+record [columnName]);
-                    //   console.log('==========================================');
+                      console.log('record: '+record);
+                      console.log('columnName: '+columnName);
+                      console.log('columnIndex: '+columnIndex);
+                      console.log('rowIndex: '+rowIndex);
+                      console.log('record [columnName]: '+record [columnName]);
+                      console.log('==========================================');
                       ws.cell(rowIndex,columnIndex++)
                           .string(record [columnName])
                   });
