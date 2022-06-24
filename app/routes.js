@@ -468,6 +468,8 @@ router.get('/api/getexcelLabel/', TransaksiController.ExcelLabel);
 router.get('/api/getexcelShipper/', TransaksiController.ExcelShipper);
 router.get('/api/getexcelPermintaanPesanan/', TransaksiController.ExcelPermintaanPesanan);
 router.get('/api/getexcelRequestKonfirmasiDFOD/', TransaksiController.ExcelRequestKonfirmasiDFOD);
+router.get('/api/getexcelRiwayatVerifikasi/', TransaksiController.ExcelRiwayatVerifikasi);
+router.get('/api/getexcelDaftarTransaksi/', TransaksiController.ExcelDaftarTransaksi);
 
 
 
