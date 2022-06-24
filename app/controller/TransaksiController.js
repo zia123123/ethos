@@ -3857,7 +3857,7 @@ module.exports = {
                   },
                 }
               },
-              attributes: ['invoiceId','awb','ongkoskirim','subsidi','products','expedisiName','typebayar','memotransaksi', 'idtransaksi', 'createdAt'],
+              attributes: ['invoiceId','awb','ongkoskirim','subsidi','products','expedisiName','typebayar','memotransaksi', 'idtransaksi', 'createdAt', 'orderNumber'],
               order: [
                 ['id', 'DESC'],
             ],
@@ -3909,6 +3909,7 @@ module.exports = {
                       SenderPhone,
                       warehouseName,
                       date,
+                      orderNumber,
                       Invoice,
                       RecepientName,
                       RecepientPhone,
@@ -3931,6 +3932,7 @@ module.exports = {
                     this.SenderPhone = SenderPhone; 
                     this.warehouseName = warehouseName; 
                     this.date = date; 
+                    this.orderNumber = orderNumber; 
                     this.Invoice = Invoice;
                     this.RecepientName = RecepientName;
                     this.RecepientPhone = RecepientPhone;
@@ -4025,6 +4027,7 @@ module.exports = {
                        [date.getHours(),
                         date.getMinutes(),
                         date.getSeconds()].join(':'), 
+                      result[i].orderNumber, 
                       result[i].invoiceId, 
                       result[i].customer.nama, 
                       result[i].customer.notelp, 
@@ -4032,7 +4035,7 @@ module.exports = {
                       result[i].awb, 
                       result[i].expedisiName, 
                       type, 
-                      result[i].daexpedisis.totalharga.toString(), 
+                      result[i].daexpedisis == null? '0' : result[i].daexpedisis.totalharga.toString(), 
                       result[i].customer.provinsiname, 
                       result[i].customer.cityname, 
                       result[i].customer.districtname,
@@ -4052,6 +4055,7 @@ module.exports = {
                   "Sender Phone No.",
                   "Warehouse",
                   "Tanggal & Jam",
+                  "Order Number",
                   "Invoice",
                   "Recipient Name",
                   "Recipient Phone No",
@@ -4079,12 +4083,12 @@ module.exports = {
               TransaksiArray.forEach( record => {
                   let columnIndex = 1;
                   Object.keys(record ).forEach(columnName =>{
-                    //   console.log('record: '+record);
-                    //   console.log('columnName: '+columnName);
-                    //   console.log('columnIndex: '+columnIndex);
-                    //   console.log('rowIndex: '+rowIndex);
-                    //   console.log('record [columnName]: '+record [columnName]);
-                    //   console.log('==========================================');
+                      console.log('record: '+record);
+                      console.log('columnName: '+columnName);
+                      console.log('columnIndex: '+columnIndex);
+                      console.log('rowIndex: '+rowIndex);
+                      console.log('record [columnName]: '+record [columnName]);
+                      console.log('==========================================');
                       ws.cell(rowIndex,columnIndex++)
                           .string(record [columnName])
                   });
@@ -4623,12 +4627,12 @@ module.exports = {
               TransaksiArray.forEach( record => {
                   let columnIndex = 1;
                   Object.keys(record ).forEach(columnName =>{
-                      console.log('record: '+record);
-                      console.log('columnName: '+columnName);
-                      console.log('columnIndex: '+columnIndex);
-                      console.log('rowIndex: '+rowIndex);
-                      console.log('record [columnName]: '+record [columnName]);
-                      console.log('==========================================');
+                    //   console.log('record: '+record);
+                    //   console.log('columnName: '+columnName);
+                    //   console.log('columnIndex: '+columnIndex);
+                    //   console.log('rowIndex: '+rowIndex);
+                    //   console.log('record [columnName]: '+record [columnName]);
+                    //   console.log('==========================================');
                       ws.cell(rowIndex,columnIndex++)
                           .string(record [columnName])
                   });
