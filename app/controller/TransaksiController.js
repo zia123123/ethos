@@ -4571,7 +4571,7 @@ module.exports = {
                       expeditionPackage, 
                       auth.groupname,
                       result[i].orderNumber,
-                      result[i].customer.nama+','+result[i].idtransaksi, 
+                      result[i].customer.nama+','+result[i].orderNumber, 
                       phoneNumber, 
                       result[i].customer.alamat, 
                       result[i].customer.provinsiname, 
