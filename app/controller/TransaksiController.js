@@ -4124,6 +4124,9 @@ module.exports = {
                       link: filename,
                   }
               }
+              if (TransaksiArray.length == 0) {
+                return apiResponse.successResponseWithData(res, "Error", {message: 'Tidak ada data'});
+              }
               wb.write(filename,res);
               //var data = fs.readFileSync(path.resolve(__dirname, 'transaksidata.xlsx'))
               //return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
