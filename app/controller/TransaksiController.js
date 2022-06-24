@@ -4777,10 +4777,20 @@ module.exports = {
                                 ]
                             },
                             { model: daexpedisis,
-                                attributes: ['totalharga','namabank','norekening', 'biayatambahan', 'biayacod'],
+                                attributes: ['totalharga','namabank','norekening', 'biayatambahan', 'biayacod', 'subsidicod'],
+                            },
+                            { model: deliveryfods,
+                                attributes: ['awbpengembalian','awbpengiriman'],
+                            },
+                            { model: returs,
+                                attributes: ['keterangan','typedfod'],
                             },
                             { model: auths,
                                 as:'authFinance',
+                                attributes: ['notelp','firstname'],
+                            },
+                            { model: auths,
+                                as:'authWarehouse',
                                 attributes: ['notelp','firstname'],
                             },
             ]
@@ -4809,10 +4819,13 @@ module.exports = {
                     discount,
                     biayatambahan,
                     biayacod,
+                    subsidicod,
                     kodeunik,
                     totalHarga,
                     memo,
+                    packingKayu,
                     verifikator,
+                    tipecs,
                     namacs,
                     namaadv,
                     namagrup,
@@ -4839,10 +4852,13 @@ module.exports = {
                     this.discount = discount;
                     this.biayatambahan = biayatambahan;
                     this.biayacod = biayacod;
+                    this.subsidicod = subsidicod;
                     this.kodeunik = kodeunik;
                     this.totalHarga = totalHarga;
                     this.memo = memo;
+                    this.packingKayu = packingKayu;
                     this.verifikator = verifikator;
+                    this.tipecs = tipecs;
                     this.namacs = namacs;
                     this.namaadv = namaadv;
                     this.namagrup = namagrup;
@@ -4867,7 +4883,6 @@ module.exports = {
                     if (datakeranjang[j].advertiser != '' && adv == '-') {
                         adv = datakeranjang[j].advertiser
                     }
-
                     if (datakeranjang[j].supervisor != '' && spv == '-') {
                         spv = datakeranjang[j].supervisor
                     }
@@ -4880,8 +4895,23 @@ module.exports = {
                 }
                 
                 let statustranksasi
-                if (result[i].status == 'N') {
+                if (result[i].status == 'G') {
+                    statustranksasi = 'Siap Kirim'
+                }
+                else if (result[i].status == 'H') {
+                    statustranksasi = 'Dikirim'
+                }
+                else if (result[i].status == 'I') {
+                    statustranksasi = 'Sukses'
+                }
+                else if (result[i].status == 'K') {
+                    statustranksasi = 'Return'
+                }
+                else if (result[i].status == 'N') {
                     statustranksasi = 'DFOD'
+                }
+                else if (result[i].status == 'L') {
+                    statustranksasi = 'Cancel'
                 }
 
                 let phoneNumber = result[i].customer.notelp
@@ -4902,9 +4932,18 @@ module.exports = {
                 const auth = JSON.parse(JSON.stringify(result[i].auth))
                 const date = new Date(result[i].createdAt)
 
-                let groupInternal = 'Partner'
+                let groupInternal = 'Eksternal'
+                let tipecs = 'CRM'
                 if (auth.groupinternal == 1) {
-                    groupInternal = 'Ethos'
+                    groupInternal = 'Internal'
+                    tipecs = 'CSA'
+                }
+
+                const memo = result[i].memotransaksi.toUpperCase()
+                let packingKayu = 'false'
+
+                if (memo.includes('PACKING KAYU') && memo.includes('TIDAK PERLU PACKING KAYU') == false) {
+                    packingKayu = 'true'
                 }
 
                 TransaksiArray.push(new Transaksi(
@@ -4913,7 +4952,7 @@ module.exports = {
                     result[i].orderNumber,
                     result[i].invoiceId,
                     groupInternal,
-                    result[i].awb,
+                    result[i].awb + ',' + (result[i].deliveryfod == null? '' : result[i].deliveryfod.awbpengembalian) + ',' + (result[i].deliveryfod == null? '' : result[i].deliveryfod.awbpengiriman),
                     [(date.getDate()),
                         (date.getMonth()+1),
                         date.getFullYear()].join('/') +' ' +
@@ -4933,10 +4972,13 @@ module.exports = {
                     result[i].discount.toString(),
                     result[i].daexpedisis.biayatambahan.toString(),
                     result[i].daexpedisis.biayacod == null ? '' : result[i].daexpedisis.biayacod.toString(),
+                    result[i].daexpedisis.subsidicod == null ? '' : result[i].daexpedisis.subsidicod.toString(),
                     (result[i].id%999).toString(),
                     result[i].daexpedisis.totalharga.toString(),
-                    result[i].memotransaksi,
-                    result[i].authFinance == null ? '-' : result[i].authFinance.firstname,
+                    result[i].memotransaksi + '|' + result[i].memoCancel + '|' + (result[i].retur == null? '' : result[i].retur.keterangan) + '|' + (result[i].retur == null? '' : result[i].retur.typedfod),
+                    packingKayu,
+                    (result[i].authFinance == null? '' : result[i].authFinance.firstname) + ',' + (result[i].authWarehouse == null? '' : result[i].authWarehouse.firstname),
+                    tipecs,
                     result[i].auth.firstname,
                     adv,
                     auth.groupname,
@@ -4954,7 +4996,7 @@ module.exports = {
                 "Nomor Invoice",
                 "Group",
                 "Nomor AWB",
-                "Tanggal & Jam",
+                "Tanggal & Jam Penjualan",
                 "Nama Pelanggan",
                 "Nomor HP Pelanggan",
                 "Alamat Pelanggan",
@@ -4968,10 +5010,13 @@ module.exports = {
                 "Diskon Transaksi",
                 "Biaya Tambahan",
                 "Admin COD",
+                "Subsidi COD",
                 "Kode Unik",
                 "Total Harga Pesanan",
-                "Memo Transaksi",
-                "Verifikator",
+                "Memo",
+                "Packing Kayu",
+                "Verifikator & Inputer",
+                "Tipe CS",
                 "Nama CS",
                 "Nama ADV",
                 "Nama Grup",
@@ -4987,11 +5032,11 @@ module.exports = {
             TransaksiArray.forEach( record => {
                 let columnIndex = 1;
                 Object.keys(record ).forEach(columnName =>{
-                    // console.log('columnName: '+columnName);
-                    // console.log('columnIndex: '+columnIndex);
-                    // console.log('rowIndex: '+rowIndex);
-                    // console.log('record [columnName]: '+record [columnName]);
-                    // console.log('==========================================');
+                    console.log('columnName: '+columnName);
+                    console.log('columnIndex: '+columnIndex);
+                    console.log('rowIndex: '+rowIndex);
+                    console.log('record [columnName]: '+record [columnName]);
+                    console.log('==========================================');
                     ws.cell(rowIndex,columnIndex++)
                         .string(record [columnName])
                 });
@@ -5007,10 +5052,10 @@ module.exports = {
             //var data = fs.readFileSync(path.resolve(__dirname, 'transaksidata.xlsx'))
             //return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
            //return apiResponse.successResponseWithData(res, "SUCCESS", result);
-            }).catch(function (err){
-                console.log(err);
-                return apiResponse.ErrorResponse(res, err);
-            });
+        }).catch(function (err){
+            console.log(err);
+            return apiResponse.ErrorResponse(res, err);
+        });
     },
 
     async ExcelRiwayatVerifikasi(req, res) {
@@ -5774,10 +5819,10 @@ module.exports = {
             //var data = fs.readFileSync(path.resolve(__dirname, 'transaksidata.xlsx'))
             //return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
            //return apiResponse.successResponseWithData(res, "SUCCESS", result);
-            }).catch(function (err){
-                console.log(err);
-                return apiResponse.ErrorResponse(res, err);
-            });
+        }).catch(function (err){
+            console.log(err);
+            return apiResponse.ErrorResponse(res, err);
+        });
     },
 
 }
