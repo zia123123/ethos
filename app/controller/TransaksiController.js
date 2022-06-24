@@ -2376,10 +2376,10 @@ module.exports = {
              endDate   = new Date(date.setDate(date.getDate() + 1));
  
          if (req.query.startDate) {
-             startDate = new Date(req.query.startDate * 1)
+             startDate = req.query.startDate+'T00:00:00'
          }
          if (req.query.endDate) {
-             endDate = new Date(req.query.endDate * 1)
+             endDate = req.query.endDate+'T23:59:59'
          }
 
         if( invoiceId == null ){
