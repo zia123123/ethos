@@ -4386,7 +4386,7 @@ module.exports = {
                   },
                 }
               },
-              attributes: ['invoiceId','awb','ongkoskirim','subsidi','products','expedisiName','typebayar','memotransaksi', 'idtransaksi', 'createdAt'],
+              attributes: ['invoiceId','awb','ongkoskirim','subsidi','products','expedisiName','typebayar','memotransaksi', 'idtransaksi', 'createdAt', 'orderNumber'],
               order: [
                 ['id', 'DESC'],
             ],
@@ -4440,7 +4440,7 @@ module.exports = {
                       expedition,
                       expeditionPackage,
                       group,
-                      invoiceNumber,
+                      orderNumber,
                       customerName,
                       customerPhoneNo,
                       customerAddress,
@@ -4462,7 +4462,7 @@ module.exports = {
                     this.expedition = expedition; 
                     this.expeditionPackage = expeditionPackage;
                     this.group = group;
-                    this.invoiceNumber = invoiceNumber;
+                    this.orderNumber = orderNumber;
                     this.customerName = customerName;
                     this.customerPhoneNo = customerPhoneNo;
                     this.customerAddress = customerAddress;
@@ -4570,7 +4570,7 @@ module.exports = {
                       expeditionName, 
                       expeditionPackage, 
                       auth.groupname,
-                      result[i].invoiceId,
+                      result[i].orderNumber,
                       result[i].customer.nama+','+result[i].idtransaksi, 
                       phoneNumber, 
                       result[i].customer.alamat, 
@@ -4598,7 +4598,7 @@ module.exports = {
                   "Ekspedisi",
                   "Paket Ekspedisi",
                   "Nama Group",
-                  "Invoice Number",
+                  "Order Number",
                   "Nama Pelanggan",
                   "Nomor Telephone Pelanggan",
                   "Alamat Pelanggan",
@@ -4623,12 +4623,12 @@ module.exports = {
               TransaksiArray.forEach( record => {
                   let columnIndex = 1;
                   Object.keys(record ).forEach(columnName =>{
-                    //   console.log('record: '+record);
-                    //   console.log('columnName: '+columnName);
-                    //   console.log('columnIndex: '+columnIndex);
-                    //   console.log('rowIndex: '+rowIndex);
-                    //   console.log('record [columnName]: '+record [columnName]);
-                    //   console.log('==========================================');
+                      console.log('record: '+record);
+                      console.log('columnName: '+columnName);
+                      console.log('columnIndex: '+columnIndex);
+                      console.log('rowIndex: '+rowIndex);
+                      console.log('record [columnName]: '+record [columnName]);
+                      console.log('==========================================');
                       ws.cell(rowIndex,columnIndex++)
                           .string(record [columnName])
                   });

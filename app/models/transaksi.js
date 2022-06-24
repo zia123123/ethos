@@ -106,6 +106,9 @@ module.exports = (sequelize, DataTypes) => {
     memoCancel: {
       type: DataTypes.STRING
     },
+    orderNumber: {
+      type: DataTypes.STRING,
+    },
     // linkdomain: {
     //   type: DataTypes.STRING
     // },
