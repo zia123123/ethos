@@ -2120,7 +2120,7 @@ module.exports = {
         }
         
         const date = new Date();
-        let startDate = new Date(2015, 0, 1, 7, 0, 0),
+        let startDate = new Date(0),
             endDate   = new Date(date.setDate(date.getDate() + 1));
 
         if (req.query.startDate) {
@@ -3318,7 +3318,7 @@ module.exports = {
                 //   },
                 // }
               },
-              attributes: ['invoiceId','awb','ongkoskirim','subsidi','products','expedisiName','typebayar','memotransaksi'],
+              attributes: ['invoiceId','awb','ongkoskirim','subsidi','products','expedisiName','typebayar','memotransaksi', 'orderNumber'],
               order: [
                 ['id', 'DESC'],
             ],
@@ -3349,7 +3349,8 @@ module.exports = {
         }).then(result => {
         //    console.log(result)
             class Transaksi {
-                constructor(Invoice,part1,qty1,RecepientName,RecepientNo,RecepientAdress,memo,awb,expedisi,ongkos,tag,warehousename,typebayar,ongkir,subsidi,gudangAlamat,namacs,gudangPost,aa) {
+                constructor(orderNumber, Invoice,part1,qty1,RecepientName,RecepientNo,RecepientAdress,memo,awb,expedisi,ongkos,tag,warehousename,typebayar,ongkir,subsidi,gudangAlamat,namacs,gudangPost,aa) {
+                  this.orderNumber = orderNumber;
                   this.Invoice = Invoice;
                   this.part1 = part1;
                   this.qty1 = qty1;
@@ -3407,6 +3408,7 @@ module.exports = {
                   var type = "COD"
                 }           
                 TransaksiArray.push(new Transaksi(
+                result[i].orderNumber,
                 result[i].invoiceId,
                 KeranjangArray[0].namaproduct,KeranjangArray[0].sku,KeranjangArray[0].jumlahproduct.toString(),
                
@@ -3415,7 +3417,7 @@ module.exports = {
                 result[i].customer.alamat,
                 result[i].awb,
                 result[i].expedisiName,
-                result[i].daexpedisis.totalharga.toString(),
+                (result[i].daexpedisis == null? '' : result[i].daexpedisis.totalharga.toString()),
                 result[i].auth.firstname,
                 result[i].warehouse.name,
                 type,
@@ -3429,6 +3431,7 @@ module.exports = {
             const wb = new xl.Workbook();
             const ws = wb.addWorksheet('Data Transaksi');
             const headingColumnNames = [
+                "Order Number",
                 "Invoice",
                 "Nama Produk 1",
                 "SKU 1",
@@ -3446,7 +3449,6 @@ module.exports = {
                 "Subsidi Pengiriman",
                 "Nama CS",
                 "Memo",
-                ""
             ]
             let headingColumnIndex = 1;
             headingColumnNames.forEach(heading => {
@@ -3457,11 +3459,11 @@ module.exports = {
             TransaksiArray.forEach( record => {
                 let columnIndex = 1;
                 Object.keys(record ).forEach(columnName =>{
-                    // console.log('columnName: '+columnName);
-                    // console.log('columnIndex: '+columnIndex);
-                    // console.log('rowIndex: '+rowIndex);
-                    // console.log('record [columnName]: '+record [columnName]);
-                    // console.log('==========================================');
+                    console.log('columnName: '+columnName);
+                    console.log('columnIndex: '+columnIndex);
+                    console.log('rowIndex: '+rowIndex);
+                    console.log('record [columnName]: '+record [columnName]);
+                    console.log('==========================================');
                     ws.cell(rowIndex,columnIndex++)
                         .string(record [columnName])
                 });
@@ -3478,6 +3480,7 @@ module.exports = {
             //return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
            //return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
+                console.log(err);
                 return apiResponse.ErrorResponse(res, err);
             });
     },
@@ -4706,7 +4709,7 @@ module.exports = {
                     [Op.like]: `%${bank}%`
                 },
               },
-              attributes: ['id', 'invoiceId','awb','ongkoskirim','subsidi', 'discount', 'products','expedisiName','typebayar','memotransaksi', 'expedisiName', 'status', 'createdAt', 'updateFinance'],
+              attributes: ['id', 'invoiceId','awb','ongkoskirim','subsidi', 'discount', 'products','expedisiName','typebayar','memotransaksi', 'expedisiName', 'status', 'createdAt', 'updateFinance', 'orderNumber'],
               order: [
                 ['id', 'DESC'],
             ],
@@ -4764,6 +4767,7 @@ module.exports = {
                 constructor(
                     warehousename,
                     typebayar,
+                    orderNumber,
                     Invoice,
                     groupInternal,
                     awb,
@@ -4793,6 +4797,7 @@ module.exports = {
                 ) {
                     this.warehousename = warehousename;
                     this.typebayar = typebayar;
+                    this.orderNumber = orderNumber;
                     this.Invoice = Invoice;
                     this.groupInternal = groupInternal;
                     this.awb = awb;
@@ -4881,6 +4886,7 @@ module.exports = {
                 TransaksiArray.push(new Transaksi(
                     result[i].warehouse.name,
                     type,
+                    result[i].orderNumber,
                     result[i].invoiceId,
                     groupInternal,
                     result[i].awb,
@@ -4920,6 +4926,7 @@ module.exports = {
             const headingColumnNames = [
                 "Gudang",
                 "Metode Pembayaran",
+                "Order Number",
                 "Nomor Invoice",
                 "Group",
                 "Nomor AWB",
@@ -5036,6 +5043,7 @@ module.exports = {
                         },
                     ]
                 },
+                typebayar: 1,
                 '$daexpedisis.namabank$': {
                     [Op.like]: `%${bank}%`
                 },
@@ -5336,11 +5344,11 @@ module.exports = {
             TransaksiArray.forEach( record => {
                 let columnIndex = 1;
                 Object.keys(record ).forEach(columnName =>{
-                    console.log('columnName: '+columnName);
-                    console.log('columnIndex: '+columnIndex);
-                    console.log('rowIndex: '+rowIndex);
-                    console.log('record [columnName]: '+record [columnName]);
-                    console.log('==========================================');
+                    // console.log('columnName: '+columnName);
+                    // console.log('columnIndex: '+columnIndex);
+                    // console.log('rowIndex: '+rowIndex);
+                    // console.log('record [columnName]: '+record [columnName]);
+                    // console.log('==========================================');
                     ws.cell(rowIndex,columnIndex++)
                         .string(record [columnName])
                 });
