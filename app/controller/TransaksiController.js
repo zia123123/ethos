@@ -2918,7 +2918,7 @@ module.exports = {
             if (orders[index].AWB.length > 0) {
                 const customer = orders[index]['Nama Pelanggan'].split(',')
                 const customerName = customer[0]
-                const customerTransactionId = customer[1]
+                const orderNumber = customer[1]
 
                 transaksis.update(
                     {
@@ -2930,7 +2930,7 @@ module.exports = {
                     {
                         where: {
                             nama: customerName,
-                            idtransaksi: customerTransactionId
+                            orderNumber: orderNumber
                         }
                     }
                 )
@@ -4083,12 +4083,12 @@ module.exports = {
               TransaksiArray.forEach( record => {
                   let columnIndex = 1;
                   Object.keys(record ).forEach(columnName =>{
-                      console.log('record: '+record);
-                      console.log('columnName: '+columnName);
-                      console.log('columnIndex: '+columnIndex);
-                      console.log('rowIndex: '+rowIndex);
-                      console.log('record [columnName]: '+record [columnName]);
-                      console.log('==========================================');
+                    //   console.log('record: '+record);
+                    //   console.log('columnName: '+columnName);
+                    //   console.log('columnIndex: '+columnIndex);
+                    //   console.log('rowIndex: '+rowIndex);
+                    //   console.log('record [columnName]: '+record [columnName]);
+                    //   console.log('==========================================');
                       ws.cell(rowIndex,columnIndex++)
                           .string(record [columnName])
                   });
