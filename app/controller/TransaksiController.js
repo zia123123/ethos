@@ -2393,6 +2393,7 @@ module.exports = {
         }
 
         const count = await transaksis.count({
+            subQuery:false,
             where:{
                 status: {
                     [Op.or]: [
@@ -2426,7 +2427,7 @@ module.exports = {
                 ]
              },
              typebayar: 1,
-             tanggalVerifikasi :  {
+             createdAt :  {
                     [Op.and]: {
                         [Op.gte]: startDate,
                         [Op.lte]: endDate
@@ -2452,6 +2453,15 @@ module.exports = {
               include: [ 
                 { model: daexpedisis,
                     attributes: ['biayatambahan','norekening','biayacod','createdAt','namabank','totalharga'],
+                    where: {
+                        namabank: {
+                            [Op.or]: [
+                                {
+                            [Op.like]: '%'+namabank+'%'
+                          },
+                        ]
+                     },
+                    },
                 },
                 { model: auths,
                     as:'auth',
@@ -2470,6 +2480,10 @@ module.exports = {
                 },
                 { model: buktibayars,
                     attributes: ['link'],
+                    order:[
+                        ['id', 'DESC']
+                    ],
+                    limit: 1
                 },
             ]
        })
@@ -2511,7 +2525,7 @@ module.exports = {
                 ]
              },
              typebayar: 1,
-             tanggalVerifikasi :  {
+             createdAt :  {
                     [Op.and]: {
                       [Op.gte]: startDate,
                       [Op.lte]: endDate
@@ -2568,6 +2582,10 @@ module.exports = {
                 },
                 { model: buktibayars,
                     attributes: ['link'],
+                    order:[
+                        ['id', 'DESC']
+                    ],
+                    limit: 1
                 },
             ]
              
