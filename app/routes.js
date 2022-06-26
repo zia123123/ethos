@@ -9,6 +9,7 @@ const mime = require('mime-types');
 //
 
 
+const OngkirController = require('./controller/OngkirController');
 
 const CatalogControoler = require('./controller/CatalogControoler');
 
@@ -507,6 +508,11 @@ router.get('/api/norek/:id', NorekController.find, NorekController.show);
 router.patch('/api/norek/update/:id', NorekController.find,NorekController.update);
 router.delete('/api/norek/:id', NorekController.find, NorekController.delete);
 
+
+router.get('/api/ongkir/ninja', OngkirController.indexninja);
+router.get('/api/ongkir/sicepat', OngkirController.indexsicepat);
+router.get('/api/ongkir/jnt', OngkirController.indexjnt);
+router.get('/api/ongkir/idexpress', OngkirController.indexidexpress);
 
 
 
