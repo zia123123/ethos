@@ -129,7 +129,7 @@ module.exports = {
             },
             include: [ 
                 { model: transaksis,
-                    attributes: ['awb','invoiceId', 'tanggalVerifikasi', 'tanggalAWB'],
+                    attributes: ['awb','invoiceId', 'tanggalVerifikasi', 'tanggalAWB', 'orderNumber'],
                     include: [ 
                         { model: customers,
                             attributes: ['id','nama','notelp'],
