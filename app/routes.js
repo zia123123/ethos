@@ -555,7 +555,7 @@ router.patch('/api/mutation-detail/update', MutationDetailController.update);
 
 router.get('/api/lead/', LeadController.index);
 router.get('/api/lead/cs/:id', LeadController.indexByCS);
-router.post('/api/lead/', LeadController.create);
+router.post('/api/lead/', LeadController.getLeadByCsPhoneNumberDomain, LeadController.create);
 router.get('/api/lead/:id', LeadController.find, LeadController.show);
 router.put('/api/lead/:id', LeadController.find, LeadController.update);
 

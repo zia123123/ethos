@@ -156,6 +156,9 @@ module.exports = {
                 return 
             }
         }
+        if (req.phone != null) {
+            req.body.no_hp = req.phone
+        }
 
         let result = await leads.create({
             authId: req.body.authId,
@@ -401,7 +404,6 @@ module.exports = {
         }
 
         let result = await leads.findAll(filter).then(result => {
-            console.log(result);
             var totalPage = (parseInt(count) / limit) + 1
             returnData = {
                 result,
@@ -465,5 +467,80 @@ module.exports = {
         )
         req.lead = result;
         next();
+    },
+
+    async getLeadByCsPhoneNumberDomain(req, res, next){
+        let csId = req.body.authId
+        let phoneNumber = req.body.no_hp
+        let domain = req.body.domainId
+
+        if (req.body.kode != null) {
+            const kode = req.body.kode 
+            const lengthKode = kode.length
+            const checkCodePhone = phoneNumber.substring(0, lengthKode)
+
+            if (checkCodePhone != kode) {
+                if (phoneNumber[0] == 0) {
+                    phoneNumber = kode + '' + phoneNumber.substring(1)
+                }else{
+                    phoneNumber = kode + '' + phoneNumber
+                }
+            }else{
+                if (phoneNumber[lengthKode] == 0) {
+                    phoneNumber = kode + '' + phoneNumber.substring(lengthKode+1)
+                }
+            }
+        }
+
+        let filter = 
+        {
+            where:{
+                authId: csId,
+                no_hp: phoneNumber,
+                domainId: domain
+            },
+            include:[
+                {
+                    model: auths,
+                    as: 'auth',
+                    required: true,
+                    // attributes: []
+                },
+                // {
+                //     model: products,
+                //     required: true,
+                //     // attributes: []
+                // },
+                {
+                    model: domains,
+                    required: true,
+                    // attributes: []
+                },
+                {
+                    model: customers,
+                    required: false,
+                    // attributes: []
+                },
+            ],
+        }
+        // let count = await leads.count(filter)
+
+        let result = await leads.findAll(filter).then(result => {
+            // var totalPage = (parseInt(count) / limit) + 1
+            returnData = {
+                result
+            }
+
+            if (result[0]) {
+                return apiResponse.ErrorResponse(res, "Error. Lead sudah terdaftar");    
+            }
+            
+            req.phone = phoneNumber
+            next()
+            // return apiResponse.successResponseWithData(res, "SUCCESS", result);
+        }).catch(function (err){
+            console.log(err);
+            return apiResponse.ErrorResponse(res, err);
+        });
     },
 }
