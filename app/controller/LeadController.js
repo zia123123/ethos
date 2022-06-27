@@ -173,6 +173,7 @@ module.exports = {
                 return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
             }
         }).catch(function (err)  {
+            console.log(err);
             return apiResponse.ErrorResponse(res, err);
         });
         
@@ -374,11 +375,11 @@ module.exports = {
                     required: true,
                     // attributes: []
                 },
-                {
-                    model: products,
-                    required: true,
-                    // attributes: []
-                },
+                // {
+                //     model: products,
+                //     required: true,
+                //     // attributes: []
+                // },
                 {
                     model: domains,
                     required: true,
@@ -400,6 +401,7 @@ module.exports = {
         }
 
         let result = await leads.findAll(filter).then(result => {
+            console.log(result);
             var totalPage = (parseInt(count) / limit) + 1
             returnData = {
                 result,
@@ -419,6 +421,7 @@ module.exports = {
             next()
             // return apiResponse.successResponseWithData(res, "SUCCESS", result);
         }).catch(function (err){
+            console.log(err);
             return apiResponse.ErrorResponse(res, err);
         });
     },
