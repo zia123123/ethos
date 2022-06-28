@@ -13,12 +13,35 @@ module.exports = {
 
     //create
     async create(req, res) { 
+        let phoneNumber = null
+        if (req.body.notelp != null) {
+            phoneNumber = req.body.notelp
+
+            if (req.body.kode != null) {
+                const kode = req.body.kode 
+                const lengthKode = kode.length
+                const checkCodePhone = phoneNumber.substring(0, lengthKode)
+    
+                if (checkCodePhone != kode) {
+                    if (phoneNumber[0] == 0) {
+                        phoneNumber = kode + '' + phoneNumber.substring(1)
+                    }else{
+                        phoneNumber = kode + '' + phoneNumber
+                    }
+                }else{
+                    if (phoneNumber[lengthKode] == 0) {
+                        phoneNumber = kode + '' + phoneNumber.substring(lengthKode+1)
+                    }
+                }
+            }
+        }
+
         let result = await customers.create({
             warehouseId: req.body.warehouseId,
             idorigin: req.body.idorigin,
             nama: req.body.nama,
             authId: req.body.authId,
-            notelp: req.body.notelp,
+            notelp: phoneNumber,
             notelp2: req.body.notelp2,
             provinsiname: req.body.provinsiname,
             cityname: req.body.cityname,
