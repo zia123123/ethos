@@ -355,7 +355,7 @@ router.patch('/api/saldo/update/:id', SaldoController.find,SaldoController.updat
 router.delete('/api/saldo/delete/:id', SaldoController.find,SaldoController.delete);
 
 //customer
-router.post('/api/customer/create', LeadController.findLeadNull, LeadController.create, CustomerController.create);
+router.post('/api/customer/create', CustomerController.create);
 router.get('/api/customer/', CustomerController.index);
 router.get('/api/groupcustomer/', CustomerController.myGroup);
 router.get('/api/mycustomer/', CustomerController.myCustomer);

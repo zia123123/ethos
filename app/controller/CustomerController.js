@@ -37,7 +37,7 @@ module.exports = {
             provinceId: req.body.provinceId,
             cityregencyId: req.body.cityregencyId,
             districtId: req.body.districtId,
-            lead: req.lead.id   
+            // lead: req.lead.id   
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
         }).catch(function (err)  {

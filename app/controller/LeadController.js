@@ -76,7 +76,7 @@ module.exports = {
         }
 
         const date = new Date();
-        let startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 7, 0, 0),
+        let startDate = new Date(0),
             endDate   = date.setDate(date.getDate() + 1);
 
         if (req.query.startDate) {
@@ -147,15 +147,15 @@ module.exports = {
     },
 
     async create(req, res, next){
-        if (req.lead != null) {
-            req.body.no_hp = req.body.notelp
+        // if (req.lead != null) {
+        //     req.body.no_hp = req.body.notelp
             
-            if (req.lead.length != 0) {
-                req.lead = req.lead[req.lead.length - 1]
-                next()
-                return 
-            }
-        }
+        //     if (req.lead.length != 0) {
+        //         req.lead = req.lead[req.lead.length - 1]
+        //         next()
+        //         return 
+        //     }
+        // }
         if (req.phone != null) {
             req.body.no_hp = req.phone
         }
