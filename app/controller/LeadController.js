@@ -470,6 +470,16 @@ module.exports = {
     },
 
     async getLeadByCsPhoneNumberDomain(req, res, next){
+        if (req.body.authId == null) {
+            return apiResponse.ErrorResponse(res, "Error. Auth Id wajib terisi");
+        }
+        if (req.body.no_hp == null) {
+            return apiResponse.ErrorResponse(res, "Error. No HP wajib terisi");
+        }
+        if (req.body.domainId == null) {
+            return apiResponse.ErrorResponse(res, "Error. Domain wajib terisi");
+        }
+        
         let csId = req.body.authId
         let phoneNumber = req.body.no_hp
         let domain = req.body.domainId
