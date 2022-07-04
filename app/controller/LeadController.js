@@ -1,5 +1,5 @@
 const {
-    leads, auths, products, domains, customers, Sequelize 
+    leads, auths, products, domains, customers, transaksis, Sequelize 
    } = require('../models/index');
 const { Op } = require("sequelize");
 const { exportstocsv }  = require("export-to-csv"); 
@@ -104,15 +104,16 @@ module.exports = {
                     required: true,
                     // attributes: []
                 },
-                // {
-                //     model: products,
-                //     required: true,
-                //     // attributes: []
-                // },
                 {
                     model: domains,
                     required: true,
-                    // attributes: []
+                    include:[
+                        {
+                            model: products,
+                            required: true,
+                            // attributes: []
+                        },
+                    ]
                 },
             ],
             order:[

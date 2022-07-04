@@ -24,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
       lead.belongsTo(models.products, {foreignKey: "productId"}),
       lead.belongsTo(models.domains, {foreignKey: "domainId"}),
       lead.hasOne(models.customers, {foreignKey: "lead"})
+      lead.hasMany(models.transaksis, {foreignKey: "leadsId"})
     };
   
     return lead;
