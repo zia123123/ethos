@@ -192,7 +192,7 @@ module.exports = {
             attributes: ['id', 'nama','createdAt','pembayaran','status','idtransaksi',],
             include: [ 
                 { model: customers,
-                    attributes: ['nama', 'notelp'],
+                    attributes: ['notelp'],
                 }
             ]
         }).then(result => {
