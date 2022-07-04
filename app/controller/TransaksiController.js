@@ -5825,4 +5825,48 @@ module.exports = {
         });
     },
 
+    async createFromTemp(req, res) { 
+        let keranjangdata =  req.transaksi.products
+        let datakeranjang = eval(keranjangdata)
+        delete req.transaksi.dataValues.id
+
+        let result = await transaksis.create(req.transaksi.dataValues).then(result => {
+            req.transaksi.dataValues.transaksisId = result.id
+            let keranjang = keranjangs.bulkCreate(datakeranjang, { individualHooks: true }).catch(function(err){
+                console.log(err);
+            })
+
+            let dataexpedisis = daexpedisis.create(req.transaksi.dataValues).catch(function(err){
+                console.log(err);
+            })
+
+            let quantity = 0;
+            for(var i=0;i<datakeranjang.length;i++){
+                quantity = datakeranjang[i].jumlahproduct
+                let stok = product_stocks.create({ 
+                    productId: datakeranjang[i].productId,
+                    warehouseId: req.body.warehouseId,
+                    quantity: quantity,
+                    inbound:false,
+                    nodeliverorder: datakeranjang[i].id,
+                    remark: "-"
+                });
+                let product = products.findOne({
+                    where: {
+                        id:  datakeranjang[i].productId
+                    },
+                }).then(product =>{
+                    product.quantity = (parseInt(product.quantity) - parseInt(quantity));
+                    product.save()
+                })
+            }
+            // apiResponse.successResponseWithData(res, "SUCCESS", req.keranjang);
+            // })
+            return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
+        }).catch(function (err)  {
+            console.log(err);
+            return apiResponse.ErrorResponse(res, err);
+        });
+    },
+
 }
