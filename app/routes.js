@@ -103,6 +103,7 @@ const DashboardController = require('./controller/DashboardController');
 const MutationController = require('./controller/MutationController');
 const MutationDetailController = require('./controller/MutationDetailController');
 const LeadController = require('./controller/LeadController');
+const TransaksiTempController = require('./controller/TransaksiTempController');
 
 
 const multer = require('multer')
@@ -568,5 +569,9 @@ router.get('/api/lead-after-domain/', LeadController.getLeadByPhoneNumberDomainC
 
 router.get('/api/dashboard-mobile/closingRateCs/:id', DashboardController.closingRateCs);
 router.get('/api/mapcsByProduct/', MapCsController.indexByProduct);
+
+router.get('/api/transaksi-temp/cs/:userid', TransaksiTempController.index);
+router.get('/api/transaksi-temp/:id', TransaksiTempController.show);
+router.put('/api/transaksi-temp/:id', TransaksiTempController.find, TransaksiTempController.update);
 
 module.exports = router;
