@@ -190,11 +190,11 @@ module.exports = {
                 ['id', 'DESC'],
             ],
             attributes: ['id', 'nama','createdAt','pembayaran','status','idtransaksi',],
-                        // include: [ 
-                        //     { model: daexpedisis,
-                        //         attributes: ['id'],
-                        //     }
-                        // ]
+            include: [ 
+                { model: customers,
+                    attributes: ['nama', 'notelp'],
+                }
+            ]
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
             }).catch(function (err){
