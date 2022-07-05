@@ -180,7 +180,11 @@ module.exports = {
             include:[
                 {
                     model: mutation,
-                    attributes: []
+                    include:[
+                        {
+                            model: nomorekenings,
+                        }
+                    ]
                 }
             ],
         }
