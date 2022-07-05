@@ -1,5 +1,5 @@
 const {
-    mutation, mutation_details, Sequelize 
+    mutation, mutation_details, nomorekenings, Sequelize 
    } = require('../models/index');
 const { Op } = require("sequelize");
 const { exportstocsv }  = require("export-to-csv"); 
@@ -68,7 +68,12 @@ module.exports = {
                 {
                     model: mutation_details,
                     attributes: []
-                }
+                },
+                {
+                    model: nomorekenings,
+                    // required: true,
+                    attributes: ['nomor', 'nama_bank', 'nama']
+                },
             ],
             group:['id'],
             raw: true
@@ -207,20 +212,25 @@ module.exports = {
     },
 
     async import(req, res){
-        const createMutation = await mutation.create().then(result => {
-            const orders = req.body
-            for (let index = 0; index < orders.length; index++) {
-                if (orders[index] == null || orders[index] == undefined) {
-                    continue
+        console.log(req.body.norekeningId);
+        const createMutation = await mutation.create({
+            norekeningsId: req.body.norekeningId
+        }).then(result => {
+            const orders = req.body.dataExcel
+            const mutationDetail = orders.map(function(row){
+                return {
+                    date: row.Tanggal,
+                    description: row.Deskripsi,
+                    debit: row.Debit,
+                    kredit: row.Kredit,
+                    saldo: row.Saldo,
+                    mutationId:result.id,
+                    norekening:req.body.norekening
                 }
-                mutation_details.create({
-                    mutationId: result.id,
-                    date: orders[index].Tanggal,
-                    bank: orders[index].Bank,
-                    description: orders[index].Deskripsi,
-                    debit: orders[index].Debit,
-                })
-            }
+            })
+            mutation_details.bulkCreate(mutationDetail).catch(function (err)  {
+                console.log(err);
+            })
             return apiResponse.successResponseWithData(res, "SUCCESS", orders);
         }).catch(function (err)  {
             return apiResponse.ErrorResponse(res, err);
