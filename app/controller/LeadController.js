@@ -279,6 +279,11 @@ module.exports = {
                                 [Op.like]: `%${word}%`
                             }
                         },
+                        {
+                            '$domain->product.name$':{
+                                [Op.like]: `%${word}%`
+                            }
+                        },
                     ]
                 })
             })
