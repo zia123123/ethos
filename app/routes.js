@@ -573,9 +573,8 @@ router.get('/api/mapcsByProduct/', MapCsController.indexByProduct);
 
 router.get('/api/transaksi-temp/cs/:userid', TransaksiTempController.index);
 router.get('/api/transaksi-temp/:id', TransaksiTempController.show);
+router.get('/api/transaksi-temp/lead/:id', TransaksiTempController.showByLead);
 router.put('/api/transaksi-temp/:id', TransaksiTempController.find, TransaksiTempController.update);
-
-
 router.post('/api/transaksi/transaksi-temp/:id', TransaksiTempController.find, TransaksiController.createFromTemp);
 
 module.exports = router;

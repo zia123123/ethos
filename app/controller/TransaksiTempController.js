@@ -111,7 +111,7 @@ module.exports = {
     async show(req, res) {
         let result = await transaksis_temp.findOne({
             where: {
-                    id: req.params.id,
+                id: req.params.id,
             },
             include: [ 
                 { 
@@ -126,7 +126,6 @@ module.exports = {
             });
     },
 
-    // add log
     async update(req, res) {
         req.transaksi.nama = req.body.nama;
         req.transaksi.idtransaksi = req.body.idtransaksi;
@@ -145,7 +144,7 @@ module.exports = {
         req.transaksi.statusbarang = req.body.statusbarang;
         req.transaksi.pembayaran = req.body.pembayaran;
         req.transaksi.status = req.body.logstatus;
-        req.transaksi.logstatus = req.transaksi.logstatus == null? req.body.logstatus : req.transaksi.logstatus+"#"+req.body.logstatus;
+        req.transaksi.logstatus = (req.transaksi.logstatus == null? req.body.logstatus : req.transaksi.logstatus+"#"+req.body.logstatus);
         req.transaksi.products = req.body.products;
         req.transaksi.discount = req.body.discount;
         req.transaksi.ongkoskirim = req.body.ongkoskirim;
@@ -179,6 +178,24 @@ module.exports = {
         req.transaksi.save().then(transaksi => {
         return apiResponse.successResponseWithData(res, "SUCCESS", transaksi);
         })
+    },
+
+    async showByLead(req, res) {
+        let result = await transaksis_temp.findOne({
+            where: {
+                leadsId: req.params.id,
+            },
+            include: [ 
+                { 
+                    model: leads,
+                },
+            ]
+            
+        }).then(result => {
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            }).catch(function (err){
+                return apiResponse.ErrorResponse(res, err);
+            });
     },
 
 }
