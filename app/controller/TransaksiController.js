@@ -883,10 +883,18 @@ module.exports = {
                 return apiResponse.ErrorResponse(res, err);
             });
     },
-
+    async ExcelGudangIndex(req, res) {
+        let result = await transaksis.findAll({
+            
+        }).then(result => {
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            }).catch(function (err){
+                return apiResponse.ErrorResponse(res, err);
+            });
+    },
     async ExcelGudang(req, res) {
-        let startDate = req.query.startDate+"T00:00:00.000Z"
-        let endDate = req.query.endDate+"T23:59:00.000Z"
+        // let startDate = req.query.startDate+"T00:00:00.000Z"
+        // let endDate = req.query.endDate+"T23:59:00.000Z"
         
 
         let typebayar = req.query.typebayar
@@ -907,15 +915,15 @@ module.exports = {
         
         let result = await transaksis.findAll({
             where: {
-                createdAt :  {
-                    [Op.and]: {
-                      [Op.gte]: startDate,
-                      [Op.lte]: endDate
-                    }
-                  },
+                // createdAt :  {
+                //     [Op.and]: {
+                //       [Op.gte]: startDate,
+                //       [Op.lte]: endDate
+                //     }
+                //   },
                 [Op.and]: {
                 warehouseId: {
-                    [Op.like]: '%'+warehouseId+'%'
+                    [Op.eq]: warehouseId
                 },
                 typebayar: {
                     [Op.like]: '%'+typebayar+'%'
@@ -957,7 +965,7 @@ module.exports = {
                             },
             ]
         }).then(result => {
-        //    console.log(result)
+           console.log(result.length)
             class Transaksi {
                 constructor(
                     Sender,
