@@ -5830,6 +5830,10 @@ module.exports = {
         let datakeranjang = eval(keranjangdata)
         delete req.transaksi.dataValues.id
 
+        var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+        var tanggal = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
+        req.transaksi.dataValues.createdAt = tanggal
+
         let result = await transaksis.create(req.transaksi.dataValues).then(result => {
             req.transaksi.dataValues.transaksisId = result.id
             let keranjang = keranjangs.bulkCreate(datakeranjang, { individualHooks: true }).catch(function(err){

@@ -144,7 +144,7 @@ module.exports = {
         req.transaksi.statusbarang = req.body.statusbarang;
         req.transaksi.pembayaran = req.body.pembayaran;
         req.transaksi.status = req.body.logstatus;
-        req.transaksi.logstatus = req.transaksi.logstatus == null? req.body.logstatus : req.transaksi.logstatus+"#"+req.body.logstatus;
+        req.transaksi.logstatus = (req.transaksi.logstatus == null? req.body.logstatus : req.transaksi.logstatus+"#"+req.body.logstatus);
         req.transaksi.products = req.body.products;
         req.transaksi.discount = req.body.discount;
         req.transaksi.ongkoskirim = req.body.ongkoskirim;

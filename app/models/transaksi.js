@@ -109,15 +109,21 @@ module.exports = (sequelize, DataTypes) => {
     orderNumber: {
       type: DataTypes.STRING,
     },
-    // linkdomain: {
-    //   type: DataTypes.STRING
-    // },
-    // linkPhotoProduct: {
-    //   type: DataTypes.STRING
-    // },
-    // discountProduct: {
-    //   type: DataTypes.STRING
-    // },
+    biayatambahan: {
+      type: DataTypes.INTEGER,
+    },
+    biayacod: {
+      type: DataTypes.INTEGER,
+    },
+    subsidicod: {
+      type: DataTypes.INTEGER,
+    },
+    totalharga: {
+      type: DataTypes.BIGINT
+    },
+    packingKayu: {
+      type: DataTypes.STRING,
+    },
   }, {
     tableName: "transaksis"
   });
@@ -137,6 +143,7 @@ module.exports = (sequelize, DataTypes) => {
     transaksi.belongsTo(models.warehouses, { foreginKey: "warehouseId"})
     transaksi.belongsTo(models.metodepembayarans, { foreignKey: "typebayar"})
     transaksi.belongsTo(models.leads, { foreignKey: "leadsId"})
+    transaksi.belongsTo(models.nomorekenings, { foreignKey: "noreksId"})
     // transaksi.hasOne(models.keranjangs)
 
     //transaksi.belongsTo(models.products, { foreginKey: "productId"})
