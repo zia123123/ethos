@@ -79,6 +79,9 @@ module.exports = {
                     attributes: []
                 }
             ],
+            order:[
+                ['createdAt', 'DESC']
+            ]
         }
         let count = await mutation_details.count(filter)
 
