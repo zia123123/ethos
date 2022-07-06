@@ -1,5 +1,5 @@
 const {
-    mutation, mutation_details, Sequelize 
+    mutation, mutation_details, nomorekenings, Sequelize 
    } = require('../models/index');
 const { Op } = require("sequelize");
 const { exportstocsv }  = require("export-to-csv"); 
@@ -278,6 +278,10 @@ module.exports = {
                     model: mutation,
                     required: true,
                     attributes: []
+                },
+                {
+                    model: nomorekenings,
+                    attributes: ['nama_bank', 'nomor']
                 }
             ],
         }
