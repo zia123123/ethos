@@ -76,6 +76,9 @@ module.exports = {
                 },
             ],
             group:['id'],
+            order:[
+                ['createdAt', 'DESC']
+            ],
             raw: true
         }
         let count = await mutation.count(filter)
