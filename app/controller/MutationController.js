@@ -166,11 +166,6 @@ module.exports = {
                         }
                     },
                     {
-                        bank:{
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
                         date:{
                             [Op.like]: `%${search}%`
                         }
@@ -223,7 +218,7 @@ module.exports = {
     //         const orders = req.body.dataExcel
     //         const mutationDetail = orders.map(function(row){
     //             return {
-    //                 date: row.Tanggal,
+    //                 date: row['Tanggal Mutasi'],
     //                 description: row.Deskripsi,
     //                 debit: row.Debit,
     //                 kredit: row.Kredit,
@@ -247,7 +242,7 @@ module.exports = {
         }).then(result => {
             const orders = req.body.dataExcel
             const mutationDetail = orders.map(async row =>{
-                const date = new Date(row.Tanggal+' 00:00:00')
+                const date = new Date(row['Tanggal Mutasi']+' 00:00:00')
                 const userTimezoneOffset = date.getTimezoneOffset() * 60000;
 
                 const mutationDetails = await mutation_details.findOne({
