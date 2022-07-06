@@ -35,7 +35,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "dev": "nodemon app/server.js"
+    "dev": "nodemon app/server.js",
+    "debug": "nodemon --inspect app/server.js"
   },
   "author": "",
   "license": "ISC"
