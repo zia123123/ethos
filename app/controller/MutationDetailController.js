@@ -254,7 +254,7 @@ module.exports = {
                 invoice: {
                     [Op.eq]: null
                 },
-                norekening:norekeningFilter,
+                norekeningsId:norekeningFilter,
                 [Op.or]:[
                     {
                         description:{
