@@ -1,5 +1,5 @@
 const {
-    mutation, mutation_details, Sequelize 
+    mutation, mutation_details, nomorekenings, Sequelize 
    } = require('../models/index');
 const { Op } = require("sequelize");
 const { exportstocsv }  = require("export-to-csv"); 
@@ -79,6 +79,9 @@ module.exports = {
                     attributes: []
                 }
             ],
+            order:[
+                ['createdAt', 'DESC']
+            ]
         }
         let count = await mutation_details.count(filter)
 
@@ -233,6 +236,11 @@ module.exports = {
             }
         }
 
+        let norekeningFilter = {[Op.like]: `%%`}
+        if (req.query.norekening != null) {
+            norekeningFilter = req.query.norekening
+        }
+
         let filter = 
         {
             where:{
@@ -246,6 +254,7 @@ module.exports = {
                 invoice: {
                     [Op.eq]: null
                 },
+                norekeningsId:norekeningFilter,
                 [Op.or]:[
                     {
                         description:{
@@ -254,11 +263,6 @@ module.exports = {
                     },
                     {
                         debit:{
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        bank:{
                             [Op.like]: `%${search}%`
                         }
                     },
@@ -274,6 +278,10 @@ module.exports = {
                     model: mutation,
                     required: true,
                     attributes: []
+                },
+                {
+                    model: nomorekenings,
+                    attributes: ['nama_bank', 'nomor']
                 }
             ],
         }
@@ -321,5 +329,71 @@ module.exports = {
             }
         }
         return apiResponse.successResponseWithData(res, "SUCCESS", orders)
+    },
+
+    async indexByNomorRekening(req, res){
+        let page = parseInt(req.query.page)
+        let limit = parseInt(req.query.limit)
+        let search = req.query.search
+
+        if( search == null ){
+            search = ""
+        }
+
+        const date = new Date();
+        let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
+            endDate   = date.setDate(date.getDate() + 1);
+
+        if (req.query.startDate) {
+            startDate = req.query.startDate+"T00:00:00.000Z"    
+        }
+        if (req.query.endDate) {
+            endDate = req.query.endDate+"T23:59:59.000Z"    
+        }
+
+        let filter = 
+        {
+            where:{
+                createdAt :  {
+                    [Op.and]: {
+                      [Op.gte]: startDate,
+                      [Op.lte]: endDate
+                    }
+                },
+                norekeningsId: req.params.norekening
+            },
+            include:[
+                {
+                    model: mutation,
+                    required: true,
+                    attributes: []
+                }
+            ],
+        }
+        let count = await mutation_details.count(filter)
+
+        if (isNaN(limit) == false && isNaN(page) == false) {
+            filter['offset'] = (page - 1) * limit
+            filter['limit'] = limit
+            filter['subQuery'] = false
+        }
+
+        let result = await mutation_details.findAll(filter).then(result => {
+            var totalPage = (parseInt(count) / limit) + 1
+            returnData = {
+                result,
+                metadata: {
+                    page: page,
+                    count: result.length,
+                    totalPage: parseInt(totalPage),
+                    totalData:  count,
+                }
+            }
+            
+            return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
+            // return apiResponse.successResponseWithData(res, "SUCCESS", result);
+        }).catch(function (err){
+            return apiResponse.ErrorResponse(res, err);
+        });
     },
 }

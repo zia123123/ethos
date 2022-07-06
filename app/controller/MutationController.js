@@ -1,5 +1,5 @@
 const {
-    mutation, mutation_details, Sequelize 
+    mutation, mutation_details, nomorekenings, Sequelize 
    } = require('../models/index');
 const { Op } = require("sequelize");
 const { exportstocsv }  = require("export-to-csv"); 
@@ -68,9 +68,17 @@ module.exports = {
                 {
                     model: mutation_details,
                     attributes: []
-                }
+                },
+                {
+                    model: nomorekenings,
+                    // required: true,
+                    attributes: ['nomor', 'nama_bank', 'nama']
+                },
             ],
             group:['id'],
+            order:[
+                ['createdAt', 'DESC']
+            ],
             raw: true
         }
         let count = await mutation.count(filter)
@@ -161,11 +169,6 @@ module.exports = {
                         }
                     },
                     {
-                        bank:{
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
                         date:{
                             [Op.like]: `%${search}%`
                         }
@@ -175,7 +178,11 @@ module.exports = {
             include:[
                 {
                     model: mutation,
-                    attributes: []
+                    include:[
+                        {
+                            model: nomorekenings,
+                        }
+                    ]
                 }
             ],
         }
@@ -206,21 +213,68 @@ module.exports = {
         });
     },
 
+    // async import(req, res){
+    //     console.log(req.body.norekeningId);
+    //     const createMutation = await mutation.create({
+    //         norekeningsId: req.body.norekeningId
+    //     }).then(result => {
+    //         const orders = req.body.dataExcel
+    //         const mutationDetail = orders.map(function(row){
+    //             return {
+    //                 date: row['Tanggal Mutasi'],
+    //                 description: row.Deskripsi,
+    //                 debit: row.Debit,
+    //                 kredit: row.Kredit,
+    //                 saldo: row.Saldo,
+    //                 mutationId:result.id,
+    //                 norekening:req.body.norekening
+    //             }
+    //         })
+    //         mutation_details.bulkCreate(mutationDetail).catch(function (err)  {
+    //             console.log(err);
+    //         })
+    //         return apiResponse.successResponseWithData(res, "SUCCESS", orders);
+    //     }).catch(function (err)  {
+    //         return apiResponse.ErrorResponse(res, err);
+    //     });
+    // },
+
     async import(req, res){
-        const createMutation = await mutation.create().then(result => {
-            const orders = req.body
-            for (let index = 0; index < orders.length; index++) {
-                if (orders[index] == null || orders[index] == undefined) {
-                    continue
-                }
-                mutation_details.create({
-                    mutationId: result.id,
-                    date: orders[index].Tanggal,
-                    bank: orders[index].Bank,
-                    description: orders[index].Deskripsi,
-                    debit: orders[index].Debit,
-                })
-            }
+        const createMutation = await mutation.create({
+            norekeningsId: req.body.norekeningsId
+        }).then(result => {
+            const orders = req.body.dataExcel
+            const mutationDetail = orders.map(async row =>{
+                const date = new Date(row['Tanggal Mutasi']+' 00:00:00')
+                const userTimezoneOffset = date.getTimezoneOffset() * 60000;
+
+                const mutationDetails = await mutation_details.findOne({
+                    where: {
+                        norekeningsId:req.body.norekeningsId,
+                        date: new Date(date.getTime() - userTimezoneOffset),
+                        description: row.Deskripsi,
+                        debit: row.Debit,
+                        kredit: row.Kredit,
+                        saldo: row.Saldo,
+                    }
+                }).then(resultMutationDetail => {
+                    if (resultMutationDetail == null) {
+                        mutation_details.create({
+                            date: new Date(date.getTime() - userTimezoneOffset),
+                            description: row.Deskripsi,
+                            debit: row.Debit,
+                            kredit: row.Kredit,
+                            saldo: row.Saldo,
+                            mutationId:result.id,
+                            norekeningsId:req.body.norekeningsId
+                        })
+                    }
+                    
+                }).catch(function (err)  {
+                    console.log(err);
+                });
+            })
+            
             return apiResponse.successResponseWithData(res, "SUCCESS", orders);
         }).catch(function (err)  {
             return apiResponse.ErrorResponse(res, err);

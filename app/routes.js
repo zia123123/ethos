@@ -104,6 +104,7 @@ const MutationController = require('./controller/MutationController');
 const MutationDetailController = require('./controller/MutationDetailController');
 const LeadController = require('./controller/LeadController');
 const TransaksiTempController = require('./controller/TransaksiTempController');
+const RateCardController = require('./controller/RateCardController');
 
 
 const multer = require('multer')
@@ -551,6 +552,7 @@ router.delete('/api/mutation/delete/:id', MutationController.find, MutationContr
 router.delete('/api/mutation/delete-detail/:id', MutationController.findDetail, MutationController.delete);
 
 router.get('/api/mutation-detail/', MutationDetailController.index);
+router.get('/api/mutation-detail/norekening/:norekening', MutationDetailController.indexByNomorRekening);
 router.get('/api/mutation-detail/invoice-null', MutationDetailController.indexInvoiceNull);
 router.get('/api/mutation-detail/invoice/:id', MutationDetailController.indexByInvoice);
 router.patch('/api/mutation-detail/update', MutationDetailController.update);
@@ -576,5 +578,7 @@ router.get('/api/transaksi-temp/:id', TransaksiTempController.show);
 router.get('/api/transaksi-temp/lead/:id', TransaksiTempController.showByLead);
 router.put('/api/transaksi-temp/:id', TransaksiTempController.find, TransaksiTempController.update);
 router.post('/api/transaksi/transaksi-temp/:id', TransaksiTempController.find, TransaksiController.createFromTemp);
+
+router.get('/api/ratecard/', RateCardController.index);
 
 module.exports = router;

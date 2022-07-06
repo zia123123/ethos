@@ -4,9 +4,9 @@ module.exports = (sequelize, DataTypes) => {
     date: {
       type: DataTypes.DATE,
     },
-    bank: {
-      type: DataTypes.STRING,
-    },
+    // bank: {
+    //   type: DataTypes.STRING,
+    // },
     description: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -32,6 +32,7 @@ module.exports = (sequelize, DataTypes) => {
   mutation_detail.associate = function(models) {
     mutation_detail.belongsTo(models.mutation, { foreignKey: "mutationId"})
     mutation_detail.belongsTo(models.transaksis, { foreignKey: "transaksiId"})
+    mutation_detail.belongsTo(models.nomorekenings, { foreignKey: "norekeningsId"})
   };
 
   return mutation_detail;

@@ -42,12 +42,22 @@ module.exports = (sequelize, DataTypes) => {
     state: {
       type: DataTypes.INTEGER
     },
+    products: {
+      type: DataTypes.TEXT
+    },
+    tanggal_spv: {
+      type: 'DATETIME',
+    },
+    tanggal_cc: {
+      type: 'DATETIME',
+    },
   }, {
     tableName: "deliveryfods"
   });
   deliveryfod.associate = function(models) {
     deliveryfod.belongsTo(models.transaksis, { foreignKey: "transaksisId"})
-    
+    deliveryfod.belongsTo(models.auths, { as: "authSpv", foreignKey: "spvAuthId"})
+    deliveryfod.belongsTo(models.auths, { as: "authCC", foreignKey: "ccAuthId"})
   };
 
   return deliveryfod;
