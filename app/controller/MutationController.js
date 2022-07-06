@@ -215,26 +215,68 @@ module.exports = {
         });
     },
 
+    // async import(req, res){
+    //     console.log(req.body.norekeningId);
+    //     const createMutation = await mutation.create({
+    //         norekeningsId: req.body.norekeningId
+    //     }).then(result => {
+    //         const orders = req.body.dataExcel
+    //         const mutationDetail = orders.map(function(row){
+    //             return {
+    //                 date: row.Tanggal,
+    //                 description: row.Deskripsi,
+    //                 debit: row.Debit,
+    //                 kredit: row.Kredit,
+    //                 saldo: row.Saldo,
+    //                 mutationId:result.id,
+    //                 norekening:req.body.norekening
+    //             }
+    //         })
+    //         mutation_details.bulkCreate(mutationDetail).catch(function (err)  {
+    //             console.log(err);
+    //         })
+    //         return apiResponse.successResponseWithData(res, "SUCCESS", orders);
+    //     }).catch(function (err)  {
+    //         return apiResponse.ErrorResponse(res, err);
+    //     });
+    // },
+
     async import(req, res){
-        console.log(req.body.norekeningId);
         const createMutation = await mutation.create({
-            norekeningsId: req.body.norekeningId
+            norekeningsId: req.body.norekeningsId
         }).then(result => {
             const orders = req.body.dataExcel
-            const mutationDetail = orders.map(function(row){
-                return {
-                    date: row.Tanggal,
-                    description: row.Deskripsi,
-                    debit: row.Debit,
-                    kredit: row.Kredit,
-                    saldo: row.Saldo,
-                    mutationId:result.id,
-                    norekening:req.body.norekening
-                }
+            const mutationDetail = orders.map(async row =>{
+                const date = new Date(row.Tanggal+' 00:00:00')
+                const userTimezoneOffset = date.getTimezoneOffset() * 60000;
+
+                const mutationDetails = await mutation_details.findOne({
+                    where: {
+                        norekeningsId:req.body.norekeningsId,
+                        date: new Date(date.getTime() - userTimezoneOffset),
+                        description: row.Deskripsi,
+                        debit: row.Debit,
+                        kredit: row.Kredit,
+                        saldo: row.Saldo,
+                    }
+                }).then(resultMutationDetail => {
+                    if (resultMutationDetail == null) {
+                        mutation_details.create({
+                            date: new Date(date.getTime() - userTimezoneOffset),
+                            description: row.Deskripsi,
+                            debit: row.Debit,
+                            kredit: row.Kredit,
+                            saldo: row.Saldo,
+                            mutationId:result.id,
+                            norekeningsId:req.body.norekeningsId
+                        })
+                    }
+                    
+                }).catch(function (err)  {
+                    console.log(err);
+                });
             })
-            mutation_details.bulkCreate(mutationDetail).catch(function (err)  {
-                console.log(err);
-            })
+            
             return apiResponse.successResponseWithData(res, "SUCCESS", orders);
         }).catch(function (err)  {
             return apiResponse.ErrorResponse(res, err);
