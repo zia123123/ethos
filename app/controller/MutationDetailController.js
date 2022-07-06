@@ -361,7 +361,7 @@ module.exports = {
                       [Op.lte]: endDate
                     }
                 },
-                norekening: req.params.norekening
+                norekeningsId: req.params.norekening
             },
             include:[
                 {
