@@ -267,11 +267,6 @@ module.exports = {
                         }
                     },
                     {
-                        bank:{
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
                         date:{
                             [Op.like]: `%${search}%`
                         }
