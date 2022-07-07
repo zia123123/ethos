@@ -3494,7 +3494,7 @@ module.exports = {
             if (orders[index].AWB.length > 0) {
                 const customer = orders[index]['Nama Pelanggan'].split(',')
                 const customerName = customer[0]
-                const orderNumber = customer[1]
+                const id = customer[1]
 
                 transaksis.update(
                     {
@@ -3506,7 +3506,7 @@ module.exports = {
                     {
                         where: {
                             nama: customerName,
-                            orderNumber: orderNumber
+                            id: id
                         }
                     }
                 )
