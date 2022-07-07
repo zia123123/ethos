@@ -16,7 +16,8 @@ module.exports = (sequelize, DataTypes) => {
   ekpedisi.init({
     name: DataTypes.STRING,
     internal: DataTypes.BOOLEAN,
-    rajaongkir: DataTypes.BOOLEAN
+    rajaongkir: DataTypes.BOOLEAN,
+    ratecard: DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'ekpedisi',
