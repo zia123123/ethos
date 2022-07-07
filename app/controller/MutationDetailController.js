@@ -61,11 +61,6 @@ module.exports = {
                         }
                     },
                     {
-                        bank:{
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
                         date:{
                             [Op.like]: `%${search}%`
                         }
@@ -154,11 +149,6 @@ module.exports = {
                     },
                     {
                         invoice:{
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
-                        bank:{
                             [Op.like]: `%${search}%`
                         }
                     },

@@ -3,29 +3,26 @@ module.exports = (sequelize, DataTypes) => {
 
   const retur = sequelize.define('ratecard', 
     {
-        gudang: {
-        type: DataTypes.STRING
-        },
         provinsi: {
-        type: DataTypes.STRING
+            type: DataTypes.STRING
         },
         kabupaten_kota: {
-        type: DataTypes.STRING
+            type: DataTypes.STRING
         },
         kecamatan: {
-        type: DataTypes.STRING
+            type: DataTypes.STRING
         },
         paket: {
-        type: DataTypes.STRING
+            type: DataTypes.STRING
         },
         region: {
-        type: DataTypes.STRING
+            type: DataTypes.STRING
         },
         citycode: {
-        type: DataTypes.STRING
+            type: DataTypes.STRING
         },
         harga: {
-        type: DataTypes.INTEGER
+            type: DataTypes.INTEGER
         },
     }, 
     {
@@ -35,6 +32,7 @@ module.exports = (sequelize, DataTypes) => {
   );
   retur.associate = function(models) {
     retur.belongsTo(models.ekpedisi, { foreignKey: "ekspedisiId"})
+    retur.belongsTo(models.warehouses, { foreignKey: "warehouseId"})
     
   };
 

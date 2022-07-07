@@ -321,6 +321,9 @@ module.exports = {
 
     // Update
     async update(req, res) {
+        const date = new Date()
+        const offset = date.getTimezoneOffset()
+
         req.result.awbpengembalian = req.body.awbpengembalian;  
         req.result.expedisipengembalian = req.body.expedisipengembalian;
         req.result.awbpengiriman = req.body.awbpengiriman;    
@@ -331,6 +334,14 @@ module.exports = {
         req.result.evidance = req.body.evidance;  
         req.result.keterangan = req.body.keterangan;
         req.result.state = req.body.state;
+        req.result.spvAuthId = req.body.spvAuthId;
+        req.result.ccAuthId = req.body.ccAuthId;
+        if (req.body.spvAuthId != null) {
+            req.result.tanggal_spv = new Date(date.getTime() - (offset*60*1000)) 
+        }
+        if (req.body.ccAuthId != null) {
+            req.result.tanggal_cc = new Date(date.getTime() - (offset*60*1000)) 
+        }
         req.result.save().then(result => {
         return apiResponse.successResponseWithData(res, "SUCCESS", result);
         })

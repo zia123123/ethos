@@ -16,8 +16,12 @@ module.exports = (sequelize, DataTypes) => {
       type: {
         type: DataTypes.STRING,
       },
+      updatedAt: {
+        type: 'DATETIME',
+      },
     }, {
-      tableName: "leads"
+      tableName: "leads",
+      updatedAt: false
     });
     lead.associate = function(models) {
       lead.belongsTo(models.auths, {foreignKey: "authId"}),
