@@ -1183,6 +1183,10 @@ module.exports = {
             warehouseId = ""
         }
 
+        let isNew = req.query.isNew
+        if( isNew == null ){
+            isNew = false
+        }
         
         let result = await transaksis.findAll({
             where: {
@@ -1207,7 +1211,7 @@ module.exports = {
                   },
                 }
               },
-              attributes: ['id','invoiceId','awb','ongkoskirim','subsidi','products','expedisiName','typebayar','memotransaksi',"biayacod","subsidicod"],
+              attributes: ['id','invoiceId','awb','ongkoskirim','subsidi','products','expedisiName','typebayar','memotransaksi',"biayacod","subsidicod","orderNumber"],
               order: [
                 ['id', 'DESC'],
             ],
@@ -1251,6 +1255,9 @@ module.exports = {
                                 (date.getMonth()+1).toString().padStart(2, '0'),
                                 date.getFullYear()
                             ].join('-');
+            var todayYYYYMMDD = [date.getFullYear(),(date.getMonth()+1).toString().padStart(2, '0'),date.getDate().toString().padStart(2, '0')
+                        ].join('-');
+            
             var listProduct = "";
             var listProductxQty = "";
             var listSKUxQty = "";
@@ -1330,64 +1337,100 @@ module.exports = {
                 console.log("listProduct: "+listProduct,"listSKUProduct: "+listSKUProduct,"listPriceProduct: "+listPriceProduct,"listProductxQty: "+listProductxQty,"listSKUxQty: "+listSKUxQty,"priceProduct: "+priceProduct,"totalPriceProduct: "+totalPriceProduct,"totalQtyProduct: "+totalQtyProduct,"totalWeightProduct: "+totalWeightProduct,"advName: "+advName,"spvName: "+spvName,"formulasiOngkirNinja: "+formulasiOngkirNinja);
                 
                 if(expedisiName.toLowerCase() == 'ninja'){
-                    TransaksiArray.push(
-                        new Transaksi(
-                            result[i].invoiceId,
-                            "Standard Delivery",
-                            "",
-                            todayDDMMYYY,
-                            result[i].customer.nama+"/"+result[i].id,
-                            result[i].customer.notelp,
-                            "",
-                            "",
-                            result[i].customer.alamat,
-                            result[i].memotransaksi,
-                            "",
-                            "",
-                            result[i].customer.districtname+", "+result[i].customer.cityname,
-                            result[i].customer.provinsiname,
-                            "Indonesia",
-                            result[i].customer.postalcode,
-                            "",
-                            "",
-                            "",
-                            "yes",
-                            "",
-                            "",
-                            "",
-                            "",
-                            "",
-                            "",
-                            "",
-                            "",
-                            "",
-                            "",
-                            "",
-                            "",
-                            "",
-                            "",
-                            "",
-                            listSKUProduct,
-                            "",
-                            "",
-                            "",
-                            totalQtyProduct,
-                            "",
-                            priceProduct,
-                            "",
-                            "",
-                            formulasiOngkirNinja,
-                            "",
-                            "",
-                            "",
-                            "",
-                            deltype,
-                            "",
-                            "Usable",
-                            result[i].invoiceId+" | "+result[i].auth.firstname+" | "+advName+" | "+"Ajeng"+" | "+result[i].ongkoskirim+" | "+result[i].biayacod+" | "+result[i].subsidicod+" | "+result[i].memotransaksi,
-                            ""
-                        )
-                    );
+                    if(isNew == "true"){
+                        // template new 
+                        TransaksiArray.push(
+                            new Transaksi(
+                                result[i].orderNumber,
+                                "Standard Delivery",
+                                "",
+                                todayDDMMYYY,
+                                result[i].customer.nama+"/"+result[i].id,
+                                result[i].customer.notelp,
+                                "",
+                                "",
+                                result[i].customer.alamat,
+                                result[i].memotransaksi,
+                                "",
+                                "",
+                                result[i].customer.districtname+", "+result[i].customer.cityname,
+                                result[i].customer.provinsiname,
+                                "Indonesia",
+                                result[i].customer.postalcode,
+                                "",
+                                "",
+                                "",
+                                "yes",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                listSKUProduct,
+                                "",
+                                "",
+                                "",
+                                totalQtyProduct,
+                                "",
+                                priceProduct,
+                                "",
+                                "",
+                                formulasiOngkirNinja,
+                                "",
+                                "",
+                                "",
+                                "",
+                                deltype,
+                                "",
+                                "Usable",
+                                result[i].invoiceId+" | "+result[i].auth.firstname+" | "+advName+" | "+"Ajeng"+" | "+result[i].ongkoskirim+" | "+result[i].biayacod+" | "+result[i].subsidicod+" | "+result[i].memotransaksi,
+                                ""
+                            )
+                        );
+                    }else{
+                        // template lama
+                        TransaksiArray.push(
+                            new Transaksi(
+                                "",
+                                result[i].customer.firstname+"/"+result[i].id,
+                                result[i].customer.alamat+" HUBUNGI PENERIMA, JANGAN RETUR",
+                                "Parcel",
+                                "",
+                                result[i].customer.districtname,
+                                result[i].customer.cityname,
+                                result[i].customer.provinsiname,
+                                "",
+                                result[i].customer.notelp,
+                                "",
+                                todayYYYYMMDD,
+                                "",
+                                totalWeightProduct,
+                                "STANDARD",
+                                result[i].orderNumber,
+                                result[i].memotransaksi+" | "+totalQtyProduct+" | "+result[i].auth.firstname+" | "+type+" | "+advName+" | "+spvName+" | "+"Ajeng",
+                                "TRUE",
+                                "",
+                                "TRUE",
+                                totalPriceProduct,
+                                "",
+                                "",
+                                "",
+                                "",
+                                ""
+                            )
+                        );
+                    }
+                    
                 }else if(expedisiName.toLowerCase() == 'sicepat'){
                     TransaksiArray.push(
                         new Transaksi(
@@ -1408,9 +1451,18 @@ module.exports = {
             const ws = wb.addWorksheet('Data Transaksi');
             console.log(expedisiName.toLowerCase());
             var headingColumnNames = [];
+            addFileName = "";
             if(expedisiName.toLowerCase() == 'ninja'){
-                console.log('masuk ninja');
-                headingColumnNames = ["Order No.*","Delivery Type*","Shipping Carrier Code","Delivery Date (DD/MM/YYYY)*","Billing Name*","Billing Contact*","Billing Email Id","Billing Business Name","Billing Address Line 01*","Billing Address Line 02","Billing Address Line 03","Billing Suburb","Billing City","Billing State*","Billing Country*","Billing Postal Code","Billing Sender Tax ID","Billing Recipient Tax ID","Billing Recipient Type","Make Shipping Address Same As Billing Address","Shipping Name","Shipping Contact","Shipping Email Id","Shipping Business Name","Shipping Address Line 01","Shipping Address Line 02","Shipping Address Line 03","Shipping Suburb","Shipping City","Shipping State","Shipping Country","Shipping Postal Code","Shipping Sender Tax ID","Shipping Recipient Tax ID","Shipping Recipient Type","Product SKU*","Batch","Expiry (DD/MM/YYYY)","UOM","Product Quantity*","Product Retail Price (Per Unit)","Product Selling Price(Per Unit)","Order Total","Total Payable","Shipping Cost","Tax%","Discount","Total Amount","Order Currency","Payment Collection Mode*","Custom Duty","Condition*","Special Instruction","Pick Up Location"];
+                if(isNew == "true"){
+                    // template new
+                    addFileName = "_2";
+                    headingColumnNames = ["Order No.*","Delivery Type*","Shipping Carrier Code","Delivery Date (DD/MM/YYYY)*","Billing Name*","Billing Contact*","Billing Email Id","Billing Business Name","Billing Address Line 01*","Billing Address Line 02","Billing Address Line 03","Billing Suburb","Billing City","Billing State*","Billing Country*","Billing Postal Code","Billing Sender Tax ID","Billing Recipient Tax ID","Billing Recipient Type","Make Shipping Address Same As Billing Address","Shipping Name","Shipping Contact","Shipping Email Id","Shipping Business Name","Shipping Address Line 01","Shipping Address Line 02","Shipping Address Line 03","Shipping Suburb","Shipping City","Shipping State","Shipping Country","Shipping Postal Code","Shipping Sender Tax ID","Shipping Recipient Tax ID","Shipping Recipient Type","Product SKU*","Batch","Expiry (DD/MM/YYYY)","UOM","Product Quantity*","Product Retail Price (Per Unit)","Product Selling Price(Per Unit)","Order Total","Total Payable","Shipping Cost","Tax%","Discount","Total Amount","Order Currency","Payment Collection Mode*","Custom Duty","Condition*","Special Instruction","Pick Up Location"];
+                }else{
+                    // template lama
+                    addFileName = "_1";
+                    headingColumnNames = ["REQUESTED TRACKING NUMBER","NAME","ADDRESS 1","PACKAGE TYPE","ADDRESS 2","KECAMATAN","CITY","PROVINCE","EMAIL","CONTACT","POSTCODE","DELIVERY DATE","SIZE","WEIGHT","DELIVERY TYPE","SHIPPER ORDER NO","INSTRUCTIONS","WEEKEND DELIVERY","PARCEL DESCRIPTION","IS DANGEROUS GOOD","CASH ON DELIVERY","INSURED VALUE","VOLUME","LENGTH","WIDTH","HEIGHT"]
+                }
+                
             }else if(expedisiName.toLowerCase() == 'sicepat'){
                 headingColumnNames = ["","Cabang","Departemen","Tanggal Pickup","Waktu Pickup","Kota Pickup","Alamat Cabang","Kecamatan Cabang","Kota Cabang","Provinsi Cabang","Tanggal Order","Waktu Order","Penerima","No. Telepon","Alamat Tujuan","Kecamatan Tujuan","Kota Tujuan","Provinsi Tujuan","Cek Duplikasi Kec Tujuan","Layanan","Nama Barang","Qty","Berat Paket (Kg)","Panjang Paket","Lebar Paket","Tinggi Paket","Harga Paket","Asuransi","COD","Catatan Pengiriman","No. Ref","Cek Coverage COD","Kode Pos Cabang","Kode Pos Tujuan","Perusahaan","No. DO Balik"];
             }else if(expedisiName.toLowerCase() == 'jnt'){
@@ -1436,7 +1488,7 @@ module.exports = {
                 });
                 rowIndex++;
             }); 
-            var filename = +Date.now()+'-transaksidata_'+expedisiName.toLowerCase()+'.xlsx'
+            var filename = +Date.now()+'-transaksidata_'+expedisiName.toLowerCase()+addFileName+'.xlsx'
             returnData = {
                 metadata: {
                     link: filename,
