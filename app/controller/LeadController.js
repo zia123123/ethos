@@ -161,6 +161,9 @@ module.exports = {
             req.body.no_hp = req.phone
         }
 
+        const date = new Date()
+        const offset = date.getTimezoneOffset()
+
         let result = await leads.create({
             authId: req.body.authId,
             productId: req.body.productId,
@@ -169,6 +172,8 @@ module.exports = {
             nama: req.body.nama,
             sumber: req.body.sumber,
             type: req.body.type,
+            createdAt: new Date(date.getTime() - (offset*60*1000)), 
+            updatedAt: new Date(date.getTime() - (offset*60*1000)) 
         }).then(result => {
             if (req.lead != null ) {
                 req.lead = result
@@ -217,6 +222,8 @@ module.exports = {
     },
 
     async update(req, res) {
+        const date = new Date()
+        const offset = date.getTimezoneOffset()
         req.lead.no_hp = req.body.no_hp
         req.lead.nama = req.body.nama
         req.lead.sumber = req.body.sumber
@@ -224,6 +231,7 @@ module.exports = {
         req.lead.authId = req.body.authId
         req.lead.productId = req.body.productId
         req.lead.domainId = req.body.domainId
+        req.lead.updatedAt = new Date(date.getTime() - (offset*60*1000)) 
         req.lead.save().then(lead => {
             return apiResponse.successResponseWithData(res, "SUCCESS", lead);
         })
@@ -290,7 +298,7 @@ module.exports = {
         }
 
         const date = new Date();
-        let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
+        let startDate = new Date(date.getFullYear(), date.getMonth(), 1, 7, 0, 0),
             endDate   = date.setDate(date.getDate() + 1);
 
         if (req.query.startDate) {

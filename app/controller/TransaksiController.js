@@ -3422,6 +3422,8 @@ module.exports = {
 
     // add log
     async addlogstatus(req, res) {
+        const date = new Date()
+        const offset = date.getTimezoneOffset()
         req.transaksi.status = req.body.logstatus;
         req.transaksi.sudahbayar = req.body.sudahbayar;
         req.transaksi.updateFinance = req.body.updateFinance;
@@ -3434,10 +3436,10 @@ module.exports = {
         req.transaksi.leadsId = req.body.leadsId;
         req.transaksi.logstatus = req.transaksi.logstatus+"#"+req.body.logstatus;
         if (req.body.verificationFinanceId != null) {
-            req.transaksi.tanggalVerifikasi = new Date();
+            req.transaksi.tanggalVerifikasi = new Date(date.getTime() - (offset*60*1000));
         }
         if (req.body.verificationWarehouseId != null) {
-            req.transaksi.tanggalAWB = new Date();
+            req.transaksi.tanggalAWB = new Date(date.getTime() - (offset*60*1000));
         }
         req.transaksi.save().then(transaksi => {
         return apiResponse.successResponseWithData(res, "SUCCESS", transaksi);
