@@ -3466,40 +3466,39 @@ module.exports = {
         let error = ''
         let success = ''
         const orders = req.body.data
-        console.log(orders);
-        console.log(req.body.inputer);
 
-        for (let index = 0; index < orders.length; index++) {
-            if (orders[index]['Nama Pelanggan'] === undefined) {
+        orders.map( async (row,index) => {
+            if (row['Nama Pelanggan'] === undefined) {
                 if (error) {
                     error += ', '
                 }
                 error += `Nama Pelanggan index ke-${index+1} tidak ada`
-                continue
+                return
             }
-            if (orders[index]['Nama Pelanggan'].length == 0) {
+            if (row['Nama Pelanggan'].length == 0) {
                 if (error) {
                     error += ', '
                 }
                 error += `Nama Pelanggan index ke-${index+1} kosong`
-                continue
+                return
             }
-            if (orders[index].AWB === undefined) {
+            if (row.AWB === undefined) {
                 if (error) {
                     error += ', '
                 }
                 error += `AWB index ke-${index+1} tidak ada`
-                continue
+                return
             }
-            if (orders[index].AWB.length > 0) {
-                const customer = orders[index]['Nama Pelanggan'].split(',')
+            if (row.AWB.length > 0) {
+                const customer = row['Nama Pelanggan'].split('/')
+                console.log(customer);
                 const customerName = customer[0]
                 const id = customer[1]
 
                 transaksis.update(
                     {
                         status: "H", 
-                        awb: orders[index].AWB,
+                        awb: row.AWB,
                         authIDWarehouse: parseInt(req.body.inputer),
                         tanggalAWB: new Date()
                     },
@@ -3515,7 +3514,7 @@ module.exports = {
                 }
                 success += `AWB dan Status dari Nama Pelanggan index ke-${index+1} berhasil diubah`
             }
-        }
+        })
         console.log('Success:', success);
         console.log('Error:',error);
         return apiResponse.successResponseWithData(res, "SUCCESS", success);
