@@ -463,7 +463,6 @@ router.get('/api/transaksi/retur', TransaksiController.jumlahRetur);
 router.get('/api/transaksi/lead', TransaksiController.jumlahLead);
 router.get('/api/transaksi/progress', TransaksiController.jumlahOnprogress);
 router.get('/api/getexcel/', TransaksiController.ExcelGudang);
-router.get('/api/getexcelGudang/', TransaksiController.ExcelGudangIndex);
 router.get('/api/getexcelStatusBarang/', TransaksiController.ExcelGudangRiwayat);
 router.get('/api/getexcelFinanceRiwayat/', TransaksiController.ExcelFinanceRiwayat);
 router.get('/api/getexcelFinance/', TransaksiController.ExcelFinance);

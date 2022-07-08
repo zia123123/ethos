@@ -884,285 +884,6 @@ module.exports = {
                 return apiResponse.ErrorResponse(res, err);
             });
     },
-    async ExcelGudangIndex(req, res) {  
-        let warehouseId = req.query.warehouseId
-        let expedisiName = req.query.expedisiName
-        let typebayar = req.query.typebayar
-        
-        if(isNaN(parseFloat(typebayar))){
-            typebayar = ""
-        }
-        if( expedisiName == null ){
-            expedisiName = ""
-        }
-        if (warehouseId == null) {
-            warehouseId = ""
-        }
-        
-        
-        let result = await transaksis.findAll({
-            where: {
-                // createdAt :  {
-                //     [Op.and]: {
-                //       [Op.gte]: startDate,
-                //       [Op.lte]: endDate
-                //     }
-                //   },
-                [Op.and]: {
-                    warehouseId: {
-                        [Op.like]: '%'+warehouseId+'%'
-                    },
-                    typebayar: {
-                        [Op.like]: '%'+typebayar+'%'
-                    },
-                    expedisiName: {
-                        [Op.like]: '%'+expedisiName+'%'
-                    },
-                    status: {
-                        [Op.like]: '%G%'
-                    },
-                }
-            },
-            where: {
-                warehouseId: {
-                    [Op.like]: '%'+warehouseId+'%'
-                },
-            },
-            attributes: ['invoiceId','awb','ongkoskirim','subsidi','products','expedisiName','typebayar','memotransaksi'],
-            order: [
-                ['invoiceId', 'DESC'],
-            ],
-            include: [ 
-                { model: customers,
-
-                },
-                { model: warehouses,
-                    include: [ {
-                         model: districts,
-                        attributes: ['name'],
-                        required:true
-                    },
-                    { model: cityregencies,
-                        attributes: ['name'],
-                        required:false
-                    },
-                    { model: province,
-                        attributes: ['name'],
-                        required:false
-                    }]
-                },
-                { model: auths,
-                    as:'auth',
-                    attributes: ['notelp','firstname'],
-                    required:true
-                },
-                { model: daexpedisis,
-                    attributes: ['totalharga'],
-                    required:false
-                },
-            ],
-            // group: [sequelize.col('invoiceId'),sequelize.col('awb'),sequelize.col('ongkoskirim'),sequelize.col('subsidi'),sequelize.col('products'),sequelize.col('expedisiName'),sequelize.col('typebayar'),sequelize.col('memotransaksi')]
-        }).then(result => {
-            console.log(result.length)
-            class Transaksi {
-                constructor(
-                    Sender,
-                    SenderPhone,
-                    Invoice,
-                    prd1,
-                    sku1,
-                    qty1,
-                    weight1,
-                    prd2,
-                    sku2,
-                    qty2,
-                    weight2,
-                    prd3,
-                    sku3,
-                    qty3,
-                    weight3,
-                    RecepientName,
-                    RecepientPhone,
-                    ReceipentAddress,
-                    ReceipentProvince,
-                    ReceipentCity,
-                    ReceipentDistrict,
-                    ReceipentKodePos,
-                    awb,
-                    expedition,
-                    totalHarga,
-                    tag,
-                    gudangPost,
-                    ongkos,
-                    typebayar,
-                    subsidi,
-                    namacs,
-                    memo,
-                    // prd4,
-                    // sku4,
-                    // qty4,
-                    // weight4,
-                    // prd5,
-                    // sku5,
-                    // qty5,
-                    // weight5,
-                ) {
-                  this.Sender = Sender; //1
-                  this.SenderPhone = SenderPhone; //2
-                  this.Invoice = Invoice; //3
-                  this.prd1 = prd1; //4
-                  this.sku1 = sku1; //5
-                  this.qty1 = qty1; //6
-                  this.weight1 = weight1; //7
-                  this.prd2 = prd2; //8
-                  this.sku2 = sku2; //9
-                  this.qty2 = qty2; //10
-                  this.weight2 = weight2; //11
-                  this.prd3 = prd3; // 12
-                  this.sku3 = sku3; // 13
-                  this.qty3 = qty3; // 14
-                  this.weight3 = weight3; // 15
-                //   this.prd4 = prd4; 
-                //   this.sku4 = sku4; 
-                //   this.qty4 = qty4; 
-                //   this.weight4 = weight4; 
-                //   this.prd5 = prd5; 
-                //   this.sku5 = sku5; 
-                //   this.qty5 = qty5; 
-                //   this.weight5 = weight5; 
-                  this.RecepientName = RecepientName; // 16
-                  this.RecepientPhone = RecepientPhone; // 17
-                  this.ReceipentAddress = ReceipentAddress; // 18
-                  this.ReceipentProvince = ReceipentProvince; // 19
-                  this.ReceipentCity = ReceipentCity; // 20
-                  this.ReceipentDistrict = ReceipentDistrict; // 21
-                  this.ReceipentKodePos = ReceipentKodePos; // 22
-                  this.awb = awb; // 23
-                  this.expedition = expedition; // 24
-                  this.totalHarga = totalHarga; // 25
-                  this.tag = tag; // 26
-                  this.gudangPost = gudangPost; // 27
-                  this.typebayar = typebayar; // 29
-                  this.ongkos = ongkos; // 28
-                  this.subsidi = subsidi; // 30
-                  this.namacs = namacs; // 31
-                  this.memo = memo; // 32
-                }
-              }
-            var  TransaksiArray = [];
-          
-            for(var i=0;i<result.length;i++){
-                class Keranjang {
-                    constructor(namaproduct,sku,jumlahproduct,weight) {
-                      this.namaproduct = namaproduct;
-                      this.sku = sku;
-                      this.jumlahproduct = jumlahproduct;
-                      this.weight = weight;
-                    }
-                  }
-                var  KeranjangArray = [];
-                let keranjangdata =  result[i].products.replace(/\\n/g, '')
-                let datakeranjang = eval(keranjangdata)
-                for(var j=0;j<=3;j++){
-                    if(datakeranjang[j] === undefined){
-                        KeranjangArray.push(new Keranjang("","","",""));
-                    }else{
-                        KeranjangArray.push(new Keranjang(datakeranjang[j].namaproduct,datakeranjang[j].sku,datakeranjang[j].jumlahproduct,datakeranjang[j].weight));
-                    }
-                   
-                }    
-                if(result[i].typebayar == 1){
-                  var type = "Transfer"
-                }else{
-                  var type = "COD"
-                }           
-                TransaksiArray.push(new Transaksi(
-                    "FHG", // 1
-                    result[i].auth.notelp, // 2
-                    result[i].invoiceId, // 3
-                    KeranjangArray[0].namaproduct, // 4
-                    KeranjangArray[0].sku, // 5
-                    KeranjangArray[0].jumlahproduct.toString(), // 6
-                    KeranjangArray[0].weight.toString(), // 7
-                    KeranjangArray[1].namaproduct, // 8
-                    KeranjangArray[1].sku, // 9
-                    KeranjangArray[1].jumlahproduct.toString(), // 10
-                    KeranjangArray[1].weight.toString(), // 11
-                    KeranjangArray[2].namaproduct, // 12
-                    KeranjangArray[2].sku, // 13
-                    KeranjangArray[2].jumlahproduct.toString(), // 14
-                    KeranjangArray[2].weight.toString(), // 15
-                    result[i].customer.nama, // 16
-                    result[i].customer.notelp, // 17
-                    result[i].customer.alamat, // 18
-                    result[i].customer.provinsiname, // 19
-                    result[i].customer.cityname, // 20
-                    result[i].customer.districtname, // 21
-                    result[i].customer.postalcode, // 22
-                    result[i].awb, // 23
-                    result[i].expedisiName, // 24
-                    result[i].daexpedisis.totalharga.toString(), // 25
-                    result[i].auth.firstname, // 26
-                    result[i].warehouse.name, // 27
-                    type, // 28
-                    result[i].ongkoskirim.toString(), // 29
-                    result[i].subsidi.toString(), // 30
-                    result[i].auth.firstname, // 31
-                    result[i].memotransaksi, // 32
-                    // KeranjangArray[3].namaproduct, 
-                    // KeranjangArray[3].sku, 
-                    // KeranjangArray[3].jumlahproduct.toString(),
-                    // KeranjangArray[3].weight.toString(),
-                    // KeranjangArray[4].namaproduct,
-                    // KeranjangArray[4].sku,
-                    // KeranjangArray[4].jumlahproduct.toString(),
-                    // KeranjangArray[4].weight.toString(),
-                ));
-            }
-          // console.log(KeranjangArray)
-            const wb = new xl.Workbook();
-            const ws = wb.addWorksheet('Data Transaksi');
-            const headingColumnNames = [];
-            if(expedisiName.toLowerCase() == 'ninja'){
-                headingColumnNames = ["Order No.*","Delivery Type*","Shipping Carrier Code","Delivery Date (DD/MM/YYYY)*","Billing Name*","Billing Contact*","Billing Email Id","Billing Business Name","Billing Address Line 01*","Billing Address Line 02","Billing Address Line 03","Billing Suburb","Billing City","Billing State*","Billing Country*","Billing Postal Code","Billing Sender Tax ID","Billing Recipient Tax ID","Billing Recipient Type","Make Shipping Address Same As Billing Address","Shipping Name","Shipping Contact","Shipping Email Id","Shipping Business Name","Shipping Address Line 01","Shipping Address Line 02","Shipping Address Line 03","Shipping Suburb","Shipping City","Shipping State","Shipping Country","Shipping Postal Code","Shipping Sender Tax ID","Shipping Recipient Tax ID","Shipping Recipient Type","Product SKU*","Batch","Expiry (DD/MM/YYYY)","UOM","Product Quantity*","Product Retail Price (Per Unit)","Product Selling Price(Per Unit)","Order Total","Total Payable","Shipping Cost","Tax%","Discount","Total Amount","Order Currency","Payment Collection Mode*","Custom Duty","Condition*","Special Instruction","Pick Up Location"]
-            }else if(expedisiName.toLowerCase() == 'sicepat'){
-                headingColumnNames = ["","Cabang","Departemen","Tanggal Pickup","Waktu Pickup","Kota Pickup","Alamat Cabang","Kecamatan Cabang","Kota Cabang","Provinsi Cabang","Tanggal Order","Waktu Order","Penerima","No. Telepon","Alamat Tujuan","Kecamatan Tujuan","Kota Tujuan","Provinsi Tujuan","Cek Duplikasi Kec Tujuan","Layanan","Nama Barang","Qty","Berat Paket (Kg)","Panjang Paket","Lebar Paket","Tinggi Paket","Harga Paket","Asuransi","COD","Catatan Pengiriman","No. Ref","Cek Coverage COD","Kode Pos Cabang","Kode Pos Tujuan","Perusahaan","No. DO Balik"]
-            }else if(expedisiName.toLowerCase() == 'jnt'){
-                headingColumnNames = ["Berat","Nama Pengirim","Telepon Pengirim","Kota Pengirim","Alamat Pengirim","Nama Penerima","Telepon Penerima","Kecamatan","Alamat Penerima","Nama Barang","Nilai Barang","Jumlah","Jenis Barang","Keterangan","Nomor pesanan e-commerce","COD","Jenis Layanan","Biaya Pengiriman","Biaya Lainnya","Biaya Asuransi"]
-            }
-            
-            let headingColumnIndex = 1;
-            headingColumnNames.forEach(heading => {
-                ws.cell(1, headingColumnIndex++)
-                    .string(heading)
-            });
-            let rowIndex = 2;
-            TransaksiArray.forEach( record => {
-                let columnIndex = 1;
-                Object.keys(record ).forEach(columnName =>{
-                    // console.log('record: '+record);
-                    // console.log('columnName: '+columnName);
-                    // console.log('columnIndex: '+columnIndex);
-                    // console.log('rowIndex: '+rowIndex);
-                    // console.log('record [columnName]: '+record [columnName]);
-                    // console.log('==========================================');
-                    ws.cell(rowIndex,columnIndex++)
-                        .string(record [columnName])
-                });
-                rowIndex++;
-            }); 
-            var filename = +Date.now()+'-transaksidata.xlsx'
-            returnData = {
-                metadata: {
-                    link: filename,
-                }
-            }
-            wb.write(filename,res);
-            // return apiResponse.successResponseWithData(res, "SUCCESS", result);
-            }).catch(function (err){
-                return apiResponse.ErrorResponse(res, err);
-            });
-    },
     async ExcelGudang(req, res) {
         // let startDate = req.query.startDate+"T00:00:00.000Z"
         // let endDate = req.query.endDate+"T23:59:00.000Z"
@@ -4749,9 +4470,17 @@ module.exports = {
     },
 
     async ExcelShipper(req, res) {
-        let startDate = req.query.startDate+"T00:00:00.000Z"
-        let endDate = req.query.endDate+"T23:59:00.000Z"
-
+        // let startDate = req.query.startDate+"T00:00:00.000Z"
+        // let endDate = req.query.endDate+"T23:59:00.000Z"
+        // const date = new Date();
+        // var todayYYYYMMDD = [date.getFullYear(),(date.getMonth()+1).toString().padStart(2, '0'),date.getDate().toString().padStart(2, '0')
+        //                 ].join('-');
+        // if( req.query.startDate == null ){
+        //     startDate = todayYYYYMMDD+"T00:00:00.000Z";
+        // }
+        // if( req.query.endDate == null ){
+        //     endDate = todayYYYYMMDD+"T23:59:00.000Z"; 
+        // }
         let expedisiName = req.query.expedisiName
         if( expedisiName == null ){
             expedisiName = ""
@@ -4767,18 +4496,18 @@ module.exports = {
             typebayar = ""
         }
 
-        
+        warehouseNameFile = "";
         let result = await transaksis.findAll({
             where: {
-                createdAt :  {
-                    [Op.and]: {
-                      [Op.gte]: startDate,
-                      [Op.lte]: endDate
-                    }
-                  },
+                // createdAt :  {
+                //     [Op.and]: {
+                //       [Op.gte]: startDate,
+                //       [Op.lte]: endDate
+                //     }
+                //   },
                 [Op.and]: {
                 warehouseId: {
-                    [Op.like]: '%'+warehouseId+'%'
+                    [Op.eq]: warehouseId
                 },
                 expedisiName: {
                     [Op.like]: '%'+expedisiName+'%'
@@ -4889,15 +4618,16 @@ module.exports = {
               for(var i=0;i<result.length;i++){
                   let keranjangdata =  result[i].products.replace(/\\n/g, '')
                   let datakeranjang = eval(keranjangdata)
+                  warehouseNameFile = "_"+result[i].warehouse.name.toLowerCase();
                   let tag = '-'
-
-                  if (warehouseId == 3) {
-                      tag = 'Shipper|Kapuk'
+                    // console.log(result[i].warehouse.name);
+                  if (result[i].warehouse.name.toLowerCase() == 'jakarta') {
+                      tag = 'shipper|Kapuk'
                   }
-                  else if (warehouseId == 4) {
-                      tag = 'Shipper|Tandes'
+                  else if (result[i].warehouse.name.toLowerCase() == 'surabaya') {
+                      tag = 'shipper|Tandes'
                   }
-
+                //   console.log(tag);
                   const expedition = result[i].expedisiName.split('(')
 
                   const expeditionName = expedition[0]
@@ -4968,7 +4698,7 @@ module.exports = {
                   });
                   rowIndex++;
               }); 
-              var filename = +Date.now()+'-transaksidata.xlsx'
+              var filename = +Date.now()+'-transaksidata'+warehouseNameFile+'.xlsx'
               returnData = {
                   metadata: {
                       link: filename,
