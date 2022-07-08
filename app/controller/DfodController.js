@@ -1,4 +1,4 @@
-const { deliveryfods,transaksis,auths,customers, Sequelize } = require('../models/index');
+const { deliveryfods,transaksis,auths,customers, group, Sequelize } = require('../models/index');
 const { Op } = require("sequelize");
 const { exportstocsv }  = require("export-to-csv"); 
 const { Parser } = require('json2csv');
@@ -17,8 +17,7 @@ module.exports = {
         var empid = parseInt(req.body.transaksi_Id)
         let result = await deliveryfods.create({
             awbpengembalian: req.body.awbpengembalian,
-            expedisipengembalian: req.body.expedisipengembalian,
-            awbpengiriman: req.body.awbpengiriman,
+            expedisipengembalianId: req.body.expedisipengembalian,
             transaksisId: empid,
             expedisipengiriman: req.body.expedisipengiriman,
             typedfod: req.body.typedfod,
@@ -28,6 +27,7 @@ module.exports = {
             evidance: "https://storage.googleapis.com/ethos-kreatif-app.appspot.com/"+link,
             keterangan: req.body.keterangan,
             state: req.body.state,
+            products: req.body.products,
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
         }).catch(function (err)  {
@@ -116,11 +116,6 @@ module.exports = {
                         }
                     },
                     {
-                        awbpengiriman:{
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
                         awbpengembalian:{
                             [Op.like]: `%${search}%`
                         }
@@ -148,8 +143,18 @@ module.exports = {
                             as:'auth',
                             attributes: ['firstname','role', 'notelp'],
                         },
-                        
+                        { model: group,
+                            attributes: ['name','internal'],
+                        },
                     ]
+                },
+                { model: auths,
+                    as:'authSpv',
+                    attributes: ['firstname'],
+                },
+                { model: auths,
+                    as:'authCC',
+                    attributes: ['firstname'],
                 },
                 
             ]
@@ -242,11 +247,6 @@ module.exports = {
                         }
                     },
                     {
-                        awbpengiriman:{
-                            [Op.like]: `%${search}%`
-                        }
-                    },
-                    {
                         awbpengembalian:{
                             [Op.like]: `%${search}%`
                         }
@@ -269,8 +269,18 @@ module.exports = {
                             as:'auth',
                             attributes: ['firstname','role', 'notelp'],
                         },
-                        
+                        { model: group,
+                            attributes: ['name','internal'],
+                        },
                     ]
+                },
+                { model: auths,
+                    as:'authSpv',
+                    attributes: ['firstname'],
+                },
+                { model: auths,
+                    as:'authCC',
+                    attributes: ['firstname'],
                 },
                 
             ]
@@ -325,8 +335,7 @@ module.exports = {
         const offset = date.getTimezoneOffset()
 
         req.result.awbpengembalian = req.body.awbpengembalian;  
-        req.result.expedisipengembalian = req.body.expedisipengembalian;
-        req.result.awbpengiriman = req.body.awbpengiriman;    
+        req.result.expedisipengembalianId = req.body.expedisipengembalian; 
         req.result.expedisipengiriman = req.body.expedisipengiriman;    
         req.result.typedfod = req.body.typedfod;    
         req.result.kondisibarang = req.body.kondisibarang;    
@@ -334,6 +343,7 @@ module.exports = {
         req.result.evidance = req.body.evidance;  
         req.result.keterangan = req.body.keterangan;
         req.result.state = req.body.state;
+        req.result.products = req.body.products;
         req.result.spvAuthId = req.body.spvAuthId;
         req.result.ccAuthId = req.body.ccAuthId;
         if (req.body.spvAuthId != null) {
