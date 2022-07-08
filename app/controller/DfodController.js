@@ -133,7 +133,8 @@ module.exports = {
                         'awb',
                         'invoiceId', 
                         [Sequelize.literal('CASE WHEN typebayar = 1 THEN "Transfer" WHEN typebayar = 2 THEN "COD" ELSE 0 END'), 'payment_method'],
-                        'orderNumber'
+                        'orderNumber',
+                        'createdAt'
                     ],
                     include: [ 
                         { model: customers,
@@ -251,7 +252,7 @@ module.exports = {
             },
             include: [ 
                 { model: transaksis,
-                    attributes: ['awb','invoiceId', 'orderNumber'],
+                    attributes: ['awb','invoiceId', 'orderNumber','createdAt'],
                     include: [ 
                         { model: customers,
                             attributes: ['nama','notelp'],
@@ -371,7 +372,8 @@ module.exports = {
                         'awb',
                         'invoiceId', 
                         [Sequelize.literal('CASE WHEN typebayar = 1 THEN "Transfer" WHEN typebayar = 2 THEN "COD" ELSE 0 END'), 'payment_method'],
-                        'orderNumber'
+                        'orderNumber',
+                        'createdAt'
                     ],
                     include: [ 
                         { model: customers,
@@ -493,7 +495,7 @@ module.exports = {
             },
             include: [ 
                 { model: transaksis,
-                    attributes: ['awb','invoiceId', 'orderNumber'],
+                    attributes: ['awb','invoiceId', 'orderNumber','createdAt'],
                     include: [ 
                         { model: customers,
                             attributes: ['nama','notelp'],
