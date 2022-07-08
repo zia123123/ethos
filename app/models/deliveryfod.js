@@ -5,12 +5,6 @@ module.exports = (sequelize, DataTypes) => {
     awbpengembalian: {
       type: DataTypes.STRING
     },
-    expedisipengembalian: {
-      type: DataTypes.STRING
-    },
-    awbpengiriman: {
-      type: DataTypes.STRING
-    },
     expedisipengiriman: {
       type: DataTypes.STRING
     },
@@ -58,6 +52,7 @@ module.exports = (sequelize, DataTypes) => {
     deliveryfod.belongsTo(models.transaksis, { foreignKey: "transaksisId"})
     deliveryfod.belongsTo(models.auths, { as: "authSpv", foreignKey: "spvAuthId"})
     deliveryfod.belongsTo(models.auths, { as: "authCC", foreignKey: "ccAuthId"})
+    deliveryfod.belongsTo(models.ekpedisi, {foreignKey: "expedisiPengembalianId"})
   };
 
   return deliveryfod;
