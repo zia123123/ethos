@@ -65,7 +65,7 @@ module.exports = {
         }
     },
 
-    async index(req, res) {
+    async indexCC(req, res) {
         let page = parseInt(req.query.page)
         let limit = parseInt(req.query.limit)
         let search = req.query.search
@@ -94,7 +94,7 @@ module.exports = {
         {
             
             where: {
-                state: 1,
+                state: 2,
                 typedfod: {
                     [Op.like]: `%${type}%`
                 },
@@ -188,7 +188,7 @@ module.exports = {
     },
 
 
-    async indexriwayat(req, res) {
+    async indexriwayatCC(req, res) {
         let page = parseInt(req.query.page)
         let limit = parseInt(req.query.limit)
         let search = req.query.search
@@ -216,16 +216,249 @@ module.exports = {
         let filter = 
         { 
             where: {
-                state: {
-                    [Op.or]: [
-                        {
-                            [Op.like]: '%2%'
-                        },
-                        {
-                            [Op.like]: '%3%'
+                state: 4,
+                createdAt :  {
+                    [Op.and]: {
+                      [Op.gte]: startDate,
+                      [Op.lte]: endDate
+                    }
+                },
+                typedfod: {
+                    [Op.like]: `%${type}%`
+                },
+                [Op.or]:[
+                    {
+                        '$transaksis->auth.notelp$':{
+                            [Op.like]: `%${search}%`
                         }
+                    },
+                    {
+                        '$transaksis->customer.notelp$':{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        awbpengembalian:{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        '$transaksis->auth.firstname$':{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                ]
+            },
+            include: [ 
+                { model: transaksis,
+                    attributes: ['awb','invoiceId', 'orderNumber'],
+                    include: [ 
+                        { model: customers,
+                            attributes: ['nama','notelp'],
+                        },
+                        { model: auths,
+                            as:'auth',
+                            attributes: ['firstname','role', 'notelp'],
+                        },
+                        { model: group,
+                            attributes: ['name','internal'],
+                        },
                     ]
                 },
+                { model: auths,
+                    as:'authSpv',
+                    attributes: ['firstname'],
+                },
+                { model: auths,
+                    as:'authCC',
+                    attributes: ['firstname'],
+                },
+                
+            ]
+        }
+        let count = await deliveryfods.count(filter)
+
+        if (isNaN(limit) == false && isNaN(page) == false) {
+            filter['offset'] = (page - 1) * limit
+            filter['limit'] = limit
+            filter['subQuery'] = false
+        }
+
+        let result = await deliveryfods.findAll(filter).then(result => {
+            var totalPage = (parseInt(count) / limit) + 1
+            returnData = {
+                result,
+                metadata: {
+                    page: page,
+                    count: result.length,
+                    totalPage: parseInt(totalPage),
+                    totalData:  count,
+                }
+            }
+
+            return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
+            // return apiResponse.successResponseWithData(res, "SUCCESS", result);
+        }).catch(function (err){
+            return apiResponse.ErrorResponse(res, err);
+        });
+    },
+
+    async indexSpv(req, res) {
+        let page = parseInt(req.query.page)
+        let limit = parseInt(req.query.limit)
+        let search = req.query.search
+        const finish = req.query.finish
+        let type = req.query.type
+
+        if( search == null ){
+            search = ""
+        }
+        if( type == null ){
+            type = ""
+        }
+
+        const date = new Date();
+        let startDate = new Date(0),
+            endDate   = new Date(date.setDate(date.getDate() + 1));
+
+        if (req.query.startDate) {
+            startDate = Math.floor(req.query.startDate) 
+        }
+        if (req.query.endDate) {
+            endDate = Math.floor(req.query.endDate)
+        }
+
+        let filter = 
+        {
+            
+            where: {
+                state: 1,
+                typedfod: {
+                    [Op.like]: `%${type}%`
+                },
+                createdAt :  {
+                    [Op.and]: {
+                      [Op.gte]: startDate,
+                      [Op.lte]: endDate
+                    }
+                },
+                [Op.or]:[
+                    {
+                        '$transaksis->auth.notelp$':{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        '$transaksis->customer.notelp$':{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        awbpengembalian:{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        '$transaksis->auth.firstname$':{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                ]
+            },
+            include: [ 
+                { model: transaksis,
+                    attributes: [
+                        'awb',
+                        'invoiceId', 
+                        [Sequelize.literal('CASE WHEN typebayar = 1 THEN "Transfer" WHEN typebayar = 2 THEN "COD" ELSE 0 END'), 'payment_method'],
+                        'orderNumber'
+                    ],
+                    include: [ 
+                        { model: customers,
+                            attributes: ['nama','notelp'],
+                        },
+                        { model: auths,
+                            as:'auth',
+                            attributes: ['firstname','role', 'notelp'],
+                        },
+                        { model: group,
+                            attributes: ['name','internal'],
+                        },
+                    ]
+                },
+                { model: auths,
+                    as:'authSpv',
+                    attributes: ['firstname'],
+                },
+                { model: auths,
+                    as:'authCC',
+                    attributes: ['firstname'],
+                },
+                
+            ] 
+        }
+        let count = await deliveryfods.count(filter)
+
+        if (isNaN(limit) == false && isNaN(page) == false) {
+            filter['offset'] = (page - 1) * limit
+            filter['limit'] = limit
+            filter['subQuery'] = false
+        }
+
+        let result = await deliveryfods.findAll(filter).then(result => {
+            var totalPage = (parseInt(count) / limit) + 1
+            returnData = {
+                result,
+                metadata: {
+                    page: page,
+                    count: result.length,
+                    totalPage: parseInt(totalPage),
+                    totalData:  count,
+                }
+            }
+
+            return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
+        }).catch(function (err){
+            return apiResponse.ErrorResponse(res, err);
+        });
+    },
+
+    async indexriwayatSpv(req, res) {
+        let page = parseInt(req.query.page)
+        let limit = parseInt(req.query.limit)
+        let search = req.query.search
+        const finish = req.query.finish
+        let type = req.query.type
+
+        if( search == null ){
+            search = ""
+        }
+        if( type == null ){
+            type = ""
+        }
+
+        const date = new Date();
+        let startDate = new Date(0),
+            endDate   = new Date(date.setDate(date.getDate() + 1));
+
+        if (req.query.startDate) {
+            startDate = Math.floor(req.query.startDate) 
+        }
+        if (req.query.endDate) {
+            endDate = Math.floor(req.query.endDate)
+        }
+
+        let filter = 
+        { 
+            where: {
+                [Op.or]:[
+                    {
+                        state: 2,
+                    },
+                    {
+                        state: 3,
+                    },
+                ],
                 createdAt :  {
                     [Op.and]: {
                       [Op.gte]: startDate,

@@ -396,10 +396,12 @@ router.patch('/api/expedisi/update/:id', ExpedisiController.find,ExpedisiControl
 
 //DFOD
 router.post('/api/dfod/create/:id',uploadHandler.any(), TransaksiController.createdeliveryfods);
-router.get('/api/dfod/', DfodController.index);
-router.get('/api/dfod/riwayat', DfodController.indexriwayat);
+router.get('/api/dfod-cc/', DfodController.indexCC);
+router.get('/api/dfod-cc/riwayat', DfodController.indexriwayatCC);
 router.get('/api/dfod/:id', DfodController.find, DfodController.show);
 router.patch('/api/dfod/update/:id', DfodController.find,DfodController.update);
+router.get('/api/dfod-spv/', DfodController.indexSpv);
+router.get('/api/dfod-spv/riwayat', DfodController.indexriwayatSpv);
 
 //biayaop
 router.post('/api/biayaop/create', BiayaopController.create);
