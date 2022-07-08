@@ -4493,7 +4493,7 @@ module.exports = {
             typebayar = ""
         }
 
-        
+        warehouseNameFile = "";
         let result = await transaksis.findAll({
             where: {
                 // createdAt :  {
@@ -4615,15 +4615,16 @@ module.exports = {
               for(var i=0;i<result.length;i++){
                   let keranjangdata =  result[i].products.replace(/\\n/g, '')
                   let datakeranjang = eval(keranjangdata)
+                  warehouseNameFile = "_"+result[i].warehouse.name.toLowerCase();
                   let tag = '-'
-
-                  if (warehouseId == 3) {
-                      tag = 'Shipper|Kapuk'
+                    // console.log(result[i].warehouse.name);
+                  if (result[i].warehouse.name.toLowerCase() == 'jakarta') {
+                      tag = 'Jakarta (shipper|Kapuk)'
                   }
-                  else if (warehouseId == 4) {
-                      tag = 'Shipper|Tandes'
+                  else if (result[i].warehouse.name.toLowerCase() == 'surabaya') {
+                      tag = 'Surabaya (shipper|Tandes)'
                   }
-
+                //   console.log(tag);
                   const expedition = result[i].expedisiName.split('(')
 
                   const expeditionName = expedition[0]
@@ -4636,7 +4637,7 @@ module.exports = {
                     TransaksiArray.push(new Transaksi(
                         "FHG", 
                         result[i].invoiceId,
-                        "",
+                        result[i].invoiceId,
                         datakeranjang[j].jumlahproduct.toString(), 
                         datakeranjang[j].sku, 
                         'EA', 
@@ -4694,7 +4695,7 @@ module.exports = {
                   });
                   rowIndex++;
               }); 
-              var filename = +Date.now()+'-transaksidata.xlsx'
+              var filename = +Date.now()+'-transaksidata'+warehouseNameFile+'.xlsx'
               returnData = {
                   metadata: {
                       link: filename,
