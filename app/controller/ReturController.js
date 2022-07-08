@@ -16,18 +16,15 @@ module.exports = {
         var link = req.files[0].filename
         var empid = parseInt(req.body.transaksi_Id)
         let result = await returs.create({
-            awbpengembalian: req.body.awbpengembalian,
-            expedisipengembalian: req.body.expedisipengembalian,
-            awbpengiriman: req.body.awbpengiriman,
+            authId: req.body.authId,
             transaksisId: empid,
-            expedisipengiriman: req.body.expedisipengiriman,
-            typedfod: req.body.typedfod,
-            kondisibarang: req.body.kondisibarang,
-            biayapengembalian: req.body.biayapengembalian,
-            biayapengiriman: req.body.biayapengiriman,
-            evidance: "https://storage.googleapis.com/ethos-kreatif-app.appspot.com/"+link,
             keterangan: req.body.keterangan,
+            kondisibarang: req.body.kondisibarang,
             state: req.body.state,
+            // csaAuthId: req.body.csaAuthId,
+            // biayapengembalian: req.body.biayapengembalian,
+            // biayapengiriman: req.body.biayapengiriman,
+            // evidance: "https://storage.googleapis.com/ethos-kreatif-app.appspot.com/"+link,
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
         }).catch(function (err)  {
@@ -246,16 +243,22 @@ module.exports = {
 
     // Update
     async update(req, res) {
-        req.result.awbpengembalian = req.body.awbpengembalian;  
-        req.result.expedisipengembalian = req.body.expedisipengembalian;
-        req.result.awbpengiriman = req.body.awbpengiriman;    
-        req.result.expedisipengiriman = req.body.expedisipengiriman;    
-        req.result.typedfod = req.body.typedfod;    
-        req.result.kondisibarang = req.body.kondisibarang;    
-        req.result.biayapengembalian = req.body.biayapengembalian;  
-        req.result.evidance = req.body.evidance;  
+        const date = new Date()
+        const offset = date.getTimezoneOffset()
+        // req.result.awbpengembalian = req.body.awbpengembalian;  
+        // req.result.expedisipengembalian = req.body.expedisipengembalian;
+        // req.result.awbpengiriman = req.body.awbpengiriman;    
+        // req.result.expedisipengiriman = req.body.expedisipengiriman;    
+        // req.result.typedfod = req.body.typedfod;    
         req.result.keterangan = req.body.keterangan;
+        req.result.kondisibarang = req.body.kondisibarang;    
         req.result.state = req.body.state;
+        req.result.csaAuthId = req.body.csaAuthId;
+        if (req.body.csaAuthId != null) {
+            req.result.tanggalCsa = new Date(date.getTime() - (offset*60*1000));
+        }
+        // req.result.biayapengembalian = req.body.biayapengembalian;  
+        // req.result.evidance = req.body.evidance;  
         req.result.save().then(result => {
         return apiResponse.successResponseWithData(res, "SUCCESS", result);
         })

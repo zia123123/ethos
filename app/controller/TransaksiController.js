@@ -3250,7 +3250,7 @@ module.exports = {
                 error += `Nama Pelanggan index ke-${index+1} tidak ada`
                 return
             }
-            if (row['Nama Pelanggan'].length == 0) {
+            else if (row['Nama Pelanggan'].length == 0) {
                 if (error) {
                     error += ', '
                 }
@@ -3264,7 +3264,7 @@ module.exports = {
                 error += `AWB index ke-${index+1} tidak ada`
                 return
             }
-            if (row.AWB.length > 0) {
+            else if (row.AWB.length > 0) {
                 const customer = row['Nama Pelanggan'].split('/')
                 console.log(customer);
                 const customerName = customer[0]
