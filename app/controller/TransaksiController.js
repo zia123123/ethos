@@ -4619,10 +4619,10 @@ module.exports = {
                   let tag = '-'
                     // console.log(result[i].warehouse.name);
                   if (result[i].warehouse.name.toLowerCase() == 'jakarta') {
-                      tag = 'Jakarta (shipper|Kapuk)'
+                      tag = 'shipper|Kapuk'
                   }
                   else if (result[i].warehouse.name.toLowerCase() == 'surabaya') {
-                      tag = 'Surabaya (shipper|Tandes)'
+                      tag = 'shipper|Tandes'
                   }
                 //   console.log(tag);
                   const expedition = result[i].expedisiName.split('(')
