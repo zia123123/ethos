@@ -21,9 +21,37 @@ module.exports = {
         let search = req.query.search
         const finish = req.query.finish
         let queryFinish = {[Op.like]: `%%`}
+        let searchWords = []
 
         if( search == null ){
             search = ""
+        }else{
+            const words = search.toLowerCase().split(' ')
+            words.forEach(word => {
+                console.log(word);
+                searchWords.push({
+                    [Op.or]:[
+                        {
+                            id:{
+                                [Op.like]: `%${word}%`
+                            }
+                        },
+                        {
+                            '$nomorekening.nomor$':{
+                                [Op.like]: `%${word}%`
+                            }
+                        },
+                        {
+                            '$nomorekening.nama_bank$':{
+                                [Op.like]: `%${word}%`
+                            }
+                        },
+                        // Sequelize.where(Sequelize.literal("COUNT(mutation_details.id) like "+ word +" OR (CASE WHEN COUNT(mutation_details.id) > 0 THEN (SUM(CASE WHEN mutation_details.invoice IS NOT NULL THEN 1 ELSE 0 END)/COUNT(mutation_details.id)) * 100 ELSE 0 END) "),{
+                        //     [Op.like]: `%${word}%`
+                        // }),
+                    ]
+                })
+            })
         }
 
         if (finish == 100) {
@@ -51,7 +79,8 @@ module.exports = {
                       [Op.gte]: startDate,
                       [Op.lte]: endDate
                     }
-                }
+                },
+                [Op.and]: searchWords,
             },
             having: 
                 Sequelize.where(Sequelize.literal(`(CASE WHEN COUNT(mutation_details.id) > 0 THEN (SUM(CASE WHEN mutation_details.invoice IS NOT NULL THEN 1 ELSE 0 END)/COUNT(mutation_details.id)) * 100 ELSE 0 END)`),queryFinish

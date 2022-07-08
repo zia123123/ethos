@@ -3380,6 +3380,9 @@ module.exports = {
                     as: 'authWarehouse',
                     attributes: ['firstname', 'notelp'],
                 },
+                { model: group,
+                    attributes: ['name', 'internal'],
+                },
                 
             ]
             
