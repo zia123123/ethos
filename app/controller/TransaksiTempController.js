@@ -1,7 +1,7 @@
 const {
     transaksis, transaksis_temp,
     daexpedisis,customers,warehouses,auths,buktibayars,
-    districts,cityregencies,province, leads, Sequelize 
+    districts,cityregencies,province, leads, group, nomorekenings, ratecard, Sequelize 
    } = require('../models/index');
 const { Op } = require("sequelize");
 const { exportstocsv }  = require("export-to-csv"); 
@@ -117,6 +117,47 @@ module.exports = {
                 { 
                     model: leads,
                 },
+                { model: customers,
+                },
+                { model: warehouses,
+                    include: [ { model: districts,
+                        attributes: ['name']
+                    },
+                    { model: cityregencies,
+                        attributes: ['name']
+                    },
+                    { model: province,
+                        attributes: ['name']
+                    }]
+                   
+                },
+                { model: auths,
+                    as: 'auth',
+                    attributes: ['firstname', 'notelp'],
+                },
+                { model: auths,
+                    as: 'authFinance',
+                    attributes: ['firstname', 'notelp'],
+                },
+                { model: auths,
+                    as: 'authWarehouse',
+                    attributes: ['firstname', 'notelp'],
+                },
+                { model: group,
+                    attributes: ['name', 'internal'],
+                    include:[
+                        {
+                            model: auths,
+                            attributes: ['firstname', 'notelp'],
+                        }
+                    ]
+                },
+                { 
+                    model: nomorekenings,
+                },
+                { 
+                    model: ratecard,
+                },
             ]
             
         }).then(result => {
@@ -192,13 +233,116 @@ module.exports = {
                 { 
                     model: leads,
                 },
+                { model: customers,
+                },
+                { model: warehouses,
+                    include: [ { model: districts,
+                        attributes: ['name']
+                    },
+                    { model: cityregencies,
+                        attributes: ['name']
+                    },
+                    { model: province,
+                        attributes: ['name']
+                    }]
+                   
+                },
+                { model: auths,
+                    as: 'auth',
+                    attributes: ['firstname', 'notelp'],
+                },
+                { model: auths,
+                    as: 'authFinance',
+                    attributes: ['firstname', 'notelp'],
+                },
+                { model: auths,
+                    as: 'authWarehouse',
+                    attributes: ['firstname', 'notelp'],
+                },
+                { model: group,
+                    attributes: ['name', 'internal'],
+                    include:[
+                        {
+                            model: auths,
+                            attributes: ['firstname', 'notelp'],
+                        }
+                    ]
+                },
+                { 
+                    model: nomorekenings,
+                },
+                { 
+                    model: ratecard,
+                },
             ]
             
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS", result);
-            }).catch(function (err){
-                return apiResponse.ErrorResponse(res, err);
-            });
+        }).catch(function (err){
+            console.log(err);
+            return apiResponse.ErrorResponse(res, err);
+        });
+    },
+
+    async showByCustomer(req, res) {
+        let result = await transaksis_temp.findOne({
+            where: {
+                customerId: req.params.id,
+            },
+            include: [ 
+                { 
+                    model: leads,
+                },
+                { 
+                    model: customers,
+                },
+                { model: warehouses,
+                    include: [ { model: districts,
+                        attributes: ['name']
+                    },
+                    { model: cityregencies,
+                        attributes: ['name']
+                    },
+                    { model: province,
+                        attributes: ['name']
+                    }]
+                   
+                },
+                { model: auths,
+                    as: 'auth',
+                    attributes: ['firstname', 'notelp'],
+                },
+                { model: auths,
+                    as: 'authFinance',
+                    attributes: ['firstname', 'notelp'],
+                },
+                { model: auths,
+                    as: 'authWarehouse',
+                    attributes: ['firstname', 'notelp'],
+                },
+                { model: group,
+                    attributes: ['name', 'internal'],
+                    include:[
+                        {
+                            model: auths,
+                            attributes: ['firstname', 'notelp'],
+                        }
+                    ]
+                },
+                { 
+                    model: nomorekenings,
+                },
+                { 
+                    model: ratecard,
+                },
+            ]
+            
+        }).then(result => {
+            return apiResponse.successResponseWithData(res, "SUCCESS", result);
+        }).catch(function (err){
+            console.log(err);
+            return apiResponse.ErrorResponse(res, err);
+        });
     },
 
 }
