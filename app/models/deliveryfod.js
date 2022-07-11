@@ -8,35 +8,22 @@ module.exports = (sequelize, DataTypes) => {
     expedisipengiriman: {
       type: DataTypes.STRING
     },
-    kondisibarang: {
-      type: DataTypes.BOOLEAN
-    },
     typedfod: {
-      type: DataTypes.INTEGER
-    },
-    biayapengembalian: {
-      type: DataTypes.INTEGER
-    },
-    biayapengiriman: {
-      type: DataTypes.INTEGER
-    },
-    biayapengiriman: {
       type: DataTypes.INTEGER
     },
     evidance: {
       type: DataTypes.STRING
     },
-    authId: {
-     
-      type: DataTypes.INTEGER,
-    },
     keterangan: {
       type: DataTypes.TEXT
+    },
+    kondisibarang: {
+      type: DataTypes.BOOLEAN
     },
     state: {
       type: DataTypes.INTEGER
     },
-    products: {
+    products_pengembalian: {
       type: DataTypes.TEXT
     },
     tanggal_spv: {
@@ -49,6 +36,7 @@ module.exports = (sequelize, DataTypes) => {
     tableName: "deliveryfods"
   });
   deliveryfod.associate = function(models) {
+    deliveryfod.belongsTo(models.auths, { as: "auth", foreignKey: "authId"})
     deliveryfod.belongsTo(models.transaksis, { foreignKey: "transaksisId"})
     deliveryfod.belongsTo(models.auths, { as: "authSpv", foreignKey: "spvAuthId"})
     deliveryfod.belongsTo(models.auths, { as: "authCC", foreignKey: "ccAuthId"})
