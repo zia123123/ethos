@@ -27,7 +27,7 @@ module.exports = {
             evidance: "https://storage.googleapis.com/ethos-kreatif-app.appspot.com/"+link,
             keterangan: req.body.keterangan,
             state: req.body.state,
-            products: req.body.products,
+            products_pengembalian: req.body.products,
         }).then(result => {
             return apiResponse.successResponseWithData(res, "SUCCESS CREATE", result);
         }).catch(function (err)  {
@@ -578,7 +578,7 @@ module.exports = {
         req.result.evidance = req.body.evidance;  
         req.result.keterangan = req.body.keterangan;
         req.result.state = req.body.state;
-        req.result.products = req.body.products;
+        req.result.products_pengembalian = req.body.products;
         req.result.spvAuthId = req.body.spvAuthId;
         req.result.ccAuthId = req.body.ccAuthId;
         if (req.body.spvAuthId != null) {

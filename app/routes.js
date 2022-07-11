@@ -577,9 +577,14 @@ router.get('/api/mapcsByProduct/', MapCsController.indexByProduct);
 router.get('/api/transaksi-temp/cs/:userid', TransaksiTempController.index);
 router.get('/api/transaksi-temp/:id', TransaksiTempController.show);
 router.get('/api/transaksi-temp/lead/:id', TransaksiTempController.showByLead);
+router.get('/api/transaksi-temp/customer/:id', TransaksiTempController.showByCustomer);
 router.put('/api/transaksi-temp/:id', TransaksiTempController.find, TransaksiTempController.update);
 router.post('/api/transaksi/transaksi-temp/:id', TransaksiTempController.find, TransaksiController.createFromTemp);
 
 router.get('/api/ratecard/', RateCardController.index);
+router.get('/api/ratecard/provinces-by-expedition/:id', RateCardController.provincesByExpedition);
+router.get('/api/ratecard/packages-by-expedition/:id', RateCardController.packagesByExpedition);
+router.get('/api/ratecard/cities-by-expedition/:id', RateCardController.citiesByExpedition);
+router.get('/api/ratecard/districts-by-expedition/:id', RateCardController.districtsByExpedition);
 
 module.exports = router;
