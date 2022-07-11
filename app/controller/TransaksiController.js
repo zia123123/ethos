@@ -104,7 +104,7 @@ module.exports = {
                 },
                 { model: auths,
                     as:'auth',
-                    attributes: ['firstname'],
+                    attributes: ['firstname', 'notelp'],
                 },
                 { model: auths,
                     as:'authWarehouse',
@@ -113,6 +113,15 @@ module.exports = {
                 { model: auths,
                     as:'authFinance',
                     attributes: ['firstname'],
+                },
+                { model: group,
+                    attributes: ['name', 'internal'],
+                    include:[
+                        {
+                            model: auths,
+                            attributes: ['firstname', 'notelp'],
+                        }
+                    ]
                 },
                 
             ]
