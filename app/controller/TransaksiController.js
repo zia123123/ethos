@@ -709,12 +709,12 @@ module.exports = {
                                     {
                                         [Op.like]: '%H%'
                                     },
-                                    {
-                                        [Op.like]: '%N%'
-                                    },
-                                    {
-                                        [Op.like]: '%I%'
-                                    },
+                                    // {
+                                    //     [Op.like]: '%N%'
+                                    // },
+                                    // {
+                                    //     [Op.like]: '%I%'
+                                    // },
                                 ]
                             },
                             {
@@ -800,12 +800,12 @@ module.exports = {
                                 {
                                     [Op.like]: '%H%'
                                 },
-                                {
-                                    [Op.like]: '%N%'
-                                },
-                                {
-                                    [Op.like]: '%I%'
-                                },
+                                // {
+                                //     [Op.like]: '%N%'
+                                // },
+                                // {
+                                //     [Op.like]: '%I%'
+                                // },
                             ]
                         },
                         {
