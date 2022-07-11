@@ -3112,6 +3112,12 @@ module.exports = {
                 },
                 { model: group,
                     attributes: ['name', 'internal'],
+                    include:[
+                        {
+                            model: auths,
+                            attributes: ['firstname', 'notelp'],
+                        }
+                    ]
                 },
                 
             ]
