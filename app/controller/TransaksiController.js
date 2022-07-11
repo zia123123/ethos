@@ -943,7 +943,7 @@ module.exports = {
                             { model: warehouses,
                                 include: [ {
                                      model: districts,
-                                    attributes: ['name']
+                                     attributes: ['name'],
                                 },
                                 { model: cityregencies,
                                     attributes: ['name']
@@ -956,12 +956,16 @@ module.exports = {
                                 as:'auth',
                                 attributes: ['notelp','firstname'],
                             },
+                            { model: auths,
+                                as:'authWarehouse',
+                                attributes: ['firstname'],
+                            },
                             { model: daexpedisis,
                                 attributes: ['totalharga'],
                             },
             ]
         }).then(result => {
-           console.log(result.length)
+           console.log('count',result.length)
            class Transaksi {
                 constructor(
                     x1,x2,x3,x4,x5,x6,x7,x8,x9,x10,x11,x12,x13,x14,x15,x16,x17,x18,x19,x20,x21,x22,x23,x24,x25,x26,x27,x28,x29,x30,x31,x32,x33,x34,x35,x36,x37,x38,x39,x40,x41,x42,x43,x44,x45,x46,x47,x48,x49,x50,x51,x52,x53,x54
@@ -999,6 +1003,7 @@ module.exports = {
                       this.weight = weight;
                     }
                   }
+                
                 var  KeranjangArray = [];
                 let keranjangdata =  result[i].products.replace(/\\n/g, '')
                 let datakeranjang = eval(keranjangdata)
@@ -1114,7 +1119,7 @@ module.exports = {
                                 deltype,
                                 "",
                                 "Usable",
-                                result[i].invoiceId+" | "+result[i].auth.firstname+" | "+advName+" | "+"Ajeng"+" | "+result[i].ongkoskirim+" | "+result[i].biayacod+" | "+result[i].subsidicod+" | "+result[i].memotransaksi,
+                                result[i].invoiceId+" | "+result[i].auth.firstname+" | "+advName+" | "+result[i].authWarehouse.firstname+" | "+result[i].ongkoskirim+" | "+result[i].biayacod+" | "+result[i].subsidicod+" | "+result[i].memotransaksi,
                                 ""
                             )
                         );
@@ -1138,7 +1143,7 @@ module.exports = {
                                 totalWeightProduct,
                                 "STANDARD",
                                 result[i].orderNumber,
-                                result[i].memotransaksi+" | "+totalQtyProduct+" | "+result[i].auth.firstname+" | "+type+" | "+advName+" | "+spvName+" | "+"Ajeng",
+                                result[i].memotransaksi+" | "+totalQtyProduct+" | "+result[i].auth.firstname+" | "+type+" | "+advName+" | "+spvName+" | "+result[i].authWarehouse.firstname,
                                 "TRUE",
                                 "",
                                 "TRUE",
@@ -1155,13 +1160,13 @@ module.exports = {
                 }else if(expedisiName.toLowerCase() == 'sicepat'){
                     TransaksiArray.push(
                         new Transaksi(
-                            "FAMILY HERBAL GROUP","FAMILY HERBAL GROUP",today,"17:00",result[i].warehouse.district.name,result[i].warehouse.address,result[i].warehouse.district.name,result[i].warehouse.city,result[i].warehouse.province.name,today,"17:00",result[i].customer.nama+"/"+result[i].id,result[i].customer.notelp,result[i].customer.alamat+" | HUBUNGI PENERIMA, JANGAN RETUR | "+listProductxQty+" | CS "+result[i].auth.firstname+" | "+type+" | "+advName+" | "+spvName+" | Ajeng",result[i].customer.districtname,result[i].customer.cityname,result[i].customer.provinsiname,"","REG",listProductxQty,totalQtyProduct,totalWeightProduct,"","","",totalPriceProduct,"N",scmpbyrn,"","","","","","","",""
+                            "FAMILY HERBAL GROUP","FAMILY HERBAL GROUP",today,"17:00",result[i].warehouse.district.name,result[i].warehouse.address,result[i].warehouse.district.name,result[i].warehouse.city,result[i].warehouse.province.name,today,"17:00",result[i].customer.nama+"/"+result[i].id,result[i].customer.notelp,result[i].customer.alamat+" | HUBUNGI PENERIMA, JANGAN RETUR | "+listProductxQty+" | CS "+result[i].auth.firstname+" | "+type+" | "+advName+" | "+spvName+" | "+result[i].authWarehouse.firstname,result[i].customer.districtname,result[i].customer.cityname,result[i].customer.provinsiname,"","REG",listProductxQty,totalQtyProduct,totalWeightProduct,"","","",totalPriceProduct,"N",scmpbyrn,"","","","","","","",""
                         )
                     );
                 }else if(expedisiName.toLowerCase() == 'jnt'){
                     TransaksiArray.push(
                         new Transaksi(
-                            i,"FHG","628112883833",result[i].warehouse.name,result[i].warehouse.address,result[i].customer.nama+"/"+result[i].id,result[i].customer.notelp,result[i].customer.districtname,result[i].customer.alamat+"HUBUNGI PENERIMA, JANGAN RETUR",listProductxQty,"",totalQtyProduct,"BARANG",result[i].memotransaksi+" | "+listSKUxQty+" | "+result[i].auth.firstname+" | "+type+" | "+advName+" | "+spvName+" | FAMILY HERBAL GROUP | Ajeng","","","EZ",result[i].ongkoskirim,"",""
+                            i,"FHG","628112883833",result[i].warehouse.name,result[i].warehouse.address,result[i].customer.nama+"/"+result[i].id,result[i].customer.notelp,result[i].customer.districtname,result[i].customer.alamat+"HUBUNGI PENERIMA, JANGAN RETUR",listProductxQty,"",totalQtyProduct,"BARANG",result[i].memotransaksi+" | "+listSKUxQty+" | "+result[i].auth.firstname+" | "+type+" | "+advName+" | "+spvName+" | FAMILY HERBAL GROUP | "+result[i].authWarehouse.firstname,"","","EZ",result[i].ongkoskirim,"",""
                         )
                     );
                 }
@@ -1446,20 +1451,20 @@ module.exports = {
                             deltype,
                             "",
                             "Usable",
-                            result[i].invoiceId+" | "+result[i].auth.firstname+" | "+advName+" | "+"Ajeng"+" | "+result[i].ongkoskirim+" | "+result[i].biayacod+" | "+result[i].subsidicod+" | "+result[i].memotransaksi,
+                            result[i].invoiceId+" | "+result[i].auth.firstname+" | "+advName+" | "+result[i].authWarehouse.firstname+" | "+result[i].ongkoskirim+" | "+result[i].biayacod+" | "+result[i].subsidicod+" | "+result[i].memotransaksi,
                             ""
                         )
                     );
                 }else if(expedisiName.toLowerCase() == 'sicepat'){
                     TransaksiArray.push(
                         new Transaksi(
-                            "FAMILY HERBAL GROUP","FAMILY HERBAL GROUP",today,"17:00",result[i].warehouse.district.name,result[i].warehouse.address,result[i].warehouse.district.name,result[i].warehouse.city,result[i].warehouse.province.name,today,"17:00",result[i].customer.nama+"/"+result[i].id,result[i].customer.notelp,result[i].customer.alamat+" | HUBUNGI PENERIMA, JANGAN RETUR | "+listProductxQty+" | CS "+result[i].auth.firstname+" | "+type+" | "+advName+" | "+spvName+" | Ajeng",result[i].customer.districtname,result[i].customer.cityname,result[i].customer.provinsiname,"","REG",listProductxQty,totalQtyProduct,totalWeightProduct,"","","",totalPriceProduct,"N",scmpbyrn,"","","","","","","",""
+                            "FAMILY HERBAL GROUP","FAMILY HERBAL GROUP",today,"17:00",result[i].warehouse.district.name,result[i].warehouse.address,result[i].warehouse.district.name,result[i].warehouse.city,result[i].warehouse.province.name,today,"17:00",result[i].customer.nama+"/"+result[i].id,result[i].customer.notelp,result[i].customer.alamat+" | HUBUNGI PENERIMA, JANGAN RETUR | "+listProductxQty+" | CS "+result[i].auth.firstname+" | "+type+" | "+advName+" | "+spvName+" | "+result[i].authWarehouse.firstname,result[i].customer.districtname,result[i].customer.cityname,result[i].customer.provinsiname,"","REG",listProductxQty,totalQtyProduct,totalWeightProduct,"","","",totalPriceProduct,"N",scmpbyrn,"","","","","","","",""
                         )
                     );
                 }else if(expedisiName.toLowerCase() == 'jnt'){
                     TransaksiArray.push(
                         new Transaksi(
-                            i,"FHG","628112883833",result[i].warehouse.name,result[i].warehouse.address,result[i].customer.nama+"/"+result[i].id,result[i].customer.notelp,result[i].customer.districtname,result[i].customer.alamat+"HUBUNGI PENERIMA, JANGAN RETUR",listProductxQty,"",totalQtyProduct,"BARANG",result[i].memotransaksi+" | "+listSKUxQty+" | "+result[i].auth.firstname+" | "+type+" | "+advName+" | "+spvName+" | FAMILY HERBAL GROUP | Ajeng","","","EZ",result[i].ongkoskirim,"",""
+                            i,"FHG","628112883833",result[i].warehouse.name,result[i].warehouse.address,result[i].customer.nama+"/"+result[i].id,result[i].customer.notelp,result[i].customer.districtname,result[i].customer.alamat+"HUBUNGI PENERIMA, JANGAN RETUR",listProductxQty,"",totalQtyProduct,"BARANG",result[i].memotransaksi+" | "+listSKUxQty+" | "+result[i].auth.firstname+" | "+type+" | "+advName+" | "+spvName+" | FAMILY HERBAL GROUP | "+result[i].authWarehouse.firstname,"","","EZ",result[i].ongkoskirim,"",""
                         )
                     );
                 }
