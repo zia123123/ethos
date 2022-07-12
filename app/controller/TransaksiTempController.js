@@ -214,6 +214,7 @@ module.exports = {
         req.transaksi.totalharga = req.body.totalharga;
         req.transaksi.packingKayu = req.body.packingKayu;
         req.transaksi.ratecardId = req.body.ratecardId;
+        req.transaksi.expedisiId = req.body.expedisiId;
         if (req.body.verificationFinanceId != null) {
             req.transaksi.tanggalVerifikasi = new Date(date.getTime() - (offset*60*1000)) 
         }

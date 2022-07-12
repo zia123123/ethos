@@ -6302,7 +6302,7 @@ module.exports = {
                     },
                     {
                         where: {
-                            awb: (row['Tracking ID'] !== undefined? row['Tracking ID']:(row['No. Waybill'] !== undefined ? row['No. Waybill'] : row['No. Resi'])),
+                            awb: (row['Tracking ID'] !== undefined? row['Tracking ID'].toString():(row['No. Waybill'] !== undefined ? row['No. Waybill'].toString() : row['No. Resi'].toString())),
                         }
                     }
                 )
