@@ -12,6 +12,7 @@ const fs = require("fs")
 const csvdir = "./app/public/docs"
 const apiResponse = require("../helpers/apiResponse");
 const xl = require('excel4node');
+const { ExcelDateToJSDate } = require('../helpers/reusable');
 const sequelize = new Sequelize("mysql::ethos:");
 
 
@@ -6265,43 +6266,16 @@ module.exports = {
                 const offset = tgl.getTimezoneOffset()
 
                 if (row['Delivery Success Datetime'] !== undefined) {
-                    const [day, month, year] = row['Delivery Success Datetime'].split('/')
-                    sentDate = new Date(`20${year}-${month}-${day}`)
+                    sentDate = ExcelDateToJSDate(row['Delivery Success Datetime'])
                 }
                 else if (row['Tanggal Terima'] !== undefined) {
-                    const [date, time] = row['Tanggal Terima'].split('  ')
-                    const [day, month, year] = date.split('/')
-                    const [hour, minute, second] = time.split('.')
-                    sentDate = new Date(`${year}-${month}-${day}T${hour}:${minute}:${second}`)
-                    sentDate = new Date(sentDate - (offset*60*1000) ) 
+                    sentDate = ExcelDateToJSDate(row['Tanggal Terima'])
                 }
                 else if (row['WAKTU TTD'] !== undefined) {
-                    if (row.STATUS !== undefined) {
-                        var utc_days  = Math.floor(parseFloat(row['WAKTU TTD']) - 25569);
-                        var utc_value = utc_days * 86400;                                        
-                        var date_info = new Date(utc_value * 1000);
-
-                        var fractional_day = row['WAKTU TTD'] - Math.floor(row['WAKTU TTD']) + 0.0000001;
-
-                        var total_seconds = Math.floor(86400 * fractional_day);
-
-                        var seconds = total_seconds % 60;
-
-                        total_seconds -= seconds;
-
-                        var hours = Math.floor(total_seconds / (60 * 60));
-                        var minutes = Math.floor(total_seconds / 60) % 60;
-
-                        // sentDate = new Date(tgl.getTime() - (offset*60*1000))
-                        sentDate = new Date(date_info.getFullYear(), date_info.getMonth(), date_info.getDate(), hours, minutes, seconds);
-                        console.log(sentDate);
-                    }else{
-                        const [date, time] = row['WAKTU TTD'].split('  ')
-                        const [day, month, year] = date.split('/')
-                        const [hour, minute, second] = time.split('.')
-                        sentDate = new Date(`${year}-${month}-${day}T${hour}:${minute}:${second}`)
-                        sentDate = new Date(sentDate - (offset*60*1000) )
-                    }
+                    sentDate = ExcelDateToJSDate(row['WAKTU TTD'])
+                }
+                else if(row['Waktu TTD'] !== undefined){
+                    sentDate = ExcelDateToJSDate(row['Waktu TTD'])
                 }
                 
                 // const date = new Date()
@@ -6313,7 +6287,7 @@ module.exports = {
                         authIDCc: parseInt(req.body.inputer),
                         // tanggalcc: new Date(date.getTime() - (offset*60*1000))
                         tanggalcc: new Date(tgl.getTime() - (offset*60*1000)) ,
-                        tanggalTerkirim: sentDate,
+                        tanggalTerkirim: new Date(sentDate - (offset*60*1000)),
                     },
                     {
                         where: {
