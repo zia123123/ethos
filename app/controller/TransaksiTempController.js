@@ -1,7 +1,7 @@
 const {
     transaksis, transaksis_temp,
     daexpedisis,customers,warehouses,auths,buktibayars,
-    districts,cityregencies,province, leads, group, nomorekenings, ratecard, Sequelize 
+    districts,cityregencies,province, leads, group, nomorekenings, ratecard, ekpedisi, Sequelize 
    } = require('../models/index');
 const { Op } = require("sequelize");
 const { exportstocsv }  = require("export-to-csv"); 
@@ -213,6 +213,7 @@ module.exports = {
         req.transaksi.subsidicod = req.body.subsidicod;
         req.transaksi.totalharga = req.body.totalharga;
         req.transaksi.packingKayu = req.body.packingKayu;
+        req.transaksi.ratecardId = req.body.ratecardId;
         if (req.body.verificationFinanceId != null) {
             req.transaksi.tanggalVerifikasi = new Date(date.getTime() - (offset*60*1000)) 
         }
@@ -274,6 +275,9 @@ module.exports = {
                 { 
                     model: ratecard,
                 },
+                { 
+                    model: ekpedisi,
+                },
             ]
             
         }).then(result => {
@@ -334,6 +338,9 @@ module.exports = {
                 },
                 { 
                     model: ratecard,
+                },
+                { 
+                    model: ekpedisi,
                 },
             ]
             

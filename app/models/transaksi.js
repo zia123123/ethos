@@ -152,6 +152,7 @@ module.exports = (sequelize, DataTypes) => {
     transaksi.belongsTo(models.leads, { foreignKey: "leadsId"})
     transaksi.belongsTo(models.nomorekenings, { foreignKey: "noreksId"})
     transaksi.belongsTo(models.group, { foreignKey: "idGroup"})
+    transaksi.belongsTo(models.ekpedisi, { foreignKey: "expedisiId"})
     // transaksi.hasOne(models.keranjangs)
 
     //transaksi.belongsTo(models.products, { foreginKey: "productId"})
