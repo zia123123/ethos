@@ -587,4 +587,6 @@ router.get('/api/ratecard/packages-by-expedition/:id', RateCardController.packag
 router.get('/api/ratecard/cities-by-expedition/:id', RateCardController.citiesByExpedition);
 router.get('/api/ratecard/districts-by-expedition/:id', RateCardController.districtsByExpedition);
 
+router.post('/api/transaksi/daftar-transaksi/import', TransaksiController.importCCDaftarTransaksi);
+
 module.exports = router;

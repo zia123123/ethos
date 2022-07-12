@@ -6230,4 +6230,91 @@ module.exports = {
         });
     },
 
+    async importCCDaftarTransaksi(req, res){
+        let error = ''
+        let success = ''
+        const orders = req.body.data
+
+        orders.map( async (row,index) => {
+            console.log(row);
+            if (row['Tracking ID'] === undefined && row['No. Waybill'] === undefined && row['No. Resi'] === undefined) {
+                if (error) {
+                    error += ', '
+                }
+                error += `AWB index ke-${index+1} tidak ada`
+                return
+            }
+            else if ((row['Tracking ID'] !== undefined && row['Tracking ID'].length === 0) && (row['No. Waybill'] !== undefined && row['No. Waybill'].length === 0) && (row['No. Resi'] !== undefined && row['No. Resi'].length === 0)) {
+                if (error) {
+                    error += ', '
+                }
+                error += `AWB index ke-${index+1} kosong`
+                return
+            }
+            if (row.status === undefined && row.Status === undefined && row.STATUS === undefined) {
+                if (error) {
+                    error += ', '
+                }
+                error += `Status index ke-${index+1} tidak ada`
+                return
+            }
+            else if (row.status == 'Success' || row.Status == 'Success' || row.STATUS == 'Success' || row.status == 'Return' || row.Status == 'Return' || row.STATUS == 'Return') {
+                let status = (row.status == 'Success' || row.Status == 'Success' || row.STATUS == 'Success'? 'I' : 'K' )
+                let sentDate
+                const tgl = new Date()
+                const offset = tgl.getTimezoneOffset()
+
+                if (row['Delivery Success Datetime'] !== undefined) {
+                    const [day, month, year] = row['Delivery Success Datetime'].split('/')
+                    sentDate = new Date(`20${year}-${month}-${day}`)
+                }
+                else if (row['Tanggal Terima'] !== undefined) {
+                    const [date, time] = row['Tanggal Terima'].split('  ')
+                    const [day, month, year] = date.split('/')
+                    const [hour, minute, second] = time.split('.')
+                    sentDate = new Date(`${year}-${month}-${day}T${hour}:${minute}:${second}`)
+                    sentDate = new Date(sentDate - (offset*60*1000) ) 
+                }
+                else if (row['WAKTU TTD'] !== undefined) {
+                    if (row.STATUS !== undefined) {
+                        // sentDate = new Date(tgl.getTime() - (offset*60*1000))
+                        sentDate = new Date(row['WAKTU TTD'])
+                        console.log(sentDate);
+                    }else{
+                        const [date, time] = row['WAKTU TTD'].split('  ')
+                        const [day, month, year] = date.split('/')
+                        const [hour, minute, second] = time.split('.')
+                        sentDate = new Date(`${year}-${month}-${day}T${hour}:${minute}:${second}`)
+                        sentDate = new Date(sentDate - (offset*60*1000) )
+                    }
+                }
+                
+                // const date = new Date()
+                // const offset = date.getTimezoneOffset()
+
+                transaksis.update(
+                    {
+                        status: status, 
+                        authIDCc: parseInt(req.body.inputer),
+                        // tanggalcc: new Date(date.getTime() - (offset*60*1000))
+                        tanggalcc: new Date(tgl.getTime() - (offset*60*1000)) ,
+                        tanggalTerkirim: sentDate,
+                    },
+                    {
+                        where: {
+                            awb: (row['Tracking ID'] !== undefined? row['Tracking ID']:(row['No. Waybill'] !== undefined ? row['No. Waybill'] : row['No. Resi'])),
+                        }
+                    }
+                )
+                if (success) {
+                    success += ', '
+                }
+                success += `Status dari AWB index ke-${index+1} berhasil diubah`
+            }
+        })
+        console.log('Success:', success);
+        console.log('Error:',error);
+        return apiResponse.successResponseWithData(res, "SUCCESS", success);
+    },
+
 }

@@ -124,6 +124,12 @@ module.exports = (sequelize, DataTypes) => {
     packingKayu: {
       type: DataTypes.STRING,
     },
+    tanggalcc: {
+      type: 'DATETIME',
+    },
+    tanggalTerkirim: {
+      type: 'DATETIME',
+    },
   }, {
     tableName: "transaksis"
   });
@@ -139,6 +145,7 @@ module.exports = (sequelize, DataTypes) => {
     transaksi.belongsTo(models.auths, { as: "auth", foreignKey: "authId"})
     transaksi.belongsTo(models.auths, { as: "authFinance", foreignKey: "authIDFinance"})
     transaksi.belongsTo(models.auths, { as: "authWarehouse", foreignKey: "authIDWarehouse"})
+    transaksi.belongsTo(models.auths, { as: "authCC", foreignKey: "authIDCc"})
     transaksi.belongsTo(models.customers, { foreginKey: "customerId"})
     transaksi.belongsTo(models.warehouses, { foreginKey: "warehouseId"})
     transaksi.belongsTo(models.metodepembayarans, { foreignKey: "typebayar"})
