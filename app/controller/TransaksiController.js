@@ -911,6 +911,7 @@ module.exports = {
                 return apiResponse.ErrorResponse(res, err);
             });
     },
+
     async ExcelGudang(req, res) {
         // let startDate = req.query.startDate+"T00:00:00.000Z"
         // let endDate = req.query.endDate+"T23:59:00.000Z"
@@ -6321,6 +6322,261 @@ module.exports = {
         console.log('Success:', success);
         console.log('Error:',error);
         return apiResponse.successResponseWithData(res, "SUCCESS", success);
+    },
+
+    async daftarTransaksiCC(req, res) {
+        let page = parseInt(req.query.page)
+        let limit = parseInt(req.query.limit)
+        let search = req.query.search
+        let status = req.query.status
+        let warehouseId = req.query.warehouseId
+        let paymentMethod = {[Op.like]: '%%'}
+        const date = new Date();
+        let startDate = new Date(date.getFullYear(), date.getMonth(), 1),
+            endDate   = date.setDate(date.getDate() + 1);
+
+        if (req.query.startDate) {
+            startDate = req.query.startDate+"T00:00:00.000Z"    
+        }
+        if (req.query.endDate) {
+            endDate = req.query.endDate+"T23:59:59.000Z"    
+        }
+        
+        if( warehouseId == null ){
+            warehouseId = ""
+        }
+        if( status == null ){
+            status = ""
+        }
+        if( req.query.paymentMethod != null ){
+            paymentMethod = req.query.paymentMethod
+        }
+        if( search == null ){
+            search = ""
+        }
+
+        let count = await transaksis.count(
+            {
+                where: {
+                    createdAt :  {
+                        [Op.and]: {
+                          [Op.gte]: startDate,
+                          [Op.lte]: endDate
+                        }
+                    },
+                    status: {
+                        [Op.and]:[
+                            {
+                                [Op.or]: [
+                                    {
+                                        [Op.like]: '%H%'
+                                    },
+                                    {
+                                        [Op.like]: '%N%'
+                                    },
+                                    {
+                                        [Op.like]: '%I%'
+                                    },
+                                    {
+                                        [Op.like]: '%K%'
+                                    },
+                                ]
+                            },
+                            {
+                                [Op.like]: `%${status}%`
+                            }
+                        ]
+                    },
+                    warehouseId:{
+                        [Op.like]: `%${warehouseId}%`
+                    },
+                    typebayar: paymentMethod,
+                    [Op.or]:[
+                        {
+                            '$auth.firstname$':{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                        {
+                            nama:{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                        {
+                            '$customer.notelp$':{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                        {
+                            invoiceId:{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                        {
+                            '$warehouse.name$':{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                        {
+                            awb:{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                        {
+                            expedisiName:{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                        {
+                            '$daexpedisis.totalharga$':{
+                                [Op.like]: `%${search}%`
+                            }
+                        },
+                    ],
+                },
+                include: [ 
+                    { model: warehouses,
+                    },
+                     { model: customers,
+                    },
+                    { model: daexpedisis,
+                    },
+                    { model: auths,
+                        as:'auth',
+                       
+                    },
+                    { model: auths,
+                        as:'authWarehouse',
+                    },
+                    { model: group,
+                        include:[
+                            {
+                                model: auths,
+                                attributes: [],
+                            }
+                        ]
+                    },
+                ]
+            }
+        )
+        let result = await transaksis.findAll({
+            offset: (page - 1) * limit,
+            limit: limit,
+            where: {
+                createdAt :  {
+                    [Op.and]: {
+                      [Op.gte]: startDate,
+                      [Op.lte]: endDate
+                    }
+                },
+                status: {
+                    [Op.and]:[
+                        {
+                            [Op.or]: [
+                                {
+                                    [Op.like]: '%H%'
+                                },
+                                {
+                                    [Op.like]: '%N%'
+                                },
+                                {
+                                    [Op.like]: '%I%'
+                                },
+                                {
+                                    [Op.like]: '%K%'
+                                },
+                            ]
+                        },
+                        {
+                            [Op.like]: `%${status}%`
+                        }
+                    ]
+                },
+                typebayar: paymentMethod,
+                warehouseId:{
+                    [Op.like]: `%${warehouseId}%`
+                },
+                [Op.or]:[
+                    {
+                        '$auth.firstname$':{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        nama:{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        '$customer.notelp$':{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        invoiceId:{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        '$warehouse.name$':{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        awb:{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        expedisiName:{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                    {
+                        '$daexpedisis.totalharga$':{
+                            [Op.like]: `%${search}%`
+                        }
+                    },
+                ],
+            },
+              order: [
+                ['id', 'DESC'],
+            ],
+                        include: [ 
+                            { model: warehouses,
+                            },
+                             { model: customers,
+                            },
+                            { model: daexpedisis,
+                            },
+                            { model: auths,
+                                as:'auth',
+                            },
+                            { model: auths,
+                                as:'authWarehouse',
+                                attributes: ['firstname'],
+                            },
+                            { model: group,
+                                attributes: ['name', 'internal'],
+                            },
+            ]
+        }).then(result => {
+            var totalPage = (parseInt(count) / limit) + 1
+            returnData = {
+                result,
+                metadata: {
+                    page: page,
+                    count: result.length,
+                    totalPage: parseInt(totalPage),
+                    totalData:  count,
+                }
+            }
+            
+            return apiResponse.successResponseWithData(res, "SUCCESS", returnData);
+            //return apiResponse.successResponseWithData(res, "SUCCESS", result);
+            }).catch(function (err){
+                return apiResponse.ErrorResponse(res, err);
+            });
     },
 
 }
