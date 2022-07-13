@@ -453,14 +453,16 @@ module.exports = {
         let filter = 
         { 
             where: {
-                [Op.or]:[
-                    {
-                        state: 2,
-                    },
-                    {
-                        state: 3,
-                    },
-                ],
+                state:{
+                    [Op.or]:[
+                        {
+                            [Op.eq]: 2,
+                        },
+                        {
+                            [Op.eq]: 3,
+                        },
+                    ],
+                },
                 createdAt :  {
                     [Op.and]: {
                       [Op.gte]: startDate,
