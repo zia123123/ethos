@@ -780,7 +780,18 @@ module.exports = {
                     { model: auths,
                         as:'auth',
                        
-                    }
+                    },
+                    { model: auths,
+                        as:'authWarehouse',
+                    },
+                    { model: group,
+                        include:[
+                            {
+                                model: auths,
+                                attributes: [],
+                            }
+                        ]
+                    },
                 ]
             }
         )
@@ -873,8 +884,14 @@ module.exports = {
                             },
                             { model: auths,
                                 as:'auth',
-                               
-                            }
+                            },
+                            { model: auths,
+                                as:'authWarehouse',
+                                attributes: ['firstname'],
+                            },
+                            { model: group,
+                                attributes: ['name', 'internal'],
+                            },
             ]
         }).then(result => {
             var totalPage = (parseInt(count) / limit) + 1
