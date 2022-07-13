@@ -188,10 +188,23 @@ module.exports = {
                 })
             })
         }
-
+        
         let whereCondition = {
             ekspedisiId: req.params.id,
             [Op.and]:searchWords,
+        }
+
+        if (req.query.warehouseId != null) {
+            whereCondition.warehouseId = req.query.warehouseId
+        }
+        if (req.query.provinsi != null) {
+            whereCondition.provinsi = req.query.provinsi
+        }
+        if (req.query.kabupaten_kota != null) {
+            whereCondition.kabupaten_kota = req.query.kabupaten_kota
+        }
+        if (req.query.kecamatan != null) {
+            whereCondition.kecamatan = req.query.kecamatan
         }
 
         let filter = {
